@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academic Disciplines — 学問体系ビューア</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --fg:#c8bfa8; --muted:#7a7266; --bone:#c8bfa8; --gold:#b08840;
+  --fam-vex:#8890a0; --fam-kro:#a88858; --fam-tak:#90a078; --fam-emb:#c09070; --fam-mix:#a878a0; --fam-neu:#7a7266;
+  --s1:#c09070; --s2:#a88858; --s3:#90a078; --s4:#8890a0; --s5:#a878a0; --s6:#b08060;
+  --panel:rgba(255,255,255,0.04); --border:rgba(176,136,64,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);font-family:'Noto Sans JP',sans-serif;min-height:100vh;line-height:1.6}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{padding:1.5rem 1rem 1rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(176,136,64,0.08),transparent)}
+.hbar{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem}
+h1{font-family:'Cinzel',serif;font-weight:400;font-size:1.4rem;letter-spacing:0.15em;color:var(--bone)}
+.sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
+.home{font-size:0.75rem;letter-spacing:0.15em}
+
+.tab-bar{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;gap:0;border-bottom:1px solid var(--border)}
+.tab{padding:0.9rem 1.4rem;background:transparent;border:none;color:var(--muted);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.tab:hover{color:var(--bone)}
+.tab.active{color:var(--bone);border-bottom-color:var(--gold)}
+
+.controls{max-width:1400px;margin:0 auto;padding:1rem;display:flex;flex-wrap:wrap;gap:0.7rem;align-items:center;border-bottom:1px solid var(--border)}
+.search{flex:1;min-width:200px}
+.search input{width:100%;padding:0.5rem 0.75rem;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);font-family:inherit;font-size:0.85rem;border-radius:3px}
+.search input:focus{outline:none;border-color:var(--gold)}
+.pill{padding:0.35rem 0.75rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;cursor:pointer;border-radius:20px;transition:all 0.15s;text-transform:uppercase}
+.pill:hover{color:var(--bone);border-color:var(--gold)}
+.pill.active{color:var(--bg);background:var(--gold);border-color:var(--gold)}
+.pill.sec1.active{background:var(--s1);border-color:var(--s1)}
+.pill.sec2.active{background:var(--s2);border-color:var(--s2)}
+.pill.sec3.active{background:var(--s3);border-color:var(--s3)}
+.pill.sec4.active{background:var(--s4);border-color:var(--s4)}
+.pill.sec5.active{background:var(--s5);border-color:var(--s5)}
+.pill.sec6.active{background:var(--s6);border-color:var(--s6)}
+.pill.fam-VEXALIA.active{background:var(--fam-vex);border-color:var(--fam-vex);color:#0a0908}
+.pill.fam-KROSS.active{background:var(--fam-kro);border-color:var(--fam-kro);color:#0a0908}
+.pill.fam-TAKANI.active{background:var(--fam-tak);border-color:var(--fam-tak);color:#0a0908}
+.pill.fam-EMBERLYN.active{background:var(--fam-emb);border-color:var(--fam-emb);color:#0a0908}
+.pill.fam-混合.active{background:var(--fam-mix);border-color:var(--fam-mix);color:#0a0908}
+.pill.fam-中立.active{background:var(--fam-neu);border-color:var(--fam-neu)}
+
+.stats{max-width:1400px;margin:0 auto;padding:0.6rem 1rem;font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;display:flex;gap:1.5rem;flex-wrap:wrap}
+.stats b{color:var(--bone);font-weight:400}
+
+main{max-width:1400px;margin:0 auto;padding:1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem}
+
+.card{padding:1.1rem;background:var(--panel);border:1px solid var(--border);border-radius:4px;transition:all 0.15s;position:relative;cursor:pointer;border-left-width:4px}
+.card:hover{background:rgba(255,255,255,0.06);border-color:var(--gold)}
+.card.read{opacity:0.6}
+.card.fav{border-color:var(--gold)}
+.card.expanded{background:rgba(255,255,255,0.06);grid-column:1/-1;cursor:default;border-color:var(--gold)}
+.card[data-sec="1"]{border-left-color:var(--s1)}
+.card[data-sec="2"]{border-left-color:var(--s2)}
+.card[data-sec="3"]{border-left-color:var(--s3)}
+.card[data-sec="4"]{border-left-color:var(--s4)}
+.card[data-sec="5"]{border-left-color:var(--s5)}
+.card[data-sec="6"]{border-left-color:var(--s6)}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.4rem}
+.c-num{font-family:'Cinzel',serif;color:var(--muted);font-size:0.75rem;letter-spacing:0.15em}
+.c-badges{display:flex;gap:0.3rem;flex-wrap:wrap}
+.badge{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;padding:0.15rem 0.45rem;border-radius:2px;background:rgba(0,0,0,0.3);color:var(--muted)}
+.badge.family{color:#0a0908}
+.badge.sec1{background:rgba(192,144,112,0.2);color:var(--s1)}
+.badge.sec2{background:rgba(168,136,88,0.2);color:var(--s2)}
+.badge.sec3{background:rgba(144,160,120,0.2);color:var(--s3)}
+.badge.sec4{background:rgba(136,144,160,0.2);color:var(--s4)}
+.badge.sec5{background:rgba(168,120,160,0.2);color:var(--s5)}
+.badge.sec6{background:rgba(176,128,96,0.2);color:var(--s6)}
+
+.c-title{font-family:'Noto Serif JP',serif;font-size:1rem;color:var(--bone);font-weight:500;margin-bottom:0.25rem;line-height:1.35}
+.c-sub{font-size:0.7rem;color:var(--muted);margin-bottom:0.5rem;font-style:italic}
+.c-tension{font-size:0.82rem;line-height:1.6;color:var(--fg);opacity:0.95;padding:0.5rem 0.6rem;background:rgba(176,136,64,0.06);border-left:2px solid var(--gold);border-radius:2px}
+.card:not(.expanded) .c-tension{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.c-details{display:none;margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--border);font-size:0.8rem;line-height:1.7}
+.card.expanded .c-details{display:block}
+.c-details dt{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);margin-top:0.75rem;text-transform:uppercase}
+.c-details dd{color:var(--fg);opacity:0.9;margin-top:0.15rem}
+.c-memo{margin-top:0.9rem}
+.c-memo dt{color:var(--gold)!important}
+.c-memo textarea{width:100%;min-height:60px;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);padding:0.5rem;font-family:inherit;font-size:0.78rem;border-radius:3px;resize:vertical;margin-top:0.3rem}
+.c-memo textarea:focus{outline:none;border-color:var(--gold)}
+
+.c-actions{display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap}
+.c-btn{padding:0.3rem 0.7rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;cursor:pointer;border-radius:2px}
+.c-btn:hover{color:var(--bone);border-color:var(--gold)}
+.c-btn.on{color:var(--gold);border-color:var(--gold)}
+
+.empty{text-align:center;padding:3rem;color:var(--muted);font-style:italic}
+
+/* institutions view */
+.inst-view{display:none;max-width:900px;margin:0 auto;padding:1rem;font-size:0.9rem;line-height:1.7}
+.inst-view.active{display:block}
+.inst-view h1{display:none}
+.inst-view h2{font-family:'Cinzel',serif;font-size:0.95rem;letter-spacing:0.2em;color:var(--gold);margin-top:2.5rem;margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.inst-view h2:first-child{margin-top:0}
+.inst-view h3{font-family:'Noto Serif JP',serif;color:var(--bone);font-size:1.05rem;margin-top:1.6rem;margin-bottom:0.5rem}
+.inst-view p{margin:0.6rem 0;color:var(--fg);opacity:0.92}
+.inst-view ul{margin:0.5rem 0 0.5rem 1.2rem}
+.inst-view li{margin:0.3rem 0}
+.inst-view strong{color:var(--bone)}
+.inst-view code{background:rgba(176,136,64,0.12);color:var(--gold);padding:0.1rem 0.4rem;border-radius:2px;font-size:0.85em}
+.inst-view table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.82rem}
+.inst-view th{background:rgba(176,136,64,0.1);color:var(--gold);padding:0.5rem;text-align:left;font-weight:500;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.1em;border:1px solid var(--border)}
+.inst-view td{padding:0.5rem;border:1px solid var(--border);color:var(--fg);vertical-align:top}
+
+/* views */
+.view{display:none}
+.view.active{display:block}
+
+@media (max-width:640px){
+  h1{font-size:1.05rem}
+  .controls{padding:0.7rem}
+  .grid{grid-template-columns:1fr;gap:0.7rem}
+  main{padding:0.7rem}
+  .tab{padding:0.7rem 0.9rem;font-size:0.65rem;letter-spacing:0.15em}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div>
+      <h1>Academic Disciplines</h1>
+      <div class="sub">架空ファンタジー世界の学問体系 — 30分野 × 6系統 + 制度</div>
+    </div>
+    <a href="index.html" class="home">← SANDBOX HUB</a>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab active" data-view="disciplines">◆ DISCIPLINES</button>
+  <button class="tab" data-view="institutions">◆ INSTITUTIONS</button>
+</div>
+
+<!-- Disciplines view -->
+<div class="view active" id="view-disciplines">
+  <div class="controls">
+    <div class="search"><input id="q" placeholder="検索：分野・概念・文献・組織 ..." /></div>
+    <button class="pill" data-filter="fav">♥ お気に入り</button>
+    <button class="pill" data-filter="unread">未読</button>
+  </div>
+
+  <div class="controls" id="sec-filters">
+    <span style="font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-right:0.3rem">SECTION</span>
+    <button class="pill sec-pill" data-sec="0">ALL</button>
+  </div>
+
+  <div class="controls" id="fam-filters">
+    <span style="font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-right:0.3rem">FAMILY</span>
+    <button class="pill fam-pill" data-fam="0">ALL</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <main><div class="grid" id="grid"></div></main>
+</div>
+
+<!-- Institutions view -->
+<div class="view" id="view-institutions">
+  <div class="inst-view active"><h1>架空ファンタジー世界の学術機関と制度</h1>
+
+<p>本稿は <code>academic_disciplines.md</code> の30分野を支える制度面の整理である。学術機関は、VEXALIAの公認制度、KROSSの工房ネットワーク、TAKANIの口承共同体、EMBERLYNの旧家文庫がせめぎ合うかたちで成立している。</p>
+
+<h2>1. 主要大学</h2>
+
+<h3>1. 王立ヴェクサリア統治大学</h3>
+<ul>
+<li>ラテン名: *Universitas Regia Vexalia*</li>
+<li>所在地: VEXALIA首都行政区の法廷丘</li>
+<li>得意分野: 魔力測量学、統計統治学、王権儀礼学、魔法法学、魔力経済学、儀礼暦学</li>
+<li>家系との関係: VEXALIA直轄。KROSSの器材供給に依存するが、TAKANI系教員比率は意図的に低い</li>
+<li>創立年: 1748年</li>
+<li>現在の地位: 官僚・裁判官・免許審査官の最大供給源であり、公認資格の最終承認権を握る事実上の頂点校</li>
+</ul>
+
+<h3>2. クロス鉱冶工芸高等院</h3>
+<ul>
+<li>ゲルマン名: *Hochschule Krosswerk*</li>
+<li>所在地: KROSS鉱山回廊の中央炉都</li>
+<li>得意分野: 変成物質学、境界工学、封印神秘学、護符記号学、魔石地質学、鍛冶歌学</li>
+<li>家系との関係: KROSS工房連合が運営。VEXALIAの官需に深く組み込まれつつ、TAKANI聖地と鉱区が重なる点で常に摩擦を抱える</li>
+<li>創立年: 1769年</li>
+<li>現在の地位: 応用研究では最強。卒業生の就職率は高いが、理論軽視だとして灰燼文庫学院とたびたび論争になる</li>
+</ul>
+
+<h3>3. タカニ石語学寮</h3>
+<ul>
+<li>古仏名: *Collège Takani des Pierres Parlantes*</li>
+<li>所在地: TAKANI山地の旧聖石帯</li>
+<li>得意分野: 対話霊学、石碑記憶学、民俗魔術学、声響魔術学、魔力生態学</li>
+<li>家系との関係: TAKANI長老会が保護。国家公認は限定的で、公式裁判で通用する資格はほとんど発行できない</li>
+<li>創立年: 1816年</li>
+<li>現在の地位: 法的権威は弱いが、現地知と聖地調停では最も信頼される。若手の越境留学先として人気が高い</li>
+</ul>
+
+<h3>4. エンバーリン灰燼文庫学院</h3>
+<ul>
+<li>ラテン名: *Institutum Cineris Emberlyn*</li>
+<li>所在地: 旧エンバーリン館学区</li>
+<li>得意分野: 復元呪文学、失伝魔術復元学、古典神秘文献学、接触災厄考古学、秘史暴露学周辺史料</li>
+<li>家系との関係: EMBERLYN家の私設文庫を母体とする。VEXALIAの監査下にありながら、旧家の威信で閉架資料を守っている</li>
+<li>創立年: 1727年</li>
+<li>現在の地位: 財政は衰退気味だが、写本と家記の量では比肩する学校がない。反体制気質の学生の流入が多い</li>
+</ul>
+
+<h3>5. 隕落盆地星環大学</h3>
+<ul>
+<li>ラテン名: *Universitas Stellae Cadentis*</li>
+<li>所在地: 隕石落下盆地の保全圏中央</li>
+<li>得意分野: 接触血統学、血統遺伝学、接触災厄考古学、自然哲学、霊性医療学、対比宗教学</li>
+<li>家系との関係: 四家共同出資の中立校として設立されたが、実際にはVEXALIAの予算審査が強い。唯一、四家混成の実験室を常設する</li>
+<li>創立年: 1803年</li>
+<li>現在の地位: 中立の顔を持つため共同研究の受け皿になりやすい。政治危機のたびに「本当に中立か」が問われる</li>
+</ul>
+
+<h3>6. セケ辺界総合院</h3>
+<ul>
+<li>ラテン名: *Studium Cequae Liminalis*</li>
+<li>所在地: TAKANIとKROSSの境界帯に伸びる旧巡礼線と測量線の交点</li>
+<li>得意分野: 境界工学、魔石地質学、鍛冶歌学、民俗魔術学、魔力生態学、地底魔術学の周辺領域</li>
+<li>家系との関係: 名目上は混合評議会管轄。実際はKROSSの工学資金とTAKANIの現地案内がなければ成り立たない</li>
+<li>創立年: 1886年</li>
+<li>現在の地位: 辺境実地研究の要。優れた現場教育で知られる一方、禁坑事故と資料隠匿の噂が絶えない</li>
+</ul>
+
+<h2>2. 主要学会</h2>
+
+<h3>1. 王立測量・統治学会</h3>
+<ul>
+<li>ラテン名: *Societas Regia Mensurae et Regiminis*</li>
+<li>設立目的: 魔力測量の標準化、行政統計の共通様式整備、免許制度の技術的裏付け</li>
+<li>機関誌: 『Annales de Mensura et Regimen』</li>
+<li>政治的立場: 穏健な規制拡大派。VEXALIAの登録制度を支持するが、露骨な血統差別には慎重</li>
+</ul>
+
+<h3>2. クロス境界工学同盟</h3>
+<ul>
+<li>ゲルマン名: *Grenzbund Krosswerk*</li>
+<li>設立目的: 工房規格、結界施工法、封印事故の共有、職人資格の相互承認</li>
+<li>機関誌: 『Grenzwerk Transactions』</li>
+<li>政治的立場: 親KROSS・反価格統制。安全規制は受け入れるが、VEXALIAの官僚審査には強い不信感を持つ</li>
+</ul>
+
+<h3>3. タカニ石語民俗学協会</h3>
+<ul>
+<li>古仏名: *Société Lithique Takani*</li>
+<li>設立目的: 石語記録の保全、先住儀礼の返還、聖地と対話石の共同体管理</li>
+<li>機関誌: 『Lithica Takani』</li>
+<li>政治的立場: TAKANI自治派。国家資格より共同体承認を重視し、聖地の採掘に一貫して反対</li>
+</ul>
+
+<h3>4. 灰燼古典復元会</h3>
+<ul>
+<li>ラテン名: *Cineres Restituti*</li>
+<li>設立目的: 古写本の校訂、失伝術の再構成、旧家文庫の相互貸借、閉架資料への研究アクセス確保</li>
+<li>機関誌: 『Cineres Restituti Review』</li>
+<li>政治的立場: 文化復元派。禁書の全面公開までは求めないが、学術閲覧権の拡大を強く主張する</li>
+</ul>
+
+<h3>5. 自由秘史研究連盟</h3>
+<ul>
+<li>ラテン名: *Liga Historiae Occultae*</li>
+<li>設立目的: 改竄台帳の発掘、封鎖文書の共有、規制成立史の暴露、内部告発者の保護</li>
+<li>機関誌: 『Archivum Occultum』</li>
+<li>政治的立場: 反隠蔽派。VEXALIAへの敵意が強く、証拠の精査が甘い号もあるため正規学界からは警戒される</li>
+</ul>
+
+<h2>3. 資格制度</h2>
+
+<h3>3-1. 三段階</h3>
+
+<p>1. 初級: 基礎修了証 <code>予修士</code></p>
+<p>研究助手、写本整理、非侵襲観察、監督付きフィールドワークのみ可能。人体測定、封印操作、公式鑑定書の発行は不可。</p>
+
+<p>2. 中級: 実務免許 <code>公認士</code></p>
+<p>測量、採石審査、工房監督補、儀礼運行、同意のある成人への治療や調律が可能。公共結界、未成年対象行為、禁書全面閲覧は不可。</p>
+
+<p>3. 上級: 統監免許 <code>監理師</code></p>
+<p>公共インフラ結界、未成年者を含む医療判断、血統認定、公的台帳の確定、禁書閲覧、事故調査の主査が可能。大学では教授資格とほぼ一体化している。</p>
+
+<h3>3-2. 免許制と自由研究の線引き</h3>
+
+<ul>
+<li>完全免許制: 魔力測量学、接触血統学、血統遺伝学、変成物質学、境界工学、封印神秘学、魔石地質学、魔法法学、霊性医療学、儀礼暦学、地底魔術学</li>
+<li>条件付き免許制: 鍛冶歌学、対話霊学、石碑記憶学、復元呪文学、失伝魔術復元学、声響魔術学、魔力生態学</li>
+<li>自由研究が原則: 民俗魔術学、魔女裁判史学、魔法倫理学、魔力経済学、自然哲学、古典神秘文献学、対比宗教学、秘史暴露学</li>
+</ul>
+
+<h3>3-3. 実際の運用</h3>
+
+<ul>
+<li>国家が認めるのは「他人の身体・家系・土地・公共境界に直接作用する学問」であり、VEXALIAはここを免許制に固定している</li>
+<li>自由研究でも、人血・未成年・現役聖地・閉鎖禁書・封印遺物に触れた瞬間に審査対象へ移る</li>
+<li>TAKANIの口承承認は共同体内部では有効だが、国家法廷では資格として扱われない</li>
+<li>EMBERLYN系の復元実演は「研究目的」の名目で許されることが多く、実務と研究の境界が最も曖昧</li>
+</ul>
+
+<h2>4. 禁書・禁忌リスト</h2>
+
+<table>
+<tr><th>タイトル</th><th>理由</th><th>現状</th></tr>
+<tr><td>Aḥmad al-Būnī『Shams al-Maʿārif al-Kubrā』</td><td>金属と紙に対する高効率の神名配置が量産封印へ直結するため</td><td>上級免許者のみ閉架閲覧可</td></tr>
+<tr><td>『Liber Iuratus Honorii』</td><td>精霊拘束と長期封印の手順が公共結界の逆用に使えるため</td><td>教員用縮約版のみ配架、原本は禁庫</td></tr>
+<tr><td>Abraham von Worms『The Book of Abramelin』</td><td>方陣護符が学生寮で模倣され事故が続いたため</td><td>授業では抄本のみ、完全版は特別許可制</td></tr>
+<tr><td>Richard Kieckhefer『Forbidden Rites』</td><td>死者招来、夢侵入、恋愛操作の具体的手順が含まれるため</td><td>霊災対応委員会立会いでのみ閲覧可</td></tr>
+<tr><td>Johannes Trithemius『Steganographia』</td><td>暗号文書と召喚手順が二重化されており、命令文の隠匿に悪用されるため</td><td>暗号研究室と法廷命令下でのみ閲覧可</td></tr>
+<tr><td>Heinrich Kramer & Jacob Sprenger『Malleus Maleficarum』</td><td>実務家が依然として過剰取締りの根拠に使う危険があるため</td><td>法学部・裁判史学部での指定閲覧のみ</td></tr>
+<tr><td>著者不詳『Picatrix』</td><td>惑星護符と都市規模の配置理論が無許可インフラ設計へ転用されるため</td><td>境界工学上級課程の登録者限定</td></tr>
+<tr><td>著者不詳『Sefer Raziel HaMalach』</td><td>家守り護符と出産護符が家名偽装と偽血統証明に使われるため</td><td>家庭護符章を除き半閉架扱い</td></tr>
+</table>
+
+<h2>5. 学問間対立マップ</h2>
+
+<p>以下の対立は研究費、教員人事、禁書指定、現場立入権に直結する。</p>
+
+<ul>
+<li>魔力測量学 vs 対話霊学: 数値で確定できるものだけを実在とみなすか、石の証言を知識として認めるか</li>
+<li>接触血統学 vs 魔法倫理学: 家系の可視化を安全と呼ぶか、監視と呼ぶか</li>
+<li>血統遺伝学 vs 王権儀礼学: 能力を身体機構で説明するか、家名と儀礼の正統性で説明するか</li>
+<li>変成物質学 vs 魔力生態学: 採掘と工業化を優先するか、石脈と聖地の回復力を守るか</li>
+<li>境界工学 vs 民俗魔術学: どこでも使える標準結界を重視するか、地域固有の境界習俗を残すか</li>
+<li>封印神秘学 vs 霊性医療学: 危険な力を閉じ込めるべきか、解放して治療へ転じるべきか</li>
+<li>石碑記憶学 vs 王立ヴェクサリア統治大学系史学: 公文書を優先するか、建築と石の記憶を優先するか</li>
+<li>復元呪文学 vs 失伝魔術復元学: 文字から丁寧に復元するか、危険を承知で現場再演から掘り当てるか</li>
+<li>魔法法学 vs 魔女裁判史学: 現行制度の安定を守るか、制度が生んだ冤罪を前面化するか</li>
+<li>自然哲学 vs 地底魔術学: 魔法を自然の極端事例として扱うか、地下だけは別種の禁忌層として隔離するか</li>
+<li>古典神秘文献学 vs 民俗魔術学: 正典と写本を中心に据えるか、口承と現地実践を知の本流に戻すか</li>
+<li>秘史暴露学 vs ほぼ全公認分野: 何を証拠と呼ぶか以前に、誰が資料を隠してきたかを暴露対象にするため</li>
+</ul>
+
+<h2>6. 制度全体の見取り図</h2>
+
+<ul>
+<li>VEXALIAは「測る・記録する・許可する」学問を押さえている</li>
+<li>KROSSは「作る・刻む・守る」学問を産業と結びつけている</li>
+<li>TAKANIは「聴く・覚える・保つ」学問を共同体の承認で維持している</li>
+<li>EMBERLYNは「読む・復元する・隠されたものを繋ぐ」学問で名誉を保っている</li>
+<li>主人公の物語が揺らすのは、復元呪文学が実は対話霊学と血統遺伝学の交点に立っているという、この制度の盲点である</li>
+</ul>
+</div>
+</div>
+
+<script>
+const ENTRIES = [
+ {
+  "n": 1,
+  "title": "魔力測量学",
+  "section": 1,
+  "name": "正式名称: 魔力測量学 / Thaumometric Surveying / ラテン起源 *mensura vis arcanae*",
+  "target": "研究対象: 個人・家系・土地・器物に宿る魔力量、隕石接触由来の濃度差、魔力の地図化。",
+  "method": "方法論: KROSS製測量石による定量試験、採血記録、地籍台帳、現地踏査、反復測定。",
+  "refs": "主要文献: 著者不詳『黄帝内経素問』、Wilhelm Reich『The Discovery of the Orgone Vol. 1』、R.H. Codrington『The Melanesians』、Marsilio Ficino『De Vita Libri Tres』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、隕落盆地星環大学、王立測量・統治学会",
+  "family": "管轄する家系: VEXALIA",
+  "qualification": "職業資格: 公認魔力測量士、地籍魔力監理官、血統台帳査定官",
+  "politics": "周辺分野との対立・協力: 統計統治学と強く連携する一方、対話霊学とは「石の証言を数値へ還元できるか」で対立する。",
+  "change": "この100年の変化: 可搬式測量器の普及で宮廷学から行政実務へ降り、学校検診と徴税の基盤に組み込まれた。",
+  "taboo": "禁忌領域: 未登録児童への秘密測定、婚姻査定のための私的測量、刑事自白代替としての血量測定。",
+  "tension": "魔力を測れるようにしたことは事故防止と公共工事を進めたが、同時に「測れた者だけが人を分類できる」というVEXALIA的支配を正当化した。数値は中立を装いながら、家系差別の最も洗練された道具になっている。"
+ },
+ {
+  "n": 2,
+  "title": "接触血統学",
+  "section": 1,
+  "name": "正式名称: 接触血統学 / Contact Lineage Studies / ラテン起源 *genealogia tactus sideris*",
+  "target": "研究対象: 1700年隕石接触者から何代離れているか、その接触履歴が家名と婚姻でどう変形したか。",
+  "method": "方法論: 系譜編纂、洗礼簿と戸籍照合、採血台帳、屋敷碑文読解、口承採集。",
+  "refs": "主要文献: E.E. Evans-Pritchard『Witchcraft, Oracles and Magic among the Azande』、村山修一『日本陰陽道史総説』、Linda Schele & Mary Ellen Miller『The Blood of Kings』、A.M. Hocart『Kingship』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、王立ヴェクサリア統治大学、王立測量・統治学会",
+  "family": "管轄する家系: VEXALIA",
+  "qualification": "職業資格: 接触系譜判定官、家名登録官、婚姻調停書記",
+  "politics": "周辺分野との対立・協力: 血統遺伝学とは理論面で協力するが、魔法倫理学からは「家系の可視化そのものが暴力」と批判される。",
+  "change": "この100年の変化: かつては名門家の家記に依存していたが、現在は国家台帳化され、貴族と職工の婚姻監視に使われている。",
+  "taboo": "禁忌領域: 非嫡出子の追跡、先住系混血の告発目的調査、同意なき墓所DNA採取。",
+  "tension": "接触血統学は「誰が魔法を持つか」を明るみに出し、隠された才能を保護もするが、同時に主人公のような潜在的混血を摘発する装置にもなる。血統が事実であるほど、事実を管理する者の権力は重くなる。"
+ },
+ {
+  "n": 3,
+  "title": "血統遺伝学",
+  "section": 1,
+  "name": "正式名称: 血統遺伝学 / Arcane Heredity / ラテン起源 *hereditas arcana sanguinis*",
+  "target": "研究対象: 魔力が血液で遺伝する機構、減衰率、隔世発現、家系混交による新形質。",
+  "method": "方法論: 長期家族調査、双生児比較、血漿反応試験、外丹術由来の摂取実験史の検討。",
+  "refs": "主要文献: E.E. Evans-Pritchard『Witchcraft, Oracles and Magic among the Azande』、葛洪『抱朴子』、著者不詳『Rasārnava』、村山修一『日本陰陽道史総説』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、エンバーリン灰燼文庫学院、王立測量・統治学会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 血統分析士、家系医学補佐、遺伝相談官",
+  "politics": "周辺分野との対立・協力: 魔力医学とは緊密だが、接触血統学が家名中心なのに対し、こちらは身体機構中心でしばしば結論が食い違う。",
+  "change": "この100年の変化: EMBERLYN衰退を説明するため急速に発展し、近年は「1/8血統」級の薄い発現も追跡可能になった。",
+  "taboo": "禁忌領域: 選別婚配計画、胎児段階の魔力予測、無断の血液収集。",
+  "tension": "遺伝学は主人公の秘密のような「説明不能だった発現」を説明できるが、その瞬間に説明は選別の根拠になる。才能の発見と優生思想は、同じ検査器具の上に並んでいる。"
+ },
+ {
+  "n": 4,
+  "title": "統計統治学",
+  "section": 1,
+  "name": "正式名称: 統計統治学 / Arcane Statistics and Governance / ラテン起源 *ratio publica arcanorum*",
+  "target": "研究対象: 魔法人口の分布、事故率、免許制度の効果、地域別の魔力偏在と統治コスト。",
+  "method": "方法論: 国勢調査、裁判記録集計、測量報告の定量解析、出生暦分類、行政比較。",
+  "refs": "主要文献: Heinrich Kramer & Jacob Sprenger『Malleus Maleficarum』、菅野真道ら『続日本紀』、Bernardino de Sahagún『Historia General de las Cosas de la Nueva España』、著者不詳『黄帝内経素問』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、隕落盆地星環大学、王立測量・統治学会",
+  "family": "管轄する家系: VEXALIA",
+  "qualification": "職業資格: 統治統計官、免許制度設計官、危険域予測官",
+  "politics": "周辺分野との対立・協力: 魔法法学を支える一方、儀礼暦学からは「生年月日と祭暦をただの変数に潰している」と反発される。",
+  "change": "この100年の変化: 魔女裁判型の個別取締りから、予測統治型の「未然管理」へ重心が移った。",
+  "taboo": "禁忌領域: 家系ごとの危険度格付け、居住制限の自動化、教育配分の差別的最適化。",
+  "tension": "統計統治学は「公平な制度」を語るが、実際には未来の逸脱者を先に数えてしまう学問でもある。人が何をしたかではなく、どの家に生まれたかで扱われる危険が常につきまとう。"
+ },
+ {
+  "n": 5,
+  "title": "接触災厄考古学",
+  "section": 1,
+  "name": "正式名称: 接触災厄考古学 / Archaeology of the Contact Catastrophe / ラテン起源 *archaeologia lapsus sideris*",
+  "target": "研究対象: 隕石落下地点、初期接触集落、最初期の魔石加工痕、接触以前と以後の文化断層。",
+  "method": "方法論: 地層調査、遺物編年、石壁聞き取り、旧鉱道の実測、祭祀跡の比較。",
+  "refs": "主要文献: Brian S. Bauer『The Sacred Landscape of the Inca』、Linda Schele & David Freidel『A Forest of Kings』、著者不詳『Popol Vuh』、E.R. Caley『The Leyden Papyrus X』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、セケ辺界総合院、灰燼古典復元会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 接触遺跡調査士、遺物保全官、落下盆地監査員",
+  "politics": "周辺分野との対立・協力: 魔石地質学と現場を共有するが、KROSS系の採掘優先主義とは遺跡保存で衝突しやすい。",
+  "change": "この100年の変化: 旧鉱山再開発で遺跡破壊が進んだ反動から、保全主義がようやく制度化された。",
+  "taboo": "禁忌領域: 立入封鎖中の第一接触地点掘削、遺骨を用いた魔力年代測定、政治目的の遺跡偽造。",
+  "tension": "何が最初に触れ、誰が最初に力を得たかを掘り起こすため、この分野は土地の所有権まで揺らす。発掘されるのは遺物だけでなく、今の秩序が隠した起源そのものだ。"
+ },
+ {
+  "n": 6,
+  "title": "王権儀礼学",
+  "section": 1,
+  "name": "正式名称: 王権儀礼学 / Studies of Sacred Sovereignty / ラテン起源 *ritus regni sacri*",
+  "target": "研究対象: 非魔法貴族が魔法を統治する正統性、家の権威、戴冠・継承・治癒接触の儀礼。",
+  "method": "方法論: 宮廷儀礼比較、系譜と祝詞の読解、冠婚葬祭の参与観察、王印の物質分析。",
+  "refs": "主要文献: A.M. Hocart『Kingship』、Urgunge Onon訳『The Secret History of the Mongols』、Julius Caesar『De Bello Gallico』、Linda Schele & Mary Ellen Miller『The Blood of Kings』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、隕落盆地星環大学、王立測量・統治学会",
+  "family": "管轄する家系: VEXALIA",
+  "qualification": "職業資格: 宮廷儀礼官、継承典礼監察官、家名顧問",
+  "politics": "周辺分野との対立・協力: 接触血統学とは補完関係にあるが、秘史暴露学からは「儀礼は権力の演出に過ぎない」と攻撃される。",
+  "change": "この100年の変化: 戴冠の神聖性よりも、規制権限を支える法儀礼としての研究が前面化した。",
+  "taboo": "禁忌領域: 即位正統性の実験検証、治癒接触の偽装、過去の簒奪事例の政治利用。",
+  "tension": "王権儀礼学はVEXALIAの支配を雅に見せるが、その優雅さが「魔法を持たぬ者が魔法を裁く」矛盾を覆い隠す。格式は秩序の布であり、同時に傷口を隠す包帯でもある。"
+ },
+ {
+  "n": 7,
+  "title": "変成物質学",
+  "section": 2,
+  "name": "正式名称: 変成物質学 / Transmutative Material Science / ラテン起源 *materia transmutans*",
+  "target": "研究対象: 金属・石・繊維・木材が魔力加工でどう性質を変えるか、その比率と安定条件。",
+  "method": "方法論: 鍛造実験、比率調整、炉温記録、破断試験、失敗作の再分析。",
+  "refs": "主要文献: Jābir ibn Ḥayyān『Kitāb al-Kimyāʾ』、Paracelsus『Archidoxis Magica』、E.R. Caley『The Leyden Papyrus X』、著者不詳『Rasaratnasamuccaya』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、セケ辺界総合院、クロス境界工学同盟",
+  "family": "管轄する家系: KROSS",
+  "qualification": "職業資格: 変成材料技師、魔工鍛冶師、工房主任",
+  "politics": "周辺分野との対立・協力: 境界工学とは密接だが、魔力生態学とは採掘と排熱の問題で対立が深い。",
+  "change": "この100年の変化: 手工業中心から規格大量生産へ移り、VEXALIAの官需が研究を加速させた。",
+  "taboo": "禁忌領域: 血液を溶媒にした変成、人格宿り石の溶融、都市炉での無許可実験。",
+  "tension": "変成物質学は魔法を生活必需品に変えたが、同時に石と金属を「資源」にまで下げた。KROSSの繁栄は、TAKANIが対話相手とみなすものを素材へ変換するところに立っている。"
+ },
+ {
+  "n": 8,
+  "title": "境界工学",
+  "section": 2,
+  "name": "正式名称: 境界工学 / Liminal Engineering / ラテン起源 *ars liminis*",
+  "target": "研究対象: 結界、封鎖門、境界杭、家守りの輪、都市と鉱山を隔てる魔力インフラ。",
+  "method": "方法論: 幾何学設計、素材応答試験、現地施工、耐久監査、破損境界の再封。",
+  "refs": "主要文献: 著者不詳『Picatrix』、Abraham von Worms『The Book of Abramelin』、『Liber Iuratus Honorii』、Arthur Avalon『Shakti and Shakta』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、王立ヴェクサリア統治大学、クロス境界工学同盟",
+  "family": "管轄する家系: KROSS",
+  "qualification": "職業資格: 境界技師、結界設計監理士、都市封鎖主任",
+  "politics": "周辺分野との対立・協力: 封印神秘学が理論を提供し、魔法法学が設置権限を定める。民俗魔術学からは「地域固有の境界感覚を潰す」と嫌われる。",
+  "change": "この100年の変化: 村落護りから国家インフラへ拡張し、国境と学校と監獄で標準化が進んだ。",
+  "taboo": "禁忌領域: 人体を境界材に使う設計、対話石を杭へ転用する施工、逃走不能結界の軍事利用。",
+  "tension": "境界工学は安全を作るが、境界が増えるほど誰かが中に残され、誰かが外へ追いやられる。便利な結界は、しばしば最も静かな排除の形になる。"
+ },
+ {
+  "n": 9,
+  "title": "封印神秘学",
+  "section": 2,
+  "name": "正式名称: 封印神秘学 / Mysticism of Seals and Bindings / ラテン起源 *mystica sigillorum*",
+  "target": "研究対象: 精霊・記憶・災厄を物体や空間に拘束する印、封印文、長期安定化の理論。",
+  "method": "方法論: 印章比較、封印事故の逆解析、古封印開封試験、隠し書きの読解。",
+  "refs": "主要文献: Aḥmad al-Būnī『Shams al-Maʿārif al-Kubrā』、著者不詳『Sefer Raziel HaMalach』、『Liber Iuratus Honorii』、Johannes Trithemius『Steganographia』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、エンバーリン灰燼文庫学院、クロス境界工学同盟",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 封印監査師、禁庫保存官、事故収束術官",
+  "politics": "周辺分野との対立・協力: 護符記号学と密接に協働する一方、霊性医療学とは「封じるべきか放つべきか」で対立する。",
+  "change": "この100年の変化: 古遺物の再発見で一時的に復興し、現在は博物館と軍需の両方がスポンサーになっている。",
+  "taboo": "禁忌領域: 意識ある存在の永続封印、家名印の偽造、未成年者に対する封印実験。",
+  "tension": "封印神秘学は災厄を眠らせるが、何を誰が封じたかは必ず政治になる。安全の名で歴史や声そのものを閉じ込められる以上、この学問は常に検閲の影を引きずる。"
+ },
+ {
+  "n": 10,
+  "title": "護符記号学",
+  "section": 2,
+  "name": "正式名称: 護符記号学 / Talismanic Semiotics / 古語起源 *gramarye sigillum*",
+  "target": "研究対象: 文字、数、図形、材質が組み合わさって効力を持つ条件と、その誤記による事故。",
+  "method": "方法論: 写本校合、記号比較、彫刻再現、配置換え実験、職人聞き取り。",
+  "refs": "主要文献: 著者不詳『セフェル・イェツィラー』、Aḥmad al-Būnī『Shams al-Maʿārif al-Kubrā』、Arthur Avalon『Shakti and Shakta』、著者不詳『Sefer Raziel HaMalach』、Abraham von Worms『The Book of Abramelin』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、エンバーリン灰燼文庫学院、灰燼古典復元会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 公認護符師、記号監修官、写本彫版師",
+  "politics": "周辺分野との対立・協力: 古典神秘文献学と協力するが、変成物質学からは「記号偏重で素材を軽視しすぎる」と言われる。",
+  "change": "この100年の変化: 家伝護符から商業護符へ流れ、量産時代に誤植事故が社会問題化した。",
+  "taboo": "禁忌領域: 家名印の複製、恋愛拘束符の流通、未検証の外来文字系を公共護符へ混ぜる行為。",
+  "tension": "護符記号学は識字と工芸を結びつけ、明るい日用品魔法を生んだ一方で、「読める者だけが守られる」世界を作った。文字が力であるほど、読み書きの格差はそのまま防御格差になる。"
+ },
+ {
+  "n": 11,
+  "title": "魔石地質学",
+  "section": 2,
+  "name": "正式名称: 魔石地質学 / Geology of Arcane Stone / ラテン起源 *geologia lapidis arcani*",
+  "target": "研究対象: 魔石、隕鉄、記憶を宿す片岩、対話に向く石脈と加工に向く鉱脈の差異。",
+  "method": "方法論: 鉱床測量、薄片観察、共鳴試験、石脈踏査、採石後の残留反応分析。",
+  "refs": "主要文献: David Malo『Hawaiian Antiquities』、A.W. Howitt『The Native Tribes of South-East Australia』、Brian S. Bauer『The Sacred Landscape of the Inca』、E.R. Caley『The Leyden Papyrus X』",
+  "institutions": "主要大学・学会: セケ辺界総合院、クロス鉱冶工芸高等院、クロス境界工学同盟",
+  "family": "管轄する家系: KROSSとTAKANIの混合",
+  "qualification": "職業資格: 魔石地質士、鉱脈鑑定官、採石是非審査官",
+  "politics": "周辺分野との対立・協力: 魔力生態学と共同調査を行うが、採掘可否をめぐって毎回政治化する。",
+  "change": "この100年の変化: 以前は鉱夫の勘に頼っていたが、現在は学術地図と聖地保全線が二重に引かれるようになった。",
+  "taboo": "禁忌領域: 対話石脈の爆破、墓所石の商業流通、第一接触層の闇採掘。",
+  "tension": "同じ石をKROSSは資源と呼び、TAKANIは記憶の宿りと呼ぶ。魔石地質学はその二つを同じ地図に載せるため、地図を引くたびに価値観の衝突を可視化してしまう。"
+ },
+ {
+  "n": 12,
+  "title": "鍛冶歌学",
+  "section": 2,
+  "name": "正式名称: 鍛冶歌学 / Smithsong Studies / 古ノルド起源 *smidr-galdr*",
+  "target": "研究対象: 鍛造時の歌、拍子、呼気、合唱が素材に与える魔力固定効果。",
+  "method": "方法論: 音高記録、作業動作との同期分析、工房録音、破損率比較、再演実験。",
+  "refs": "主要文献: Robert Fludd『Utriusque Cosmi Historia』、Michael Maier『Atalanta Fugiens』、Patrick McNaughton『The Mande Blacksmiths』、Karl Reichl『Turkic Oral Epic Poetry』、Dominique Zahan『Sociétés d'initiation Bambara』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、セケ辺界総合院、クロス境界工学同盟",
+  "family": "管轄する家系: KROSS",
+  "qualification": "職業資格: 鍛冶歌監督師、工房楽長、共鳴安全士",
+  "politics": "周辺分野との対立・協力: 声響魔術学と強く結びつくが、古典派からは「口伝偏重で再現性が低い」と軽視される。",
+  "change": "この100年の変化: 家族工房の秘伝だったものが、官需工房で標準拍へ統一されつつある。",
+  "taboo": "禁忌領域: 労働者の声を無断採譜して商標化すること、鎮魂歌を武器鍛造へ流用すること。",
+  "tension": "鍛冶歌学はKROSSの誇りを学問に押し上げたが、口伝の共同財産を国家規格へ変えてしまった。歌が技術になるほど、誰の声が利益を生むのかという問題が鋭くなる。"
+ },
+ {
+  "n": 13,
+  "title": "対話霊学",
+  "section": 3,
+  "name": "正式名称: 対話霊学 / Dialogic Pneumatics / ラテン起源 *spiritus colloquens*",
+  "target": "研究対象: 石・水・土・壁・道具が保持する意志や記憶と、人間が交わす対話の条件。",
+  "method": "方法論: 接触瞑想、石前儀礼、現地聞き取り、対話記録の照合、複数媒介者による再聴取。",
+  "refs": "主要文献: James Mooney『The Sacred Formulas of the Cherokees』、David Malo『Hawaiian Antiquities』、Thomas Vaughan『Anthroposophia Theomagica』、Alfred Gell『Metamorphosis of the Cassowaries』、Claude Lévi-Strauss『Le Totémisme aujourd'hui』",
+  "institutions": "主要大学・学会: タカニ石語学寮、セケ辺界総合院、タカニ石語民俗学協会",
+  "family": "管轄する家系: TAKANI",
+  "qualification": "職業資格: 石語通辞、土地仲裁人、記憶聴取士",
+  "politics": "周辺分野との対立・協力: 石碑記憶学とは近く、魔力測量学とは「測れるものだけを実在とするか」で根本対立する。",
+  "change": "この100年の変化: 公教育から排除された反面、災害現場での実用性が再評価され、非公式依頼は増えた。",
+  "taboo": "禁忌領域: 他家の祖廟石への無断聴取、法廷証言としての単独対話記録、人格断定的読解。",
+  "tension": "対話霊学は忘れられた声を聞き戻すが、その声はしばしば公文書よりも不都合な真実を語る。証拠として認められないからこそ、認められた歴史を揺らし続ける。"
+ },
+ {
+  "n": 14,
+  "title": "石碑記憶学",
+  "section": 3,
+  "name": "正式名称: 石碑記憶学 / Lithic Mnemonics / ラテン起源 *memoria lapidum*",
+  "target": "研究対象: 石碑、壁、床石、境界杭に刻まれた血・儀礼・出来事の蓄積記憶。",
+  "method": "方法論: 彫刻読解、対話聴取、摩耗痕観察、儀礼再現、複数世代証言の突合。",
+  "refs": "主要文献: Linda Schele & David Freidel『A Forest of Kings』、Linda Schele & Mary Ellen Miller『The Blood of Kings』、Brian S. Bauer『The Sacred Landscape of the Inca』、James Mooney『The Sacred Formulas of the Cherokees』",
+  "institutions": "主要大学・学会: タカニ石語学寮、エンバーリン灰燼文庫学院、タカニ石語民俗学協会",
+  "family": "管轄する家系: TAKANIとEMBERLYNの混合",
+  "qualification": "職業資格: 石碑解読士、遺構記憶保全官、家史校訂者",
+  "politics": "周辺分野との対立・協力: 接触災厄考古学と協調するが、王権儀礼学はしばしば不都合な碑文解釈を嫌う。",
+  "change": "この100年の変化: EMBERLYN旧館の壁面再調査をきっかけに、失われた家記より壁の記憶を重視する流れが強まった。",
+  "taboo": "禁忌領域: 血の痕跡を人工注入して偽の記憶層を作ること、祖先祭祀中の石碑採拓。",
+  "tension": "石碑記憶学は「建物そのものが証人である」という考えを持ち込んだため、屋敷や聖地が単なる不動産ではなくなった。土地争いは、その瞬間から証言争いにも変わる。"
+ },
+ {
+  "n": 15,
+  "title": "復元呪文学",
+  "section": 3,
+  "name": "正式名称: 復元呪文学 / Restoration Incantation Philology / ラテン起源 *restitutio verborum*",
+  "target": "研究対象: 失われた呪文、欠損写本、家伝式の再構成、および「復元」と呼ばれる発動の言語的条件。",
+  "method": "方法論: 写本校訂、欠字補読、古訓比較、実演検証、石壁記憶との照合。",
+  "refs": "主要文献: Abraham von Worms『The Book of Abramelin』、Richard Kieckhefer『Forbidden Rites』、著者不詳『Sefer Raziel HaMalach』、Thomas Vaughan『Anthroposophia Theomagica』",
+  "institutions": "主要大学・学会: エンバーリン灰燼文庫学院、隕落盆地星環大学、灰燼古典復元会",
+  "family": "管轄する家系: EMBERLYN",
+  "qualification": "職業資格: 復元呪文校訂士、旧家文庫司書、儀式再演監督",
+  "politics": "周辺分野との対立・協力: 古典神秘文献学と強く協力する一方、失伝魔術復元学からは「文字に寄りすぎている」と批判される。",
+  "change": "この100年の変化: EMBERLYN衰退に伴い家学から文献学へ後退したが、最近は再び実演志向が強まっている。",
+  "taboo": "禁忌領域: 他家の現役儀礼を「古式復元」と偽装すること、出所不明の血文書を教材化すること。",
+  "tension": "復元呪文学は失われた知を救う希望を与えるが、何を「自家の失われた術」と呼ぶかは極めて政治的だ。主人公の系譜に潜むような盗用と継承の境界を、最も鋭く刺す学問でもある。"
+ },
+ {
+  "n": 16,
+  "title": "失伝魔術復元学",
+  "section": 3,
+  "name": "正式名称: 失伝魔術復元学 / Lost Arts Reconstruction / ラテン起源 *ars perdita restituta*",
+  "target": "研究対象: 途絶えた魔法実践を断片資料・現地遺構・危険実験から再構成する手法。",
+  "method": "方法論: 断簡統合、禁庫資料照合、模擬儀礼、失敗例の保存、現地共同調査。",
+  "refs": "主要文献: Meric Casaubon編『A True & Faithful Relation』、Johannes Trithemius『Steganographia』、Richard Kieckhefer『Forbidden Rites』、Bernardino de Sahagún『Florentine Codex』",
+  "institutions": "主要大学・学会: エンバーリン灰燼文庫学院、隕落盆地星環大学、灰燼古典復元会",
+  "family": "管轄する家系: EMBERLYNと中立研究者の混合",
+  "qualification": "職業資格: 失伝術復元士、禁庫調査官、危険儀礼監督補",
+  "politics": "周辺分野との対立・協力: 復元呪文学と隣接するが、こちらは現地再現と危険負担が大きく、魔法法学の監督が常につきまとう。",
+  "change": "この100年の変化: 一時は死学扱いだったが、落下盆地の遺構開放で急速に再興した。",
+  "taboo": "禁忌領域: 死者招来、未封印悪魔名の再起動、共同体の同意なき失伝祭祀の再演。",
+  "tension": "失われた術を取り戻す行為は、しばしば失わせた暴力まで掘り返す。復元の熱意はロマンに見えるが、その先には再封印すべきものを再び開く危険が待っている。"
+ },
+ {
+  "n": 17,
+  "title": "民俗魔術学",
+  "section": 3,
+  "name": "正式名称: 民俗魔術学 / Vernacular Magic Studies / 古語起源 *folk-galdor*",
+  "target": "研究対象: 村落や一族が日常で用いる小規模魔術、呪草、石守り、祝詞、手遊び型の魔法実践。",
+  "method": "方法論: フィールドワーク、口承採録、儀礼参与、用具収集、方言比較。",
+  "refs": "主要文献: Karl von den Steinen『Unter den Naturvölkern Zentral-Brasiliens』、William Bascom『Ifá Divination』、Richard Katz『Boiling Energy』、Alfred Gell『Metamorphosis of the Cassowaries』、James Mooney『The Sacred Formulas of the Cherokees』",
+  "institutions": "主要大学・学会: タカニ石語学寮、セケ辺界総合院、タカニ石語民俗学協会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 民俗魔術調査士、祭礼記録官、共同体通訳者",
+  "politics": "周辺分野との対立・協力: 古典神秘文献学とは資料観が対立しやすいが、魔力生態学とは現地知の保全で協力する。",
+  "change": "この100年の変化: 収集と陳列の時代から、共同体へ返す協働研究へと価値観が変わりつつある。",
+  "taboo": "禁忌領域: 儀礼の無断録音、共同体限定の治癒法を商用化すること、先住儀礼を舞台演出へ剽窃すること。",
+  "tension": "民俗魔術学は周縁の知を見えるようにするが、見ること自体が収奪にもなる。保存と採取の境界が曖昧である限り、この学問は善意だけでは済まない。"
+ },
+ {
+  "n": 18,
+  "title": "声響魔術学",
+  "section": 3,
+  "name": "正式名称: 声響魔術学 / Sonomancy / ラテン起源 *vox resonans arcana*",
+  "target": "研究対象: 声、楽器、拍、呼吸、群舞が魔力の伝導と変調に与える効果。",
+  "method": "方法論: 音響計測、共鳴室実験、治癒儀礼観察、鍛冶歌比較、発話事故の分析。",
+  "refs": "主要文献: Robert Fludd『Utriusque Cosmi Historia』、Michael Maier『Atalanta Fugiens』、Chokan Valikhanov『O shamanstve u kirgizov』、Richard Katz『Boiling Energy』、Dominique Zahan『La Dialectique du Verbe chez les Bambara』",
+  "institutions": "主要大学・学会: クロス鉱冶工芸高等院、タカニ石語学寮、タカニ石語民俗学協会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 声響術師、共鳴治療士、工房音律監修官",
+  "politics": "周辺分野との対立・協力: 鍛冶歌学や霊性医療学と協力するが、測量学側からは再現条件の揺らぎを嫌われる。",
+  "change": "この100年の変化: 宮廷音楽研究から現場技術へ転じ、いまは工房と療養院の双方で需要が高い。",
+  "taboo": "禁忌領域: 強制同調歌、群衆煽動用の低周波呪唱、幼児に対する過負荷共鳴試験。",
+  "tension": "声響魔術学は明るく華やかな学問に見えるが、同じ共鳴は治癒にも扇動にも使える。人をつなぐ音ほど、人を一斉に動かす力にもなってしまう。"
+ },
+ {
+  "n": 19,
+  "title": "魔法法学",
+  "section": 4,
+  "name": "正式名称: 魔法法学 / Jurisprudence of Magic / ラテン起源 *ius arcanorum*",
+  "target": "研究対象: 魔法の定義、免許、責任能力、事故時の過失、禁術指定、公共安全と私権の境界。",
+  "method": "方法論: 法典解釈、判例比較、免許制度分析、裁判記録読解、立法史研究。",
+  "refs": "主要文献: Heinrich Kramer & Jacob Sprenger『Malleus Maleficarum』、Johann Weyer『De Praestigiis Daemonum』、Robert Pitcairn『Ancient Criminal Trials in Scotland』、菅野真道ら『続日本紀』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、隕落盆地星環大学、王立測量・統治学会",
+  "family": "管轄する家系: VEXALIA",
+  "qualification": "職業資格: 魔法法務官、免許審査官、魔術裁判代理人",
+  "politics": "周辺分野との対立・協力: 統計統治学に支えられる一方、魔女裁判史学からは「過去の誤りを現在法が引きずっている」と批判される。",
+  "change": "この100年の変化: 処罰中心から許認可中心へ変わり、行政法として膨張した。",
+  "taboo": "禁忌領域: 測量値のみをもって有罪推定する立法、血統だけで資格を剥奪する行政、秘匿裁判。",
+  "tension": "魔法法学は秩序を維持するため不可欠だが、その秩序は誰のためのものかが常に問われる。VEXALIAの制度は整っているほど、他家からは冷たい支配に見える。"
+ },
+ {
+  "n": 20,
+  "title": "魔女裁判史学",
+  "section": 4,
+  "name": "正式名称: 魔女裁判史学 / Historiography of Witch Trials / ラテン起源 *historia iudiciorum maleficii*",
+  "target": "研究対象: 魔女裁判、異端審問、冤罪、告発文法、供述の作られ方、処刑の制度化。",
+  "method": "方法論: 裁判記録校訂、供述分析、拷問手続比較、地域比較、再審史研究。",
+  "refs": "主要文献: Heinrich Kramer & Jacob Sprenger『Malleus Maleficarum』、Johann Weyer『De Praestigiis Daemonum』、Robert Pitcairn『Ancient Criminal Trials in Scotland』、Richard Kieckhefer『Forbidden Rites』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、王立ヴェクサリア統治大学、灰燼古典復元会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 裁判史研究官、再審史料鑑定士、法廷史アーカイビスト",
+  "politics": "周辺分野との対立・協力: 魔法法学と表裏一体だが、こちらは法の正当性より法の失敗を掘り当てる。",
+  "change": "この100年の変化: 以前は暗い余談扱いだったが、近年は免許制の暴走を抑える警告学として重視される。",
+  "taboo": "禁忌領域: 被害者の匿名破り、現代政治への直接的な断罪転用、偽再審資料の流布。",
+  "tension": "この分野は「秩序のために処罰した」という言い訳を一つずつ崩していく。現在の規制が穏当であるほど、過去と似た論理が残っていないかを見抜いてしまうからだ。"
+ },
+ {
+  "n": 21,
+  "title": "魔法倫理学",
+  "section": 4,
+  "name": "正式名称: 魔法倫理学 / Ethics of Arcane Practice / ラテン起源 *ethica artis arcanae*",
+  "target": "研究対象: 同意、身体侵襲、家系差別、共同体知の利用、封印と治療の正当性。",
+  "method": "方法論: 事例研究、審査会、比較倫理、被験者面談、裁判史参照。",
+  "refs": "主要文献: Johann Weyer『De Praestigiis Daemonum』、E.E. Evans-Pritchard『Witchcraft, Oracles and Magic among the Azande』、William Bascom『Ifá Divination』、Richard Katz『Boiling Energy』、A.M. Hocart『Kingship』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、王立ヴェクサリア統治大学、王立測量・統治学会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 倫理審査委員、研究同意監督官、共同体調停官",
+  "politics": "周辺分野との対立・協力: ほぼ全分野に介入するため嫌われやすいが、近年は民俗魔術学と連携して共同体保護の基準を作っている。",
+  "change": "この100年の変化: 研究自由の障害物と見なされていた時期を経て、いまは禁書閲覧や人体研究の必須審査となった。",
+  "taboo": "禁忌領域: 家系に対する集団責任論、未成年への高危険実験、共同体同意なき儀礼記録。",
+  "tension": "倫理学は進歩を遅らせると非難されるが、魔法世界では進歩がすぐ他者の血と記憶に触れてしまう。何をしてよいかを問う声が強くなるほど、既得権を持つ研究者は苛立つ。"
+ },
+ {
+  "n": 22,
+  "title": "魔力経済学",
+  "section": 4,
+  "name": "正式名称: 魔力経済学 / Political Economy of Mana / ラテン起源 *oeconomia virtutis*",
+  "target": "研究対象: 魔石流通、免許市場、血統婚の価格、工房労働、魔力の贈与と徴税。",
+  "method": "方法論: 市場調査、価格統計、工房台帳分析、婚姻契約比較、地域経済モデル。",
+  "refs": "主要文献: R.H. Codrington『The Melanesians』、David Malo『Hawaiian Antiquities』、John Gregorson Campbell『Witchcraft and Second Sight in the Highlands and Islands of Scotland』、Patrick McNaughton『The Mande Blacksmiths』、Urgunge Onon訳『The Secret History of the Mongols』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、クロス鉱冶工芸高等院、王立測量・統治学会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 魔力監査士、工房会計官、遺産税査定官",
+  "politics": "周辺分野との対立・協力: 接触血統学と結びつくと婚姻市場研究になり、魔法倫理学から強く警戒される。",
+  "change": "この100年の変化: 魔石の現物経済から、免許・特許・家名ブランドを含む無形資産経済へ変わった。",
+  "taboo": "禁忌領域: 家系純度の価格表作成、祈祷と看病の無償労働の収奪、対話石の先物取引。",
+  "tension": "魔力経済学は現実を説明する一方で、説明した瞬間に「値段をつけられるもの」へ変えてしまう。血統も聖地も歌も、市場に乗れば別の暴力が始まる。"
+ },
+ {
+  "n": 23,
+  "title": "自然哲学",
+  "section": 4,
+  "name": "正式名称: 自然哲学 / Natural Philosophy of Arcane Deviation / ラテン起源 *philosophia naturae aberrantis*",
+  "target": "研究対象: 魔法を自然の外に置くか、自然の極端な一部とみなすか、その定義闘争。",
+  "method": "方法論: 古典解釈、実験哲学、概念史、他分野の理論統合、反例比較。",
+  "refs": "主要文献: 著者不詳『コルプス・ヘルメティクム』、Marsilio Ficino『De Vita Libri Tres』、Pietro d'Abano『Conciliator Differentiarum Philosophorum』、著者不詳『黄帝内経素問』、Paracelsus『Archidoxis Magica』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、王立ヴェクサリア統治大学、灰燼古典復元会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 自然哲学講師、異常分類官、理論統合顧問",
+  "politics": "周辺分野との対立・協力: 測量学とも対話霊学とも議論する。自然の定義次第で両者の勝敗が変わるため、常に論争の中心にいる。",
+  "change": "この100年の変化: 「魔法は逸脱である」とするVEXALIA流の定義が強かったが、近年は「自然の別相」であるという再定義が盛り返している。",
+  "taboo": "禁忌領域: 反証不能な超越論で制度を固定すること、危険実験を哲学的必要として正当化すること。",
+  "tension": "魔法が自然の一部なら、VEXALIAの特別規制は揺らぐ。逆に自然の逸脱なら、TAKANIやKROSSの日常実践は常に例外扱いされる。定義戦は、そのまま支配戦でもある。"
+ },
+ {
+  "n": 24,
+  "title": "霊性医療学",
+  "section": 4,
+  "name": "正式名称: 霊性医療学 / Arcane Medicine and Healing / ラテン起源 *medicina spiritus*",
+  "target": "研究対象: 血中魔力の失調、過熱、枯渇、共鳴病、対話負荷、封印後遺症の診断と治療。",
+  "method": "方法論: 脈診と測量の併用、薬鉱調合、歌唱治療、接触観察、長期療養記録。",
+  "refs": "主要文献: Marsilio Ficino『De Vita Libri Tres』、Paracelsus『Archidoxis Magica』、著者不詳『黄帝内経素問』、A.P. Elkin『Aboriginal Men of High Degree』、Richard Katz『Boiling Energy』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、タカニ石語学寮、王立測量・統治学会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 公認霊性医、血熱調律師、共鳴療法士",
+  "politics": "周辺分野との対立・協力: 血統遺伝学と協力しつつ、封印神秘学には「治すべき患者を封じるな」と対立する。",
+  "change": "この100年の変化: 魔法事故の増加で独立分野化し、いまは学校・工房・軍務で常設医が求められる。",
+  "taboo": "禁忌領域: 増幅剤の児童投与、競技目的の魔力強化、人格変容を伴う治療。",
+  "tension": "癒やしは最も正当な名目だが、最も容易に身体へ介入できる名目でもある。助けるための学問が、能力増強と家系改良へ滑り落ちる危険を常に抱える。"
+ },
+ {
+  "n": 25,
+  "title": "古典神秘文献学",
+  "section": 5,
+  "name": "正式名称: 古典神秘文献学 / Classical Occult Philology / ラテン起源 *philologia arcana antiqua*",
+  "target": "研究対象: 魔術古典、翻訳のずれ、写本系統、偽書と正典の線引き。",
+  "method": "方法論: 写本校合、語源研究、欄外注の比較、翻訳史調査、異本照応。",
+  "refs": "主要文献: 著者不詳『コルプス・ヘルメティクム』、著者不詳『セフェル・イェツィラー』、著者不詳『Picatrix』、Aḥmad al-Būnī『Shams al-Maʿārif al-Kubrā』、著者不詳『Sefer Raziel HaMalach』",
+  "institutions": "主要大学・学会: エンバーリン灰燼文庫学院、隕落盆地星環大学、灰燼古典復元会",
+  "family": "管轄する家系: EMBERLYNと中立の混合",
+  "qualification": "職業資格: 古写本校訂士、翻訳司書、禁書閲覧監督",
+  "politics": "周辺分野との対立・協力: 復元呪文学の基盤だが、民俗魔術学からは「文字中心主義」と批判される。",
+  "change": "この100年の変化: 蒐集趣味の時代を越え、現在は翻訳の政治性そのものが研究対象になった。",
+  "taboo": "禁忌領域: 出典偽装、共同体由来資料の単独所有、危険箇所を伏せず学生へ流布すること。",
+  "tension": "どの本を正典と呼ぶかは、どの伝統を中心に置くかと同義である。文献学は冷静な校訂に見えて、実際には誰の声を残すかを決める力を持つ。"
+ },
+ {
+  "n": 26,
+  "title": "対比宗教学",
+  "section": 5,
+  "name": "正式名称: 対比宗教学 / Comparative Religions of Magic / ラテン起源 *comparatio cultuum*",
+  "target": "研究対象: 家ごとの魔法観、世界各地の精霊・祖先・神名・祭祀が魔術実践とどう結びつくか。",
+  "method": "方法論: 比較神話学、儀礼参与、神名の翻訳比較、祈祷構文分析、巡礼地調査。",
+  "refs": "主要文献: Urgunge Onon訳『The Secret History of the Mongols』、William Bascom『Ifá Divination』、著者不詳『Popol Vuh』、David Malo『Hawaiian Antiquities』、M.A. Czaplicka『Aboriginal Siberia』",
+  "institutions": "主要大学・学会: 隕落盆地星環大学、タカニ石語学寮、タカニ石語民俗学協会",
+  "family": "管轄する家系: 中立",
+  "qualification": "職業資格: 比較宗教研究官、儀礼交渉官、巡礼地調停者",
+  "politics": "周辺分野との対立・協力: 民俗魔術学と協力するが、王権儀礼学とは国家が欲しい正統性の形でぶつかる。",
+  "change": "この100年の変化: 宣教師的な序列づけから、対等比較へ少しずつ軸足が移っている。",
+  "taboo": "禁忌領域: 他宗の秘名を文脈なく召喚に流用すること、比較名目で聖地を観光化すること。",
+  "tension": "類似を見つける力は相互理解を促すが、同じだと言いすぎれば固有の歴史が消える。世界をつなぐ学問であるほど、違いを守る責任も重い。"
+ },
+ {
+  "n": 27,
+  "title": "儀礼暦学",
+  "section": 5,
+  "name": "正式名称: 儀礼暦学 / Ritual Calendrics / ラテン起源 *calendarium sacrum*",
+  "target": "研究対象: 惑星時、季節気、誕生日徴、祭日の巡り、接触世代の記念日と魔法効率の相関。",
+  "method": "方法論: 暦法比較、出生記録分析、儀礼時刻の統計、天象観測、実演試験。",
+  "refs": "主要文献: 著者不詳『Picatrix』、Bernardino de Sahagún『Florentine Codex』、著者不詳『黄帝内経素問』、Aḥmad al-Būnī『Shams al-Maʿārif al-Kubrā』、Nora Chadwick『The Druids』",
+  "institutions": "主要大学・学会: 王立ヴェクサリア統治大学、隕落盆地星環大学、王立測量・統治学会",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 儀礼暦官、天時判定士、式典運行主任",
+  "politics": "周辺分野との対立・協力: 統計統治学と同じデータを使うが、こちらは有意より吉凶を重視し、しばしば政策部門に嫌われる。",
+  "change": "この100年の変化: 宮廷儀式の裏方から、学校試験日や工房稼働日を決める実務学へ広がった。",
+  "taboo": "禁忌領域: 誕生刻のみで進路を固定する制度、災厄日とされた集団の差別、恣意的改暦。",
+  "tension": "暦は生活を整えるが、暦で人を決め始めると運命はすぐ制度になる。吉日が多い家と少ない家を作り始めた瞬間、この学問は占いではなく統治の道具になる。"
+ },
+ {
+  "n": 28,
+  "title": "魔力生態学",
+  "section": 5,
+  "name": "正式名称: 魔力生態学 / Arcane Ecology / ラテン起源 *oeconomia naturae arcanae*",
+  "target": "研究対象: 魔力が土地・森・川・鉱脈・生物群集にどう循環し、採掘や都市化でどう失調するか。",
+  "method": "方法論: 長期観測、種分布調査、聖地ネットワーク解析、石語通辞との共同踏査、採掘影響評価。",
+  "refs": "主要文献: David Malo『Hawaiian Antiquities』、Brian S. Bauer『The Sacred Landscape of the Inca』、R.H. Codrington『The Melanesians』、James Mooney『The Sacred Formulas of the Cherokees』、Alfred Gell『Metamorphosis of the Cassowaries』",
+  "institutions": "主要大学・学会: タカニ石語学寮、セケ辺界総合院、タカニ石語民俗学協会",
+  "family": "管轄する家系: TAKANIと中立の混合",
+  "qualification": "職業資格: 魔力生態調査士、聖地保全官、採掘影響審査官",
+  "politics": "周辺分野との対立・協力: 魔石地質学と協働しつつ、変成物質学と公共工事案件で最も激しく衝突する。",
+  "change": "この100年の変化: 以前は自然誌の傍流だったが、鉱害と魔力枯渇が顕在化して一気に中心分野化した。",
+  "taboo": "禁忌領域: 聖地ネットワークの軍事転用、絶滅寸前の魔力種の実験飼育、採掘企業による評価改ざん。",
+  "tension": "魔力生態学は「土地にも限界がある」と告げるため、拡張を前提にしたKROSS経済とVEXALIA行政を止めてしまう。成長を遅らせる学問に見えるが、無視すれば世界そのものが痩せていく。"
+ },
+ {
+  "n": 29,
+  "title": "地底魔術学",
+  "section": 6,
+  "name": "正式名称: 地底魔術学 / Subterranean Thaumatology / ラテン起源 *thaumatologia subterranea*",
+  "target": "研究対象: 地下空洞、死者の層、鉱脈深部の意思、下界とされる領域の魔力、封じられた古術。",
+  "method": "方法論: 深坑踏査、残響聴取、封印遺構解析、地下気流測定、極秘報告の照合。",
+  "refs": "主要文献: M.A. Czaplicka『Aboriginal Siberia』、Richard Kieckhefer『Forbidden Rites』、『Liber Iuratus Honorii』、Brian S. Bauer『The Sacred Landscape of the Inca』、Pietro d'Abano『Conciliator Differentiarum Philosophorum』",
+  "institutions": "主要大学・学会: セケ辺界総合院の秘匿講座、エンバーリン灰燼文庫学院の閉架室、自由秘史研究連盟",
+  "family": "管轄する家系: 公式には中立、実際にはKROSS周辺の私講が多い",
+  "qualification": "職業資格: 公式資格なし。非公式には深坑踏査士、禁坑案内人、封鎖補修人",
+  "politics": "周辺分野との対立・協力: 魔石地質学と現場が重なり、自然哲学とは「地下を自然の一部とみなすか禁忌層とみなすか」で対立する。",
+  "change": "この100年の変化: 公的には廃学だが、深部鉱床開発と失踪事件の増加で地下に詳しい人材への需要はむしろ増えた。",
+  "taboo": "禁忌領域: 死者との契約、未報告の地底入口保持、深坑での生贄実験、封印層の商業採掘。",
+  "tension": "地下には資源も真実も眠っているため、放置も開発も危険である。禁忌であるほど知りたい者が集まり、その知識は必ず表の制度を揺らす。"
+ },
+ {
+  "n": 30,
+  "title": "秘史暴露学",
+  "section": 6,
+  "name": "正式名称: 秘史暴露学 / Revisionist Arcane Historiography / ラテン起源 *historia occulta revocata*",
+  "target": "研究対象: VEXALIAが隠した魔法史、規制成立の裏面、名門家の捏造系譜、押収された禁書と改竄台帳。",
+  "method": "方法論: 伏字文書の解読、押収記録の比較、噂と公文書の照合、匿名証言の収集、封鎖文庫潜行。",
+  "refs": "主要文献: Johannes Trithemius『Steganographia』、Robert Pitcairn『Ancient Criminal Trials in Scotland』、菅野真道ら『続日本紀』、Heinrich Kramer & Jacob Sprenger『Malleus Maleficarum』、Johann Weyer『De Praestigiis Daemonum』",
+  "institutions": "主要大学・学会: 公式所属なし。隠れた拠点はエンバーリン灰燼文庫学院の周辺読書会と自由秘史研究連盟",
+  "family": "管轄する家系: 混合",
+  "qualification": "職業資格: 公式資格なし。実際には秘史編纂人、告発小冊子編集者、内部告発保管人",
+  "politics": "周辺分野との対立・協力: 魔女裁判史学や古典神秘文献学と資料を共有するが、方法の粗さゆえに正規学界からは半ば追放されている。",
+  "change": "この100年の変化: 最初は酒場談義だったが、封鎖文書の流出とともに学生運動化し、いまや政治集会の火種になっている。",
+  "taboo": "禁忌領域: 捏造文書による扇動、現役研究者の家族情報暴露、証拠なき血統告発。",
+  "tension": "秘史暴露学は抑圧された真実を掘り起こす可能性を持つ一方、真実の不足を情熱で埋める危うさも抱える。VEXALIAの正統性を崩す刃であると同時に、世界そのものを陰謀でしか読めなくする毒にもなりうる。"
+ }
+];
+const SECTIONS = {"1": {"rom": "I", "name": "測量・血統系"}, "2": {"rom": "II", "name": "変成・境界系"}, "3": {"rom": "III", "name": "対話・復元系"}, "4": {"rom": "IV", "name": "制度・倫理系"}, "5": {"rom": "V", "name": "古典・比較系"}, "6": {"rom": "VI", "name": "禁忌・周縁系"}};
+const FAMILY_COLORS = {"VEXALIA": "#8890a0", "KROSS": "#a88858", "TAKANI": "#90a078", "EMBERLYN": "#c09070", "混合": "#a878a0", "中立": "#7a7266"};
+
+const LS = {
+  get(k, def){ try { return JSON.parse(localStorage.getItem('av_'+k)) ?? def; } catch(e){ return def; } },
+  set(k, v){ localStorage.setItem('av_'+k, JSON.stringify(v)); }
+};
+
+let favs = new Set(LS.get('favs', []));
+let reads = new Set(LS.get('reads', []));
+let memos = LS.get('memos', {});
+let expanded = new Set();
+
+let filters = { sec: 0, fam: '0', q: '', fav: false, unread: false };
+
+// Tab
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-'+t.dataset.view).classList.add('active');
+  });
+});
+
+// Section pills
+const secBar = document.getElementById('sec-filters');
+Object.entries(SECTIONS).forEach(([k, v]) => {
+  const b = document.createElement('button');
+  b.className = 'pill sec-pill sec' + k;
+  b.dataset.sec = k;
+  b.textContent = v.rom + '. ' + v.name;
+  secBar.appendChild(b);
+});
+
+// Family pills
+const famBar = document.getElementById('fam-filters');
+Object.keys(FAMILY_COLORS).forEach(fam => {
+  const b = document.createElement('button');
+  b.className = 'pill fam-pill fam-' + fam;
+  b.dataset.fam = fam;
+  b.textContent = fam;
+  famBar.appendChild(b);
+});
+
+const grid = document.getElementById('grid');
+const statsEl = document.getElementById('stats');
+
+function matches(e){
+  if (filters.sec && e.section !== filters.sec) return false;
+  if (filters.fam !== '0' && e.family !== filters.fam) return false;
+  if (filters.fav && !favs.has(e.n)) return false;
+  if (filters.unread && reads.has(e.n)) return false;
+  if (filters.q){
+    const q = filters.q.toLowerCase();
+    const hay = (e.title+' '+e.name+' '+e.target+' '+e.method+' '+e.refs+' '+e.institutions+' '+e.family+' '+e.qualification+' '+e.politics+' '+e.change+' '+e.taboo+' '+e.tension).toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const list = ENTRIES.filter(matches);
+  grid.innerHTML = '';
+  if (!list.length){ grid.innerHTML = '<div class="empty">該当なし</div>'; updateStats(list); return; }
+  list.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'card' + (reads.has(e.n)?' read':'') + (favs.has(e.n)?' fav':'') + (expanded.has(e.n)?' expanded':'');
+    card.dataset.n = e.n;
+    card.dataset.sec = e.section;
+    const memo = memos[e.n] || '';
+    const famColor = FAMILY_COLORS[e.family] || '#7a7266';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="c-num">#${String(e.n).padStart(2,'0')}</span>
+        <div class="c-badges">
+          <span class="badge family" style="background:${famColor}">${e.family}</span>
+          <span class="badge sec${e.section}">${SECTIONS[e.section].rom}</span>
+        </div>
+      </div>
+      <div class="c-title">${e.title}</div>
+      <div class="c-sub">${e.name}</div>
+      <div class="c-tension">${e.tension}</div>
+      <div class="c-details">
+        <dt>研究対象</dt><dd>${e.target}</dd>
+        <dt>方法論</dt><dd>${e.method}</dd>
+        <dt>主要文献</dt><dd>${e.refs}</dd>
+        <dt>主要大学・学会</dt><dd>${e.institutions}</dd>
+        <dt>職業資格</dt><dd>${e.qualification}</dd>
+        <dt>周辺分野との関係</dt><dd>${e.politics}</dd>
+        <dt>この100年の変化</dt><dd>${e.change}</dd>
+        <dt>禁忌領域</dt><dd>${e.taboo}</dd>
+        <dl class="c-memo">
+          <dt>メモ</dt>
+          <textarea data-memo="${e.n}" placeholder="気になった点・採用決定・削除候補 ...">${memo.replace(/"/g,'&quot;')}</textarea>
+        </dl>
+        <div class="c-actions">
+          <button class="c-btn ${favs.has(e.n)?'on':''}" data-act="fav" data-n="${e.n}">${favs.has(e.n)?'♥ お気に入り':'♡ お気に入り'}</button>
+          <button class="c-btn ${reads.has(e.n)?'on':''}" data-act="read" data-n="${e.n}">${reads.has(e.n)?'✓ 既読':'未読'}</button>
+          <button class="c-btn" data-act="collapse" data-n="${e.n}">閉じる</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  updateStats(list);
+}
+
+function updateStats(list){
+  statsEl.innerHTML = `表示 <b>${list.length}</b> / 全 <b>${ENTRIES.length}</b> &nbsp;&nbsp; ♥ <b>${favs.size}</b> &nbsp;&nbsp; 既読 <b>${reads.size}</b>`;
+}
+
+grid.addEventListener('click', (ev)=>{
+  const card = ev.target.closest('.card'); if (!card) return;
+  const n = parseInt(card.dataset.n);
+  const act = ev.target.dataset.act;
+  if (act === 'fav'){
+    if (favs.has(n)) favs.delete(n); else favs.add(n);
+    LS.set('favs', [...favs]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'read'){
+    if (reads.has(n)) reads.delete(n); else reads.add(n);
+    LS.set('reads', [...reads]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'collapse'){ expanded.delete(n); render(); ev.stopPropagation(); return; }
+  if (ev.target.tagName === 'TEXTAREA') return;
+  if (expanded.has(n)){ expanded.delete(n); } else { expanded.add(n); reads.add(n); LS.set('reads', [...reads]); }
+  render();
+});
+
+grid.addEventListener('input', (ev)=>{
+  const t = ev.target;
+  if (t.tagName === 'TEXTAREA' && t.dataset.memo){
+    memos[parseInt(t.dataset.memo)] = t.value;
+    LS.set('memos', memos);
+  }
+});
+
+document.querySelectorAll('.sec-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const s = parseInt(p.dataset.sec);
+    filters.sec = filters.sec === s ? 0 : s;
+    document.querySelectorAll('.sec-pill').forEach(x => x.classList.toggle('active', parseInt(x.dataset.sec) === filters.sec));
+    if (filters.sec === 0) document.querySelector('.sec-pill[data-sec="0"]').classList.add('active');
+    render();
+  });
+});
+document.querySelector('.sec-pill[data-sec="0"]').classList.add('active');
+
+document.querySelectorAll('.fam-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const f = p.dataset.fam;
+    filters.fam = filters.fam === f ? '0' : f;
+    document.querySelectorAll('.fam-pill').forEach(x => x.classList.toggle('active', x.dataset.fam === filters.fam));
+    if (filters.fam === '0') document.querySelector('.fam-pill[data-fam="0"]').classList.add('active');
+    render();
+  });
+});
+document.querySelector('.fam-pill[data-fam="0"]').classList.add('active');
+
+document.querySelectorAll('.pill[data-filter]').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const f = p.dataset.filter;
+    filters[f] = !filters[f];
+    p.classList.toggle('active', filters[f]);
+    render();
+  });
+});
+
+document.getElementById('q').addEventListener('input', (e)=>{
+  filters.q = e.target.value.trim();
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
