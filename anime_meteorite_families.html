@@ -552,7 +552,7 @@ function switchFamily(familyId){
   document.querySelectorAll('.fam-content').forEach(c => c.classList.remove('active'));
   document.getElementById(`narrative-${familyId}`).classList.add('active');
 
-  document.querySelectorAll('[id^="tree-"]').forEach(t => t.style.display = 'none');
+  ['taka','vexa','kross'].forEach(f => { document.getElementById(`tree-${f}`).style.display = 'none'; });
   document.getElementById(`tree-${familyId}`).style.display = 'block';
 
   // Update body class for narrative style
