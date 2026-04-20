@@ -1,0 +1,3569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Fabric — 名家外社会の織物</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --fg:#c8bfa8; --muted:#7a7266; --bone:#c8bfa8; --gold:#b08840;
+  --panel:rgba(255,255,255,0.04); --border:rgba(176,136,64,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);font-family:'Noto Sans JP',sans-serif;min-height:100vh;line-height:1.6}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{padding:1.5rem 1rem 1rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(176,136,64,0.08),transparent)}
+.hbar{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem}
+h1{font-family:'Cinzel',serif;font-weight:400;font-size:1.4rem;letter-spacing:0.15em;color:var(--bone)}
+.sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
+.home{font-size:0.75rem;letter-spacing:0.15em}
+
+.tab-bar{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;gap:0;border-bottom:1px solid var(--border)}
+.tab{padding:0.9rem 1.4rem;background:transparent;border:none;color:var(--muted);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.tab:hover{color:var(--bone)}
+.tab.active{color:var(--bone);border-bottom-color:var(--gold)}
+
+.controls{max-width:1400px;margin:0 auto;padding:1rem;display:flex;flex-wrap:wrap;gap:0.7rem;align-items:center;border-bottom:1px solid var(--border)}
+.search{flex:1;min-width:200px}
+.search input{width:100%;padding:0.5rem 0.75rem;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);font-family:inherit;font-size:0.85rem;border-radius:3px}
+.search input:focus{outline:none;border-color:var(--gold)}
+.pill{padding:0.35rem 0.75rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;cursor:pointer;border-radius:20px;transition:all 0.15s;text-transform:uppercase}
+.pill:hover{color:var(--bone);border-color:var(--gold)}
+.pill.active{color:var(--bg);background:var(--gold);border-color:var(--gold)}
+
+.stats{max-width:1400px;margin:0 auto;padding:0.6rem 1rem;font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;display:flex;gap:1.5rem;flex-wrap:wrap}
+.stats b{color:var(--bone);font-weight:400}
+
+main{max-width:1400px;margin:0 auto;padding:1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.8rem}
+
+.cat-intro{grid-column:1/-1;padding:1rem 1.2rem;background:rgba(176,136,64,0.05);border-left:3px solid var(--gold);border-radius:3px;margin-bottom:0.5rem;font-size:0.85rem;line-height:1.7;color:var(--fg);opacity:0.9}
+.cat-intro h3{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:0.5rem}
+
+.card{padding:1rem;background:var(--panel);border:1px solid var(--border);border-radius:4px;transition:all 0.15s;position:relative;cursor:pointer;border-left-width:3px}
+.card:hover{background:rgba(255,255,255,0.06);border-color:var(--gold)}
+.card.read{opacity:0.6}
+.card.fav{border-color:var(--gold)}
+.card.expanded{background:rgba(255,255,255,0.06);grid-column:1/-1;cursor:default;border-color:var(--gold)}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.3rem}
+.c-num{font-family:'Cinzel',serif;color:var(--muted);font-size:0.7rem;letter-spacing:0.15em}
+.c-cat{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;padding:0.15rem 0.4rem;border-radius:2px;color:#0a0908;font-weight:600}
+
+.c-title{font-family:'Noto Serif JP',serif;font-size:0.95rem;color:var(--bone);font-weight:500;line-height:1.3;margin-bottom:0.1rem}
+.c-orig{font-style:italic;color:var(--muted);font-size:0.7rem;margin-bottom:0.5rem}
+.c-hook{font-size:0.78rem;line-height:1.55;padding:0.4rem 0.55rem;background:rgba(176,136,64,0.06);border-left:2px solid var(--gold);border-radius:2px}
+
+.c-details{display:none;margin-top:0.8rem;padding-top:0.8rem;border-top:1px dashed var(--border);font-size:0.78rem;line-height:1.65}
+.card.expanded .c-details{display:block}
+.c-details dt{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--gold);margin-top:0.6rem;text-transform:uppercase}
+.c-details dd{color:var(--fg);opacity:0.9;margin-top:0.15rem}
+.c-memo{margin-top:0.8rem}
+.c-memo textarea{width:100%;min-height:50px;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);padding:0.5rem;font-family:inherit;font-size:0.76rem;border-radius:3px;resize:vertical;margin-top:0.3rem}
+.c-memo textarea:focus{outline:none;border-color:var(--gold)}
+.c-actions{display:flex;gap:0.4rem;margin-top:0.6rem;flex-wrap:wrap}
+.c-btn{padding:0.25rem 0.6rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;cursor:pointer;border-radius:2px}
+.c-btn:hover{color:var(--bone);border-color:var(--gold)}
+.c-btn.on{color:var(--gold);border-color:var(--gold)}
+
+.empty{text-align:center;padding:3rem;color:var(--muted);font-style:italic}
+
+/* Verbs view */
+.verbs-view{max-width:1200px;margin:0 auto;padding:1rem}
+.verbs-intro{padding:1.2rem;background:rgba(176,136,64,0.05);border-left:3px solid var(--gold);border-radius:3px;margin-bottom:1.5rem;font-size:0.88rem;line-height:1.7}
+.verb-section{margin-bottom:2rem}
+.verb-section-title{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.25em;color:var(--gold);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.verbs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem}
+.verb-card{padding:0.9rem 1rem;background:var(--panel);border:1px solid var(--border);border-radius:4px}
+.verb-card h4{font-family:'Noto Serif JP',serif;font-size:0.9rem;color:var(--bone);margin-bottom:0.3rem}
+.verb-card .v-verb{font-family:'Cinzel',serif;font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;margin-bottom:0.5rem;line-height:1.5}
+.verb-card .v-def{font-size:0.78rem;line-height:1.55;margin-bottom:0.4rem}
+.verb-card .v-conf{font-size:0.72rem;color:var(--muted);font-style:italic;line-height:1.5;border-top:1px dashed var(--border);padding-top:0.4rem}
+.verb-card .v-conf::before{content:"⚔ ";color:var(--gold);font-style:normal}
+
+.belts-block{padding:1.2rem;background:rgba(176,136,64,0.04);border:1px solid var(--border);border-radius:3px;margin-top:2rem;font-size:0.85rem;line-height:1.75;white-space:pre-wrap}
+.summary-block{padding:1.2rem;background:rgba(176,136,64,0.08);border-left:3px solid var(--gold);border-radius:3px;margin-top:1.5rem;font-size:0.9rem;line-height:1.75}
+
+.view{display:none}
+.view.active{display:block}
+
+@media (max-width:640px){
+  h1{font-size:1.05rem}
+  .controls{padding:0.7rem}
+  .grid,.verbs-grid{grid-template-columns:1fr;gap:0.7rem}
+  main,.verbs-view{padding:0.7rem}
+  .tab{padding:0.7rem 0.9rem;font-size:0.65rem;letter-spacing:0.15em}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div>
+      <h1>Social Fabric</h1>
+      <div class="sub">名家外社会の織物 — 200集団 × 10カテゴリ + 66動詞地図</div>
+    </div>
+    <a href="index.html" class="home">← SANDBOX HUB</a>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab active" data-view="fabric">◆ SOCIAL FABRIC</button>
+  <button class="tab" data-view="verbs">◆ VERBS MAP</button>
+</div>
+
+<!-- Fabric view -->
+<div class="view active" id="view-fabric">
+  <div class="controls">
+    <div class="search"><input id="q" placeholder="検索：集団名・職業・政治立場・拠点 ..." /></div>
+    <button class="pill" data-filter="fav">♥ お気に入り</button>
+    <button class="pill" data-filter="unread">未読</button>
+  </div>
+
+  <div class="controls" id="cat-filters">
+    <span style="font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-right:0.3rem">CATEGORY</span>
+    <button class="pill cat-pill" data-cat="0">ALL</button>
+  </div>
+
+  <div class="controls" id="magic-filters">
+    <span style="font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-right:0.3rem">MAGIC</span>
+    <button class="pill mag-pill" data-mag="0">ALL</button>
+    <button class="pill mag-pill" data-mag="持つ">持つ</button>
+    <button class="pill mag-pill" data-mag="持たない">持たない</button>
+    <button class="pill mag-pill" data-mag="問わない">問わない</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <main><div class="grid" id="grid"></div></main>
+</div>
+
+<!-- Verbs view -->
+<div class="view" id="view-verbs">
+  <div class="verbs-view">
+    <div class="verbs-intro" id="verbs-intro"></div>
+    <div id="verb-sections"></div>
+    <div class="belts-block" id="belts-block"></div>
+    <div class="summary-block" id="summary-block"></div>
+  </div>
+</div>
+
+<script>
+const ENTRIES = [
+ {
+  "cat": "A",
+  "num": 1,
+  "id": "A-01",
+  "nameJa": "外周非接触民",
+  "nameOrig": "Couronne Inerte",
+  "composition": "七都市外環に最も多い下層。露店、日雇い、荷運び、洗濯、雑役で暮らす。",
+  "magic": "持たない。",
+  "families": "VEXALIAには徴税対象、KROSSには低賃金労働力、TAKANIとEMBERLYNとは象徴的距離が遠い。",
+  "politics": "接触平等党、家賃反対会、物価対策運動に流れやすい。",
+  "location": "RACINE外環輪街、CALDERA南煤区、BLANCA第三環。",
+  "hook": "脈動危機で真っ先に停電と断水を押しつけられ、都市暴動の火種になる。"
+ },
+ {
+  "cat": "A",
+  "num": 2,
+  "id": "A-02",
+  "nameJa": "台地小作民",
+  "nameOrig": "Terre-Basse",
+  "composition": "都市核の外で畑を借りる非接触農民。家畜、穀物、野菜の供給役。",
+  "magic": "持たない。",
+  "families": "VEXALIAの地税に縛られ、KROSS製ポンプに依存し、TAKANIの季節知に密かに頼る。",
+  "politics": "税負担軽減派、保守的自治派。",
+  "location": "RACINE北台地、VERDE遠郊、BLANCA内陸農帯。",
+  "hook": "無魔力のはずの畑に微弱脈動が起き、土地の由来が覆る。"
+ },
+ {
+  "cat": "A",
+  "num": 3,
+  "id": "A-03",
+  "nameJa": "接触薄層市民",
+  "nameOrig": "Bas-Contact",
+  "composition": "接触世代の末裔だが家名を持たない市民。店員、教師、下級技師、事務員に多い。",
+  "magic": "持つ。",
+  "families": "4家すべてに便利に使われるが、どこにも正式には迎えられない。",
+  "politics": "免許緩和と血統非公開を求める中間派。",
+  "location": "CALDERA中層住宅区、BLANCA白塔下町、SOMBRA影書街。",
+  "hook": "家族の誰にも出なかった強発現が子どもにだけ出て、身元が疑われる。"
+ },
+ {
+  "cat": "A",
+  "num": 4,
+  "id": "A-04",
+  "nameJa": "接触日雇い工",
+  "nameOrig": "Manoeuvres de Silex",
+  "composition": "弱い魔力を危険手当に替える肉体労働層。短期工事、解体、炉掃除、坑道補修を担う。",
+  "magic": "持つ。",
+  "families": "KROSS系工房の下請け、VEXALIAの安全監査の対象、TAKANIからは酷使の象徴と見られる。",
+  "politics": "労働者同盟、工房自治会議に近い。",
+  "location": "CALDERA工房谷、NOCTURNE黒梯坑、PERDIDA実験環。",
+  "hook": "軽い魔力を前提にした危険作業が、脈動の乱れで突然致死水準になる。"
+ },
+ {
+  "cat": "A",
+  "num": 5,
+  "id": "A-05",
+  "nameJa": "境界混住民",
+  "nameOrig": "Gens Cequae",
+  "composition": "TAKANI山地とKROSS鉱区のあいだで暮らす混成村の住民。通婚と共同労働で成り立つ。",
+  "magic": "問わない。",
+  "families": "TAKANIにもKROSSにも必要とされ、VEXALIAには信用されず、EMBERLYN研究者には好奇の対象にされる。",
+  "politics": "自治連盟、返還運動、境界保全派。",
+  "location": "セケ辺界線、旧聖石帯周縁、中央炉都北斜面。",
+  "hook": "両陣営の案内役であるため、裏切り者として処刑される危険が常にある。"
+ },
+ {
+  "cat": "A",
+  "num": 6,
+  "id": "A-06",
+  "nameJa": "新港移民",
+  "nameOrig": "Port-Neuf Arrivants",
+  "composition": "他大陸から来た一世移民。荷役、料理、船員、通訳、低賃金工場職に流入する。",
+  "magic": "問わない。",
+  "families": "KROSS企業が雇い、VEXALIAが書類で絞り、TAKANIとは辺境で連帯し、EMBERLYNは異文化資料の担い手として接近する。",
+  "politics": "市民権拡張、多言語教育、居住許可の簡素化。",
+  "location": "BLANCA共振塔港、SOMBRA夜舟岸、CALDERA運河口。",
+  "hook": "彼らの古い海の儀礼が、思いがけず隕石共振と噛み合う。"
+ },
+ {
+  "cat": "A",
+  "num": 7,
+  "id": "A-07",
+  "nameJa": "深部避難民",
+  "nameOrig": "Exulés Profonds",
+  "composition": "禁域化や鉱区拡張で居住地を追われた家族群。難民化した先住系住民も含む。",
+  "magic": "問わない。",
+  "families": "TAKANIに血縁が多く、KROSSとの土地争いの被害者で、VEXALIA補償制度の失敗例、EMBERLYNには証言源。",
+  "politics": "深部返還委員会、保全派、反採掘派。",
+  "location": "NOCTURNE仮設環、隕落盆地保全圏外縁、VERDE北避難帯。",
+  "hook": "失われた坑道地図と古い石語を知るため、全勢力に狙われる。"
+ },
+ {
+  "cat": "A",
+  "num": 8,
+  "id": "A-08",
+  "nameJa": "地籍測量官",
+  "nameOrig": "Arpenteurs Registres",
+  "composition": "国家公務員の中堅。土地境界、魔力濃度、接触記録を現場で確定する。",
+  "magic": "問わない。",
+  "families": "VEXALIA制度の足、KROSS器材の利用者、TAKANI聖地とは衝突しがち、EMBERLYN古地図に頼ることもある。",
+  "politics": "制度維持の漸進派。",
+  "location": "RACINE法廷丘、七都市の測量支局、隕落盆地周辺。",
+  "hook": "一本の測量線が、聖地を鉱区か保全地かに変えてしまう。"
+ },
+ {
+  "cat": "A",
+  "num": 9,
+  "id": "A-09",
+  "nameJa": "検量査定吏",
+  "nameOrig": "Jaugeurs Civils",
+  "composition": "学校検診、保険査定、就業判定を担う中級査定官。",
+  "magic": "問わない。",
+  "families": "VEXALIAが免許を握り、KROSS測量器なしでは働けず、全家から嫌われつつ必要とされる。",
+  "politics": "安全優先、血統秘匿には否定的。",
+  "location": "RACINE公立病院区、BLANCA通信庁舎、CALDERA労災院。",
+  "hook": "何気ない検査で、隠されていた血統や違法加工が露見する。"
+ },
+ {
+  "cat": "A",
+  "num": 10,
+  "id": "A-10",
+  "nameJa": "台帳書記官",
+  "nameOrig": "Clercs du Cadastre",
+  "composition": "役所実務を担う文字の中間層。家名、出生、婚姻、許可証を日々書き写す。",
+  "magic": "持たない。",
+  "families": "VEXALIAの神経網、EMBERLYN文書学の影響下、他家の実務は彼らなしでは回らない。",
+  "politics": "手続き保守、だが現場判断で小さな抵抗もする。",
+  "location": "RACINE南書記街、各都市庁舎、港湾戸籍所。",
+  "hook": "一枚抜かれた台帳が、継承権も犯罪歴も丸ごと消し飛ばす。"
+ },
+ {
+  "cat": "A",
+  "num": 11,
+  "id": "A-11",
+  "nameJa": "許認可代書人",
+  "nameOrig": "Notaires de Permis",
+  "composition": "書類が読めない庶民や移民の代わりに申請を組み立てる半合法の専門職。",
+  "magic": "問わない。",
+  "families": "VEXALIA制度の隙間商売、KROSS工房や商館から依頼多数、EMBERLYN私文庫の引用も行う。",
+  "politics": "免許簡素化、行政手数料削減。",
+  "location": "RACINE法廷丘下、BLANCA港門街、PERDIDA流動庁舎前。",
+  "hook": "彼らは合法と偽造の境目を熟知しており、誰かを救うにも陥れるにも使える。"
+ },
+ {
+  "cat": "A",
+  "num": 12,
+  "id": "A-12",
+  "nameJa": "鍛炉工",
+  "nameOrig": "Ofenwerker",
+  "composition": "溶鉱炉、精錬炉、結晶焼成炉で働く熟練労働者層。",
+  "magic": "問わない。",
+  "families": "KROSSの繁栄を支える主力だが家名ではなく、VEXALIAの労務規則には不満が深い。",
+  "politics": "労働条件改善、価格統制反対、事故補償重視。",
+  "location": "CALDERA中央炉都、NOCTURNE精錬前室、PERDIDA試験炉街。",
+  "hook": "炉の「歌」が狂ったことに最初に気づくのは、学者ではなく彼らである。"
+ },
+ {
+  "cat": "A",
+  "num": 13,
+  "id": "A-13",
+  "nameJa": "刻印磨工",
+  "nameOrig": "Graveurs de Feu",
+  "composition": "護符、器具、家具、礼装品の刻印を仕上げる半職人半工員。",
+  "magic": "持つ。",
+  "families": "KROSS工房の下層、VEXALIAの規格審査に苦しみ、EMBERLYN系蒐集家には重宝される。",
+  "politics": "工房自治、既製品反対、意匠権保護。",
+  "location": "CALDERA鎚橋区、SOMBRA工芸回廊、RACINE宮廷工房裏。",
+  "hook": "量産品に紛れた禁印を見抜ける数少ない目利きである。"
+ },
+ {
+  "cat": "A",
+  "num": 14,
+  "id": "A-14",
+  "nameJa": "港湾荷役人",
+  "nameOrig": "Dockknechte",
+  "composition": "船荷の揚げ下ろし、税関待機、密輸の目こぼしまで請け負う港の基底層。",
+  "magic": "問わない。",
+  "families": "VEXALIA税関と毎日ぶつかり、商館に雇われ、KROSS製荷役具を使う。",
+  "politics": "労働者同盟、港湾自治、移民保護。",
+  "location": "BLANCA共振塔港、SOMBRA夜舟岸、RACINE河港ノール。",
+  "hook": "失われた魔石も禁書も、最初と最後に触れるのはたいてい彼らだ。"
+ },
+ {
+  "cat": "A",
+  "num": 15,
+  "id": "A-15",
+  "nameJa": "河運曳舟人",
+  "nameOrig": "Tireurs du Canal",
+  "composition": "運河沿いで舟を曳き、夜は水門番も兼ねる水運労働者。",
+  "magic": "問わない。",
+  "families": "KROSS物流の背骨で、VEXALIA税関に監督され、VERDE農民と深く結びつく。",
+  "politics": "実利派、運河通行料引き下げ要求。",
+  "location": "VERDE緑環運河、RACINE運河西、CALDERA北渠。",
+  "hook": "巡察が知らない抜け運河と沈んだ荷の在り処を知っている。"
+ },
+ {
+  "cat": "A",
+  "num": 16,
+  "id": "A-16",
+  "nameJa": "結晶農家",
+  "nameOrig": "Riofarms",
+  "composition": "食料と育成結晶を兼業する小中農。リオ式農法の担い手。",
+  "magic": "問わない。",
+  "families": "TAKANIの知恵を実装し、KROSSポンプに支えられ、VEXALIAの生産割当に苦しむ。",
+  "politics": "保全派、農業補助金賛成、過剰採掘反対。",
+  "location": "VERDEリオ農帯、隕落盆地南縁、BLANCA供給圏。",
+  "hook": "育てていた結晶が、誰の教えにもない脈拍で育ち始める。"
+ },
+ {
+  "cat": "A",
+  "num": 17,
+  "id": "A-17",
+  "nameJa": "山地段畑民",
+  "nameOrig": "Terrasses Berges",
+  "composition": "山腹の段畑と薬草地を守る小共同体。半農半牧で暮らす。",
+  "magic": "問わない。",
+  "families": "TAKANIと交易し、KROSSの鉱道拡張を嫌い、VEXALIAには辺境票田としてしか見られない。",
+  "politics": "地方自治、採掘制限、道路補修要求。",
+  "location": "TAKANI山地南腹、NOCTURNE北斜面、VERDE上流棚田。",
+  "hook": "一枚の段畑が古い儀礼線の一部だったと判明する。"
+ },
+ {
+  "cat": "A",
+  "num": 18,
+  "id": "A-18",
+  "nameJa": "名家家内使用人",
+  "nameOrig": "Domestiques des Quatre",
+  "composition": "厨房、洗濯、寝所、馬屋、客間を回す使用人。名家の影で生きる大所帯。",
+  "magic": "問わない。",
+  "families": "4家すべての私生活を最も近くで知るが、誰の血にも数えられない。",
+  "politics": "公には沈黙、裏では情報交換と相互扶助。",
+  "location": "RACINE旧王冠区、CALDERA上館街、EMBERLYN旧館周辺。",
+  "hook": "家の秘密も隠し子も、本当に知っているのは彼らである。"
+ },
+ {
+  "cat": "A",
+  "num": 19,
+  "id": "A-19",
+  "nameJa": "執事家令",
+  "nameOrig": "Majordomes Gris",
+  "composition": "上級使用人。家政、警備、人事、書庫、贈答の運用を握る専門職。",
+  "magic": "問わない。",
+  "families": "名家の当主より長く屋敷に仕えるため、しばしば実務上の影の支配者になる。",
+  "politics": "安定第一、家名間協調、醜聞封鎖。",
+  "location": "RACINE貴族区、EMBERLYN灰燼館、VEXALIA法家屋敷群。",
+  "hook": "誰にどの手紙を届けるかで、政治同盟すら変えられる。"
+ },
+ {
+  "cat": "A",
+  "num": 20,
+  "id": "A-20",
+  "nameJa": "配管・共振塔保守手",
+  "nameOrig": "Rohrwacht Resonanz",
+  "composition": "魔導管、共振塔、弁室、圧力槽を点検する保守中間層。現代インフラの現場職。",
+  "magic": "問わない。",
+  "families": "KROSS技術の継承者であり、VEXALIA安全法の実行者であり、TAKANI古手順に密かに救われる。",
+  "politics": "技官中立派、現場優先、老朽更新賛成。",
+  "location": "BLANCA白塔群、CALDERA配管環、NOCTURNE深部口。",
+  "hook": "脈動危機を最初に「設備劣化ではない」と言い出すのは彼らである。"
+ },
+ {
+  "cat": "B",
+  "num": 1,
+  "id": "B-01",
+  "nameJa": "王土鍛冶同盟",
+  "nameOrig": "Zunft Feuer-Fer",
+  "composition": "徒弟、炉番、親方、検印長からなる最大工業ギルド。",
+  "magic": "問わない。",
+  "families": "KROSSと最も近いが、価格統制ではしばしば対立。TAKANIの聖鉱帯採掘では敵対しやすい。",
+  "politics": "反価格統制、事故補償拡充、工房自治。",
+  "location": "CALDERA中央炉都、NOCTURNE精錬帯。",
+  "hook": "同盟が一週間止まれば、七都市の保守部材が枯渇する。"
+ },
+ {
+  "cat": "B",
+  "num": 2,
+  "id": "B-02",
+  "nameJa": "公認測量士組合",
+  "nameOrig": "Guilde des Arpenteurs",
+  "composition": "見習い、現場士、台帳士、主席校正官から成る資格ギルド。",
+  "magic": "問わない。",
+  "families": "VEXALIA制度の片腕だが、器材はKROSS製、聖地調査ではTAKANIと緊張する。",
+  "politics": "規格絶対主義、無免許測量取締り賛成。",
+  "location": "RACINE法廷丘、隕落盆地支局。",
+  "hook": "校正基準を誰が変えたかで、歴史そのものの数値が変わる。"
+ },
+ {
+  "cat": "B",
+  "num": 3,
+  "id": "B-03",
+  "nameJa": "護符彫師座",
+  "nameOrig": "Sigillen-Graveur Bund",
+  "composition": "彫り手、磨工、意匠師、封印監定師。",
+  "magic": "持つ。",
+  "families": "KROSS工房と近いが独自審美を持ち、VEXALIAの危険印規制と恒常的に争う。",
+  "politics": "意匠自由、登録印の簡素化、禁印独占反対。",
+  "location": "CALDERA鎚橋区、SOMBRA工芸路地。",
+  "hook": "小さな装飾品に国家転覆級の印が紛れ込む。"
+ },
+ {
+  "cat": "B",
+  "num": 4,
+  "id": "B-04",
+  "nameJa": "石工同職会",
+  "nameOrig": "Compagnons de Pierre",
+  "composition": "採石工、石積工、碑工、保全親方。",
+  "magic": "問わない。",
+  "families": "KROSS建築需要に支えられつつ、TAKANIの「石は証人」という思想とは緊張関係。",
+  "politics": "遺構保全と公共工事の折衷派。",
+  "location": "RACINE旧壁区、NOCTURNE石段街、隕落盆地遺構帯。",
+  "hook": "工事対象の石壁が、消された歴史を記憶しているかもしれない。"
+ },
+ {
+  "cat": "B",
+  "num": 5,
+  "id": "B-05",
+  "nameJa": "医療魔術会",
+  "nameOrig": "Collegium Salus Arcana",
+  "composition": "見習い療術師、病棟師、外科封印士、監理医。",
+  "magic": "問わない。",
+  "families": "VEXALIA認可を受け、KROSS器具を使い、TAKANI治癒知を借りるが公式には過少評価しがち。",
+  "politics": "医療免許擁護、民間療法の条件付き容認。",
+  "location": "RACINE公立医院街、VERDE療養畑、BLANCA通信診療塔。",
+  "hook": "治療記録を掘ると、隠された血統と事故の連鎖が見える。"
+ },
+ {
+  "cat": "B",
+  "num": 6,
+  "id": "B-06",
+  "nameJa": "楽師共鳴会",
+  "nameOrig": "Chor Resonanz",
+  "composition": "楽童、楽師、調律士、舞台監督、宮廷楽監。",
+  "magic": "問わない。",
+  "families": "KROSSの鍛冶歌研究、TAKANIの声の知、SOMBRA芸術圏、VEXALIA儀礼需要にまたがる。",
+  "politics": "芸術自由、検閲反対、公共助成賛成。",
+  "location": "SOMBRA結晶劇場街、RACINE儀礼広間、CALDERA工房歌堂。",
+  "hook": "一曲の旋律が治療にも扇動にも武器化にも転ぶ。"
+ },
+ {
+  "cat": "B",
+  "num": 7,
+  "id": "B-07",
+  "nameJa": "写字生・校訂士会",
+  "nameOrig": "Scriptoria Frères",
+  "composition": "写字生、注解者、校訂士、閉架司書。",
+  "magic": "持たない。",
+  "families": "EMBERLYN文庫と近いが、VEXALIA検閲の前線にもいる二重的な集団。",
+  "politics": "閲覧権拡大、禁書の限定公開。",
+  "location": "EMBERLYN灰燼文庫学院、RACINE国記館、SOMBRA古書街。",
+  "hook": "誤写ひとつで呪文も判例も別物になる。"
+ },
+ {
+  "cat": "B",
+  "num": 8,
+  "id": "B-08",
+  "nameJa": "航海術士連盟",
+  "nameOrig": "Ligue des Navigateurs",
+  "composition": "水先案内、星見、航路士、艦隊顧問。",
+  "magic": "問わない。",
+  "families": "商館と結びつき、VEXALIAの外洋政策に関わり、移民流入の実務を担う。",
+  "politics": "港湾開放、海上監視の合理化、関税軽減。",
+  "location": "BLANCA共振塔港、南方群島諸港。",
+  "hook": "海の古い星図が、隕石以前の地図と接続する。"
+ },
+ {
+  "cat": "B",
+  "num": 9,
+  "id": "B-09",
+  "nameJa": "地図製作院",
+  "nameOrig": "Kartographen Zunft",
+  "composition": "製図徒弟、地誌家、境界図師、極秘地図監。",
+  "magic": "持たない。",
+  "families": "VEXALIA行政と密接、KROSS資源調査でも重宝、TAKANI聖路の非公開要求と衝突。",
+  "politics": "情報統制寄り、ただし学術公開にも未練がある。",
+  "location": "RACINE国図館、NOCTURNE辺境測線所。",
+  "hook": "公開版と秘密版で、同じ土地の境界が違う。"
+ },
+ {
+  "cat": "B",
+  "num": 10,
+  "id": "B-10",
+  "nameJa": "酒造・発酵兄弟会",
+  "nameOrig": "Fraternité des Brasseurs",
+  "composition": "麦番、醸し手、香草師、樽主。",
+  "magic": "問わない。",
+  "families": "VERDE農家と密接、SOMBRA芸術家と近く、VEXALIA税務当局とは険悪。",
+  "politics": "酒税軽減、夜間営業緩和、祭礼容認。",
+  "location": "VERDE醸し谷、SOMBRA夜瓶街、RACINE河岸酒倉。",
+  "hook": "発酵が脈動の影響を受け、危険な酩酊共鳴を生む。"
+ },
+ {
+  "cat": "B",
+  "num": 11,
+  "id": "B-11",
+  "nameJa": "魔導管施工組合",
+  "nameOrig": "Rohrbau Union",
+  "composition": "配管徒弟、弁工、線路監、老設計工。",
+  "magic": "問わない。",
+  "families": "KROSS設計思想の実装者、VEXALIA公共事業の受注者、TAKANI古い「頼み方」を現場で借りる。",
+  "politics": "老朽更新最優先、現場裁量拡大。",
+  "location": "CALDERA配管環、BLANCA塔根部、七都市地下網。",
+  "hook": "現代の公式設計図にない旧系統を知る最後の世代が老いている。"
+ },
+ {
+  "cat": "B",
+  "num": 12,
+  "id": "B-12",
+  "nameJa": "結晶農同職組",
+  "nameOrig": "Guilde Rioverte",
+  "composition": "育成見習い、畑主、穂石師、季節監。",
+  "magic": "問わない。",
+  "families": "TAKANIの知が根幹、VEXALIA生産割当の拘束、KROSS灌漑器具に依存。",
+  "politics": "持続供給、採掘抑制、農民保護。",
+  "location": "VERDEリオ農帯、隕落盆地南縁。",
+  "hook": "組合が収穫を止めれば、都市の魔石市場は数週で干上がる。"
+ },
+ {
+  "cat": "B",
+  "num": 13,
+  "id": "B-13",
+  "nameJa": "結界建築師団",
+  "nameOrig": "Baukreis Liminal",
+  "composition": "建築士、境界技師、施工監、公共結界師。",
+  "magic": "問わない。",
+  "families": "KROSS工学に近く、VEXALIA安全基準に従い、TAKANIの聖地感覚を理解しないと辺境では失敗する。",
+  "politics": "公共投資賛成、無資格施工反対。",
+  "location": "RACINE公共庁舎群、PERDIDA実験街区。",
+  "hook": "町ひとつを守る結界が、誰かの記憶を閉じ込めている。"
+ },
+ {
+  "cat": "B",
+  "num": 14,
+  "id": "B-14",
+  "nameJa": "時計機関師組",
+  "nameOrig": "Horologe Bund",
+  "composition": "歯車工、時調律師、共振時計士、機関親方。",
+  "magic": "問わない。",
+  "families": "KROSS系機械文化の花形だが、BLANCA通信企業と組んで独自勢力化している。",
+  "politics": "技術開放、中小工房保護、軍需依存反対。",
+  "location": "CALDERA精密街、BLANCA白塔下町。",
+  "hook": "時刻のズレは単なる故障ではなく脈動の前兆かもしれない。"
+ },
+ {
+  "cat": "B",
+  "num": 15,
+  "id": "B-15",
+  "nameJa": "染織護布組",
+  "nameOrig": "Tisserands de Garde",
+  "composition": "糸師、染師、織り手、礼装監。",
+  "magic": "持つ。",
+  "families": "VEXALIA宮廷礼装を請け負い、KROSS繊維加工と組み、TAKANI図様を盗用した過去を持つ。",
+  "politics": "意匠返礼運動への対応で割れている。",
+  "location": "SOMBRA布市、RACINE礼装街、VERDE染草畑。",
+  "hook": "衣装の模様が、消された共同体の地図になっている。"
+ },
+ {
+  "cat": "B",
+  "num": 16,
+  "id": "B-16",
+  "nameJa": "遺物修復会",
+  "nameOrig": "Atelier Cendrevive",
+  "composition": "清拭師、欠損補士、痕跡読師、禁庫監。",
+  "magic": "問わない。",
+  "families": "EMBERLYN資料に最も近く、VEXALIAは危険視し、KROSSは遺物素材に興味を示す。",
+  "politics": "学術閲覧権拡大、無断再演反対。",
+  "location": "EMBERLYN灰燼文庫学院、NOCTURNE遺構庫。",
+  "hook": "修復のつもりで、封じられた何かを再起動してしまう。"
+ },
+ {
+  "cat": "B",
+  "num": 17,
+  "id": "B-17",
+  "nameJa": "運び屋・使節組",
+  "nameOrig": "Messagers du Cercle",
+  "composition": "徒歩便、騎乗便、共鳴便、外交使者。",
+  "magic": "問わない。",
+  "families": "全家に出入りできる希少な中立職だが、情報の中継点ゆえに誰からも警戒される。",
+  "politics": "交通自由、検閲緩和、街道保全。",
+  "location": "七都市街道、BLANCA通信網、山地巡礼路。",
+  "hook": "ひとつの遅配が戦争を防ぎ、ひとつの盗読が革命を起こす。"
+ },
+ {
+  "cat": "B",
+  "num": 18,
+  "id": "B-18",
+  "nameJa": "引揚潜水組",
+  "nameOrig": "Tauchbund des Quais",
+  "composition": "潜り手、回収士、河底測手、事故証拠係。",
+  "magic": "問わない。",
+  "families": "商館と保険組合に雇われ、VEXALIA調査にも動員され、密輸網とも紙一重。",
+  "politics": "危険手当重視、事故隠蔽反対。",
+  "location": "BLANCA港、RACINE河底倉、SOMBRA霧渠。",
+  "hook": "沈んだ積荷は、しばしば誰かが沈めたかった証拠でもある。"
+ },
+ {
+  "cat": "B",
+  "num": 19,
+  "id": "B-19",
+  "nameJa": "通詞・翻訳士環",
+  "nameOrig": "Cercle des Interprètes",
+  "composition": "港通詞、学術訳者、法廷通訳、石語補助者。",
+  "magic": "問わない。",
+  "families": "TAKANI語と移民語を橋渡しし、EMBERLYN研究に不可欠だが、VEXALIAは中立性を疑う。",
+  "politics": "多言語教育、共同体承認の法的有効化。",
+  "location": "BLANCA港区、NOCTURNE共同調査区、RACINE法廷丘。",
+  "hook": "誤訳は事故ではなく、しばしば意図された支配である。"
+ },
+ {
+  "cat": "B",
+  "num": 20,
+  "id": "B-20",
+  "nameJa": "水路水門守組",
+  "nameOrig": "Garde des Écluses",
+  "composition": "水門番、流量監、補修親方、運河判定官。",
+  "magic": "問わない。",
+  "families": "VERDE農業とCALDERA工業の板挟みで、VEXALIA配分命令に従う。",
+  "politics": "水利自治、中央命令への条件付き服従。",
+  "location": "VERDE緑環運河、RACINE西渠、CALDERA北渠。",
+  "hook": "水をどこへ流すかは、票田も工場も飢えも決める。"
+ },
+ {
+  "cat": "C",
+  "num": 1,
+  "id": "C-01",
+  "nameJa": "星肉神殿派",
+  "nameOrig": "Église de la Chair Stellaire",
+  "composition": "都市中産階級と信徒官僚が多い新興教団。",
+  "magic": "問わない。",
+  "families": "VEXALIAと相性が良く、TAKANIからは「関係を神権に変えた」と嫌われる。",
+  "politics": "穏健規制、聖職者主導の公共倫理。",
+  "location": "RACINE大聖堂区、BLANCA白塔聖所。",
+  "hook": "神殿の地下に、教義と矛盾する初期接触記録が眠っている。"
+ },
+ {
+  "cat": "C",
+  "num": 2,
+  "id": "C-02",
+  "nameJa": "落下顕現同盟",
+  "nameOrig": "Fraternité du Choc Sacré",
+  "composition": "熱狂的巡礼者、若年信徒、地方説教師。",
+  "magic": "持つ。",
+  "families": "EMBERLYN衰退を「神意の再選別」と語り、VEXALIAの法を人間の傲慢として攻撃する。",
+  "politics": "反官僚、啓示優先、巡礼地解放。",
+  "location": "隕落盆地周縁、PERDIDA流動区、各地の巡礼宿。",
+  "hook": "啓示と称して禁域へ若者を送り込み、失踪者を出し続ける。"
+ },
+ {
+  "cat": "C",
+  "num": 3,
+  "id": "C-03",
+  "nameJa": "眠る叔父の環",
+  "nameOrig": "Cercle de l'Oncle Dormant",
+  "composition": "TAKANI系共同体とその協力者、研究者の一部。",
+  "magic": "問わない。",
+  "families": "TAKANIに最も近く、VEXALIAの宗教分類を拒否し、KROSSとは局地協調もある。",
+  "politics": "関係重視、所有否定、返礼倫理。",
+  "location": "TAKANI山地、NOCTURNE深部口、隕落盆地共同祭地。",
+  "hook": "彼らは「隕石は怒っている」ではなく「返事を求めている」と解釈する。"
+ },
+ {
+  "cat": "C",
+  "num": 4,
+  "id": "C-04",
+  "nameJa": "七欠片巡礼会",
+  "nameOrig": "Sept-Fragments Pèlerinage",
+  "composition": "七都市を巡る商人、学生、退役者、旅芸人。",
+  "magic": "問わない。",
+  "families": "4家すべての都市を祈りの路に組み込み、政治的中立を装う。",
+  "politics": "都市間融和、巡礼通行税反対。",
+  "location": "七都市の巡礼宿、旧街道。",
+  "hook": "巡礼歌に、失われた物流路と古い密儀路線が暗号化されている。"
+ },
+ {
+  "cat": "C",
+  "num": 5,
+  "id": "C-05",
+  "nameJa": "光冠浄火派",
+  "nameOrig": "Feuerkranz Puristes",
+  "composition": "上昇志向の接触市民、軍属、戒律好きの中産層。",
+  "magic": "持つ。",
+  "families": "VEXALIAと同盟的、KROSSの粗野な工房文化を低俗視、TAKANIの対話術を異端視する。",
+  "politics": "道徳規制、服装規範、若者文化取締り。",
+  "location": "RACINE中環、BLANCA白塔住宅区。",
+  "hook": "高潔を説く指導者ほど、裏で禁印と若年信徒を利用している。"
+ },
+ {
+  "cat": "C",
+  "num": 6,
+  "id": "C-06",
+  "nameJa": "灰隕贖罪派",
+  "nameOrig": "Cendres du Ciel",
+  "composition": "事故遺族、元兵士、戦災地域の巡回修道者。",
+  "magic": "問わない。",
+  "families": "4家すべてを「落下の責任を継げなかった者」と批判する。",
+  "politics": "反戦、軍需縮小、事故補償拡張。",
+  "location": "大戦跡地、事故慰霊地、RACINE外縁の施療院。",
+  "hook": "贖罪の旅路が、実は旧軍の隠し実験場を結んでいる。"
+ },
+ {
+  "cat": "C",
+  "num": 7,
+  "id": "C-07",
+  "nameJa": "地母樹皮信仰",
+  "nameOrig": "Terre-Mère des Écorces",
+  "composition": "農村、薬草師、森縁共同体の在来宗教。",
+  "magic": "問わない。",
+  "families": "TAKANIとの親和が高く、KROSSの伐採と採掘を嫌う。",
+  "politics": "保全主義、伐採制限、河川汚染反対。",
+  "location": "VERDE外縁、山地森林帯、湿地村。",
+  "hook": "ただの民間祭祀と思われた樹皮文様が、古い結界の一部である。"
+ },
+ {
+  "cat": "C",
+  "num": 8,
+  "id": "C-08",
+  "nameJa": "谷井戸母祭団",
+  "nameOrig": "Puits-Mater",
+  "composition": "井戸守、洗濯女、河川民、街道宿の女主人。",
+  "magic": "問わない。",
+  "families": "どの家とも弱く結びつくが、水利紛争ではVEXALIA命令に逆らうことがある。",
+  "politics": "水利自治、生活インフラ優先。",
+  "location": "RACINE河港区、VERDE水門帯、砂塩回廊の泉宿。",
+  "hook": "井戸祭の歌が、配管網の異常位置を示している。"
+ },
+ {
+  "cat": "C",
+  "num": 9,
+  "id": "C-09",
+  "nameJa": "畦の花嫁信仰",
+  "nameOrig": "Fiancée des Sillons",
+  "composition": "農村の若い女性、婚姻共同体、家内祭祀の担い手。",
+  "magic": "問わない。",
+  "families": "名家の婚姻政治を冷ややかに見ており、血統選別に反発する。",
+  "politics": "婚姻の自由、種子共有、家名優先主義反対。",
+  "location": "VERDE畦地、外縁農村、山地棚田。",
+  "hook": "婚礼歌の古い節回しが、特定の血統封印を破る鍵になる。"
+ },
+ {
+  "cat": "C",
+  "num": 10,
+  "id": "C-10",
+  "nameJa": "山腹石霊講",
+  "nameOrig": "Berggeist Litha",
+  "composition": "山地採集民、石工、坑道入口の守り手。",
+  "magic": "問わない。",
+  "families": "TAKANIの石観と共鳴しつつ、KROSS鉱夫とも現場では共存する。",
+  "politics": "聖鉱帯の折衷利用、無断爆破反対。",
+  "location": "TAKANI山地、NOCTURNE黒梯坑外縁。",
+  "hook": "「石の機嫌」を測る古い作法が、最新測量器より正確な日がある。"
+ },
+ {
+  "cat": "C",
+  "num": 11,
+  "id": "C-11",
+  "nameJa": "灰布禁欲会",
+  "nameOrig": "Confrérie du Drap Gris",
+  "composition": "都市の禁欲家、元接触者、少数の知識人。",
+  "magic": "持たない。",
+  "families": "VEXALIAに一定の支持者を持つが、制度そのものも魔力依存だと批判する。",
+  "politics": "消費抑制、公共魔力使用削減、簡素生活。",
+  "location": "RACINE施療院街、BLANCA裏修道院。",
+  "hook": "彼らの倹約思想は、実は危機時の生存マニュアルでもある。"
+ },
+ {
+  "cat": "C",
+  "num": 12,
+  "id": "C-12",
+  "nameJa": "歪曲否定修道会",
+  "nameOrig": "Orden der Geraden Natur",
+  "composition": "哲学修道士、教育者、地方説教者。",
+  "magic": "持たない。",
+  "families": "4家全部を「歪曲への寄生者」と批判し、反隕石原理主義と人材が重なる。",
+  "politics": "反魔法、自然回帰、魔法教育縮小。",
+  "location": "内陸修道院群、台地農村、RACINE外周。",
+  "hook": "魔法を否定するはずの修道院地下に、封じられた実験設備がある。"
+ },
+ {
+  "cat": "C",
+  "num": 13,
+  "id": "C-13",
+  "nameJa": "無光断食団",
+  "nameOrig": "Jeûne Sans-Lueur",
+  "composition": "若者の一時参加が多い都市禁欲運動。",
+  "magic": "問わない。",
+  "families": "KROSS工業依存を嫌い、BLANCA通信文化から距離を置く反都市的集団。",
+  "politics": "都市消灯運動、祭礼簡素化、節電。",
+  "location": "SOMBRA裏修道房、PERDIDA郊外、VERDE静養宿。",
+  "hook": "消灯の夜にだけ現れる共鳴現象がある。"
+ },
+ {
+  "cat": "C",
+  "num": 14,
+  "id": "C-14",
+  "nameJa": "炉辺祖灯会",
+  "nameOrig": "Feu des Aïeux",
+  "composition": "工房労働者、鍛冶家系、退役工。",
+  "magic": "問わない。",
+  "families": "KROSSと文化的に近いが、名家の取り分の大きさには不満。",
+  "politics": "労働者共同体保護、工房祭礼の維持。",
+  "location": "CALDERA労働区、工房谷、鍛冶町。",
+  "hook": "祖先の名を読む炉口儀礼が、事故の予兆を知らせる。"
+ },
+ {
+  "cat": "C",
+  "num": 15,
+  "id": "C-15",
+  "nameJa": "舟棚先祖祭壇",
+  "nameOrig": "Ponton Ancestral",
+  "composition": "港湾民、移民家族、舟上共同体。",
+  "magic": "問わない。",
+  "families": "4家よりも海向こうの祖先意識が強く、政治動員を受けにくい。",
+  "politics": "移民保護、港湾自治、海上税軽減。",
+  "location": "BLANCA港湾、河口舟上村、南方群島。",
+  "hook": "海難者名簿と家内祭壇が、失踪者ネットワークを繋ぐ。"
+ },
+ {
+  "cat": "C",
+  "num": 16,
+  "id": "C-16",
+  "nameJa": "家卓位牌連",
+  "nameOrig": "Table des Noms",
+  "composition": "都市中産の家内信仰。書記官、商人、教員家庭に多い。",
+  "magic": "問わない。",
+  "families": "名家崇拝ではなく「家ごとの記録」を重視し、VEXALIAの公文書と競合する。",
+  "politics": "家族記録の私有、墓所保護。",
+  "location": "RACINE住宅区、BLANCA中層区、VERDE町家。",
+  "hook": "公文書と家卓名簿のどちらが真実かで、相続がひっくり返る。"
+ },
+ {
+  "cat": "C",
+  "num": 17,
+  "id": "C-17",
+  "nameJa": "夜階環密儀",
+  "nameOrig": "Anneau des Marches Noires",
+  "composition": "上流の好事家、学徒、秘密主義の芸術家。",
+  "magic": "問わない。",
+  "families": "EMBERLYN文庫由来の断章を崇め、VEXALIAは危険結社扱いする。",
+  "politics": "表向き非政治、実際は禁書公開派が多い。",
+  "location": "SOMBRA地下劇場、PERDIDA夜会区。",
+  "hook": "儀礼の階段配置が、古い封印図そのものになっている。"
+ },
+ {
+  "cat": "C",
+  "num": 18,
+  "id": "C-18",
+  "nameJa": "黒硝子聖餐団",
+  "nameOrig": "Communion du Verre Noir",
+  "composition": "退廃趣味の上流と没落貴族、危険な知を求める学生。",
+  "magic": "持つ。",
+  "families": "EMBERLYN没落圏に食い込み、VEXALIAは監視対象、KROSSの黒曜素材を買い漁る。",
+  "politics": "反道徳規制、秘儀の私有。",
+  "location": "SOMBRA裏サロン、EMBERLYN旧館別棟。",
+  "hook": "黒硝子杯は単なる象徴ではなく、記憶媒体である。"
+ },
+ {
+  "cat": "C",
+  "num": 19,
+  "id": "C-19",
+  "nameJa": "方陣秘跡会",
+  "nameOrig": "Sacramentum Quadrata",
+  "composition": "数学好きの聖職者、校訂士、護符師、上級学生。",
+  "magic": "持つ。",
+  "families": "KROSS封印術とEMBERLYN文献学の交差点にあり、VEXALIAは禁書寄りとみなす。",
+  "politics": "学術秘匿、熟達者選抜主義。",
+  "location": "RACINE学寮裏、灰燼文庫周辺、SOMBRA書庫塔。",
+  "hook": "方陣は祈りでもあり、証拠隠しでもあり、監獄でもある。"
+ },
+ {
+  "cat": "C",
+  "num": 20,
+  "id": "C-20",
+  "nameJa": "夢見礼拝劇",
+  "nameOrig": "Liturgie Sombre",
+  "composition": "SOMBRAの俳優、観客、幻視質の若者。",
+  "magic": "問わない。",
+  "families": "名家の庇護を受けつつ、彼らを舞台で風刺する二重性を持つ。",
+  "politics": "検閲反対、芸術自治、現実逃避と批判が共存。",
+  "location": "SOMBRA結晶劇場街、夜劇回廊。",
+  "hook": "劇中の夢景が、現実の深部で起きる出来事を先に映す。"
+ },
+ {
+  "cat": "D",
+  "num": 1,
+  "id": "D-01",
+  "nameJa": "自由魔法党",
+  "nameOrig": "Parti Libre-Arcanum",
+  "composition": "若い接触市民、技術起業家、BLANCAの呪文コード層。",
+  "magic": "問わない。",
+  "families": "KROSSの新技術派と組みやすく、VEXALIA規制派と激突する。",
+  "politics": "規制緩和、免許簡素化、民間研究促進。",
+  "location": "BLANCA白塔群、PERDIDA実験環、CALDERA新工廠区。",
+  "hook": "自由化が本当に解放か、それとも大商館への売り渡しかが問われる。"
+ },
+ {
+  "cat": "D",
+  "num": 2,
+  "id": "D-02",
+  "nameJa": "接触平等党",
+  "nameOrig": "Parti d'Égale Touche",
+  "composition": "非接触庶民、薄接触市民、学校教員、事故遺族。",
+  "magic": "問わない。",
+  "families": "4家の血統特権をまとめて批判し、VEXALIA行政差別を主要標的にする。",
+  "politics": "非魔法者権利拡張、教育平等、雇用差別是正。",
+  "location": "RACINE外環、CALDERA労働区、VERDE町会。",
+  "hook": "魔法を持たない多数派が、初めて本気で票を束ね始める。"
+ },
+ {
+  "cat": "D",
+  "num": 3,
+  "id": "D-03",
+  "nameJa": "タカニ自治連盟",
+  "nameOrig": "Ligue Autonome Takani",
+  "composition": "TAKANI共同体、境界混住村、連帯学生、返還訴訟派。",
+  "magic": "問わない。",
+  "families": "TAKANIの政治窓口であり、VEXALIAとKROSSの双方に交渉と抗議を行う。",
+  "politics": "聖地自治、共同管理、口承承認の法制化。",
+  "location": "TAKANI山地、NOCTURNE共同会館、隕落盆地保全圏。",
+  "hook": "自治を求めるほど、内部の世代差と方針差が露わになる。"
+ },
+ {
+  "cat": "D",
+  "num": 4,
+  "id": "D-04",
+  "nameJa": "復元正統主義",
+  "nameOrig": "Restauratio Ember",
+  "composition": "EMBERLYN支持者、旧家ロマン派、古典主義学生。",
+  "magic": "問わない。",
+  "families": "EMBERLYNを「失われた正統」と祭り上げ、VEXALIA中心体制を文化的に攻撃する。",
+  "politics": "旧文庫権限拡大、古式儀礼の復権、禁書閲覧緩和。",
+  "location": "EMBERLYN灰燼文庫学院、SOMBRA文芸圏。",
+  "hook": "復元の名の下に、実際は盗用と神話化が進んでいる可能性がある。"
+ },
+ {
+  "cat": "D",
+  "num": 5,
+  "id": "D-05",
+  "nameJa": "反隕石原理戦線",
+  "nameOrig": "Front Anti-Sidera",
+  "composition": "禁欲修道派、事故遺族の一部、非接触保守層。",
+  "magic": "持たない。",
+  "families": "4家すべてを利権共同体とみなし、インフラごと解体したがる。",
+  "politics": "反魔法、反配管、地方自給、学院縮小。",
+  "location": "内陸台地、RACINE外周、戦災地。",
+  "hook": "理想は過激でも、脈動危機の時代には一定の説得力を持ってしまう。"
+ },
+ {
+  "cat": "D",
+  "num": 6,
+  "id": "D-06",
+  "nameJa": "学院青年同盟",
+  "nameOrig": "Jeunesse des Sept Cités",
+  "composition": "魔法学院、工芸院、統治大学の学生。",
+  "magic": "問わない。",
+  "families": "家名を横断する若手組織で、名家子弟も庶民学生も混じる。",
+  "politics": "学費軽減、寮改革、研究公開、政治参加。",
+  "location": "RACINE学院群、BLANCA学生塔、PERDIDA臨時講堂。",
+  "hook": "友情と恋愛で固まった同盟が、事件ひとつで急速に分裂する。"
+ },
+ {
+  "cat": "D",
+  "num": 7,
+  "id": "D-07",
+  "nameJa": "学生討論共闘",
+  "nameOrig": "Debattbund Stella",
+  "composition": "弁論好きの優等生、新聞部、法学部、歴史系サークル。",
+  "magic": "問わない。",
+  "families": "VEXALIAの言語を学びながら、その言葉で制度を攻撃する。",
+  "politics": "情報公開、公開討論、議会中継義務化。",
+  "location": "RACINE法廷丘周辺、BLANCA放送学寮。",
+  "hook": "正論の集団に見えて、内部では最も苛烈な権力闘争が起きる。"
+ },
+ {
+  "cat": "D",
+  "num": 8,
+  "id": "D-08",
+  "nameJa": "労働者同盟",
+  "nameOrig": "Union des Travailleurs Lithiques",
+  "composition": "工場労働者、炉工、荷役人、保守手、印刷工。",
+  "magic": "問わない。",
+  "families": "KROSS系企業と最もぶつかり、VEXALIAの警察力とも衝突しやすい。",
+  "politics": "賃上げ、短時間労働、事故補償、スト権。",
+  "location": "CALDERA、BLANCA港湾、RACINE印刷区。",
+  "hook": "ストが始まれば、魔法社会の「日常インフラ」が一気に止まる。"
+ },
+ {
+  "cat": "D",
+  "num": 9,
+  "id": "D-09",
+  "nameJa": "工房自治会議",
+  "nameOrig": "Werkstatt-Rat",
+  "composition": "親方、若手技師、半独立工房、ギルド急進派。",
+  "magic": "問わない。",
+  "families": "KROSS家の象徴性は認めつつ、家業による市場支配には反発する。",
+  "politics": "工房の共同所有、発明権の分配、地域生産優先。",
+  "location": "CALDERA工房谷、PERDIDA試作街。",
+  "hook": "技術の共有を掲げるが、核心特許だけは誰も手放さない。"
+ },
+ {
+  "cat": "D",
+  "num": 10,
+  "id": "D-10",
+  "nameJa": "外周家賃反対会",
+  "nameOrig": "Front des Anneaux Extérieurs",
+  "composition": "外環住民、家主被害者、学生下宿民、移民。",
+  "magic": "問わない。",
+  "families": "4家の都市開発事業をまとめて地価操作として批判する。",
+  "politics": "家賃凍結、空き屋接収、公共住宅。",
+  "location": "RACINE外環、BLANCA塔下、SOMBRA裏路地。",
+  "hook": "家賃闘争が、実は旧地下配管の所有権争いに繋がる。"
+ },
+ {
+  "cat": "D",
+  "num": 11,
+  "id": "D-11",
+  "nameJa": "移民市民権会",
+  "nameOrig": "Citoyens Nouveaux",
+  "composition": "一世移民、二世学生、港湾商人、通訳士。",
+  "magic": "問わない。",
+  "families": "名家よりも役所と商館に交渉するが、TAKANI自治派とは連帯しやすい。",
+  "politics": "市民権拡張、多言語投票、港区自治。",
+  "location": "BLANCA港湾、SOMBRA夜舟岸、RACINE河港街。",
+  "hook": "「新参者」のはずの彼らが、世界を更新する技術と言葉を最も持ち込む。"
+ },
+ {
+  "cat": "D",
+  "num": 12,
+  "id": "D-12",
+  "nameJa": "深部返還委員会",
+  "nameOrig": "Comité du Retour Profond",
+  "composition": "避難民、弁護士、考古学者、対話師、若手議員。",
+  "magic": "問わない。",
+  "families": "TAKANIに近く、KROSS鉱区政策と正面衝突、VEXALIAの保全官僚とも対立する。",
+  "politics": "土地返還、共同主権、採掘停止。",
+  "location": "NOCTURNE共同調査館、隕落盆地保全圏。",
+  "hook": "返還される土地には、誰も予想しない危険物も真実も埋まっている。"
+ },
+ {
+  "cat": "D",
+  "num": 13,
+  "id": "D-13",
+  "nameJa": "非接触納税者会",
+  "nameOrig": "Cercle Fiscal Serein",
+  "composition": "非接触中産、商店主、小地主、保守官吏。",
+  "magic": "持たない。",
+  "families": "VEXALIA保守派と協調しつつ、名家優遇予算には反発する。",
+  "politics": "税負担軽減、福祉選別、魔法予算監査。",
+  "location": "RACINE中環、VERDE町家、BLANCA商店街。",
+  "hook": "「公平な税」を求める言葉が、弱者切り捨ての正当化にもなる。"
+ },
+ {
+  "cat": "D",
+  "num": 14,
+  "id": "D-14",
+  "nameJa": "免許緩和連盟",
+  "nameOrig": "Ligue du Permis Ouvert",
+  "composition": "薄接触の自営業者、地方工房、若手療術師、代書人。",
+  "magic": "持つ。",
+  "families": "VEXALIA許認可制度を最大の敵とし、KROSSの中小工房と組む。",
+  "politics": "免許更新簡略化、地方相互承認、試験料削減。",
+  "location": "CALDERA、PERDIDA、辺境町。",
+  "hook": "緩和の先に待つのが解放か粗悪品氾濫か、誰にも読めない。"
+ },
+ {
+  "cat": "D",
+  "num": 15,
+  "id": "D-15",
+  "nameJa": "血統非公開運動",
+  "nameOrig": "Mouvement Sang Privé",
+  "composition": "若い親世代、学校教員、医師の一部、秘密主義の接触市民。",
+  "magic": "問わない。",
+  "families": "VEXALIA台帳政治の盲点を突き、名家の血統特権そのものも問題化する。",
+  "politics": "血統データ保護、未成年検査の制限、匿名就労。",
+  "location": "RACINE学校区、BLANCA通信都市圏、SOMBRA文化圏。",
+  "hook": "子を守るための秘匿が、逆に家族を分断する。"
+ },
+ {
+  "cat": "D",
+  "num": 16,
+  "id": "D-16",
+  "nameJa": "保全漸進党",
+  "nameOrig": "Parti des Gardiens Calmes",
+  "composition": "中道官僚、農業協同組合、老技官、穏健学者。",
+  "magic": "問わない。",
+  "families": "VEXALIA行政と相性が良いが、TAKANIとの協議路線も模索する。",
+  "politics": "小幅改革、保全投資、危機管理優先。",
+  "location": "RACINE官庁街、VERDE農政区。",
+  "hook": "最も常識的に見える党が、危機時には最も決断が遅い。"
+ },
+ {
+  "cat": "D",
+  "num": 17,
+  "id": "D-17",
+  "nameJa": "結晶農協戦線",
+  "nameOrig": "Front Rio Vert",
+  "composition": "結晶農家、運河守、農村教師、地方市長。",
+  "magic": "問わない。",
+  "families": "TAKANI農法への敬意を表しつつ、KROSSのポンプ価格には怒りを抱える。",
+  "politics": "持続供給、農地保全、都市優先配分反対。",
+  "location": "VERDE、隕落盆地南縁、外縁農村。",
+  "hook": "食糧と魔石を同時に握るため、危機時の交渉力が異様に高い。"
+ },
+ {
+  "cat": "D",
+  "num": 18,
+  "id": "D-18",
+  "nameJa": "事故遺族院",
+  "nameOrig": "Assemblée des Endeuillés",
+  "composition": "労災、共振事故、軍事試験、失踪事件の遺族と支援者。",
+  "magic": "問わない。",
+  "families": "4家を個別に責めるのではなく「責任の押し付け合い」を告発する。",
+  "politics": "真相公開、補償基金、無期限時効の撤廃。",
+  "location": "CALDERA追悼広場、RACINE慰霊院、NOCTURNE失踪記録所。",
+  "hook": "彼らの集会には、まだ生きているはずの失踪者名が混じる。"
+ },
+ {
+  "cat": "D",
+  "num": 19,
+  "id": "D-19",
+  "nameJa": "中立技官ネットワーク",
+  "nameOrig": "Réseau des Techniciens Neutres",
+  "composition": "保守員、設計士、通信技官、病院技師。",
+  "magic": "問わない。",
+  "families": "どの家にも雇われるが、どの家のためにも壊れた世界を放置したくない現場派。",
+  "politics": "現場裁量、データ公開、非常時の超党派連携。",
+  "location": "七都市インフラ庁舎、BLANCA塔基部、CALDERA保守環。",
+  "hook": "彼らが一斉に証言すれば、制度の嘘が崩れる。"
+ },
+ {
+  "cat": "D",
+  "num": 20,
+  "id": "D-20",
+  "nameJa": "七都市自治連合",
+  "nameOrig": "Union des Communes des Éclats",
+  "composition": "地方市長、街区評議員、商店組合、公共サービス責任者。",
+  "magic": "問わない。",
+  "families": "名家中心の象徴政治に対し、都市実務の権限委譲を求める。",
+  "politics": "地方自治、予算分権、都市間協定。",
+  "location": "七都市市庁舎、BLANCA通信会議堂。",
+  "hook": "名家が決めた方針より、自治連合の共同宣言のほうが現実を動かし始める。"
+ },
+ {
+  "cat": "E",
+  "num": 1,
+  "id": "E-01",
+  "nameJa": "反ヴェクサリア結社",
+  "nameOrig": "Lame sous le Registre",
+  "composition": "元書記官、急進学生、解雇技官、外環活動家。",
+  "magic": "問わない。",
+  "families": "VEXALIA打倒を掲げ、TAKANI自治派と一時的に組み、KROSS急進労組とも接触する。",
+  "politics": "制度転覆、台帳公開、中央官僚制の解体。",
+  "location": "RACINE地下印刷街、BLANCA旧信号室。",
+  "hook": "1790年の原始的「魔法恐怖法」草案を本当に持っていると噂される。"
+ },
+ {
+  "cat": "E",
+  "num": 2,
+  "id": "E-02",
+  "nameJa": "禁忌魔術クラブ",
+  "nameOrig": "Club Interdit des Cendres",
+  "composition": "上流の好奇家、優等生、没落貴族の子弟、書庫泥棒。",
+  "magic": "問わない。",
+  "families": "EMBERLYN断簡を崇め、VEXALIA検閲官に追われ、KROSS製の危険器具を闇で買う。",
+  "politics": "禁書開放、秘儀私有、反検閲。",
+  "location": "SOMBRA地下書庫、灰燼文庫周辺の貸間。",
+  "hook": "読書会のつもりが、毎回どこかで本当に術が起動してしまう。"
+ },
+ {
+  "cat": "E",
+  "num": 3,
+  "id": "E-03",
+  "nameJa": "魔石密輸網",
+  "nameOrig": "Réseau Silex Noir",
+  "composition": "港湾荷役人、潜水回収士、税関内通者、山地担ぎ屋。",
+  "magic": "問わない。",
+  "families": "KROSS鉱脈から流出した石を捌き、VEXALIA税関を買収し、TAKANI聖石も盗みの対象にする。",
+  "politics": "非政治を装う利潤第一。",
+  "location": "BLANCA港湾、NOCTURNE横坑、砂塩回廊。",
+  "hook": "ただの密輸品に、主人公級の事件を呼ぶ「生きた欠片」が混じる。"
+ },
+ {
+  "cat": "E",
+  "num": 4,
+  "id": "E-04",
+  "nameJa": "暗殺結社",
+  "nameOrig": "Frères du Dernier Battement",
+  "composition": "退役兵、医療崩れ、舞台出身者、沈黙の仲介者。",
+  "magic": "問わない。",
+  "families": "4家の誰からも依頼が来るが、誰にも属さない。",
+  "politics": "金と均衡を優先する無党派。",
+  "location": "SOMBRA夜劇裏、RACINE旧兵舎、河港の隠れ宿。",
+  "hook": "「石に属する者は殺さない」という不可解な掟がある。"
+ },
+ {
+  "cat": "E",
+  "num": 5,
+  "id": "E-05",
+  "nameJa": "偽血統詐称業者",
+  "nameOrig": "Maison des Faux-Sangs",
+  "composition": "偽造師、検査補助員、産婆、退職査定官。",
+  "magic": "問わない。",
+  "families": "VEXALIA台帳制度の裏寄生者であり、名家の隠し子処理にも関わる。",
+  "politics": "顧客保護を装うが実態は斡旋業。",
+  "location": "RACINE裏法廷街、BLANCA港区、PERDIDA流動区。",
+  "hook": "詐称は犯罪だが、時には子どもを制度から守る唯一の手段でもある。"
+ },
+ {
+  "cat": "E",
+  "num": 6,
+  "id": "E-06",
+  "nameJa": "地下呪術サロン",
+  "nameOrig": "Salon Sous-Verre",
+  "composition": "芸術家、落第学生、民間療術師、追放者。",
+  "magic": "問わない。",
+  "families": "4家の落伍者が同じ卓につく数少ない場で、EMBERLYN文庫断章が流通する。",
+  "politics": "非公式連帯、反規格化、快楽主義。",
+  "location": "SOMBRA裏劇場、PERDIDA夜会部屋。",
+  "hook": "一晩のサロンが、恋愛劇にも革命にも事故にも転ぶ。"
+ },
+ {
+  "cat": "E",
+  "num": 7,
+  "id": "E-07",
+  "nameJa": "台帳改竄屋",
+  "nameOrig": "Faussaires du Cadastre",
+  "composition": "退職書記官、印章職人、法廷下働き、情報屋。",
+  "magic": "持たない。",
+  "families": "VEXALIA記録制度に最も寄生し、名家の不祥事隠蔽にも利用される。",
+  "politics": "依頼主次第の無節操。",
+  "location": "RACINE南書記街裏、国図館周辺。",
+  "hook": "一行の削除で、誰かの存在そのものが国家から消える。"
+ },
+ {
+  "cat": "E",
+  "num": 8,
+  "id": "E-08",
+  "nameJa": "許可証抜け道商",
+  "nameOrig": "Courtiers des Passes Grises",
+  "composition": "代書人崩れ、門番の縁者、賄賂仲介、運び屋。",
+  "magic": "問わない。",
+  "families": "VEXALIA窓口制度の死角で繁殖し、工房や商館とも裏で繋がる。",
+  "politics": "非政治、ただし行政手数料高騰には反発。",
+  "location": "港の門前、法廷丘下、辺境検問所。",
+  "hook": "正規の道より裏ルートのほうが安全な物資と人間がいる。"
+ },
+ {
+  "cat": "E",
+  "num": 9,
+  "id": "E-09",
+  "nameJa": "夢薬密売団",
+  "nameOrig": "Nuit-Dose Syndikat",
+  "composition": "SOMBRAの薬師崩れ、劇場関係者、街娼、運び屋。",
+  "magic": "持つ。",
+  "families": "SOMBRA芸術圏に食い込み、VEXALIA風紀警察の主要標的。",
+  "politics": "反道徳規制、裏収益第一。",
+  "location": "SOMBRA夜劇回廊、BLANCA裏港。",
+  "hook": "夢薬で見た幻が、本当に深部の記憶と接続している者がいる。"
+ },
+ {
+  "cat": "E",
+  "num": 10,
+  "id": "E-10",
+  "nameJa": "深部潜行団",
+  "nameOrig": "Compagnie de la Veine Basse",
+  "composition": "無許可探査者、旧坑道案内人、若い考古屋、命知らずの配信者。",
+  "magic": "問わない。",
+  "families": "TAKANI巡守隊に追われ、KROSS旧鉱図を盗み、EMBERLYN伝説に憧れる。",
+  "politics": "禁域開放、真実優先。",
+  "location": "NOCTURNE深部口、旧横坑網、隕落盆地禁帯。",
+  "hook": "彼らの映像記録が、世界観の核心をいちばん早く掘り当てる。"
+ },
+ {
+  "cat": "E",
+  "num": 11,
+  "id": "E-11",
+  "nameJa": "失踪者逃がし路",
+  "nameOrig": "Chemin des Disparus",
+  "composition": "修道者、産婆、港湾民、古い通詞、協力学生。",
+  "magic": "問わない。",
+  "families": "どの家から逃げる者も受け入れるため、全勢力から危険視される。",
+  "politics": "人道主義、戸籍抹消支援。",
+  "location": "山地巡礼路、河港宿、群島渡船。",
+  "hook": "救済網のはずが、消された証人や王家級の秘密も流れ込む。"
+ },
+ {
+  "cat": "E",
+  "num": 12,
+  "id": "E-12",
+  "nameJa": "黒市場測量師",
+  "nameOrig": "Jauge Noire",
+  "composition": "免許剥奪査定官、非公認検査士、保険詐欺師。",
+  "magic": "問わない。",
+  "families": "VEXALIAの独占資格を侵食し、非合法工房や商館に雇われる。",
+  "politics": "反独占、利益優先。",
+  "location": "CALDERA裏工房、BLANCA保険街、PERDIDA試験区。",
+  "hook": "公式より正確な黒測量結果が出ることがある。"
+ },
+ {
+  "cat": "E",
+  "num": 13,
+  "id": "E-13",
+  "nameJa": "偽護符工房",
+  "nameOrig": "Ateliers du Sceau Creux",
+  "composition": "失敗彫師、粗悪品ブローカー、街角売子、模倣デザイナー。",
+  "magic": "持つ。",
+  "families": "KROSS印章市場を荒らし、VEXALIAの安全基準を迂回する。",
+  "politics": "非政治、コピー文化擁護。",
+  "location": "SOMBRA路地市、外環市場、港湾雑貨街。",
+  "hook": "偽物の中に、本物より危険な偶発品が紛れる。"
+ },
+ {
+  "cat": "E",
+  "num": 14,
+  "id": "E-14",
+  "nameJa": "墓所採掘団",
+  "nameOrig": "Creuseurs des Aïeux",
+  "composition": "盗掘人、骨董ブローカー、落ちぶれ学徒、運搬屋。",
+  "magic": "問わない。",
+  "families": "EMBERLYN旧墓所やTAKANI祖地をも標的にし、4家から等しく憎まれる。",
+  "politics": "非政治、遺物利潤主義。",
+  "location": "山地墓域、旧家地下聖堂、戦場跡。",
+  "hook": "盗んだものが財宝ではなく、封印鍵である場合がある。"
+ },
+ {
+  "cat": "E",
+  "num": 15,
+  "id": "E-15",
+  "nameJa": "密録写本団",
+  "nameOrig": "Copistes de l'Ombre",
+  "composition": "写字生崩れ、印刷工、学生、司書補。",
+  "magic": "持たない。",
+  "families": "EMBERLYN文庫と国記館の資料を盗み写し、VEXALIA検閲を迂回する。",
+  "politics": "情報流通至上、禁書限定公開の破壊。",
+  "location": "RACINE印刷地下、灰燼文庫周辺。",
+  "hook": "どの版が原本に近いか誰も分からず、写本自体が歴史を作っていく。"
+ },
+ {
+  "cat": "E",
+  "num": 16,
+  "id": "E-16",
+  "nameJa": "祖霊写真会",
+  "nameOrig": "Chambre des Visages",
+  "composition": "新技術好きの若者、葬送業者、霊性写真師、上流顧客。",
+  "magic": "問わない。",
+  "families": "4家の祖先像需要に支えられつつ、死者商売として軽蔑もされる。",
+  "politics": "表向き中立、実際は規制緩和派。",
+  "location": "BLANCA映像街、RACINE葬儀区、SOMBRA芸術回廊。",
+  "hook": "撮れたはずのない人物が像板に映り込む。"
+ },
+ {
+  "cat": "E",
+  "num": 17,
+  "id": "E-17",
+  "nameJa": "血印賭場",
+  "nameOrig": "Cercle Rouge",
+  "composition": "賭博師、没落貴族、工員、裏医者、密売屋。",
+  "magic": "問わない。",
+  "families": "名家の愚行も庶民の窮迫も等しく吸い込む。",
+  "politics": "非政治、ただし取締り強化には激しい反発。",
+  "location": "CALDERA夜市場、SOMBRA地階酒場、河港倉庫。",
+  "hook": "ここで賭けられるのは金だけでなく、許可証と血統秘密である。"
+ },
+ {
+  "cat": "E",
+  "num": 18,
+  "id": "E-18",
+  "nameJa": "工廠破壊細胞",
+  "nameOrig": "Sabotage Glutkern",
+  "composition": "急進労働者、失業技師、戦争孤児、過激学生。",
+  "magic": "問わない。",
+  "families": "KROSS産業基盤を敵視しつつ、VEXALIA警察をより強める結果も生む。",
+  "politics": "直接行動、反軍需、反工廠。",
+  "location": "CALDERA旧工場群、PERDIDA外縁倉庫。",
+  "hook": "破壊対象に本当に壊すべきものと壊してはいけないものが混ざっている。"
+ },
+ {
+  "cat": "E",
+  "num": 19,
+  "id": "E-19",
+  "nameJa": "石声盗聴会",
+  "nameOrig": "Oreilles de Schiste",
+  "composition": "半端な対話師、記憶商人、好事家、情報屋。",
+  "magic": "持つ。",
+  "families": "TAKANIの禁忌を破り、EMBERLYN伝承と混同しながら「壁の声」を売る。",
+  "politics": "情報商品化、倫理無視。",
+  "location": "NOCTURNE石段街、SOMBRA裏サロン。",
+  "hook": "壁から聞いたはずの声が、誰かに仕込まれた偽記憶かもしれない。"
+ },
+ {
+  "cat": "E",
+  "num": 20,
+  "id": "E-20",
+  "nameJa": "灰燼抜書き隊",
+  "nameOrig": "Cendrelift",
+  "composition": "文庫助手、孤児出身の使い走り、若手研究者、運び屋。",
+  "magic": "問わない。",
+  "families": "EMBERLYN閉架資料を外へ流し、VEXALIA監査を欺く地下配送網。",
+  "politics": "学術共有、旧家秘匿への反抗。",
+  "location": "灰燼文庫学院、RACINE古書街、BLANCA放送区。",
+  "hook": "盗まれた一葉が、主人公の出生や家の成り立ちを暴く。"
+ },
+ {
+  "cat": "F",
+  "num": 1,
+  "id": "F-01",
+  "nameJa": "王立法廷公報",
+  "nameOrig": "Bulletin de la Couronne",
+  "composition": "法廷記者、官報編集官、裁判書記官。",
+  "magic": "持たない。",
+  "families": "VEXALIAの公式声帯であり、4家の公的声明を整形して流す。",
+  "politics": "体制維持、法的正統性の強調。",
+  "location": "RACINE法廷丘。",
+  "hook": "省かれた一段落にこそ、いちばん重要な真実がある。"
+ },
+ {
+  "cat": "F",
+  "num": 2,
+  "id": "F-02",
+  "nameJa": "首都日報",
+  "nameOrig": "Le Quotidien Racine",
+  "composition": "中産読者向けの日刊紙。法、議会、学院、人事に強い。",
+  "magic": "問わない。",
+  "families": "VEXALIA寄りだが、名家スキャンダルは競って書く。",
+  "politics": "穏健改革、制度信頼、公開討論支持。",
+  "location": "RACINE中心部、全国流通。",
+  "hook": "一面に載るか載らないかで、人ひとりの政治生命が決まる。"
+ },
+ {
+  "cat": "F",
+  "num": 3,
+  "id": "F-03",
+  "nameJa": "炉都新報",
+  "nameOrig": "Caldera Morgenblatt",
+  "composition": "労働者、親方、工房主、事故遺族が読む工業都市紙。",
+  "magic": "問わない。",
+  "families": "KROSS系産業への愛着と批判を同時に持ち、VEXALIA規制には辛辣。",
+  "politics": "労働重視、産業自治、事故隠蔽反対。",
+  "location": "CALDERA、周辺工業圏。",
+  "hook": "社説欄がストライキの号砲になることがある。"
+ },
+ {
+  "cat": "F",
+  "num": 4,
+  "id": "F-04",
+  "nameJa": "白塔通信",
+  "nameOrig": "Blanchetour Signal",
+  "composition": "技官、学生、起業家、放送関係者。",
+  "magic": "問わない。",
+  "families": "自由魔法党やBLANCAの新興層と近く、VEXALIAの古い統治言語を嫌う。",
+  "politics": "規制緩和、技術公開、国際連携。",
+  "location": "BLANCA白塔群。",
+  "hook": "通信速度の速さゆえに、誤報も革命も一番早い。"
+ },
+ {
+  "cat": "F",
+  "num": 5,
+  "id": "F-05",
+  "nameJa": "夢劇評壇",
+  "nameOrig": "Revue des Songes",
+  "composition": "芸術家、批評家、上流サロン、学生。",
+  "magic": "問わない。",
+  "families": "名家の庇護を受けながら、その審美政治を批判する。",
+  "politics": "芸術自治、検閲反対、感性優位。",
+  "location": "SOMBRA結晶劇場街。",
+  "hook": "新作劇評が、実質的な政治宣言として読まれる。"
+ },
+ {
+  "cat": "F",
+  "num": 6,
+  "id": "F-06",
+  "nameJa": "深部週報",
+  "nameOrig": "Hebdo Profond",
+  "composition": "対話師、考古学者、返還派、境界住民。",
+  "magic": "問わない。",
+  "families": "TAKANIと保全派に近く、KROSS採掘派と緊張する。",
+  "politics": "聖地保全、返還支持、現地知尊重。",
+  "location": "NOCTURNE、隕落盆地保全圏。",
+  "hook": "地味な週報なのに、深部の真実では大新聞より速い。"
+ },
+ {
+  "cat": "F",
+  "num": 7,
+  "id": "F-07",
+  "nameJa": "田園綴",
+  "nameOrig": "Gazette Verde",
+  "composition": "農民、運河守、地方議員、薬草師。",
+  "magic": "問わない。",
+  "families": "どの家にも強くは寄らず、都市中心主義への反発が強い。",
+  "politics": "農村保護、保全投資、物流公正。",
+  "location": "VERDE、外縁農村。",
+  "hook": "小さな農事欄が、七都市の供給危機を最初に告げる。"
+ },
+ {
+  "cat": "F",
+  "num": 8,
+  "id": "F-08",
+  "nameJa": "港湾相場紙",
+  "nameOrig": "Feuille des Quais",
+  "composition": "商館、荷役人、両替商、潜水回収士。",
+  "magic": "問わない。",
+  "families": "4家の政治よりも荷と価格を優先し、その分だけ冷徹に真実を書く。",
+  "politics": "商業現実主義、関税軽減。",
+  "location": "BLANCA港湾、RACINE河港。",
+  "hook": "政府発表より先に、市場は危機を知っている。"
+ },
+ {
+  "cat": "F",
+  "num": 9,
+  "id": "F-09",
+  "nameJa": "学院広間壁新聞",
+  "nameOrig": "Murmures d'Académie",
+  "composition": "学生、若手教員、寮監視員、匿名投稿者。",
+  "magic": "問わない。",
+  "families": "名家子弟の不祥事も庶民学生の怒りも同じ壁に貼られる。",
+  "politics": "反権威、反学費、告発主義。",
+  "location": "RACINE学院、BLANCA通信学寮、灰燼文庫学院。",
+  "hook": "匿名の一枚紙が、教授会より強い影響力を持つ夜がある。"
+ },
+ {
+  "cat": "F",
+  "num": 10,
+  "id": "F-10",
+  "nameJa": "パンフレット屋連",
+  "nameOrig": "Pamphletiers Libres",
+  "composition": "小印刷業者、街頭弁士、選挙屋、アジテーター。",
+  "magic": "問わない。",
+  "families": "依頼主次第で誰の味方にもなり、誰の敵にもなる。",
+  "politics": "言論自由を掲げるが、煽動にも強い。",
+  "location": "RACINE印刷区、CALDERA労働広場、PERDIDA街頭。",
+  "hook": "大新聞が書けないことほど、パンフレットはよく燃える。"
+ },
+ {
+  "cat": "F",
+  "num": 11,
+  "id": "F-11",
+  "nameJa": "地下印刷網",
+  "nameOrig": "Presse Sous-Sol",
+  "composition": "違法印刷工、運び屋、隠れ編集者、街角売子。",
+  "magic": "持たない。",
+  "families": "VEXALIA検閲を避けるために生まれ、今では4家すべての弱点を暴く。",
+  "politics": "反検閲、内部告発擁護。",
+  "location": "RACINE地下工房、BLANCA旧送信室、SOMBRA倉庫街。",
+  "hook": "印刷機が押収されるたび、別の地下室から新号が出る。"
+ },
+ {
+  "cat": "F",
+  "num": 12,
+  "id": "F-12",
+  "nameJa": "露店歌聞",
+  "nameOrig": "Chanson-Crio",
+  "composition": "行商人、歌い手、辻芸人、子ども配達。",
+  "magic": "問わない。",
+  "families": "名家の物語も風刺も、最終的には庶民の歌に変わる。",
+  "politics": "流動的、民意反映型。",
+  "location": "市場、運河沿い、外環広場。",
+  "hook": "歌は出所不明だが、嘘より速く真実を運ぶことがある。"
+ },
+ {
+  "cat": "F",
+  "num": 13,
+  "id": "F-13",
+  "nameJa": "宮廷論説誌",
+  "nameOrig": "Revue du Sceptre",
+  "composition": "上流社交界、法学者、宮廷書記、礼装層。",
+  "magic": "問わない。",
+  "families": "VEXALIAに近く、EMBERLYNを文化装置として扱い、TAKANIをしばしば異国趣味化する。",
+  "politics": "体制派、格式主義、漸進改革。",
+  "location": "RACINE旧王冠区。",
+  "hook": "上品な言い回しの中に、階級差別がきれいに埋め込まれている。"
+ },
+ {
+  "cat": "F",
+  "num": 14,
+  "id": "F-14",
+  "nameJa": "血統艶聞誌",
+  "nameOrig": "Sang et Salon",
+  "composition": "好奇心旺盛な中産、使用人、サロン読者、学生。",
+  "magic": "問わない。",
+  "families": "4家の恋愛と醜聞を飯の種にし、ときに政治情報誌より強い破壊力を持つ。",
+  "politics": "無節操、スキャンダル市場主義。",
+  "location": "RACINE、SOMBRA、学院寮。",
+  "hook": "軽薄な gossip が、本物の血統秘密を暴く入口になる。"
+ },
+ {
+  "cat": "F",
+  "num": 15,
+  "id": "F-15",
+  "nameJa": "事故告発通信",
+  "nameOrig": "Lettre des Défaillances",
+  "composition": "労災遺族、内部告発者、現場技官、町医者。",
+  "magic": "問わない。",
+  "families": "4家の責任逃れを執拗に追い、現場証言を集める。",
+  "politics": "真相公開、補償拡大、時効撤廃。",
+  "location": "CALDERA、RACINE慰霊院、BLANCA保険街。",
+  "hook": "誰かが止めたくて仕方のない連載ほど、読者は離れない。"
+ },
+ {
+  "cat": "F",
+  "num": 16,
+  "id": "F-16",
+  "nameJa": "移民多言語放送",
+  "nameOrig": "Radio Port-Neuf",
+  "composition": "二世司会者、港湾通詞、料理人、船員、音楽家。",
+  "magic": "問わない。",
+  "families": "名家語では拾えない現場情報を持ち、港湾政治への影響力が増している。",
+  "politics": "市民権拡張、多言語共存、港区自治。",
+  "location": "BLANCA共振塔港、群島中継所。",
+  "hook": "世界の外から来る言葉が、内側の秩序をゆっくり書き換える。"
+ },
+ {
+  "cat": "F",
+  "num": 17,
+  "id": "F-17",
+  "nameJa": "工房技報",
+  "nameOrig": "Werkbericht",
+  "composition": "技師、親方、保守手、設計学生。",
+  "magic": "問わない。",
+  "families": "KROSS文化圏に近いが、現場データを共有するためVEXALIA官僚より信頼されることもある。",
+  "politics": "技術公開、事故共有、工房横断協力。",
+  "location": "CALDERA、BLANCA技官区、PERDIDA試作街。",
+  "hook": "無味乾燥な技報の片隅に、世界崩壊の予兆が載る。"
+ },
+ {
+  "cat": "F",
+  "num": 18,
+  "id": "F-18",
+  "nameJa": "祖地返還通信",
+  "nameOrig": "Terre-Rendue",
+  "composition": "返還運動家、弁護士、共同体長老、学生支援者。",
+  "magic": "問わない。",
+  "families": "TAKANI自治派と深く結び、VEXALIA官僚制を主要批判対象に置く。",
+  "politics": "返還、共同管理、償いの制度化。",
+  "location": "NOCTURNE、山地集会所、首都の支援印刷所。",
+  "hook": "一つの地図と一つの証言で、数百年の所有論が崩れる。"
+ },
+ {
+  "cat": "F",
+  "num": 19,
+  "id": "F-19",
+  "nameJa": "少年冒険週刊",
+  "nameOrig": "Jeune Éclat",
+  "composition": "子ども、寄宿学校生、若い職人見習い。",
+  "magic": "問わない。",
+  "families": "4家をヒーローにも悪役にも描き、若い想像力の中で再編成する。",
+  "politics": "表向き中立、実際は教育的進歩派。",
+  "location": "七都市書店、学校購買。",
+  "hook": "子ども向けの連載が、次世代の政治神話を決める。"
+ },
+ {
+  "cat": "F",
+  "num": 20,
+  "id": "F-20",
+  "nameJa": "共振配信局",
+  "nameOrig": "Resonanz Cast",
+  "composition": "配信者、切り抜き編集者、若手技官、広告主。",
+  "magic": "問わない。",
+  "families": "名家子弟の発言ひとつが瞬時に拡散され、広報管理が追いつかない。",
+  "politics": "即時性重視、スキャンダル消費、技術自由。",
+  "location": "BLANCA白塔群、PERDIDA流動区。",
+  "hook": "生配信で起きた事故は、誰にも編集し直せない。"
+ },
+ {
+  "cat": "G",
+  "num": 1,
+  "id": "G-01",
+  "nameJa": "王立常備軍",
+  "nameOrig": "Armée Regia",
+  "composition": "士官、徴募兵、技術中隊、補給部隊。",
+  "magic": "問わない。",
+  "families": "VEXALIA指揮下、KROSS装備依存、TAKANI地形知には弱い。",
+  "politics": "国家秩序、中央集権、防衛優先。",
+  "location": "RACINE大兵営、各都市駐屯地。",
+  "hook": "インフラ危機で、敵より先に補給線が崩れる。"
+ },
+ {
+  "cat": "G",
+  "num": 2,
+  "id": "G-02",
+  "nameJa": "境界警備隊",
+  "nameOrig": "Garde des Lisières",
+  "composition": "山岳警備兵、検問官、追跡犬手、辺境通詞。",
+  "magic": "問わない。",
+  "families": "TAKANI自治圏と最も摩擦が多く、密輸取締りでは商館とも癒着する。",
+  "politics": "検問強化、境界線維持。",
+  "location": "セケ辺界線、砂塩回廊、北方街道。",
+  "hook": "守るべき線が、歴史的には引かれるべきでなかった線かもしれない。"
+ },
+ {
+  "cat": "G",
+  "num": 3,
+  "id": "G-03",
+  "nameJa": "名家儀仗私兵",
+  "nameOrig": "Gardes Héraldiques",
+  "composition": "儀仗兵、近衛、屋敷守衛、儀礼指揮官。",
+  "magic": "問わない。",
+  "families": "各家固有の私兵文化を残し、公式には警備、実態は牽制装置。",
+  "politics": "家名忠誠、保守。",
+  "location": "4家の館と式典街。",
+  "hook": "儀礼兵の小競り合いが、象徴戦争を現実の暴力に変える。"
+ },
+ {
+  "cat": "G",
+  "num": 4,
+  "id": "G-04",
+  "nameJa": "ヴェクサリア監査憲兵",
+  "nameOrig": "Gendarmerie Vexale",
+  "composition": "憲兵、台帳押収官、法廷執行官、監査補。",
+  "magic": "問わない。",
+  "families": "VEXALIAそのものの武装手足で、名家外から最も恐れられる。",
+  "politics": "登録制度擁護、抜き打ち監査強化。",
+  "location": "RACINE、BLANCA通信庁、港湾検問所。",
+  "hook": "合法性を盾にした暴力は、違法組織より止めにくい。"
+ },
+ {
+  "cat": "G",
+  "num": 5,
+  "id": "G-05",
+  "nameJa": "クロス工廠保安団",
+  "nameOrig": "Werkwacht Kross",
+  "composition": "工場警備、危険物保管兵、夜間巡視、事故初動隊。",
+  "magic": "問わない。",
+  "families": "KROSS企業防衛の牙城で、労働者同盟とは犬猿の仲。",
+  "politics": "生産維持、スト破り寄り。",
+  "location": "CALDERA工廠群、配管環。",
+  "hook": "工場を守る組織が、危険の真相も最初に隠せてしまう。"
+ },
+ {
+  "cat": "G",
+  "num": 6,
+  "id": "G-06",
+  "nameJa": "タカニ聖地巡守隊",
+  "nameOrig": "Veilleurs Takani",
+  "composition": "対話補助者、案内人、若手巡守、長老補。",
+  "magic": "問わない。",
+  "families": "TAKANI共同体の自律防衛であり、国家法との折り合いが常に問題になる。",
+  "politics": "自治、聖地防衛、共同体承認優先。",
+  "location": "TAKANI山地、旧聖石帯、深部口周辺。",
+  "hook": "法的には半合法だが、彼らなしでは誰も深部を生きて通れない。"
+ },
+ {
+  "cat": "G",
+  "num": 7,
+  "id": "G-07",
+  "nameJa": "エンバーリン館衛士",
+  "nameOrig": "Garde Cendrée",
+  "composition": "旧家私兵、書庫衛士、儀礼門衛、文庫番。",
+  "magic": "問わない。",
+  "families": "EMBERLYNの残存威信を守る最後の壁で、しばしば家より資料を守る。",
+  "politics": "旧家保全、文庫防衛。",
+  "location": "EMBERLYN旧館、灰燼文庫学院。",
+  "hook": "没落家の衛士は、最後まで何を守るべきかで割れている。"
+ },
+ {
+  "cat": "G",
+  "num": 8,
+  "id": "G-08",
+  "nameJa": "魔法違反取締局",
+  "nameOrig": "Bureau des Infractions Arcaniques",
+  "composition": "捜査官、封印技師、証拠保全員、立会医。",
+  "magic": "問わない。",
+  "families": "VEXALIA法制の象徴で、KROSS器材と白塔通信網に依存する。",
+  "politics": "違反摘発、無許可術の厳罰化。",
+  "location": "RACINE中央局、七都市支部。",
+  "hook": "正義の名で隠された証拠を抱え込むことも多い。"
+ },
+ {
+  "cat": "G",
+  "num": 9,
+  "id": "G-09",
+  "nameJa": "免許監査隊",
+  "nameOrig": "Inspecteurs du Permis",
+  "composition": "巡回査察官、台帳照合員、現場立会人。",
+  "magic": "問わない。",
+  "families": "VEXALIA窓口制度の牙であり、ギルドと自営業者の永遠の敵。",
+  "politics": "免許制度擁護、抜き打ち監査強化。",
+  "location": "市場、工房、港湾、学校。",
+  "hook": "書類一枚足りないだけで、善人も犯罪者にできる。"
+ },
+ {
+  "cat": "G",
+  "num": 10,
+  "id": "G-10",
+  "nameJa": "鉱山警備隊",
+  "nameOrig": "Bergwerk Schutz",
+  "composition": "坑道警備、爆薬管理、鉱脈監視、事故封鎖要員。",
+  "magic": "問わない。",
+  "families": "KROSS鉱区の実力装置で、TAKANIとの現場衝突が絶えない。",
+  "politics": "鉱区防衛、資源優先。",
+  "location": "NOCTURNE、山地鉱区、中央炉都北坑。",
+  "hook": "何を「不審者」と呼ぶかで、先住民も研究者も犯罪者に変わる。"
+ },
+ {
+  "cat": "G",
+  "num": 11,
+  "id": "G-11",
+  "nameJa": "海上監視隊",
+  "nameOrig": "Flotte des Vigies",
+  "composition": "哨戒船、海図係、通関官、信号兵。",
+  "magic": "問わない。",
+  "families": "VEXALIA海上権力の先兵で、商館と移民組織の双方に睨まれる。",
+  "politics": "関税維持、密輸取締り、海上秩序。",
+  "location": "BLANCA沖、南方群島航路。",
+  "hook": "海上で拾うのは密輸品だけでなく、世界の外からの情報である。"
+ },
+ {
+  "cat": "G",
+  "num": 12,
+  "id": "G-12",
+  "nameJa": "河運税関兵",
+  "nameOrig": "Douanes Fluviales",
+  "composition": "巡河兵、積荷検査官、水門書記、夜警。",
+  "magic": "問わない。",
+  "families": "商館の恨みを買い、労働者の賄賂と隣り合わせ、VEXALIAの収入源を守る。",
+  "politics": "通行税維持、抜け荷取締り。",
+  "location": "RACINE河港、VERDE運河、CALDERA北渠。",
+  "hook": "川は境界よりも流通を選ぶため、税関はいつも負け気味である。"
+ },
+ {
+  "cat": "G",
+  "num": 13,
+  "id": "G-13",
+  "nameJa": "白塔通信保安局",
+  "nameOrig": "Sécurité Blanchetour",
+  "composition": "通信監視官、切断技師、暗号解析者、放送検閲官。",
+  "magic": "問わない。",
+  "families": "BLANCAの情報秩序を握り、VEXALIAも全面には制御できない独立色を持つ。",
+  "politics": "通信安定、情報統制、サイバー寄り監視。",
+  "location": "BLANCA白塔群、各中継塔。",
+  "hook": "彼らは世界で一番多くの秘密を聞き、世界で一番秘密を持ち出しやすい。"
+ },
+ {
+  "cat": "G",
+  "num": 14,
+  "id": "G-14",
+  "nameJa": "深部救難隊",
+  "nameOrig": "Secours Profonds",
+  "composition": "救助士、潜行医、地図係、対話補助者。",
+  "magic": "問わない。",
+  "families": "TAKANI案内とKROSS装備が両方不可欠で、VEXALIA指揮系統は遅い。",
+  "politics": "人命最優先、禁域実務の柔軟化。",
+  "location": "NOCTURNE深部口、隕落盆地救難局。",
+  "hook": "助けに行くたび、公式には存在しない空洞や遺構を見つけてしまう。"
+ },
+ {
+  "cat": "G",
+  "num": 15,
+  "id": "G-15",
+  "nameJa": "事故封鎖部隊",
+  "nameOrig": "Corps de Confinement",
+  "composition": "封印技師、消火班、衛生兵、記録官。",
+  "magic": "問わない。",
+  "families": "VEXALIA命令で動くが、KROSS技術なしでは何も封じられない。",
+  "politics": "迅速封鎖、情報抑制、二次災害防止。",
+  "location": "各都市の事故対応局。",
+  "hook": "人を守るための封鎖が、真実を葬る封鎖にもなる。"
+ },
+ {
+  "cat": "G",
+  "num": 16,
+  "id": "G-16",
+  "nameJa": "反密輸機動団",
+  "nameOrig": "Brigade Contrebande",
+  "composition": "港湾捜査官、山地追跡者、税関犬手、通信解析員。",
+  "magic": "問わない。",
+  "families": "商館と地下組織の双方に戦いを挑み、しばしば政治圧力で足を止められる。",
+  "politics": "密輸壊滅、私設武装取り締まり。",
+  "location": "BLANCA港湾、NOCTURNE山道、砂塩回廊。",
+  "hook": "追っている相手が、時には真実の運び手でもある。"
+ },
+ {
+  "cat": "G",
+  "num": 17,
+  "id": "G-17",
+  "nameJa": "聖地保全巡察",
+  "nameOrig": "Patrouille Cequae",
+  "composition": "共同巡察官、考古保全員、地域通訳、保全警護。",
+  "magic": "問わない。",
+  "families": "TAKANI自治派とVEXALIA保全派の折衷機関で、KROSS採掘派から嫌われる。",
+  "politics": "聖地共同管理、限定公開、実地調停。",
+  "location": "隕落盆地保全圏、旧聖石帯。",
+  "hook": "中立を掲げるほど、どちらからも裏切り者扱いされる。"
+ },
+ {
+  "cat": "G",
+  "num": 18,
+  "id": "G-18",
+  "nameJa": "青年予備訓練団",
+  "nameOrig": "Jeunes Réserves",
+  "composition": "高校年齢の予備役候補、体育教師、退役教官。",
+  "magic": "問わない。",
+  "families": "名家の英雄神話を教えつつ、実際の訓練は都市治安維持寄り。",
+  "politics": "愛国、秩序、進路斡旋。",
+  "location": "七都市学校、競技場、訓練野。",
+  "hook": "スポーツと軍事教育の境目が曖昧で、若者文化とも接続する。"
+ },
+ {
+  "cat": "G",
+  "num": 19,
+  "id": "G-19",
+  "nameJa": "港湾夜警団",
+  "nameOrig": "Nachtwache Quais",
+  "composition": "私設夜警、船宿主、退役荷役人、街灯番。",
+  "magic": "問わない。",
+  "families": "商館の私兵と協力も対立もする半公半私の治安装置。",
+  "politics": "港湾自治、現場裁量、外部警察不信。",
+  "location": "BLANCA、RACINE河港、SOMBRA夜舟岸。",
+  "hook": "夜の秩序は法ではなく顔見知りで保たれている。"
+ },
+ {
+  "cat": "G",
+  "num": 20,
+  "id": "G-20",
+  "nameJa": "外縁自警組",
+  "nameOrig": "Milice des Anneaux",
+  "composition": "外環住民、店主、母親会、失業兵、修理工。",
+  "magic": "問わない。",
+  "families": "どの家にも頼れない地区が、自分たちで防衛を始めた集団。",
+  "politics": "地区防衛、警察不信、時に排外的。",
+  "location": "七都市外環、難民街、運河末端。",
+  "hook": "共同体防衛は簡単に暴力的排除へ滑る。"
+ },
+ {
+  "cat": "H",
+  "num": 1,
+  "id": "H-01",
+  "nameJa": "オレル商館",
+  "nameOrig": "Maison Aurel",
+  "composition": "首都系の老舗商館。管理職、仲買人、法律顧問、船荷組を抱える。",
+  "magic": "問わない。",
+  "families": "VEXALIA宮廷に最も近い御用商館で、保守的だが手堅い。",
+  "politics": "中央安定、関税維持、契約主義。",
+  "location": "RACINE商人街、河港ノール。",
+  "hook": "礼儀正しい老舗ほど、最も深い政治資金ルートを持つ。"
+ },
+ {
+  "cat": "H",
+  "num": 2,
+  "id": "H-02",
+  "nameJa": "ヘルムヴァルト商館",
+  "nameOrig": "Handelshaus Helmwalt",
+  "composition": "重工業資材と機関部品を扱う工業系商館。",
+  "magic": "問わない。",
+  "families": "KROSS工房群と結びつき、価格協定ではしばしば批判される。",
+  "politics": "産業優先、労務安定、価格統制反対。",
+  "location": "CALDERA中央炉都、BLANCA物流塔。",
+  "hook": "ひとつの納入停止で都市インフラが止まる。"
+ },
+ {
+  "cat": "H",
+  "num": 3,
+  "id": "H-03",
+  "nameJa": "マルソー航運",
+  "nameOrig": "Compagnie Marceaux",
+  "composition": "船主、船員、保険代理、港湾倉庫番。",
+  "magic": "問わない。",
+  "families": "4家すべてに荷を運ぶ実利派で、港湾政治に強い。",
+  "politics": "港湾開放、海上保険充実、移民輸送合法化。",
+  "location": "BLANCA港湾、群島航路。",
+  "hook": "彼らの船荷台帳は、誰が何をどこへ送ったかの巨大な秘密庫である。"
+ },
+ {
+  "cat": "H",
+  "num": 4,
+  "id": "H-04",
+  "nameJa": "ブルム連環商会",
+  "nameOrig": "Blum Ringhandel",
+  "composition": "都市外環の小売網を束ねる新興流通商会。",
+  "magic": "問わない。",
+  "families": "名家の直轄店では拾わない大衆消費を押さえ、外環票田にも影響力を持つ。",
+  "politics": "物価安定、流通自由、家賃抑制。",
+  "location": "七都市外環商店街。",
+  "hook": "安売り網の裏に、政治動員用の配送網が隠れている。"
+ },
+ {
+  "cat": "H",
+  "num": 5,
+  "id": "H-05",
+  "nameJa": "魔石取引所",
+  "nameOrig": "Bourse Lithique",
+  "composition": "相場師、鑑定人、仲買、監視官。",
+  "magic": "問わない。",
+  "families": "KROSS採掘量、VERDE育成量、VEXALIA規制の三つに振り回される。",
+  "politics": "市場重視、情報非対称維持。",
+  "location": "RACINE金融街、CALDERA先物室。",
+  "hook": "価格の急騰より前に、誰かが必ず知っている。"
+ },
+ {
+  "cat": "H",
+  "num": 6,
+  "id": "H-06",
+  "nameJa": "中央炉先物会",
+  "nameOrig": "Glutkern Terminbörse",
+  "composition": "先物仲介人、工業投機家、保険計算士。",
+  "magic": "問わない。",
+  "families": "KROSS産業の未来を数字にするが、現場労働者には憎まれる。",
+  "politics": "自由市場、投機防衛、データ独占。",
+  "location": "CALDERA中央炉都。",
+  "hook": "実際の事故より先に、投機が都市を壊すことがある。"
+ },
+ {
+  "cat": "H",
+  "num": 7,
+  "id": "H-07",
+  "nameJa": "白塔信用庫",
+  "nameOrig": "Crédit Blanchetour",
+  "composition": "銀行員、通信担保士、技術審査員、若手起業家。",
+  "magic": "問わない。",
+  "families": "BLANCAの新興技術派と結び、VEXALIA老派からは軽薄と見られる。",
+  "politics": "技術融資、起業支援、規制緩和。",
+  "location": "BLANCA白塔群。",
+  "hook": "将来性に融資する銀行は、未来を先に選別してしまう。"
+ },
+ {
+  "cat": "H",
+  "num": 8,
+  "id": "H-08",
+  "nameJa": "ドルン事故保険組合",
+  "nameOrig": "Dorn Assecuranz",
+  "composition": "保険計算士、査定員、弁護士、病院連携員。",
+  "magic": "問わない。",
+  "families": "VEXALIA査定制度と癒着しつつ、4家の事故にも冷酷に値段を付ける。",
+  "politics": "支払最小化、監査強化、危険職加算の上昇。",
+  "location": "RACINE保険街、CALDERA労災院前。",
+  "hook": "保障対象外の条項が、物語上もっとも残酷な一文になる。"
+ },
+ {
+  "cat": "H",
+  "num": 9,
+  "id": "H-09",
+  "nameJa": "両替商組合",
+  "nameOrig": "Changeurs Réunis",
+  "composition": "両替商、算盤師、送金仲介、旅人相手の窓口。",
+  "magic": "問わない。",
+  "families": "名家政治には距離を取りつつ、実際は全家の金の出入りを見ている。",
+  "politics": "通貨安定、港湾自由、監査緩和。",
+  "location": "港湾、市場、街道宿。",
+  "hook": "金の流れは、表の同盟より先に裏切りを知らせる。"
+ },
+ {
+  "cat": "H",
+  "num": 10,
+  "id": "H-10",
+  "nameJa": "国境越え隊商連",
+  "nameOrig": "Caravanbund Ferrosable",
+  "composition": "隊商主、護衛、砂路通詞、獣使い。",
+  "magic": "問わない。",
+  "families": "どの家にも属さず、辺境物流の握り手として交渉力を持つ。",
+  "politics": "関税軽減、国境柔軟化、交易保護。",
+  "location": "砂塩回廊、内陸街道、北方交易宿。",
+  "hook": "道を知る者は地図を書き換えられる。"
+ },
+ {
+  "cat": "H",
+  "num": 11,
+  "id": "H-11",
+  "nameJa": "南群島香料商",
+  "nameOrig": "Maison Coralline",
+  "composition": "群島出身商人、料理人、香料鑑定、海路仲介。",
+  "magic": "問わない。",
+  "families": "港湾文化を変える新興勢力で、VEXALIA旧商館とは競争関係。",
+  "politics": "港区自治、輸入税軽減、多文化市場。",
+  "location": "BLANCA港、SOMBRA夜市場。",
+  "hook": "料理と香りの流行が、政治同盟と若者文化まで変えていく。"
+ },
+ {
+  "cat": "H",
+  "num": 12,
+  "id": "H-12",
+  "nameJa": "砂塩回廊商人",
+  "nameOrig": "Ligue du Sel Gris",
+  "composition": "塩商、乾物商、砂路倉庫主、交渉役。",
+  "magic": "問わない。",
+  "families": "中央には従属しないが、干ばつ時には一気に政治力を持つ。",
+  "politics": "水利交渉、交易保護、回廊自治。",
+  "location": "砂塩回廊、内陸市。",
+  "hook": "塩を握る者は、軍も農村も動かせる。"
+ },
+ {
+  "cat": "H",
+  "num": 13,
+  "id": "H-13",
+  "nameJa": "地下拾得再販人",
+  "nameOrig": "Tunnel Reclaimers",
+  "composition": "旧坑道拾得者、修理屋、闇市店主、運搬少年。",
+  "magic": "問わない。",
+  "families": "KROSSの廃材文化と近いが、合法市場からは嫌われる。",
+  "politics": "再利用推進、廃材所有権緩和。",
+  "location": "NOCTURNE地下市、CALDERA廃坑街。",
+  "hook": "ガラクタ売り場から、失われた一級遺物が出る。"
+ },
+ {
+  "cat": "H",
+  "num": 14,
+  "id": "H-14",
+  "nameJa": "学費貸付庫",
+  "nameOrig": "Caisse des Études",
+  "composition": "奨学貸付官、学校会計、保証人仲介。",
+  "magic": "問わない。",
+  "families": "名家子弟には不要だが、庶民学生の未来を握る静かな権力。",
+  "politics": "成績主義、返済厳格、教育投資。",
+  "location": "RACINE学院街、BLANCA学寮群。",
+  "hook": "借金は卒業後の進路と政治的自由を縛る。"
+ },
+ {
+  "cat": "H",
+  "num": 15,
+  "id": "H-15",
+  "nameJa": "免許担保金融",
+  "nameOrig": "Banque du Permis",
+  "composition": "小口金融、工房保証、許可証担保貸し。",
+  "magic": "問わない。",
+  "families": "VEXALIA免許制度に完全依存し、その硬直性で儲ける。",
+  "politics": "規制維持、担保強化、破産整理促進。",
+  "location": "RACINE法廷丘下、CALDERA工房街。",
+  "hook": "許可証を失うことは、生活の信用そのものを失うことでもある。"
+ },
+ {
+  "cat": "H",
+  "num": 16,
+  "id": "H-16",
+  "nameJa": "移民送金組合",
+  "nameOrig": "Remit Nova",
+  "composition": "港区銀行員、通詞、仲介商、移民互助会。",
+  "magic": "問わない。",
+  "families": "名家とは距離を取り、移民共同体の信頼で成り立つ平行金融。",
+  "politics": "手数料低減、送金秘密保護、市民権拡張。",
+  "location": "BLANCA港区、群島中継港。",
+  "hook": "故郷への金の流れが、世界の外の政治も運び込む。"
+ },
+ {
+  "cat": "H",
+  "num": 17,
+  "id": "H-17",
+  "nameJa": "結晶農買付団",
+  "nameOrig": "Acheteurs Rio",
+  "composition": "産地仲買、品質鑑定、保冷運搬、都市販売員。",
+  "magic": "問わない。",
+  "families": "VERDE農村に入り込み、時に都市価格の論理で農法を歪める。",
+  "politics": "流通効率、農家囲い込み、輸出拡大。",
+  "location": "VERDE、RACINE市場、BLANCA物流塔。",
+  "hook": "彼らの買い叩きが、持続可能な農法を壊す。"
+ },
+ {
+  "cat": "H",
+  "num": 18,
+  "id": "H-18",
+  "nameJa": "旧家骨董商",
+  "nameOrig": "Maison Cendrevive",
+  "composition": "鑑定士、競売人、没落家の仲介、修復人。",
+  "magic": "問わない。",
+  "families": "EMBERLYN周辺の没落文化と深く結び、名家の記憶を商品に変える。",
+  "politics": "文化市場自由、相続緩和、私蔵容認。",
+  "location": "RACINE旧王冠区、SOMBRA古物街。",
+  "hook": "売りに出た「ただの家具」が、家の秘密の記憶媒体かもしれない。"
+ },
+ {
+  "cat": "H",
+  "num": 19,
+  "id": "H-19",
+  "nameJa": "港湾荷貸し",
+  "nameOrig": "Lombards des Quais",
+  "composition": "短期貸金、荷証券担保、倉庫主、夜間取立。",
+  "magic": "問わない。",
+  "families": "商館と密輸人の両方に貸すため、誰よりも港の裏を知る。",
+  "politics": "監査緩和、担保重視、暴力的回収容認。",
+  "location": "BLANCA港湾、RACINE河港。",
+  "hook": "一晩で利子が跳ねる世界では、善人ほど早く沈む。"
+ },
+ {
+  "cat": "H",
+  "num": 20,
+  "id": "H-20",
+  "nameJa": "黒換金屋",
+  "nameOrig": "Wechsel Noir",
+  "composition": "闇両替、密輸人、地下賭場、逃亡者支援。",
+  "magic": "問わない。",
+  "families": "全勢力の裏金を洗うが、どこにも忠誠を持たない。",
+  "politics": "完全地下、監査否定。",
+  "location": "SOMBRA裏港、PERDIDA夜市、砂路宿。",
+  "hook": "表の銀行が凍結した瞬間、黒換金屋だけが世界を動かす。"
+ },
+ {
+  "cat": "I",
+  "num": 1,
+  "id": "I-01",
+  "nameJa": "北方遊牧民",
+  "nameOrig": "Rhen-Kyr Nomads",
+  "composition": "馬群を追う遊牧共同体。天幕長、歌手、交易馬方、若い騎手で構成。",
+  "magic": "問わない。",
+  "families": "VEXALIAは登録を嫌がり、TAKANIとは自然観で共鳴し、商館とは皮革交易で結ぶ。",
+  "politics": "遊動権保護、草原非囲い込み。",
+  "location": "北方草原、季節市。",
+  "hook": "星と脈動を読む彼らの歌は、科学者より早く異変を捉える。"
+ },
+ {
+  "cat": "I",
+  "num": 2,
+  "id": "I-02",
+  "nameJa": "氷鏡橇民",
+  "nameOrig": "Spiegel Sledders",
+  "composition": "北岸の氷雪地帯を橇で移動する漁猟民。",
+  "magic": "問わない。",
+  "families": "4家との距離は遠いが、希少な冷晶素材で冬だけ交渉力が上がる。",
+  "politics": "冬航路の自治、徴税免除。",
+  "location": "北岸氷帯、冬市。",
+  "hook": "彼らだけが知る「凍った道」は、密輸にも救援にも使える。"
+ },
+ {
+  "cat": "I",
+  "num": 3,
+  "id": "I-03",
+  "nameJa": "南方群島民",
+  "nameOrig": "Insulaires Corail",
+  "composition": "島ごとの首長、漁民、香草栽培者、航路歌手。",
+  "magic": "問わない。",
+  "families": "商館と航運会社に搾られがちだが、BLANCA文化を大きく変えてきた。",
+  "politics": "港区自治、海域権、交易対等。",
+  "location": "南方群島、BLANCA港。",
+  "hook": "島の歌が、都市の若者文化と政治語彙まで塗り替える。"
+ },
+ {
+  "cat": "I",
+  "num": 4,
+  "id": "I-04",
+  "nameJa": "潮庭漁民",
+  "nameOrig": "Jardins de Marée",
+  "composition": "潮の干満で海菜と魚を育てる沿岸共同体。",
+  "magic": "問わない。",
+  "families": "名家よりも海流を信じ、港湾開発には慎重。",
+  "politics": "沿岸保全、埋立反対。",
+  "location": "群島浅瀬、河口沿岸。",
+  "hook": "彼らの潮庭が、未知の生態系異変を最初に受け止める。"
+ },
+ {
+  "cat": "I",
+  "num": 5,
+  "id": "I-05",
+  "nameJa": "砂漠交易民",
+  "nameOrig": "Caravaniers Sable",
+  "composition": "砂路商、護衛、泉守、物語り手。",
+  "magic": "問わない。",
+  "families": "どの家にも属さず、情報と物資の中継者として重宝される。",
+  "politics": "通商自由、泉の中立地帯化。",
+  "location": "砂塩回廊、内陸オアシス。",
+  "hook": "彼らの物語には、まだ中央が知らない隕石片の伝承がある。"
+ },
+ {
+  "cat": "I",
+  "num": 6,
+  "id": "I-06",
+  "nameJa": "塩嵐駱駝族",
+  "nameOrig": "Selsturm Clan",
+  "composition": "塩運び、乾燥肉職人、族長会、砂嵐予見者。",
+  "magic": "問わない。",
+  "families": "商館とは組むが、国家境界線には従わない。",
+  "politics": "族地自治、移動税反対。",
+  "location": "砂塩回廊、南内陸。",
+  "hook": "砂嵐を読む能力が、軍の追跡を完全に無効化する。"
+ },
+ {
+  "cat": "I",
+  "num": 7,
+  "id": "I-07",
+  "nameJa": "地下トンネル住民",
+  "nameOrig": "Unterwege Folk",
+  "composition": "旧採掘跡に住み着いた住民。再利用工、灯番、地下商、子どもの案内人。",
+  "magic": "問わない。",
+  "families": "KROSS鉱山の落とし子であり、VEXALIAの都市図には半分しか載っていない。",
+  "politics": "地下居住権、地上差別反対。",
+  "location": "NOCTURNE地下層、CALDERA廃坑区。",
+  "hook": "地上の誰も知らない「第二の街」が地下で動いている。"
+ },
+ {
+  "cat": "I",
+  "num": 8,
+  "id": "I-08",
+  "nameJa": "旧鉱道墓守",
+  "nameOrig": "Gardiens des Veines Mortes",
+  "composition": "廃坑の慰霊と立入管理を担う小共同体。",
+  "magic": "問わない。",
+  "families": "KROSSとは複雑な共存、TAKANIとは死者観で接点を持つ。",
+  "politics": "慰霊保全、再採掘反対。",
+  "location": "山地廃坑、NOCTURNE旧鉱道。",
+  "hook": "死者を守る彼らが、実は生きた隠れ道も管理している。"
+ },
+ {
+  "cat": "I",
+  "num": 9,
+  "id": "I-09",
+  "nameJa": "湿地漂泊民",
+  "nameOrig": "Marais Errants",
+  "composition": "小舟住まいの採集民、葦細工師、湿地案内人。",
+  "magic": "問わない。",
+  "families": "中央から軽視されるが、湿地経由の密輸と救助では不可欠。",
+  "politics": "湿地保全、定住強制反対。",
+  "location": "東湿地帯、河口縁。",
+  "hook": "泥の下に、誰かが捨てたくて仕方なかったものが沈んでいる。"
+ },
+ {
+  "cat": "I",
+  "num": 10,
+  "id": "I-10",
+  "nameJa": "河口舟上民",
+  "nameOrig": "Peuple des Estacs",
+  "composition": "桟橋上の家々で暮らす河口共同体。渡し守、料理屋、船宿主が多い。",
+  "magic": "問わない。",
+  "families": "港湾課税の対象だが、4家の使者も必ず彼らの舟に乗る。",
+  "politics": "河口自治、浮家屋の法的承認。",
+  "location": "RACINE河口、BLANCA入り江。",
+  "hook": "浮く家は、追跡者からも台帳からも逃げやすい。"
+ },
+ {
+  "cat": "I",
+  "num": 11,
+  "id": "I-11",
+  "nameJa": "高原鐘牧民",
+  "nameOrig": "Bergglock Herders",
+  "composition": "高原で放牧し、鐘で群れを導く牧民。",
+  "magic": "問わない。",
+  "families": "TAKANI山地文化と通じ、都市市場へ乳製品を流す。",
+  "politics": "牧道保全、放牧税軽減。",
+  "location": "高原帯、山地市場。",
+  "hook": "鐘の音で群れだけでなく地脈も落ち着くと彼らは信じている。"
+ },
+ {
+  "cat": "I",
+  "num": 12,
+  "id": "I-12",
+  "nameJa": "森縁採集民",
+  "nameOrig": "Lisière Gatherers",
+  "composition": "薬草、樹脂、光苔を採る半定住民。",
+  "magic": "問わない。",
+  "families": "TAKANIと薬草知で繋がり、商館には安く買い叩かれる。",
+  "politics": "森林採集権、共同知の保護。",
+  "location": "VERDE森縁、山地林帯、湿地周辺。",
+  "hook": "森の採集記録が、近年の生態変動の最長データになっている。"
+ },
+ {
+  "cat": "I",
+  "num": 13,
+  "id": "I-13",
+  "nameJa": "峡谷風読み民",
+  "nameOrig": "Lecteurs du Vent",
+  "composition": "谷風を読んで荷を運ぶ滑索民、伝令、断崖農民。",
+  "magic": "問わない。",
+  "families": "通行案内で国家にも商館にも雇われるが、主権は手放さない。",
+  "politics": "峡谷通行権、危険手当。",
+  "location": "西峡谷地帯、山地街道。",
+  "hook": "風の変化は、深部の脈動変化と連動しているかもしれない。"
+ },
+ {
+  "cat": "I",
+  "num": 14,
+  "id": "I-14",
+  "nameJa": "雪代鍛民",
+  "nameOrig": "Neigerun Forgers",
+  "composition": "寒冷地で特殊金属を鍛える少数鍛冶文化。",
+  "magic": "持つ。",
+  "families": "KROSSとも競合する独自技術を持ち、冬季だけ高く呼ばれる。",
+  "politics": "技法独占、寒地自治、外部干渉排除。",
+  "location": "北方雪代帯、冬市。",
+  "hook": "彼らの合金は、脈動暴走にだけ異様に強い。"
+ },
+ {
+  "cat": "I",
+  "num": 15,
+  "id": "I-15",
+  "nameJa": "火口祈雨民",
+  "nameOrig": "Cratère Priants",
+  "composition": "火山性台地で祈雨と放牧を行う共同体。",
+  "magic": "問わない。",
+  "families": "VEXALIAからは迷信視されるが、旱魃時には政治家が頭を下げる。",
+  "politics": "水利権、宗教祭祀保護。",
+  "location": "南火口台地、乾燥高原。",
+  "hook": "雨乞いの儀礼が、気候ではなく地脈の圧力を調整している可能性がある。"
+ },
+ {
+  "cat": "I",
+  "num": 16,
+  "id": "I-16",
+  "nameJa": "境界混成自治村",
+  "nameOrig": "Villages Cequae",
+  "composition": "先住系、移民系、鉱夫系が混ざる小自治体。",
+  "magic": "問わない。",
+  "families": "4家いずれの単独支配も拒み、実利で交渉する。",
+  "politics": "村落自治、複数言語行政、徴兵拒否。",
+  "location": "セケ辺界線、外縁街道。",
+  "hook": "小村に見えて、未来の共存モデルが詰まっている。"
+ },
+ {
+  "cat": "I",
+  "num": 17,
+  "id": "I-17",
+  "nameJa": "亡命語族",
+  "nameOrig": "Parleurs Exils",
+  "composition": "戦争や弾圧から流れ着いた多言語少数集団。",
+  "magic": "問わない。",
+  "families": "どの家の公用語にも完全には染まらず、翻訳市場で生きる。",
+  "politics": "言語権保護、戸籍柔軟化。",
+  "location": "BLANCA港区、RACINE外環、群島中継港。",
+  "hook": "失われた資料を読めるのが、彼らの誰かひとりだけということがある。"
+ },
+ {
+  "cat": "I",
+  "num": 18,
+  "id": "I-18",
+  "nameJa": "深部還り子",
+  "nameOrig": "Enfants du Retour",
+  "composition": "都市で育ち、青年期に祖地へ戻るTAKANI系・混血系の世代。",
+  "magic": "問わない。",
+  "families": "TAKANIの未来の担い手候補であり、VEXALIA台帳には居住履歴が不安定と映る。",
+  "politics": "返還、教育改革、越境アイデンティティ。",
+  "location": "NOCTURNE、山地学寮、保全圏集落。",
+  "hook": "戻った先で「故郷の言葉」がうまく話せないこと自体がドラマになる。"
+ },
+ {
+  "cat": "I",
+  "num": 19,
+  "id": "I-19",
+  "nameJa": "外海鯨舟民",
+  "nameOrig": "Baleiniers Lointains",
+  "composition": "長期航海の捕鯨・深海漁民、骨材職人、海上祈り手。",
+  "magic": "問わない。",
+  "families": "中央政治から遠いが、希少素材取引でときどき急に重要になる。",
+  "politics": "海域権、外洋保護、港税軽減。",
+  "location": "外海港、群島外縁。",
+  "hook": "彼らが見た「海の下の光」は、隕石由来か別物か誰にも分からない。"
+ },
+ {
+  "cat": "I",
+  "num": 20,
+  "id": "I-20",
+  "nameJa": "硝子岸クレオール",
+  "nameOrig": "Créoles du Verre",
+  "composition": "港湾混血文化圏。複数言語を混ぜ、料理・音楽・商いを独自に発展させた都市少数派。",
+  "magic": "問わない。",
+  "families": "BLANCAの文化的再編に大きな影響を与えるが、公的台帳では雑にまとめられる。",
+  "politics": "港区自治、多文化承認、教育改革。",
+  "location": "BLANCA硝子岸、共振塔港周辺。",
+  "hook": "中央が周縁と見なす場所から、新しい共通語と新しい流行が生まれる。"
+ },
+ {
+  "cat": "J",
+  "num": 1,
+  "id": "J-01",
+  "nameJa": "白塔珈琲房連",
+  "nameOrig": "Cafés Blanchetour",
+  "composition": "学生、起業家志望、記者、夜勤明け技官。",
+  "magic": "問わない。",
+  "families": "名家の公式サロンより格段に混ざりやすく、若い政治の温床になる。",
+  "politics": "自由討論、技術楽観、反閉鎖性。",
+  "location": "BLANCA白塔群、RACINE学院前。",
+  "hook": "ただの雑談が、そのまま新党や新サービスや新恋愛の始まりになる。"
+ },
+ {
+  "cat": "J",
+  "num": 2,
+  "id": "J-02",
+  "nameJa": "夜劇回廊サロン",
+  "nameOrig": "Salon des Rues de Songe",
+  "composition": "俳優、衣装師、常連学生、上流の放蕩者。",
+  "magic": "問わない。",
+  "families": "4家の子弟も匿名で混ざる、仮面越しの社交場。",
+  "politics": "芸術自治、反検閲、夜間経済擁護。",
+  "location": "SOMBRA夜劇回廊。",
+  "hook": "正体を隠した会話が、本音と陰謀を同時に育てる。"
+ },
+ {
+  "cat": "J",
+  "num": 3,
+  "id": "J-03",
+  "nameJa": "灰燼文芸同人",
+  "nameOrig": "Cercle Cendre-Lettre",
+  "composition": "文庫学院生、地方出身学生、司書見習い、詩人志望。",
+  "magic": "問わない。",
+  "families": "EMBERLYN断章と民間口承を混ぜて新文学を作る。",
+  "politics": "表現自由、引用の脱権威化。",
+  "location": "灰燼文庫学院、SOMBRA古書喫茶。",
+  "hook": "二次創作めいた遊びが、本物の禁史復元に触れてしまう。"
+ },
+ {
+  "cat": "J",
+  "num": 4,
+  "id": "J-04",
+  "nameJa": "外環ジン工房",
+  "nameOrig": "Zine des Anneaux",
+  "composition": "外環の高校生、印刷工見習い、移民二世、配達少年。",
+  "magic": "問わない。",
+  "families": "名家の視点を拒み、自分たちの街区から世界を書く。",
+  "politics": "地区自治、反差別、自作主義。",
+  "location": "七都市外環、地下印刷所。",
+  "hook": "低予算の小冊子が、既存メディアを食うほど面白い。"
+ },
+ {
+  "cat": "J",
+  "num": 5,
+  "id": "J-05",
+  "nameJa": "鍛拍楽派",
+  "nameOrig": "Forge-Beat",
+  "composition": "工場育ちの若者、打楽器好き、保守手、労働者サークル。",
+  "magic": "問わない。",
+  "families": "KROSSの鍛冶歌を都市ビートへ翻案し、保守派に嫌われる。",
+  "politics": "労働者連帯、反上流趣味。",
+  "location": "CALDERA夜広場、外環ライブハウス。",
+  "hook": "騒音と呼ばれたリズムが、群衆を一気に同調させる。"
+ },
+ {
+  "cat": "J",
+  "num": 6,
+  "id": "J-06",
+  "nameJa": "夢響歌会",
+  "nameOrig": "Chanson Sombre",
+  "composition": "SOMBRAの学生、俳優、恋愛中の若者、失恋した配信者。",
+  "magic": "問わない。",
+  "families": "名家ロマンスを題材にしつつ、その神話を脱色する。",
+  "politics": "反格式、感情の公有。",
+  "location": "SOMBRA劇場街、白塔配信網。",
+  "hook": "甘い歌詞に、政治的暗号が忍ばされる。"
+ },
+ {
+  "cat": "J",
+  "num": 7,
+  "id": "J-07",
+  "nameJa": "潮律ポップ",
+  "nameOrig": "Coral Pulse",
+  "composition": "群島民ミュージシャン、港の若者、ダンサー、料理屋の子ども。",
+  "magic": "問わない。",
+  "families": "4家よりも港と波に忠実な新流行で、都市の言葉遣いまで変える。",
+  "politics": "多文化肯定、港区自治。",
+  "location": "BLANCA港、群島フェス、SOMBRA夜市。",
+  "hook": "軽い流行曲のはずが、若者の共通感覚を完全に塗り替える。"
+ },
+ {
+  "cat": "J",
+  "num": 8,
+  "id": "J-08",
+  "nameJa": "管路走リーグ",
+  "nameOrig": "Ligue des Conduits",
+  "composition": "配管上や保守通路を走る若者の非公式競技団体。",
+  "magic": "問わない。",
+  "families": "技官に嫌われつつ、保守手の卵としても注目される。",
+  "politics": "公認コース化、危険区域開放。",
+  "location": "CALDERA配管環、BLANCA塔基部。",
+  "hook": "違法競技の最速ランナーだけが知る裏通路がある。"
+ },
+ {
+  "cat": "J",
+  "num": 9,
+  "id": "J-09",
+  "nameJa": "結晶球競技会",
+  "nameOrig": "Arcaballe Clubs",
+  "composition": "学生、予備役、街区クラブ、賭け好きの観客。",
+  "magic": "問わない。",
+  "families": "青年予備訓練団と学校体育の境界にあり、名家も庶民も同じ球を追う。",
+  "politics": "地区対抗、公教育支援、賭博規制で揺れる。",
+  "location": "七都市競技場、学校。",
+  "hook": "スポーツが階級越えの友情を作り、同時に軍事動員の入口にもなる。"
+ },
+ {
+  "cat": "J",
+  "num": 10,
+  "id": "J-10",
+  "nameJa": "坑道レース団",
+  "nameOrig": "Tunnel Sprint",
+  "composition": "NOCTURNEの地下育ち、配信者、観光目当ての他都市若者。",
+  "magic": "問わない。",
+  "families": "TAKANI巡守隊と鉱山警備隊の両方に怒られる。",
+  "politics": "禁区開放、地下文化の可視化。",
+  "location": "NOCTURNE地下層、旧坑道網。",
+  "hook": "遊び半分のコースが、本当に危ない封印域に繋がっている。"
+ },
+ {
+  "cat": "J",
+  "num": 11,
+  "id": "J-11",
+  "nameJa": "脈拍賭博卓",
+  "nameOrig": "Tables du Pouls",
+  "composition": "学生、労働者、没落上流、街の常連。",
+  "magic": "問わない。",
+  "families": "4家の動向や脈動周期まで賭けの対象にされる。",
+  "politics": "非政治を装う賭博文化。",
+  "location": "CALDERA、SOMBRA、港湾裏酒場。",
+  "hook": "賭け率が、公式発表より早く事件の匂いを出す。"
+ },
+ {
+  "cat": "J",
+  "num": 12,
+  "id": "J-12",
+  "nameJa": "補綴服飾派",
+  "nameOrig": "Mode Rapiéçée",
+  "composition": "裁縫好きの若者、貧しい学生、移民二世、舞台衣装崩れ。",
+  "magic": "問わない。",
+  "families": "名家礼装の中古や廃布を解体し、全く別の意味へ縫い直す。",
+  "politics": "反浪費、階級美学の転覆、自作主義。",
+  "location": "SOMBRA布市、外環フリマ、学院祭。",
+  "hook": "服の継ぎ目に、家名と反抗が同時に縫い込まれる。"
+ },
+ {
+  "cat": "J",
+  "num": 13,
+  "id": "J-13",
+  "nameJa": "多言語スラング連",
+  "nameOrig": "Port-Mix Tongue",
+  "composition": "港区の若者、配送員、料理屋、配信者、学生。",
+  "magic": "問わない。",
+  "families": "名家の正しい言葉づかいを笑い飛ばし、新しい共通語を作る。",
+  "politics": "多文化肯定、権威語の解体。",
+  "location": "BLANCA港区、外環学校、通信網。",
+  "hook": "大人が読めない言葉が、最速の政治スローガンになる。"
+ },
+ {
+  "cat": "J",
+  "num": 14,
+  "id": "J-14",
+  "nameJa": "深部配信者群",
+  "nameOrig": "Streamers Profonds",
+  "composition": "危険好きの若者、機材オタク、都市観光客、潜行団の予備軍。",
+  "magic": "問わない。",
+  "families": "名家の秘密にも聖地にもカメラを向けるため、全方位から嫌われる。",
+  "politics": "情報公開、承認欲求、スリル消費。",
+  "location": "NOCTURNE、BLANCA配信網。",
+  "hook": "配信映像が証拠にも嘘にもなる時代の象徴である。"
+ },
+ {
+  "cat": "J",
+  "num": 15,
+  "id": "J-15",
+  "nameJa": "呪文コード部",
+  "nameOrig": "Codeurs Lithiques",
+  "composition": "BLANCAの学生、工房見習い、非魔法者の技術志望、夜更かし好き。",
+  "magic": "問わない。",
+  "families": "KROSSの構造思考を継ぎ、VEXALIA規制を迂回しようとする。",
+  "politics": "技術公開、自由魔法、オープン標準。",
+  "location": "BLANCA学寮、PERDIDA試作室。",
+  "hook": "子どもの遊びのようなコードが、レガシー配管網に届いてしまう。"
+ },
+ {
+  "cat": "J",
+  "num": 16,
+  "id": "J-16",
+  "nameJa": "学院占拠サークル",
+  "nameOrig": "Occupy Atrium",
+  "composition": "学費負担層、寮生、文化サークル横断の活動家。",
+  "magic": "問わない。",
+  "families": "名家子弟も混じるが、運動の矛先は制度と教授会に向く。",
+  "politics": "学費軽減、研究公開、寮改革、差別是正。",
+  "location": "RACINE学院、灰燼文庫学院、BLANCA塔学寮。",
+  "hook": "占拠は抗議であると同時に、新しい共同体実験でもある。"
+ },
+ {
+  "cat": "J",
+  "num": 17,
+  "id": "J-17",
+  "nameJa": "越境舞踏隊",
+  "nameOrig": "Danse Cequae",
+  "composition": "境界村の若者、群島系ダンサー、都市のクラブ層。",
+  "magic": "問わない。",
+  "families": "TAKANIの足踏み、群島の腰の動き、工房のリズムを混ぜるため、どこにも完全には属さない。",
+  "politics": "混成肯定、境界越境。",
+  "location": "セケ辺界線の祭、BLANCA港、SOMBRA舞台。",
+  "hook": "踊りは恋の入口であり、政治連帯の最短距離でもある。"
+ },
+ {
+  "cat": "J",
+  "num": 18,
+  "id": "J-18",
+  "nameJa": "共振板滑走者",
+  "nameOrig": "Riders de Résonance",
+  "composition": "板職人、危険好きの学生、配信者、保守手見習い。",
+  "magic": "問わない。",
+  "families": "KROSS廃材を流用し、VEXALIAには危険玩具扱いされる。",
+  "politics": "公園解放、若者空間の確保、事故責任の自己選択。",
+  "location": "PERDIDA流動区、BLANCA塔広場。",
+  "hook": "遊びの機材が、緊急時には都市移動の高速手段になる。"
+ },
+ {
+  "cat": "J",
+  "num": 19,
+  "id": "J-19",
+  "nameJa": "屋上観測会",
+  "nameOrig": "Toits d'Aube",
+  "composition": "学生、恋人たち、若い測量士、詩人、写真師。",
+  "magic": "問わない。",
+  "families": "名家の天体観よりも、自分たちの夜空の共有感覚を大事にする。",
+  "politics": "非政治に見えて、災害観測や情報共有では高機動。",
+  "location": "BLANCA高楼、RACINE学院屋上、SOMBRA劇場屋根。",
+  "hook": "脈動の異常は、まず夜更かしの若者に見つかる。"
+ },
+ {
+  "cat": "J",
+  "num": 20,
+  "id": "J-20",
+  "nameJa": "夜明け奉仕団",
+  "nameOrig": "Dawn Volunteer",
+  "composition": "学生、若手店主、教会青年、外環の子どもたち。",
+  "magic": "問わない。",
+  "families": "名家支援ではなく街区支援を優先し、災害時に現場を回す。",
+  "politics": "相互扶助、地区連帯、非党派実務。",
+  "location": "七都市の学校と広場。",
+  "hook": "大人の制度が止まった朝、最後に街を支えるのは彼らかもしれない。"
+ }
+];
+const VERBS = [
+ {
+  "num": 1,
+  "name": "VEXALIA",
+  "section": "頂点の動詞",
+  "sectionNum": 1,
+  "verb": "測る・記録する・許可する",
+  "definition": "人、土地、魔力、事故を数値と台帳に変え、行政が触れられる形へ整える。",
+  "conflict": "秘密を守りたい者、口承で済ませたい共同体、先に動く現場。"
+ },
+ {
+  "num": 2,
+  "name": "KROSS",
+  "section": "頂点の動詞",
+  "sectionNum": 1,
+  "verb": "作る・刻む・守る",
+  "definition": "素材を道具に、道具を規格に、規格をインフラに変える。",
+  "conflict": "「石は資源ではない」と考える者、量産に飲まれたくない職人。"
+ },
+ {
+  "num": 3,
+  "name": "TAKANI",
+  "section": "頂点の動詞",
+  "sectionNum": 1,
+  "verb": "聴く・覚える・保つ",
+  "definition": "石、土地、記憶、返礼の関係を切らさず、世界を相手として扱う。",
+  "conflict": "所有と採掘を先に置く制度、証拠を数値に限定する法。"
+ },
+ {
+  "num": 4,
+  "name": "EMBERLYN",
+  "section": "頂点の動詞",
+  "sectionNum": 1,
+  "verb": "読む・復元する・繋ぐ",
+  "definition": "断片化した文書、家史、遺構、噂を読み合わせ、失われたものに形を与える。",
+  "conflict": "「失われたままでいい」と考える権力、復元を盗用と見る人々。"
+ },
+ {
+  "num": 5,
+  "name": "外周非接触民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "耐える・回す・埋め合わせる",
+  "definition": "魔力を持たずに、都市の雑役、家事、配送、修理待ちの穴を埋めて日常を成立させる。",
+  "conflict": "魔力を持つ者だけが価値を持つと考える序列。"
+ },
+ {
+  "num": 6,
+  "name": "台地小作民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "育てる・納める・凌ぐ",
+  "definition": "土地を育て、税を納め、天候と市場の両方を耐え抜く。",
+  "conflict": "都市優先の配分、農村を数字だけで測る政策。"
+ },
+ {
+  "num": 7,
+  "name": "接触薄層市民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "隠す・稼ぐ・持ちこたえる",
+  "definition": "弱い魔力を誇示せず、生活の足しにしながら、身元照会と差別を避けて生きる。",
+  "conflict": "血統を明るみに出したい制度、強発現だけを価値とする文化。"
+ },
+ {
+  "num": 8,
+  "name": "移民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "持ち込む・学ぶ・作り変える",
+  "definition": "外から来た言葉、料理、技法、祈り、商慣習を都市に流し込み、土地の文化を混ぜ直す。",
+  "conflict": "純血主義、単一言語主義、旧市民の排他性。"
+ },
+ {
+  "num": 9,
+  "name": "境界混住民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "折り合う・訳す・生き延びる",
+  "definition": "相反する規範のあいだで実務的な共存条件を作る。",
+  "conflict": "二者択一を迫る中央政治、忠誠を一つに絞りたい名家。"
+ },
+ {
+  "num": 10,
+  "name": "深部避難民",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "逃れる・証言する・戻ろうとする",
+  "definition": "奪われた土地の記憶を持ち歩き、追われたこと自体を政治に変える。",
+  "conflict": "「過去の話だ」と片づける保全官僚、利益優先の再開発。"
+ },
+ {
+  "num": 11,
+  "name": "測量官",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "線を引く・確定する・追跡する",
+  "definition": "曖昧な土地、人、濃度、危険度に境界を与える。",
+  "conflict": "境界が引かれる以前から生きてきた共同体。"
+ },
+ {
+  "num": 12,
+  "name": "書記官",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "整える・写す・遅らせる",
+  "definition": "国家を文書として成立させつつ、行間や処理順で小さな抵抗もできる。",
+  "conflict": "口頭で済ませたい現場、文字を信用しない人々。"
+ },
+ {
+  "num": 13,
+  "name": "鍛炉工",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "熱する・合わせる・耐え抜く",
+  "definition": "火と圧力に耐えながら、都市の基礎部材を毎日作り続ける。",
+  "conflict": "安全より納期を優先する発注側。"
+ },
+ {
+  "num": 14,
+  "name": "港湾荷役人",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "運ぶ・噂する・止める",
+  "definition": "荷物を動かし、噂を広げ、必要とあれば物流自体を止める。",
+  "conflict": "港を数字だけで見る商館と税関。"
+ },
+ {
+  "num": 15,
+  "name": "結晶農家",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "育てる・待つ・返す",
+  "definition": "掘るのではなく育て、収穫の前に土地へ返礼するという時間の長い経済を回す。",
+  "conflict": "即効性だけを求める都市市場、採掘偏重の産業論。"
+ },
+ {
+  "num": 16,
+  "name": "使用人",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "仕える・見抜く・隠す",
+  "definition": "名家の日常を支えながら、醜聞も弱点も真っ先に知る。",
+  "conflict": "仕えるべき家と守るべき人が一致しない状況。"
+ },
+ {
+  "num": 17,
+  "name": "保守手",
+  "section": "日常を支える動詞",
+  "sectionNum": 2,
+  "verb": "維ぐ・潜る・持たせる",
+  "definition": "古い配管、塔、弁室をつなぎ直し、「壊れていないこと」を維持する。",
+  "conflict": "更新費を出さない政治、設計図を隠す機関。"
+ },
+ {
+  "num": 18,
+  "name": "鍛冶ギルド",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "鍛える・規格化する・継承する",
+  "definition": "技を身体から身体へ渡しつつ、それを国家が使える規格へ変える。",
+  "conflict": "技法を吸い上げる大企業、口伝を無償とみなす制度。"
+ },
+ {
+  "num": 19,
+  "name": "測量士ギルド",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "校正する・証明する・囲い込む",
+  "definition": "正確さを武器に市場と国家への出入り口を独占する。",
+  "conflict": "無免許の民間測量、共同体の感覚的判断。"
+ },
+ {
+  "num": 20,
+  "name": "護符彫師",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "刻む・縛る・美化する",
+  "definition": "危険な機能を意匠へ包み込み、見える安全と見えない危険を同居させる。",
+  "conflict": "量産化で意味を剥がす工場、意匠をただの装飾とみる官僚。"
+ },
+ {
+  "num": 21,
+  "name": "医療魔術会",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "癒やす・抑える・引き受ける",
+  "definition": "痛みを和らげ、暴走を止め、家族が背負えない代償を専門知へ移す。",
+  "conflict": "事故責任を押しつける保険制度、民間療法の収奪。"
+ },
+ {
+  "num": 22,
+  "name": "楽師共鳴会",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "共鳴させる・翻訳する・煽る",
+  "definition": "音を治療にも祭りにも扇動にも変える。",
+  "conflict": "音を騒音として抑え込む権力、感情を危険物とみる制度。"
+ },
+ {
+  "num": 23,
+  "name": "写字生・校訂士",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "写す・残す・漏らす",
+  "definition": "知を保存しながら、同時に禁じられた知の流通路にもなる。",
+  "conflict": "閲覧独占、単一の正典化。"
+ },
+ {
+  "num": 24,
+  "name": "航海術士",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "読む・越える・帰す",
+  "definition": "海図と星と風を読み、物資と人を境界の向こうへ往復させる。",
+  "conflict": "海を閉じたい国家、港だけで世界を判断する内陸人。"
+ },
+ {
+  "num": 25,
+  "name": "魔導管施工組",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "通す・つなぐ・圧を逃がす",
+  "definition": "都市に見えない血管を通し、流れを持続させる。",
+  "conflict": "配管をただの設備とみなし、関係の履歴を無視する設計思想。"
+ },
+ {
+  "num": 26,
+  "name": "結界建築師",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "区切る・守る・閉じ込める",
+  "definition": "安全と監禁の紙一重の線を空間に刻む。",
+  "conflict": "どこまでを公共空間とみなすかを巡る政治。"
+ },
+ {
+  "num": 27,
+  "name": "通詞・翻訳士",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "訳す・噛ませる・ずらす",
+  "definition": "言葉を橋にしながら、完全一致しない意味のズレも運ぶ。",
+  "conflict": "単一の公式語、翻訳を透明だと思う人々。"
+ },
+ {
+  "num": 28,
+  "name": "引揚潜水組",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "潜る・拾う・引き上げる",
+  "definition": "沈んだ物資、証拠、遺体、記憶を水底から回収する。",
+  "conflict": "沈んだままにしておきたい者たち。"
+ },
+ {
+  "num": 29,
+  "name": "水門守",
+  "section": "技能共同体の動詞",
+  "sectionNum": 3,
+  "verb": "流す・配る・争いを遅らせる",
+  "definition": "水の向きひとつで農村と工業都市の優先順位を調停する。",
+  "conflict": "中央の一律命令、現場を見ない水利計画。"
+ },
+ {
+  "num": 30,
+  "name": "隕石神格派",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "神格化する・集める・序列化する",
+  "definition": "隕石への畏怖を教義へ変え、信徒の所属と優劣を整理する。",
+  "conflict": "「神ではなく関係だ」と言うTAKANI系の世界観。"
+ },
+ {
+  "num": 31,
+  "name": "地母神信仰",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "育む・鎮める・循環させる",
+  "definition": "土、水、季節、女性労働、再生産を神聖な循環として守る。",
+  "conflict": "収奪的採掘、即効性だけを求める工業論。"
+ },
+ {
+  "num": 32,
+  "name": "禁欲懐疑派",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "断つ・慎む・告発する",
+  "definition": "魔法依存を文明の歪みとして批判し、欲望の縮小で社会を立て直そうとする。",
+  "conflict": "成長と利便を当然視する都市文化。"
+ },
+ {
+  "num": 33,
+  "name": "祖先崇拝",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "供える・繋ぐ・背負う",
+  "definition": "家名よりも連なりを重視し、死者を現在の意思決定に参加させる。",
+  "conflict": "「今の利益だけ」を基準にする金融と行政。"
+ },
+ {
+  "num": 34,
+  "name": "密儀派",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "隠す・選ぶ・変貌させる",
+  "definition": "誰にでも開かないこと自体を力の条件とみなす。",
+  "conflict": "公教育と大衆化、秘密の暴露文化。"
+ },
+ {
+  "num": 35,
+  "name": "自由魔法党",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "解く・市場化する・正当化する",
+  "definition": "規制を障害物と見なし、魔法と技術を民間へ開こうとする。",
+  "conflict": "安全管理を担う官僚、既存ギルド、事故遺族。"
+ },
+ {
+  "num": 36,
+  "name": "接触平等党",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "数え直す・広げる・平らにする",
+  "definition": "魔法の有無や血統の濃淡で切られた権利を再配分する。",
+  "conflict": "血統特権と「能力主義」の顔をした差別。"
+ },
+ {
+  "num": 37,
+  "name": "タカニ自治連盟",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "返す・交渉する・守り返す",
+  "definition": "失った土地と制度語を取り戻し、共同体の承認を法の中へ押し戻す。",
+  "conflict": "中央集権、保全の名を借りた管理。"
+ },
+ {
+  "num": 38,
+  "name": "労働者同盟",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "止める・要求する・連帯する",
+  "definition": "日常を回す手を止めることでしか見えない価値を社会に突きつける。",
+  "conflict": "生産停止を治安問題に還元する国家と企業。"
+ },
+ {
+  "num": 39,
+  "name": "学生共同戦線",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "集まる・試す・逸脱する",
+  "definition": "まだ固定された役割を持たないからこそ、制度の外へはみ出す。",
+  "conflict": "「将来のために今は黙れ」という大人の論理。"
+ },
+ {
+  "num": 40,
+  "name": "反隕石原理主義",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "否定する・壊す・純化する",
+  "definition": "魔法社会そのものを誤りとみなし、文明の中枢を切ろうとする。",
+  "conflict": "魔法インフラに生活を依存する大多数。"
+ },
+ {
+  "num": 41,
+  "name": "中立技官ネットワーク",
+  "section": "信仰と政治の動詞",
+  "sectionNum": 4,
+  "verb": "維持する・暴く・横断する",
+  "definition": "政治ではなく現場を基準に連携し、壊れた仕組みをつなぎながら嘘も見てしまう。",
+  "conflict": "部局の縦割り、家名の面子、機密主義。"
+ },
+ {
+  "num": 42,
+  "name": "反ヴェクサリア結社",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "漏らす・攪乱する・奪う",
+  "definition": "公文書の権力を逆用し、制度の内側から崩そうとする。",
+  "conflict": "秩序を失うことそのものを恐れる人々。"
+ },
+ {
+  "num": 43,
+  "name": "禁忌魔術クラブ",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "読み漁る・再演する・越える",
+  "definition": "禁じられた知識を娯楽と学問と自己変身の材料にする。",
+  "conflict": "危険の重みを知る現場、秘匿を守りたい旧家。"
+ },
+ {
+  "num": 44,
+  "name": "密輸ネットワーク",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "隠す・流す・化けさせる",
+  "definition": "モノの出自を曖昧にし、規制の外へ価値を逃がす。",
+  "conflict": "関税と監査、だが同時に大商館の独占にも抗う。"
+ },
+ {
+  "num": 45,
+  "name": "偽血統業者",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "名乗らせる・捏造する・逃がす",
+  "definition": "血統と身分を「事実」ではなく「通る書類」へ変える。",
+  "conflict": "血統を自然な真実として扱う制度。"
+ },
+ {
+  "num": 46,
+  "name": "地下呪術サロン",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "混ぜる・試す・依存させる",
+  "definition": "学問、快楽、芸術、危険技法を区別せず混交させる。",
+  "conflict": "純粋性を求める教義、正規カリキュラム。"
+ },
+ {
+  "num": 47,
+  "name": "王立公報",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "告げる・正当化する・忘れさせる",
+  "definition": "何が「正式に起きたこと」かを決める。",
+  "conflict": "現場証言、歌、写本、配信といった非公式記録。"
+ },
+ {
+  "num": 48,
+  "name": "三大新聞",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "選ぶ・並べる・論点化する",
+  "definition": "事件の優先順位を決め、社会が怒る順番を整える。",
+  "conflict": "取材対象の複雑さ、地下メディアの速さ。"
+ },
+ {
+  "num": 49,
+  "name": "パンフレット文化",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "ばらまく・刺す・燃え広がる",
+  "definition": "短く尖った言葉で空気を一気に変える。",
+  "conflict": "慎重な制度言語、長い議論、証拠の不足。"
+ },
+ {
+  "num": 50,
+  "name": "地下新聞",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "暴く・急ぐ・逃げる",
+  "definition": "機密と告発を速度で勝負し、押収より先に流通させる。",
+  "conflict": "検閲と押収、そして誤報の危険。"
+ },
+ {
+  "num": 51,
+  "name": "共振配信者",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "見せる・切り抜く・増幅する",
+  "definition": "瞬間を拡散し、複雑な現実を共有可能な短い像へ変える。",
+  "conflict": "文脈の厚み、長い歴史、責任の所在。"
+ },
+ {
+  "num": 52,
+  "name": "王国軍と警察",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "動員する・占める・封じる",
+  "definition": "危険を止めるために空間と人の自由を一時停止する。",
+  "conflict": "自治、逃亡路、共同体の独自判断。"
+ },
+ {
+  "num": 53,
+  "name": "救難と保全巡察",
+  "section": "影と情報の動詞",
+  "sectionNum": 5,
+  "verb": "潜る・引き上げる・証言する",
+  "definition": "壊れた現場へ最初に入り、死と真相の両方に触れる。",
+  "conflict": "事故を最小化して報告したい上層部。"
+ },
+ {
+  "num": 54,
+  "name": "大商館",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "買い占める・繋ぐ・担保にする",
+  "definition": "ばらばらの産地と消費地を結び、将来価値まで先に囲い込む。",
+  "conflict": "地域自給、共同体価格、労働者の生活速度。"
+ },
+ {
+  "num": 55,
+  "name": "取引所と保険",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "値付けする・算定する・除外する",
+  "definition": "リスクと希少性を数字に変え、救済の範囲さえ商品化する。",
+  "conflict": "値段のつかない損失、共同体的な相互扶助。"
+ },
+ {
+  "num": 56,
+  "name": "国境商人と隊商",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "越える・混ぜる・伝える",
+  "definition": "境界を通過可能なものに変え、物と情報を一緒に運ぶ。",
+  "conflict": "国境を固定したい中央国家。"
+ },
+ {
+  "num": 57,
+  "name": "トンネル住民",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "潜る・拾う・隠す",
+  "definition": "地上が捨てたものを地下で生きる資源へ変える。",
+  "conflict": "「見えない場所」を危険として一括排除する都市計画。"
+ },
+ {
+  "num": 58,
+  "name": "群島民",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "潮を読む・分ける・歌う",
+  "definition": "海の時間で動き、食と音楽と交易の回路を一緒に運ぶ。",
+  "conflict": "陸の時計、港の税関、単一文化。"
+ },
+ {
+  "num": 59,
+  "name": "遊牧民",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "巡る・放つ・避ける",
+  "definition": "所有より移動で生き、固定した支配をかわし続ける。",
+  "conflict": "地図に載せた瞬間に支配できると考える行政。"
+ },
+ {
+  "num": 60,
+  "name": "コーヒーハウス",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "しゃべる・出会う・企む",
+  "definition": "身分の差を一時的に薄め、未成熟な発想を社会へ出す前の発酵槽になる。",
+  "conflict": "閉じたサロン、家名ごとの席順。"
+ },
+ {
+  "num": 61,
+  "name": "文芸同人",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "書く・真似る・裏返す",
+  "definition": "既存神話を借りて、別の視点から書き直す。",
+  "conflict": "正典化、権威ある解釈、単一の歴史。"
+ },
+ {
+  "num": 62,
+  "name": "音楽流派",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "叩く・歪める・同期する",
+  "definition": "身体のリズムを共有して、議論より速く連帯を作る。",
+  "conflict": "静けさを秩序とみなす保守文化。"
+ },
+ {
+  "num": 63,
+  "name": "スポーツと賭博",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "競う・賭ける・名を上げる",
+  "definition": "血統や学歴とは別の序列を若者の前に差し出す。",
+  "conflict": "実力以外の評価軸を守りたい大人たち。"
+ },
+ {
+  "num": 64,
+  "name": "呪文コード部",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "書き換える・継ぐ・暴露する",
+  "definition": "古い配管と新しい言語を繋ぎ、レガシーな魔法インフラを再解釈する。",
+  "conflict": "機密主義、古い設計者の権威、危険を恐れる官僚。"
+ },
+ {
+  "num": 65,
+  "name": "配信者文化",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "晒す・編集する・流行らせる",
+  "definition": "出来事の意味を、その場で物語へ変換して共有する。",
+  "conflict": "熟考、沈黙、文脈の積み重ね。"
+ },
+ {
+  "num": 66,
+  "name": "夜明け奉仕団",
+  "section": "交易・辺境・若者の動詞",
+  "sectionNum": 6,
+  "verb": "片づける・配る・つなぎ直す",
+  "definition": "災害や事故の翌朝に、政治が来る前の現場を回す。",
+  "conflict": "「若者は未熟だから任せられない」という視線。"
+ }
+];
+const CATEGORIES = {"A": "一般階層・職業集団", "B": "ギルド・職業組合", "C": "宗教・信仰体系", "D": "政治党派・運動体", "E": "秘密結社・地下組織", "F": "メディア・言論", "G": "軍事・警察・境界警備", "H": "商人・金融", "I": "少数民族・辺境文化", "J": "若者文化・新潮流"};
+const CAT_COLORS = {"A": "#9a8878", "B": "#a88858", "C": "#a09070", "D": "#8890a0", "E": "#705060", "F": "#8898a8", "G": "#906868", "H": "#b09070", "I": "#70a090", "J": "#c0a070"};
+const CAT_INTROS = {"A": "名家の外にいる人々は、単なる「民衆」ではない。魔力ゼロの多数派、弱い接触を受け継いだ匿名の市民、制度を支える中級官吏、工場と港を回す労働者、そして名家の最も近くで秘密を見聞きする使用人まで、現代社会は多層である。4家は彼らを統治・雇用・監視・象徴化できても、日常を代行することはできない。", "B": "ギルドは名家に従属しきらない現代の第二権力である。資格、徒弟制度、価格、相互扶助、事故責任をまとめて握るため、VEXALIAの法廷もKROSSの工房も彼らを無視できない。多くは独立を掲げるが、実際には「どの家の誰と手を組むか」で内部分裂している。", "C": "この世界の宗教は、隕石をどう呼ぶかで大きく割れる。「神」とする新興教団、「おじ」や「関係の相手」とする在来共同体、魔法そのものを歪みとみなす禁欲派、祖先に血統と記憶を返す家内祭祀、そして秘密儀礼として力を局所化する密儀派が併存している。`magic_systems_research.md` にあるヘルメス的対応論、地母神信仰、祖霊祭祀、方陣秘儀は、いずれも現代信仰の裏打ちとして再解釈されている。", "D": "現代の政争は名家同士のサロン政治だけではない。登録制度、聖地返還、魔法教育、移民権、事故補償、若者文化、血統秘匿まで、あらゆる争点が党派化している。4家は依然として巨大な象徴だが、都市選挙や労働運動では、名家より先に街区の組織票が勝敗を決める。", "E": "規制社会には必ず裏面ができる。禁書を読みたい者、血統を隠したい者、石を盗みたい者、制度を倒したい者、ただ居場所を求める者が、七都市の地下室・酒場・旧坑道・印刷所に網を張っている。表の制度を最もよく理解しているのは、しばしば表ではなく裏にいる人々である。", "F": "この世界の言論は、宮廷公報のような公式記録から、露店で歌われる即興ニュース、地下印刷、共振放送、学生壁新聞まで多層である。三大新聞は都市ごとに論調が違い、パンフレット文化は選挙と暴動の前に必ず熱を帯びる。媒体が違えば、同じ事件でもまったく別の物語になる。", "G": "魔法の世界でも暴力装置は消えない。むしろ「誰が魔法を使い、誰が管理し、どこまでを境界とするか」が常時争点になるため、軍・警察・警備・救難の境目は曖昧である。VEXALIAは法で、KROSSは装備で、TAKANIは地の知で、EMBERLYNは記憶と格式でそれぞれ治安装置に影響を及ぼしている。", "H": "七都市の繁栄は魔法そのものではなく、その流通、換金、保険、信用、先物、送金に支えられている。4名家が象徴を担っても、日々の交渉を回すのは商館と組合である。彼らは魔石を資源に、事故を数字に、学費を借金に、文化を商品に変える。", "I": "七都市の外には、統治台帳にうまく載らない文化が広く残っている。彼らは「未発達な周縁」ではなく、異なる気候、移動性、交易路、記憶様式、血統観を持つ並立文明である。辺境は中央の遅れた影ではなく、中央がまだ理解していない別の中心である。", "J": "現代の若者文化は、魔法の強さよりも「どう混ぜるか」で決まる。コーヒーハウス、朗読会、同人誌、配信、スポーツ、賭博、補修ファッション、呪文コード、街角音楽が、階級や血統をまたいで新しい共同体を作る。明るめファンタジーの空気を支えるのは、この軽さと速度である。"};
+const BELTS_TEXT = "この世界の人間多様性は、次の6つの動詞帯としても整理できる。\n\n| 動詞帯 | 中心動詞 | 主な担い手 | 物語上の意味 |\n|---|---|---|---|\n| 管理帯 | 測る・記録する・許可する | VEXALIA、測量官、書記官、公報 | 秩序を与えるが、人を分類してしまう |\n| 産出帯 | 作る・鍛える・運ぶ・育てる | KROSS、工房、農家、商館 | 世界を動かすが、資源化の暴力も抱える |\n| 記憶帯 | 聴く・覚える・読む・復元する | TAKANI、EMBERLYN、祖先祭祀、校訂士 | 過去を現在へ戻すが、真実が制度を壊す |\n| 境界帯 | 区切る・守る・封じる・追跡する | 軍、警察、結界師、巡察 | 安全を守るが、自由を狭める |\n| 逸脱帯 | 隠す・漏らす・潜る・偽る | 地下組織、密輸網、偽血統屋、地下新聞 | 抑圧への逃げ道であり、犯罪の温床でもある |\n| 未来帯 | 混ぜる・試す・逸脱する・つなぎ直す | 若者、移民、コード部、サロン | まだ名前のない次の時代を先に生きる |";
+const SUMMARY_TEXT = "4名家は世界を「どう支配するか」の動詞を握っている。しかし物語を前へ進めるのは、名家外の人々が持つ別の動詞である。庶民は回し、移民は持ち込み、学生は逸脱し、労働者は止め、地下組織は漏らし、若者文化は混ぜる。つまりこの世界の人間多様性とは、「誰がどの動詞で世界に触れるか」の多様性である。キャラクターを配置するときは、家名や属性より先に、その人物がどの動詞側に立つかを考えると、社会全体との接続が強くなる。";
+
+const LS = {
+  get(k, def){ try { return JSON.parse(localStorage.getItem('sv_'+k)) ?? def; } catch(e){ return def; } },
+  set(k, v){ localStorage.setItem('sv_'+k, JSON.stringify(v)); }
+};
+
+let favs = new Set(LS.get('favs', []));
+let reads = new Set(LS.get('reads', []));
+let memos = LS.get('memos', {});
+let expanded = new Set();
+
+let filters = { cat: '0', mag: '0', q: '', fav: false, unread: false };
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-'+t.dataset.view).classList.add('active');
+  });
+});
+
+// Category pills
+const catBar = document.getElementById('cat-filters');
+Object.entries(CATEGORIES).forEach(([k, name]) => {
+  const b = document.createElement('button');
+  b.className = 'cat-pill pill';
+  b.dataset.cat = k;
+  b.textContent = `${k}. ${name}`;
+  b.style.borderColor = CAT_COLORS[k];
+  catBar.appendChild(b);
+});
+
+const grid = document.getElementById('grid');
+const statsEl = document.getElementById('stats');
+
+function matches(e){
+  if (filters.cat !== '0' && e.cat !== filters.cat) return false;
+  if (filters.mag !== '0' && e.magic !== filters.mag) return false;
+  if (filters.fav && !favs.has(e.id)) return false;
+  if (filters.unread && reads.has(e.id)) return false;
+  if (filters.q){
+    const q = filters.q.toLowerCase();
+    const hay = (e.nameJa+' '+e.nameOrig+' '+e.composition+' '+e.magic+' '+e.families+' '+e.politics+' '+e.location+' '+e.hook).toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const list = ENTRIES.filter(matches);
+  grid.innerHTML = '';
+  if (!list.length){ grid.innerHTML = '<div class="empty">該当なし</div>'; updateStats(list); return; }
+
+  // group by cat when not filtered to single cat
+  let currentCat = '';
+  list.forEach(e => {
+    if (filters.cat === '0' && e.cat !== currentCat){
+      const intro = document.createElement('div');
+      intro.className = 'cat-intro';
+      intro.innerHTML = `<h3>${e.cat}. ${CATEGORIES[e.cat]}</h3><div>${CAT_INTROS[e.cat] || ''}</div>`;
+      intro.style.borderLeftColor = CAT_COLORS[e.cat];
+      grid.appendChild(intro);
+      currentCat = e.cat;
+    }
+    const card = document.createElement('div');
+    card.className = 'card' + (reads.has(e.id)?' read':'') + (favs.has(e.id)?' fav':'') + (expanded.has(e.id)?' expanded':'');
+    card.dataset.id = e.id;
+    card.style.borderLeftColor = CAT_COLORS[e.cat];
+    const memo = memos[e.id] || '';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="c-num">${e.id}</span>
+        <span class="c-cat" style="background:${CAT_COLORS[e.cat]}">${e.cat}</span>
+      </div>
+      <div class="c-title">${e.nameJa}</div>
+      <div class="c-orig">${e.nameOrig}</div>
+      <div class="c-hook">${e.hook}</div>
+      <div class="c-details">
+        <dt>構成人口・階層</dt><dd>${e.composition}</dd>
+        <dt>魔力との関係</dt><dd>${e.magic}</dd>
+        <dt>4名家との関係</dt><dd>${e.families}</dd>
+        <dt>政治的立場</dt><dd>${e.politics}</dd>
+        <dt>主要拠点・地域</dt><dd>${e.location}</dd>
+        <dl class="c-memo">
+          <dt>メモ</dt>
+          <textarea data-memo="${e.id}" placeholder="採用/保留/削除・配置アイデア ...">${memo.replace(/"/g,'&quot;')}</textarea>
+        </dl>
+        <div class="c-actions">
+          <button class="c-btn ${favs.has(e.id)?'on':''}" data-act="fav" data-id="${e.id}">${favs.has(e.id)?'♥':'♡'} 推し</button>
+          <button class="c-btn ${reads.has(e.id)?'on':''}" data-act="read" data-id="${e.id}">${reads.has(e.id)?'✓ 既読':'未読'}</button>
+          <button class="c-btn" data-act="collapse" data-id="${e.id}">閉じる</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  updateStats(list);
+}
+
+function updateStats(list){
+  statsEl.innerHTML = `表示 <b>${list.length}</b> / 全 <b>${ENTRIES.length}</b> &nbsp;&nbsp; ♥ <b>${favs.size}</b> &nbsp;&nbsp; 既読 <b>${reads.size}</b>`;
+}
+
+grid.addEventListener('click', (ev)=>{
+  const card = ev.target.closest('.card'); if (!card) return;
+  const id = card.dataset.id;
+  const act = ev.target.dataset.act;
+  if (act === 'fav'){
+    if (favs.has(id)) favs.delete(id); else favs.add(id);
+    LS.set('favs', [...favs]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'read'){
+    if (reads.has(id)) reads.delete(id); else reads.add(id);
+    LS.set('reads', [...reads]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'collapse'){ expanded.delete(id); render(); ev.stopPropagation(); return; }
+  if (ev.target.tagName === 'TEXTAREA') return;
+  if (expanded.has(id)){ expanded.delete(id); } else { expanded.add(id); reads.add(id); LS.set('reads', [...reads]); }
+  render();
+});
+
+grid.addEventListener('input', (ev)=>{
+  const t = ev.target;
+  if (t.tagName === 'TEXTAREA' && t.dataset.memo){
+    memos[t.dataset.memo] = t.value;
+    LS.set('memos', memos);
+  }
+});
+
+document.querySelectorAll('.cat-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const c = p.dataset.cat;
+    filters.cat = filters.cat === c ? '0' : c;
+    document.querySelectorAll('.cat-pill').forEach(x => x.classList.toggle('active', x.dataset.cat === filters.cat));
+    if (filters.cat === '0') document.querySelector('.cat-pill[data-cat="0"]').classList.add('active');
+    render();
+  });
+});
+document.querySelector('.cat-pill[data-cat="0"]').classList.add('active');
+
+document.querySelectorAll('.mag-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const m = p.dataset.mag;
+    filters.mag = filters.mag === m ? '0' : m;
+    document.querySelectorAll('.mag-pill').forEach(x => x.classList.toggle('active', x.dataset.mag === filters.mag));
+    if (filters.mag === '0') document.querySelector('.mag-pill[data-mag="0"]').classList.add('active');
+    render();
+  });
+});
+document.querySelector('.mag-pill[data-mag="0"]').classList.add('active');
+
+document.querySelectorAll('.pill[data-filter]').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const f = p.dataset.filter;
+    filters[f] = !filters[f];
+    p.classList.toggle('active', filters[f]);
+    render();
+  });
+});
+
+document.getElementById('q').addEventListener('input', (e)=>{
+  filters.q = e.target.value.trim();
+  render();
+});
+
+render();
+
+// Verbs view
+document.getElementById('verbs-intro').innerHTML = `
+  <strong>4名家の動詞（既定）</strong>:<br>
+  ・VEXALIA = 測る・記録する・許可する<br>
+  ・KROSS = 作る・刻む・守る<br>
+  ・TAKANI = 聴く・覚える・保つ<br>
+  ・EMBERLYN = 読む・復元する・繋ぐ<br><br>
+  頂点の動詞だけでは社会は動かない。下に広がる人々は、耐え、運び、混ぜ、漏らし、賭け、修理し、逃がし、歌い、書き換える。<br>
+  キャラクター配置では家名や属性より先に「その人物がどの動詞側に立つか」を考えると、社会全体との接続が強くなる。
+`;
+
+const verbSections = {};
+VERBS.forEach(v => {
+  if (!verbSections[v.sectionNum]) verbSections[v.sectionNum] = { name: v.section, verbs: [] };
+  verbSections[v.sectionNum].verbs.push(v);
+});
+
+const vsecContainer = document.getElementById('verb-sections');
+Object.entries(verbSections).sort().forEach(([k, sec])=>{
+  const block = document.createElement('div');
+  block.className = 'verb-section';
+  block.innerHTML = `<div class="verb-section-title">${sec.name}</div><div class="verbs-grid"></div>`;
+  const vgrid = block.querySelector('.verbs-grid');
+  sec.verbs.forEach(v => {
+    const vc = document.createElement('div');
+    vc.className = 'verb-card';
+    vc.innerHTML = `
+      <h4>${String(v.num).padStart(2,'0')}. ${v.name}</h4>
+      <div class="v-verb">${v.verb}</div>
+      <div class="v-def">${v.definition}</div>
+      ${v.conflict?`<div class="v-conf">${v.conflict}</div>`:''}
+    `;
+    vgrid.appendChild(vc);
+  });
+  vsecContainer.appendChild(block);
+});
+
+document.getElementById('belts-block').innerHTML = '<h3 style="font-family:\'Cinzel\',serif;font-size:0.85rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.7rem">◆ 動詞帯</h3>' + BELTS_TEXT.replace(/\n/g, '<br>');
+document.getElementById('summary-block').innerHTML = '<h3 style="font-family:\'Cinzel\',serif;font-size:0.85rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.7rem">◆ 総括</h3>' + SUMMARY_TEXT.replace(/\n/g, '<br>');
+</script>
+
+</body>
+</html>
