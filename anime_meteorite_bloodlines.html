@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三つの血脈 — 隕石世界の名家史</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0a0908;--text:#d0c8bc;--muted:#8a8074;--accent:#b08840;--bone:#c8bfa8;--taka:#b0c090;--vexa:#9080b8;--kross:#c08060}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;line-height:2.2}
+
+  .hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4rem 2rem;background:radial-gradient(ellipse at center,rgba(176,136,64,0.06),transparent 70%)}
+  .hero .label{font-size:0.55rem;letter-spacing:1.2em;color:var(--muted);margin-bottom:2rem}
+  .hero h1{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);background:linear-gradient(180deg,#d8c8a0,#b08840,#6b4420);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;margin-bottom:1rem;letter-spacing:0.04em}
+  .hero .sub{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--bone);font-style:italic;margin-bottom:2rem}
+  .hero .desc{font-size:0.88rem;color:var(--muted);max-width:640px;line-height:2.4}
+
+  .section{max-width:960px;margin:0 auto;padding:4rem 2.5rem;border-top:1px solid rgba(176,136,64,0.08)}
+  .section-label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.6em;color:rgba(176,136,64,0.3);text-transform:uppercase;margin-bottom:1.5rem}
+  .section h2{font-family:'Cinzel',serif;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--bone);margin-bottom:0.4rem;line-height:1.4}
+  .section .sub-h2{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--accent);font-style:italic;margin-bottom:2rem}
+  .section > p{font-size:0.88rem;color:#a09888;margin-bottom:1.2rem;line-height:2.4}
+  .section > p strong{color:var(--bone);font-weight:400}
+
+  /* Family Header */
+  .family-header{text-align:center;padding:3rem 2rem 1rem;margin-top:3rem}
+  .family-crest{width:100px;height:100px;margin:0 auto 1.5rem;border:2px solid;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;position:relative}
+  .family-crest::before{content:'';position:absolute;inset:-8px;border:1px solid;border-radius:50%;opacity:0.3}
+  .family-name{font-family:'Cinzel',serif;font-size:1.6rem;letter-spacing:0.3em;margin-bottom:0.5rem}
+  .family-motto{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:0.3rem}
+  .family-type{font-size:0.7rem;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase}
+
+  .taka .family-crest{border-color:var(--taka);color:var(--taka)}
+  .taka .family-name{color:var(--taka)}
+  .taka .family-motto{color:var(--taka)}
+
+  .vexa .family-crest{border-color:var(--vexa);color:var(--vexa)}
+  .vexa .family-name{color:var(--vexa)}
+  .vexa .family-motto{color:var(--vexa)}
+
+  .kross .family-crest{border-color:var(--kross);color:var(--kross)}
+  .kross .family-name{color:var(--kross)}
+  .kross .family-motto{color:var(--kross)}
+
+  /* Family summary box */
+  .family-summary{margin:2rem 0 3rem;padding:2rem;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:4px}
+  .family-summary h4{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--accent);margin-bottom:0.5rem}
+  .family-summary p{font-size:0.83rem;color:#a09888;line-height:2;margin-bottom:0.8rem}
+
+  /* Generation */
+  .generation{margin:3rem 0;padding:2rem;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:4px;border-left:3px solid}
+  .taka .generation{border-left-color:var(--taka)}
+  .vexa .generation{border-left-color:var(--vexa)}
+  .kross .generation{border-left-color:var(--kross)}
+
+  .gen-label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.4em;margin-bottom:0.5rem}
+  .taka .gen-label{color:var(--taka)}
+  .vexa .gen-label{color:var(--vexa)}
+  .kross .gen-label{color:var(--kross)}
+
+  .person{margin:1.5rem 0;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .person:last-child{border-bottom:none}
+  .person h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--bone);margin-bottom:0.2rem}
+  .person .role{font-family:'Cormorant Garamond',serif;font-size:0.85rem;font-style:italic;margin-bottom:0.5rem}
+  .taka .person .role{color:var(--taka)}
+  .vexa .person .role{color:var(--vexa)}
+  .kross .person .role{color:var(--kross)}
+  .person .years{font-size:0.7rem;color:var(--muted);letter-spacing:0.15em;margin-bottom:0.8rem}
+  .person p{font-size:0.83rem;color:#a09888;line-height:2;margin-bottom:0.6rem}
+  .person .quote{margin:1rem 0;padding:1rem 1.5rem;background:rgba(0,0,0,0.3);border-left:2px solid var(--accent);font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--bone);font-size:0.95rem;line-height:1.8}
+
+  /* Intersection section */
+  .intersection{margin:4rem 0;padding:2.5rem;background:linear-gradient(135deg,rgba(176,192,144,0.04),rgba(144,128,184,0.04),rgba(192,128,96,0.04));border:1px solid rgba(176,136,64,0.15);border-radius:4px}
+  .intersection h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--bone);margin-bottom:0.5rem;text-align:center}
+  .intersection .year{font-size:0.7rem;color:var(--accent);letter-spacing:0.3em;text-align:center;margin-bottom:1.5rem}
+  .intersection p{font-size:0.85rem;color:#a09888;line-height:2.2}
+  .intersection p strong{color:var(--bone)}
+
+  footer{text-align:center;padding:4rem 2rem 3rem;font-size:0.55rem;color:rgba(138,128,116,0.25);letter-spacing:0.5em}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="label">Three Bloodlines</p>
+  <h1>THE THREE HOUSES<br>三つの血脈</h1>
+  <p class="sub">三百年、絡み合い続ける三つの家系</p>
+  <p class="desc">
+    TAKANI家 — 先住民の対話師の血筋。隕石との千年の関係を持つ。<br>
+    VEXALIA家 — 魔法を持たない貴族。しかし世界を動かし続けてきた。<br>
+    KROSS家 — 運搬人から始まった技術者の家。結晶を各地に運んだ。<br><br>
+    三つの家は300年間、愛し、争い、裏切り、助け合ってきた。<br>
+    現代、それぞれの子孫が同じ危機に直面する。
+  </p>
+</section>
+
+<!-- ==================== TAKANI ==================== -->
+<section class="section taka">
+  <div class="family-header">
+    <div class="family-crest">◉</div>
+    <div class="family-name">TAKANI</div>
+    <div class="family-motto">「聞く者は、答えられる」</div>
+    <div class="family-type">Indigenous Bloodline — Dialogue Keepers</div>
+  </div>
+
+  <div class="family-summary">
+    <h4>Family Profile</h4>
+    <p><strong>起源</strong>：隕石の深部に千年以上暮らしてきた先住民の系譜。本来は姓の概念がなかったが、植民地政府との交渉のため「タカニ」という外来的姓を受け入れた。</p>
+    <p><strong>特徴</strong>：代々「対話師」の血筋。隕石ネットワークと直接「話す」能力を持つ。しかし力の代償として、歴代が<strong>短命</strong>。体が結晶化しやすい。</p>
+    <p><strong>現代の立場</strong>：先住民権利運動の中心。同時に、世界の魔法インフラ危機を解決できる数少ない存在。</p>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 1 — 1700s</p>
+    <div class="person">
+      <h3>ナハニ Nahani</h3>
+      <p class="role">最初の対話師</p>
+      <p class="years">c. 1640 — 1715</p>
+      <p>制圧時に老女だった。戦士でもシャーマンでもなく、ただ<strong>「聞く人」</strong>と呼ばれていた。隕石のネットワーク全体に頼んで、森に兵士を拒ませた。捕らえられて処刑される前、総督に向けて言った言葉が、300年後の法廷でも引用され続ける。</p>
+      <div class="quote">あなたたちは石を掘っているのではない。誰かの背中を削っている。</div>
+      <p>彼女の娘<strong>イェラ</strong>が深部に逃れ、一族の系譜を守った。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 4 — 1800s</p>
+    <div class="person">
+      <h3>ウィラ・タカニ Willa Takani</h3>
+      <p class="role">初の先住民学院生</p>
+      <p class="years">1838 — 1920</p>
+      <p>深部で生まれ、18歳で単身都市に出た。学院に入学した最初の先住民。白人学生からの差別は壮絶だったが、全教科で首席を取り続けた。論文<strong>「対話の物理学」</strong>を書き上げるも、学会は黙殺。故郷に戻り、30年間子供たちに<strong>西洋科学と先住民の知恵を両方</strong>教えた。</p>
+      <div class="quote">祖母は隕石に「話しかけた」と言う。デュヴァル先生は「エネルギーを測定した」と言う。二人は同じことを違う言葉で言っている。</div>
+      <p>没後50年、彼女の教え子たちの働きで論文が再発見され、デュヴァルと並ぶ「科学の母」として扱われるようになった。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 5 — 1900s</p>
+    <div class="person">
+      <h3>リオ・タカニ Lio Takani</h3>
+      <p class="role">結晶農業の創始者</p>
+      <p class="years">1908 — 1989</p>
+      <p>ウィラの孫。大結晶恐慌（1920年）を少年時代に目撃し、<strong>「掘るのではなく育てる」</strong>農法を開発。ヴェルデに最初のリオ式結晶農場を開いた。</p>
+      <div class="quote">結晶は植物と似ている。土と時間と対話があれば育つ。乱暴に引き抜けば、二度と生えない。</div>
+      <p>生涯独身だったが、弟子たちを実の家族のように育てた。後継者は血縁ではなく、<strong>「聞く耳を持つ者」</strong>の中から選ばれる伝統を確立。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 7 — 現代</p>
+    <div class="person">
+      <h3>マヤ・タカニ Maya Takani</h3>
+      <p class="role">対話師 / 公認深層探査ガイド</p>
+      <p class="years">1998 —</p>
+      <p>ウィラの玄孫。ノクターン出身。<strong>一族で最も強い対話能力</strong>を持つが、同時に最も短命になる運命。すでに両手の指先が結晶化し始めている。</p>
+      <p>深部探査員を育てる傍ら、「脈動」の解読を試みている。隕石が目覚めかけている理由を、誰よりも早く掴もうとする。</p>
+      <div class="quote">おじは怒っていない。ただ、300年間答えが返ってこなかったから、もう一度聞いているんだ。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== VEXALIA ==================== -->
+<section class="section vexa">
+  <div class="family-header">
+    <div class="family-crest">◇</div>
+    <div class="family-name">VEXALIA</div>
+    <div class="family-motto">「力なき者こそ、歴史を書く」</div>
+    <div class="family-type">Non-Magical Nobility — Power Without Magic</div>
+  </div>
+
+  <div class="family-summary">
+    <h4>Family Profile</h4>
+    <p><strong>起源</strong>：1700年代初頭の植民地総督を祖に持つ旧貴族。代々<strong>誰一人として魔法が使えない</strong>。それでも300年間、政治・司法・経済の中枢にいる。</p>
+    <p><strong>特徴</strong>：魔法を持たないことへのコンプレックスと誇りが混在する一族。「力がないからこそ、力を使う者を使える」が家訓。策謀家、政治家、外交官を多数輩出。</p>
+    <p><strong>現代の立場</strong>：魔法規制機関IMEAの創設者一族。魔法社会の倫理的ブレーキ役を自任するが、同時に既得権益の守護者でもある。</p>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 1 — 1700s</p>
+    <div class="person">
+      <h3>アレクサンデル・ヴェクサリア Alexander Vexalia</h3>
+      <p class="role">初代植民地総督</p>
+      <p class="years">1668 — 1730</p>
+      <p>武力制圧の指揮官。ナハニを処刑した男。しかし晩年、ラシーヌの手記を密かに入手し、読み込んでいたことが後世発覚する。日記には<strong>「私は間違っていたのかもしれない」</strong>という1行が残されている。</p>
+      <p>しかし彼はそれを公にせず、死んだ。「正しさより、秩序を」が信条だった。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 3 — 1800s</p>
+    <div class="person">
+      <h3>カトリーナ・ヴェクサリア Katrina Vexalia</h3>
+      <p class="role">魔法恐怖法の起草者</p>
+      <p class="years">1745 — 1812</p>
+      <p>1790年の市場破壊事件の後、魔法規制を法制化した女性議員。冷徹な政治家で、「力を持つ者は登録し、管理されねばならない」という体系を作った。<strong>現代の魔法規制の原型</strong>はすべて彼女の手による。</p>
+      <div class="quote">私は魔法を憎んではいない。人間を信用していないだけだ。</div>
+      <p>一人娘は力を持って生まれたが、カトリーナは娘を<strong>自ら登録</strong>した。私情を挟まないという意志表明。娘は母を生涯許さなかった。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 5 — 1900s</p>
+    <div class="person">
+      <h3>エルネスト・ヴェクサリア Ernesto Vexalia</h3>
+      <p class="role">IMEA創設者</p>
+      <p class="years">1902 — 1988</p>
+      <p>戦後、魔法兵器の惨禍を目撃した外交官。国際魔法エネルギー機関（IMEA）の設立を主導。<strong>「魔法の国連」</strong>を作った男。</p>
+      <p>「魔法を持たない我々こそが、魔法を持つ者たちの争いを仲裁できる」が彼の論理。実際、彼の調停で多くの戦争が回避された。しかし先住民の権利は後回しにされ続けた。エレナ・マトス（当時若手弁護士）と激しく対立した。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 7 — 現代</p>
+    <div class="person">
+      <h3>セオドア・ヴェクサリア Theodore Vexalia</h3>
+      <p class="role">IMEA監査役 / 若き当主</p>
+      <p class="years">1995 —</p>
+      <p>一族の伝統通り、魔法は使えない。しかし<strong>魔法のことなら誰よりも知っている</strong>。記憶力は異常で、300年分の規制の沿革をすべて暗唱できる。</p>
+      <p>「脈動」の監視責任者。データから何かがおかしいと気づいているが、上層部は認めない。マヤ・タカニと、一族の確執を超えて協力することになる。</p>
+      <div class="quote">我々ヴェクサリア家は300年、正しい場所で間違い続けてきた。今度は違う場所で、間違ってみようと思う。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== KROSS ==================== -->
+<section class="section kross">
+  <div class="family-header">
+    <div class="family-crest">✦</div>
+    <div class="family-name">KROSS</div>
+    <div class="family-motto">「運ぶ手は、世界を編む」</div>
+    <div class="family-type">Technician Lineage — The Builders</div>
+  </div>
+
+  <div class="family-summary">
+    <h4>Family Profile</h4>
+    <p><strong>起源</strong>：初代トーマス・ヘンリー・クロスは鉱夫出身の運搬人。貴族ではない。しかし彼が運んだ結晶が<strong>7つの都市の核</strong>になった。以後、技術者と発明家を代々輩出。</p>
+    <p><strong>特徴</strong>：一族の半数が魔法を使える、半数が使えない。しかし<strong>全員が手を使う</strong>。鍛冶、土木、発明、保守。「頭より手を先に動かす」が家風。</p>
+    <p><strong>現代の立場</strong>：カルデラ工業都市の重鎮。結晶機関メーカー、配管会社、発明研究所を経営。労働者階級の代表として政治にも関わる。</p>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 1 — 1700s</p>
+    <div class="person">
+      <h3>トーマス・ヘンリー・クロス Thomas Henry Kross</h3>
+      <p class="role">初代結晶運搬人</p>
+      <p class="years">1755 — 1815（失踪）</p>
+      <p>鉱夫として働いていた時、先住民の老人に<strong>「切るな、分けてもらえ」</strong>と教えられた。この技術で結晶を安全に運搬することに成功。40年で12回、大陸を横断。</p>
+      <p>最後の旅で行方不明。彼が運んでいた結晶も一緒に消えた。一説には、<strong>深部に自ら入って「還った」</strong>とも言われる。</p>
+      <div class="quote">結晶は生きている。切るんじゃない。分けてもらうんだ。</div>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 3 — 1800s</p>
+    <div class="person">
+      <h3>サラ・コーツ・クロス Sarah Koats-Kross</h3>
+      <p class="role">魔導管設計の母</p>
+      <p class="years">1862 — 1941</p>
+      <p>トーマスの曾孫。土木工学者。液体魔法エネルギーのパイプラインを世界で初めて実現。彼女の設計はあまりに堅牢で、<strong>100年経った今も現役</strong>。</p>
+      <p>設計書の最後に手書きで残された1行は、一族の伝説になっている。</p>
+      <div class="quote">この管は100年持つように作った。100年後の人間が私より賢いことを祈る。</div>
+      <p>賢くなかった。100年後の技師たちは、彼女の設計書を読めずに管を継ぎ足し続けた。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 5 — 1900s</p>
+    <div class="person">
+      <h3>カイ・ムラカミ・クロス Kai Murakami-Kross</h3>
+      <p class="role">結晶コンピュータ開発者</p>
+      <p class="years">1945 — 2018</p>
+      <p>移民の血筋とクロス家が結婚で融合した第三世代。台所で最初の結晶コンピュータを作った男。<strong>「呪文は構造だ」</strong>の発見で、魔法を持たない人間にも魔法工学の扉を開いた。</p>
+      <p>晩年、「自分がしたことが正しかったか分からない」と漏らしたと伝えられる。誰でも魔法プログラミングができるようになった結果、<strong>誰も魔法を深く理解しなくなった</strong>からだ。</p>
+    </div>
+  </div>
+
+  <div class="generation">
+    <p class="gen-label">GEN 7 — 現代</p>
+    <div class="person">
+      <h3>レン・クロス Ren Kross</h3>
+      <p class="role">魔導管保守技師 / 若き技術者</p>
+      <p class="years">2001 —</p>
+      <p>一族の長男だが、期待される経営ではなく<strong>現場の保守技師</strong>を選んだ。地味な仕事。曾祖母サラの設計書を独学で読めるようになった、おそらく唯一の現代人。</p>
+      <p>2010年の「古代設計と現代運用の乖離」を発見したのは、彼が曾祖母の設計書と現場の配管を見比べた結果だった。ここから物語が動き出す。</p>
+      <div class="quote">300年前の人たちは、100年後の我々がもう少し賢いと信じてくれた。裏切るわけにはいかない。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== INTERSECTIONS ==================== -->
+<section class="section">
+  <p class="section-label">Where the Bloodlines Cross</p>
+  <h2>三つの血の交差点</h2>
+  <p class="sub-h2">Moments When History Turned</p>
+
+  <p>三つの家は無関係ではない。300年の間、何度も<strong>交わり、争い、愛し合ってきた</strong>。その全てが今日の世界を形作っている。</p>
+
+  <div class="intersection">
+    <p class="year">1715</p>
+    <h3>最初の交差 — ナハニの処刑</h3>
+    <p>
+      総督<strong>アレクサンデル・ヴェクサリア</strong>がナハニを処刑した現場に、若き鉱夫<strong>トーマス・クロス</strong>の父がいた。彼は死刑執行人ではなく、ただの見物人だった。<br>
+      しかしその日、彼は息子にナハニの最期の言葉を語った。この言葉が、後にトーマスが<strong>「切るな、分けてもらえ」</strong>の教えを受け入れる下地になる。<br>
+      <strong>三家の歴史は、最初の衝突と同時に始まっていた。</strong>
+    </p>
+  </div>
+
+  <div class="intersection">
+    <p class="year">1860</p>
+    <h3>学院の広間 — 無視された論文</h3>
+    <p>
+      <strong>ウィラ・タカニ</strong>が「対話の物理学」を学院で発表したとき、審査員の中に<strong>ヴェクサリア家の3代目</strong>がいた。彼は論文の価値を見抜いたが、<strong>家名を守るため否定票を投じた</strong>。<br>
+      その日、会場を掃除していた若い技師が<strong>サラ・コーツ（当時2代目クロスの娘）</strong>。彼女はウィラの論文を拾い、生涯読み続けた。後に彼女のパイプライン設計の根本思想は、ウィラの「対話の物理学」に基づいていた。<br>
+      <strong>学会が無視した真実は、現場の手で生き残った。</strong>
+    </p>
+  </div>
+
+  <div class="intersection">
+    <p class="year">1965</p>
+    <h3>深部の発見 — 三家の立ち会い</h3>
+    <p>
+      デュヴァルの第7法則の証明。隕石が「意志を持つ」と初めて科学的に示された歴史的瞬間。その場には3人が立ち会っていた。<br>
+      <strong>リオ・タカニ</strong>（先住民の対話師代表）、<strong>エルネスト・ヴェクサリア</strong>（IMEA議長）、<strong>カイ・ムラカミ・クロス</strong>（若き技術者）。<br>
+      三人は生涯、この日について一度も公には語らなかった。<strong>それぞれが違う結論</strong>を持ち帰ったからだ。<br>
+      リオは「やっと証明された」と思った。エルネストは「手遅れだ」と思った。カイは「これをどう技術にする？」と思った。
+    </p>
+  </div>
+
+  <div class="intersection">
+    <p class="year">2026</p>
+    <h3>現代の交差 — 三人の若者</h3>
+    <p>
+      <strong>マヤ・タカニ</strong>、<strong>セオドア・ヴェクサリア</strong>、<strong>レン・クロス</strong>。<br>
+      三人は同じ「脈動」の謎に別々の角度から辿り着く。<br>
+      マヤは深部からの対話で。セオドアは規制データの異常で。レンは曾祖母の設計書から。<br>
+      三人が出会うとき、物語が始まる。<br><br>
+      <strong>彼らは知ることになる — 祖父母たちが見た1965年のあの瞬間から、全ては準備されていたのだと。</strong>
+    </p>
+  </div>
+</section>
+
+<footer>
+  THREE BLOODLINES — BLOODLINE DOCUMENT v1.0 — 2026.04.19
+</footer>
+
+</body>
+</html>

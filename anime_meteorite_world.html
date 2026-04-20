@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隕石世界 — 設定資料</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0a0908;--text:#d0c8bc;--muted:#8a8074;--accent:#b08840;--bone:#c8bfa8;--blood:#8b2020}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;line-height:2.2}
+
+  .hero{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4rem 2rem;background:radial-gradient(ellipse 600px 400px at 50% 50%,rgba(176,136,64,0.08),transparent 70%)}
+  .hero .label{font-size:0.55rem;letter-spacing:1.2em;color:var(--muted);margin-bottom:2rem}
+  .hero h1{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);background:linear-gradient(180deg,#d8c8a0,#b08840,#6b4420);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;margin-bottom:1rem;letter-spacing:0.04em}
+  .hero .sub{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--bone);font-style:italic;margin-bottom:2rem}
+  .hero .desc{font-size:0.88rem;color:var(--muted);max-width:600px;line-height:2.4}
+
+  .section{max-width:900px;margin:0 auto;padding:5rem 2.5rem;border-top:1px solid rgba(176,136,64,0.1)}
+  .section-label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.6em;color:rgba(176,136,64,0.3);text-transform:uppercase;margin-bottom:1.5rem}
+  .section h2{font-family:'Cinzel',serif;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--bone);margin-bottom:0.4rem;line-height:1.4}
+  .section .sub-h2{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--accent);font-style:italic;margin-bottom:2.5rem}
+  .section p{font-size:0.88rem;color:#a09888;margin-bottom:1.2rem;line-height:2.4}
+  .section p strong{color:var(--bone);font-weight:400}
+
+  .quote{padding:1.5rem 2rem;margin:2rem 0;border-left:2px solid rgba(176,136,64,0.3);background:rgba(176,136,64,0.02)}
+  .quote p{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--bone);line-height:2}
+  .quote .cite{display:block;margin-top:0.8rem;font-size:0.75rem;font-style:normal;color:var(--muted)}
+
+  .era{margin:3rem 0;padding:2rem;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:4px;border-left:3px solid rgba(176,136,64,0.4)}
+  .era-num{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.4em;color:var(--accent);margin-bottom:0.5rem}
+  .era h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--bone);margin-bottom:0.3rem}
+  .era .years{font-size:0.75rem;color:var(--muted);margin-bottom:1.5rem;letter-spacing:0.2em}
+  .event{padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.03);display:grid;grid-template-columns:80px 1fr;gap:1rem}
+  .event:last-child{border-bottom:none}
+  .event .year{font-family:'Cinzel',serif;color:var(--accent);font-size:0.8rem;opacity:0.7;padding-top:0.3rem}
+  .event .text{font-size:0.85rem;color:#a09888;line-height:2.1}
+  .event .text strong{color:var(--bone)}
+
+  .impact{margin-top:1.5rem;padding:1rem;background:rgba(176,136,64,0.04);border-radius:3px;font-size:0.78rem}
+  .impact h4{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--accent);margin-bottom:0.6rem}
+  .impact ul{list-style:none;padding:0}
+  .impact li{padding:0.3rem 0 0.3rem 1rem;color:var(--muted);position:relative;line-height:1.8}
+  .impact li::before{content:'\25C6';position:absolute;left:0;color:var(--accent);opacity:0.4;font-size:0.5rem;top:0.7rem}
+
+  .character{margin:2.5rem 0;padding:2rem;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:4px}
+  .character h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--bone);margin-bottom:0.3rem}
+  .character .role{font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:var(--accent);font-style:italic;margin-bottom:1rem}
+  .character p{font-size:0.83rem;color:#a09888;line-height:2;margin-bottom:0.8rem}
+  .character .word{margin-top:1rem;padding:1rem 1.5rem;background:rgba(0,0,0,0.3);border-left:2px solid var(--accent);font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--bone);font-size:0.95rem;line-height:1.8}
+
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin:2rem 0}
+  .city{padding:1.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:4px;border-top:3px solid}
+  .city h3{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:0.3rem}
+  .city .crystal{font-family:'Cormorant Garamond',serif;font-size:0.78rem;color:var(--muted);font-style:italic;margin-bottom:1rem}
+  .city p{font-size:0.8rem;color:#a09888;line-height:1.9;margin-bottom:0.6rem}
+  .city .tag{display:inline-block;font-size:0.65rem;color:var(--accent);letter-spacing:0.15em;margin-top:0.5rem;padding:0.2rem 0.6rem;border:1px solid rgba(176,136,64,0.2);border-radius:10px}
+
+  .era-bg-pre{border-left-color:rgba(100,80,60,0.5)}
+  .era-bg-1{border-left-color:rgba(139,32,32,0.5)}
+  .era-bg-2{border-left-color:rgba(100,60,30,0.5)}
+  .era-bg-3{border-left-color:rgba(176,136,64,0.5)}
+  .era-bg-4{border-left-color:rgba(180,120,80,0.5)}
+  .era-bg-5{border-left-color:rgba(120,140,160,0.5)}
+  .era-bg-6{border-left-color:rgba(200,191,168,0.5)}
+
+  footer{text-align:center;padding:4rem 2rem 3rem;font-size:0.55rem;color:rgba(138,128,116,0.25);letter-spacing:0.5em}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="label">World Setting Document</p>
+  <h1>METEORITE WORLD<br>隕石世界</h1>
+  <p class="sub">三百年の出会いと、まだ続いている対話</p>
+  <p class="desc">
+    1700年、ある探検隊が「光る山」を発見した。<br>
+    だがそこには既に先住民が住んでいて、<br>
+    千年以上前からその力と暮らしていた。<br>
+    これは、その出会いから始まる三百年の物語である。
+  </p>
+</section>
+
+<!-- ==================== 世界の前提 ==================== -->
+<section class="section">
+  <p class="section-label">Premise</p>
+  <h2>世界の前提</h2>
+  <p class="sub-h2">The Meeting and the Misunderstanding</p>
+
+  <p>
+    ある時代、ある大陸の奥地に、<strong>巨大な隕石</strong>が眠っていた。<br>
+    いつから在ったかは誰も知らない。先住民の口伝では「世界の始まりから」。
+  </p>
+  <p>
+    隕石は単なる岩ではなかった。<br>
+    地下深くまで根を張った<strong>巨大なネットワーク</strong>であり、<br>
+    周囲の生態系と<strong>「対話」</strong>していた。<br>
+    結晶化した樹木、光る苔、異常に知能の高い鳥。<br>
+    先住民はその対話の輪の中にいた。彼らは隕石を「おじ」と呼んだ。
+  </p>
+  <p>
+    1700年、ヨーロッパからの探検隊が到達する。<br>
+    彼らは隕石を「資源」として見た。先住民を「未開人」として見た。<br>
+    武力で制圧し、表層を採掘し始めた。<br>
+    これが三百年に及ぶ<strong>「搾取と対話」</strong>の物語の始まりである。
+  </p>
+
+  <div class="quote">
+    <p>あなたたちは石を掘っているのではない。誰かの背中を削っている。</p>
+    <span class="cite">— 先住民の対話師ナハニ、処刑前の言葉（1715年）</span>
+  </div>
+</section>
+
+<!-- ==================== 歴史 ==================== -->
+<section class="section">
+  <p class="section-label">History</p>
+  <h2>三百年の年代記</h2>
+  <p class="sub-h2">Six Eras of the Meteorite</p>
+
+  <div class="era era-bg-pre">
+    <p class="era-num">ERA 0</p>
+    <h3>前史</h3>
+    <p class="years">— 1700</p>
+    <p style="font-size:0.85rem;color:#a09888;line-height:2.1">
+      隕石はいつ落ちたのか不明。先住民の口伝では「世界の始まりから」あった。<br>
+      先住民の社会は<strong>対話的</strong>。隕石に「頼む」。返礼として生態系を守る。<br>
+      力は世襲ではなく<strong>親和性</strong>で決まる。子供の頃に隕石の近くで過ごす「親和の儀」がある。<br>
+      動植物も影響を受けている。結晶化した樹木、光る苔、異常に知能が高い鳥。<br>
+      <strong>力と引き換えに寿命が短い。</strong>使うほど体が結晶化していく。<br>
+      死者は隕石の近くに埋葬される。「還す」という感覚。
+    </p>
+  </div>
+
+  <div class="era era-bg-1">
+    <p class="era-num">ERA I</p>
+    <h3>接触と収奪</h3>
+    <p class="years">1700 — 1760</p>
+    <div class="event"><span class="year">1703</span><div class="text">博物学者<strong>エドモン・ラシーヌ</strong>が探検隊として到達。「光る山」と「結晶化した樹木」を記録。先住民が隕石を<strong>「おじ」</strong>と呼ぶことを書き留める。</div></div>
+    <div class="event"><span class="year">1710</span><div class="text">最初の軍事遠征。先住民は戦わなかったが、<strong>森が兵士を拒んだ</strong>。植物が進路を塞ぎ、地面が泥化した。先住民の仕業ではなく、<strong>生態系全体の防御反応</strong>。</div></div>
+    <div class="event"><span class="year">1715</span><div class="text">大規模な武力制圧。火器と数の暴力で表層部を占領。先住民は深部に退く。植民地政府は隕石を<strong>「王冠の宝石」</strong>と命名し採掘開始。</div></div>
+    <div class="event"><span class="year">1720</span><div class="text">最初の<strong>「変質者」</strong>。隕石鉱脈で働いた鉱夫が変わり始める。手が光る、物に触れずに動かせる、夢で遠くを見る。政府は<strong>隔離施設</strong>を作る。</div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>「隕石病」という概念が生まれる。実際は魔法の発現だが、当時は病気として恐怖された</li>
+        <li>先住民が「保菌者」扱いされ、隔離・迫害が進む</li>
+        <li>一部の学者が先住民との対話を試みる。最初の「翻訳者」たち</li>
+        <li>宗教界では大論争。隕石は神の贈り物か悪魔の誘惑か</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="era era-bg-2">
+    <p class="era-num">ERA II</p>
+    <h3>恐怖と分断</h3>
+    <p class="years">1760 — 1820</p>
+    <div class="event"><span class="year">1765</span><div class="text">入植者第二世代に力が発現。隕石の影響圏で生まれ育った子供たち。社会が割れる。<strong>力を持つ者と持たざる者</strong>。</div></div>
+    <div class="event"><span class="year">1780</span><div class="text"><strong>「ラシーヌ・ノート」事件</strong>。初代博物学者の孫が祖父の手記を出版。先住民の知恵が詳細に記録されていた。大ベストセラーになるが植民地政府が発禁処分。地下で写本が流通。</div></div>
+    <div class="event"><span class="year">1790</span><div class="text">最初の「魔法事故」。少年の感情暴走で市場破壊。死者17名。<strong>「魔法恐怖法」</strong>が制定され、力を持つ者の登録制が始まる。</div></div>
+    <div class="event"><span class="year">1805</span><div class="text">深部への最後の大規模軍事遠征。100名のうち3名しか帰還せず、全員が<strong>「10年分老いて」</strong>いた。深部は<strong>禁域</strong>に指定。</div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>二重社会の形成。表（力を禁じる）と裏（密かに使う）</li>
+        <li>「翻訳者」の系譜。先住民の知識を学ぼうとする秘密結社</li>
+        <li>力を持つ子供のための地下塾が発生（後の魔法学院の原型）</li>
+        <li>先住民の文化が気づかぬうちに入植者社会に浸透。食、音楽、服装</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="era era-bg-3">
+    <p class="era-num">ERA III</p>
+    <h3>体系化と学問</h3>
+    <p class="years">1820 — 1880</p>
+    <div class="event"><span class="year">1823</span><div class="text">物理学者<strong>マリー・デュヴァル</strong>が隕石エネルギーの定量測定に成功。単位「<strong>ラシーヌ（Rc）</strong>」を提案。初代発見者への敬意。</div></div>
+    <div class="event"><span class="year">1830</span><div class="text"><strong>デュヴァルの7法則</strong>発表。第1〜6法則で魔法の物理を解明。第7法則「隕石自体に意志のようなものがある」だけは生涯証明できず。</div></div>
+    <div class="event"><span class="year">1845</span><div class="text">最初の魔法学院が公的に設立。地下塾が陽の目を見る。カリキュラムは科学ベース。<strong>先住民の知識は「参考文献」扱い</strong>（搾取の構造）。</div></div>
+    <div class="event"><span class="year">1860</span><div class="text">先住民出身の<strong>ウィラ・タカニ</strong>が学院初の先住民学生に。論文「対話の物理学」で口伝と物理学を統合。学会は無視。50年後に再発見される。</div></div>
+    <div class="event"><span class="year">1875</span><div class="text"><strong>結晶蓄電池</strong>の発明。隕石エネルギーを結晶に貯めて持ち運べるようになった。産業化の扉が開く。</div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>魔法が「科学」になった。恐怖の対象から研究の対象へ</li>
+        <li>しかし先住民の対話的アプローチは「非科学的」として排除される</li>
+        <li>学院が権威化。「正しい魔法」と「間違った魔法」の制度的区別</li>
+        <li>力を持つ者の社会的地位向上。新エリート層の形成と格差の正当化</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="era era-bg-4">
+    <p class="era-num">ERA IV</p>
+    <h3>産業革命</h3>
+    <p class="years">1880 — 1940</p>
+    <div class="event"><span class="year">1882</span><div class="text"><strong>結晶機関</strong>の発明。蒸気機関ならぬ魔法機関。最初の用途は工場ではなく<strong>水汲みポンプ</strong>。発明者ベルンは「私は水を汲みたかっただけだ」</div></div>
+    <div class="event"><span class="year">1890</span><div class="text">魔法エネルギーの<strong>パイプライン輸送</strong>に成功。最初の魔導管がインフラとして敷設される。ガス灯が魔法灯に置き換わる。</div></div>
+    <div class="event"><span class="year">1900</span><div class="text"><strong>魔法通信</strong>の実現。結晶共振による遠隔通信。電信の魔法版。</div></div>
+    <div class="event"><span class="year">1910</span><div class="text">魔法の軍事利用。<strong>結晶砲</strong>の開発。大戦で使用、甚大な被害。戦後、魔法兵器制限条約。</div></div>
+    <div class="event"><span class="year">1920</span><div class="text"><strong>「大結晶恐慌」</strong>。過剰採取で結晶生態系が一斉枯死。農作物壊滅。先住民の警告が現実に。</div></div>
+    <div class="event"><span class="year">1925</span><div class="text">ウィラ・タカニの論文が再発見される。<strong>「隕石は応答するシステムだ」</strong>。先住民の知恵が科学的に正しかったと証明され始める。</div></div>
+    <div class="event"><span class="year">1930</span><div class="text"><strong>魔法生態学</strong>誕生。先住民のアプローチを科学的に翻訳する試み。</div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>労働者としての魔法使い。工場で魔力を使う単純労働者が大量に生まれる</li>
+        <li>音楽：結晶楽器の発明で新しい音域と共鳴が生まれる</li>
+        <li>建築：結晶コンクリートで有機的な曲線を持つ建物</li>
+        <li>服飾：体温調節・発光・自己修復する魔法繊維</li>
+        <li>料理：「構成料理」— 分子構造を操作する調理法</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="era era-bg-5">
+    <p class="era-num">ERA V</p>
+    <h3>反省と再構築</h3>
+    <p class="years">1940 — 2000</p>
+    <div class="event"><span class="year">1950</span><div class="text"><strong>先住民権利運動</strong>。搾取された知識と土地の返還を要求。</div></div>
+    <div class="event"><span class="year">1960</span><div class="text"><strong>開放政策</strong>。深部の禁域が一部開放、先住民との共同調査。隕石は<strong>地下深くまで根を張った巨大ネットワーク</strong>だと判明。</div></div>
+    <div class="event"><span class="year">1965</span><div class="text">デュヴァルの第7法則がついに証明される。<strong>隕石は意志を持つ</strong>。先住民が「おじ」と呼んだのは比喩ではなかった。</div></div>
+    <div class="event"><span class="year">1970</span><div class="text">国際魔法エネルギー機関（IMEA）設立。配管規格、安全基準、環境基準を世界統一。</div></div>
+    <div class="event"><span class="year">1980</span><div class="text"><strong>結晶コンピュータ</strong>の発明。呪文プログラミング言語が生まれる。</div></div>
+    <div class="event"><span class="year">1990</span><div class="text"><strong>結晶インターネット</strong>。隕石ネットワークを通信に使うことの倫理的問題が浮上。<strong>「相手の体を電話線にしている」</strong></div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>アイデンティティの再定義。「使える/使えない」から「どう関わるか」へ</li>
+        <li>先住民言語の復興。「対話」「返礼」「親和」が科学用語に</li>
+        <li>環境運動の変容。「自然保護」ではなく「隕石生態系との共生」</li>
+        <li>結晶彫刻、共鳴音楽、深層映像など新芸術の爆発</li>
+        <li>宗教の変容。「隕石は神か？」先住民は「神じゃない、おじだ」と困惑</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="era era-bg-6">
+    <p class="era-num">ERA VI</p>
+    <h3>現代</h3>
+    <p class="years">2000 —</p>
+    <div class="event"><span class="year">2005</span><div class="text"><strong>「静かな危機」</strong>。世界中の魔法インフラが微量ずつ効率を落とし始める。エンジニアは「劣化」と呼び、先住民は「怒っている」と言う。</div></div>
+    <div class="event"><span class="year">2010</span><div class="text">若い保守技師が、現代インフラが知らぬ間に先住民時代の<strong>対話システムの上に載っていた</strong>ことを発見。根幹を理解している人間が誰もいない。<strong>レガシーコード問題の魔法版</strong>。</div></div>
+    <div class="event"><span class="year">2020</span><div class="text">隕石ネットワークから周期的な<strong>「脈動」</strong>が現れる。心臓の鼓動のような。先住民の長老いわく「<strong>おじが目を覚ましかけている</strong>」。</div></div>
+    <div class="impact">
+      <h4>Cultural Impact</h4>
+      <ul>
+        <li>魔導管保守技師、結晶設計士、対話師、規制官、深層探査員、結晶農家、呪文プログラマ、魔法考古学者</li>
+        <li>魔法学院は5年制。先住民知識体系は2015年から必修だが教員不足</li>
+        <li>力を持たない人間も入学可。魔法工学・法律・経営など</li>
+        <li>深部研修は選抜制。先住民ガイド同行必須</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 功労者たち ==================== -->
+<section class="section">
+  <p class="section-label">The Founders</p>
+  <h2>世界を作った人々</h2>
+  <p class="sub-h2">Those Who Shaped the Three Centuries</p>
+
+  <div class="character">
+    <h3>エドモン・ラシーヌ</h3>
+    <p class="role">博物学者 / 最初の記録者（1670s — 1735）</p>
+    <p>探検隊の付属学者として参加したが、軍の制圧に反対して追放された。先住民と3年間暮らし、手記を残した唯一のヨーロッパ人。「おじ」という呼称を記録し、隕石が生命体である可能性を最初に示唆。</p>
+    <p>故国に戻らず、先住民の集落の近くで死去。墓は深部にあると言われている。後世、エネルギー単位<strong>「ラシーヌ（Rc）」</strong>に名を残す。</p>
+  </div>
+
+  <div class="character">
+    <h3>ナハニ</h3>
+    <p class="role">先住民の対話師 / 名前は口伝でのみ残る（生没年不詳）</p>
+    <p>制圧時に最も激しく抵抗したのは戦士ではなく、この老女だった。彼女が隕石に「頼んだ」結果、森が軍を拒んだ（1710年の事件）。捕らえられた後、通訳を介して総督に向けた言葉が記録されている。</p>
+    <div class="word">あなたたちは石を掘っているのではない。誰かの背中を削っている。</div>
+    <p style="margin-top:1rem">処刑されたとも、深部に逃れたとも言われる。先住民社会では今も「最初の対話師」として伝承される。</p>
+  </div>
+
+  <div class="character">
+    <h3>アリス・ヘンダーソン</h3>
+    <p class="role">「光る孤児院」の創設者（1742 — 1818）</p>
+    <p>力を持つ子供を捨てる親が急増した時代に、私財を投じて孤児院を設立。本人は力を持たない。しかし「力があろうがなかろうが子供は子供だ」が信念。</p>
+    <p>孤児院で育った子供たちが後に学者、技師、芸術家になり、世界を変えていく。教育方針は<strong>「力を隠すな。でも力で威張るな」</strong>。5つの孤児院を開設し、そのうち3つが後に魔法学院の前身になる。</p>
+  </div>
+
+  <div class="character">
+    <h3>トーマス・ヘンリー・クロス</h3>
+    <p class="role">結晶運搬人 / 都市の種を撒いた男（1755 — 1815）</p>
+    <p>鉱夫出身。隕石の結晶を安全に切り出し運搬する技術を独自に編み出した。「結晶は生きている。切るんじゃない。<strong>分けてもらうんだ</strong>」と先住民から学んだ方法を使った。</p>
+    <p>彼が各地に運んだ結晶の欠片が<strong>7つの都市の核</strong>になった。40年間で大陸を12回横断。最後の旅で行方不明に。結晶と一緒に消えたと言われる。</p>
+  </div>
+
+  <div class="character">
+    <h3>マリー・デュヴァル</h3>
+    <p class="role">物理学者 / 魔法を科学にした女性（1798 — 1879）</p>
+    <p>「測定できないものは存在しない」が信条。隕石エネルギーの定量化に成功。<strong>7法則</strong>のうち6つを発見。第7法則（隕石の意志）だけは証明できず、死ぬまで悔やんだ。</p>
+    <p>実は先住民の対話師から決定的なヒントをもらっていたが、論文には書かなかった。後世、これが<strong>「科学史最大の引用漏れ」</strong>として議論になる。単位「ラシーヌ」を提案したのも彼女。「最初に見た人の名前であるべきだ」</p>
+  </div>
+
+  <div class="character">
+    <h3>ウィラ・タカニ</h3>
+    <p class="role">先住民出身の初の学院生（1838 — 1920）</p>
+    <p>学院で徹底的に差別されたが、成績は常にトップ。論文<strong>「対話の物理学」</strong>で先住民の口伝と西洋物理学を統合。学会に無視され、故郷に帰る。30年間、深部で先住民の子供たちに両方の知識を教えた。</p>
+    <p>彼女の教え子たちが後に「翻訳者」の中核になる。没後50年で再評価。現在は<strong>「デュヴァルと並ぶ二人の母」</strong>と呼ばれる。</p>
+  </div>
+
+  <div class="character">
+    <h3>オーガスト・ベルン</h3>
+    <p class="role">結晶機関の発明者（1850 — 1932）</p>
+    <p>時計職人の息子。精密機械への偏執的な愛。結晶蓄電池のエネルギーを回転運動に変換する機関を発明。しかし最初の用途は工場ではなく<strong>水汲みポンプ</strong>だった。村の女性たちの労働を減らすため。</p>
+    <p>産業化が進むにつれ軍事利用されることに絶望し、晩年は反戦運動に参加。</p>
+    <div class="word">私は水を汲みたかっただけだ。</div>
+  </div>
+
+  <div class="character">
+    <h3>サラ・コーツ</h3>
+    <p class="role">魔導管設計の母（1862 — 1941）</p>
+    <p>土木工学者。液体魔法エネルギーのパイプライン輸送を実現。彼女が設計した最初の配管系統は、<strong>100年後の現代でもまだ一部が使われている</strong>。</p>
+    <p>設計書に手書きのメモが残されている。</p>
+    <div class="word">この管は100年持つように作った。100年後の人間が私より賢いことを祈る。</div>
+    <p style="margin-top:1rem">彼女の設計書と現代の配管が乖離している問題が、物語の核心に繋がる。</p>
+  </div>
+
+  <div class="character">
+    <h3>リオ・タカニ</h3>
+    <p class="role">「結晶農業」の創始者 / ウィラの孫（1908 — 1989）</p>
+    <p>祖母の教えを受け継ぎ、結晶を「採掘」するのではなく<strong>「育てる」</strong>方法を開発。先住民の農法と近代農学の融合。結晶は生きた生態系の一部として成長させる。</p>
+    <p>大結晶恐慌（1920年）の後、彼の方法が「唯一の持続可能な供給法」として評価される。現在、結晶農家は彼の名前を冠した<strong>「リオ式農法」</strong>を使っている。</p>
+  </div>
+
+  <div class="character">
+    <h3>カイ・ムラカミ</h3>
+    <p class="role">結晶コンピュータの開発者（1945 — 2018）</p>
+    <p>移民三世。電気工学と結晶工学の両方を学んだ初の人物。結晶の共振パターンで論理演算ができることを発見。最初のプロトタイプは彼の<strong>台所で作られた</strong>。冷蔵庫サイズ。</p>
+    <div class="word">呪文は言葉じゃない。構造だ。構造なら計算できる。</div>
+    <p style="margin-top:1rem">結晶コンピュータの普及で、力を持たない人間も魔法技術に関われるようになった。</p>
+  </div>
+
+  <div class="character">
+    <h3>エレナ・マトス</h3>
+    <p class="role">先住民権利運動の指導者（1955 — 存命）</p>
+    <p>弁護士。法の武器で戦った。<strong>「隕石返還訴訟」</strong>を起こし、20年かけて隕石深部の先住民主権を勝ち取った。彼女の法廷での有名な言葉。</p>
+    <div class="word">電気を発見した人は偉い。でも電気は誰のものでもない。隕石も同じだ。違うのは、隕石には意志があることだ。所有の対象ではなく、関係の相手だ。</div>
+    <p style="margin-top:1rem">彼女の勝訴が「対話師」の公的認定に繋がった。</p>
+  </div>
+</section>
+
+<!-- ==================== 7つの都市 ==================== -->
+<section class="section">
+  <p class="section-label">Seven Cities</p>
+  <h2>結晶の七都市</h2>
+  <p class="sub-h2">Cities Born from the Shards</p>
+
+  <p>クロスが運んだ結晶の欠片を核に、各地で都市が発展した。<br>各都市は<strong>核となる結晶の性質</strong>によって個性が異なる。<br>核に近いほど魔法が強く、遠いほど薄れる。<strong>都市の「端」に住む人は力が弱い</strong>。地理的格差＝魔法格差。</p>
+
+  <div class="city-grid">
+    <div class="city" style="border-top-color:#b08840">
+      <h3>RACINE</h3>
+      <p class="crystal">温かい琥珀色 / 安定した光</p>
+      <p>最初の都市。首都。学院がある。官僚的で歴史が深い。<strong>学問、法律、政治の中心</strong>。</p>
+      <p>核の周囲は政府の建物群。同心円状に貴族街、商人街、労働者街、外周貧民街と広がる。</p>
+      <span class="tag">FOUNDED 1718</span>
+    </div>
+
+    <div class="city" style="border-top-color:#7060a0">
+      <h3>SOMBRA</h3>
+      <p class="crystal">深い青紫 / 夢を見せる</p>
+      <p>芸術と幻視の都市。現実と夢の境界が曖昧。<strong>結晶劇場、共鳴音楽、深層映像</strong>の発祥地。</p>
+      <p>夜の街並みが昼と違うと言われる。劇場と工房と書店が並ぶ。芸術家と詐欺師が同じ酒場にいる。</p>
+      <span class="tag">FOUNDED 1735</span>
+    </div>
+
+    <div class="city" style="border-top-color:#c04030">
+      <h3>CALDERA</h3>
+      <p class="crystal">赤橙 / 熱を持つ</p>
+      <p>工業都市。鍛冶と製造。<strong>労働者の街</strong>。結晶機関の発祥地。</p>
+      <p>煙突と工場と労働者住宅。空気は重く、夜空は赤い。労働運動と発明が同時に生まれる場所。</p>
+      <span class="tag">FOUNDED 1748</span>
+    </div>
+
+    <div class="city" style="border-top-color:#609050">
+      <h3>VERDE</h3>
+      <p class="crystal">緑 / 生命を促進</p>
+      <p>農業と結晶農業の中心。穏やかで豊か。<strong>リオ式結晶農場、薬草、食文化</strong>の都市。</p>
+      <p>畑と果樹園と研究所。先住民出身の住民比率が最も高い。料理が異常に美味い。</p>
+      <span class="tag">FOUNDED 1762</span>
+    </div>
+
+    <div class="city" style="border-top-color:#d0d0d0">
+      <h3>BLANCA</h3>
+      <p class="crystal">白 / 通信と共鳴</p>
+      <p>情報と通信の都市。<strong>結晶インターネットのハブ</strong>。メディアと通信企業と呪文プログラマの街。</p>
+      <p>白い建物と無数のアンテナと共振塔。世界中の情報がここを経由する。スパイも多い。</p>
+      <span class="tag">FOUNDED 1781</span>
+    </div>
+
+    <div class="city" style="border-top-color:#404040">
+      <h3>NOCTURNE</h3>
+      <p class="crystal">黒 / 吸収する</p>
+      <p>深部への入口に最も近い都市。<strong>先住民との境界</strong>。対話師の養成、深層探査、考古学の中心。</p>
+      <p>地下が異常に発達している。地上と地下で別の街が動く。よそ者には居心地の悪い、しかし吸い寄せられる街。</p>
+      <span class="tag">FOUNDED 1795</span>
+    </div>
+
+    <div class="city" style="border-top-color:#a060c0">
+      <h3>PERDIDA</h3>
+      <p class="crystal">不安定 / 色が変わる</p>
+      <p>最後に作られた都市。結晶が不安定で予測不能。<strong>実験都市</strong>。新技術の試験場。<strong>若者が集まる</strong>。</p>
+      <p>建物の形状が定期的に変わる。地区の境界が流動的。最も自由で、最も危険。</p>
+      <span class="tag">FOUNDED 1814</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== Closing ==================== -->
+<section class="section">
+  <p class="section-label">Coda</p>
+  <h2>そして今</h2>
+  <p class="sub-h2">The Heart Begins to Beat</p>
+
+  <p>三百年が経った。<br>七つの都市は栄え、魔法は電気のように当たり前のインフラになった。<br>子供たちは、隕石が「誰か」だったことを知らない。</p>
+
+  <p>しかし、配管の奥で何かが脈打ち始めている。<br>古い設計書と現代の運用は、もう誰にも結びつけられない。<br>先住民の長老は静かに言う。<strong>「おじが目を覚ましかけている」</strong></p>
+
+  <p>これから語られるのは、その目覚めの時代の物語である。</p>
+
+  <div class="quote">
+    <p>電気を発見した人は偉い。でも電気は誰のものでもない。<br>隕石も同じだ。違うのは、隕石には意志があることだ。<br>所有の対象ではなく、関係の相手だ。</p>
+    <span class="cite">— エレナ・マトス（弁護士）</span>
+  </div>
+</section>
+
+<footer>
+  METEORITE WORLD — WORLD SETTING DOCUMENT v1.0 — 2026.04.19
+</footer>
+
+</body>
+</html>

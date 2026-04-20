@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandbox — 世界観資料ハブ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0a0908;--text:#d0c8bc;--muted:#8a8074;--accent:#b08840;--bone:#c8bfa8}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;line-height:1.8;min-height:100vh}
+
+  .hero{padding:3rem 2rem;text-align:center;background:radial-gradient(ellipse 600px 300px at 50% 50%,rgba(176,136,64,0.08),transparent 70%);border-bottom:1px solid rgba(176,136,64,0.1)}
+  .hero .label{font-size:0.55rem;letter-spacing:1em;color:var(--muted);margin-bottom:1.2rem}
+  .hero h1{font-family:'Cinzel',serif;font-size:clamp(1.5rem,3.2vw,2.2rem);background:linear-gradient(180deg,#d8c8a0,#b08840,#6b4420);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.06em;margin-bottom:0.5rem}
+  .hero .sub{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--bone);font-style:italic}
+
+  .container{max-width:1200px;margin:0 auto;padding:3rem 2rem}
+
+  .section-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.4em;color:var(--accent);margin-bottom:1.5rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(176,136,64,0.2);text-transform:uppercase}
+
+  .project-group{margin-bottom:4rem}
+  .project-heading{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--bone);margin-bottom:0.3rem;letter-spacing:0.1em}
+  .project-sub{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--accent);font-style:italic;margin-bottom:2rem}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+
+  .card{display:block;padding:1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:6px;text-decoration:none;color:inherit;transition:all 0.2s;position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:0.4;transition:all 0.2s}
+  .card:hover{background:rgba(176,136,64,0.05);border-color:rgba(176,136,64,0.3);transform:translateY(-2px)}
+  .card:hover::before{opacity:1;width:5px}
+
+  .card .card-type{font-size:0.55rem;letter-spacing:0.3em;color:var(--accent);text-transform:uppercase;margin-bottom:0.6rem;opacity:0.7}
+  .card h3{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--bone);margin-bottom:0.3rem;line-height:1.3}
+  .card .card-ja{font-size:0.8rem;color:var(--bone);margin-bottom:0.8rem;opacity:0.9}
+  .card .card-desc{font-size:0.75rem;color:#a09888;line-height:1.9;margin-bottom:0.8rem}
+  .card .card-meta{font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;display:flex;gap:0.8rem;flex-wrap:wrap}
+  .card .card-meta .meta-tag{padding:0.15rem 0.5rem;border:1px solid rgba(176,136,64,0.2);border-radius:10px;color:var(--bone)}
+
+  .card.primary{background:rgba(176,136,64,0.04);border-color:rgba(176,136,64,0.25)}
+  .card.primary h3{color:#d8c8a0}
+
+  .card.wip{opacity:0.7}
+  .card.wip::after{content:'WIP';position:absolute;top:0.8rem;right:0.8rem;font-size:0.55rem;letter-spacing:0.2em;color:var(--accent);padding:0.15rem 0.4rem;border:1px solid var(--accent);border-radius:8px;opacity:0.7}
+
+  .intro{max-width:800px;margin:0 auto 3rem;padding:1.5rem 2rem;background:rgba(255,255,255,0.015);border-left:3px solid var(--accent);border-radius:4px;font-size:0.85rem;color:#a09888;line-height:2}
+  .intro strong{color:var(--bone);font-weight:400}
+
+  footer{text-align:center;padding:3rem 2rem;font-size:0.6rem;color:rgba(138,128,116,0.3);letter-spacing:0.4em;border-top:1px solid rgba(176,136,64,0.08)}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="label">Creative Sandbox</p>
+  <h1>世界観資料ハブ</h1>
+  <p class="sub">All world-building documents in one place</p>
+</section>
+
+<div class="container">
+
+  <div class="intro">
+    このハブは、<strong>2000_Creative/2900_Sandbox/</strong> 配下に作成した世界観資料の一覧です。<br>
+    企画・物語・原典調査・家系図など、段階的に蓄積される素材を整理しています。
+  </div>
+
+  <!-- ==================== 隕石世界 ==================== -->
+  <section class="project-group">
+    <div class="section-title">Project: Meteorite World</div>
+    <h2 class="project-heading">隕石世界</h2>
+    <p class="project-sub">1700年、隕石発見。明るいトーンのファンタジー世界。ハリーポッターの次を狙う</p>
+
+    <div class="grid">
+      <a href="anime_meteorite_world.html" class="card primary">
+        <div class="card-type">◆ Core Document</div>
+        <h3>World Setting</h3>
+        <div class="card-ja">世界観設定書</div>
+        <div class="card-desc">三百年の歴史、地理、文化、魔法の基礎設定。全てはここから。</div>
+        <div class="card-meta"><span class="meta-tag">HTML</span><span>1700—現代</span></div>
+      </a>
+
+      <a href="anime_meteorite_families.html" class="card primary">
+        <div class="card-type">◆ Families (統合版)</div>
+        <h3>Three Bloodlines × Family Trees</h3>
+        <div class="card-ja">三つの血脈 × 家系図（統合ページ）</div>
+        <div class="card-desc">左に家ごとの物語、右に家系図。ノードにカーソルを合わせるとプロフィール出現。TAKANI・VEXALIA・KROSSをタブで切替。</div>
+        <div class="card-meta"><span class="meta-tag">HTML</span><span class="meta-tag">Interactive</span><span>merged</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== Story Incubator ==================== -->
+  <section class="project-group">
+    <div class="section-title">Project: Story Incubator</div>
+    <h2 class="project-heading">5企画並列孵化</h2>
+    <p class="project-sub">暗い世界 × 明るい物語。哲学的テーマから5つの物語を並行開発</p>
+
+    <div class="grid">
+      <a href="story_incubator/00_parent/README.md" class="card primary">
+        <div class="card-type">◆ Parent Doc</div>
+        <h3>Incubator README</h3>
+        <div class="card-ja">孵化器の全体設計</div>
+        <div class="card-desc">共通OS：暗い世界観×明るい物語。型1+A。CGアニメ最終形。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span></div>
+      </a>
+
+      <a href="story_incubator/00_parent/mood.md" class="card">
+        <div class="card-type">◆ Parent Doc</div>
+        <h3>Mood</h3>
+        <div class="card-ja">共通ムード</div>
+        <div class="card-desc">5企画に共通するトーン定義。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span></div>
+      </a>
+
+      <a href="story_incubator/00_parent/structure.md" class="card">
+        <div class="card-type">◆ Parent Doc</div>
+        <h3>Structure</h3>
+        <div class="card-ja">物語構造</div>
+        <div class="card-desc">企画に共通する物語の型。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span></div>
+      </a>
+
+      <a href="story_incubator/01_post_truth/philosophy.md" class="card wip">
+        <div class="card-type">◆ Project 01</div>
+        <h3>Post-Truth</h3>
+        <div class="card-ja">真実が武器にならない世界</div>
+        <div class="card-desc">ポスト真実時代の物語。STEP 2完了、次は主人公分野。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span>STEP 2</span></div>
+      </a>
+
+      <a href="story_incubator/02_public_sphere/philosophy.md" class="card wip">
+        <div class="card-type">◆ Project 02</div>
+        <h3>Public Sphere</h3>
+        <div class="card-ja">議論が噛み合わない世界</div>
+        <div class="card-desc">ハバーマス由来。公共圏の崩壊を描く。STEP 2完了。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span>STEP 2</span></div>
+      </a>
+
+      <a href="story_incubator/03_hypernormalisation/philosophy.md" class="card wip">
+        <div class="card-type">◆ Project 03</div>
+        <h3>HyperNormalisation</h3>
+        <div class="card-ja">みんな偽物を演じる世界</div>
+        <div class="card-desc">アダム・カーティス由来。全員が嘘と知りながら演じる社会。STEP 2完了。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span>STEP 2</span></div>
+      </a>
+
+      <a href="story_incubator/04_foucaults_pendulum/philosophy.md" class="card wip">
+        <div class="card-type">◆ Project 04</div>
+        <h3>Foucault's Pendulum</h3>
+        <div class="card-ja">陰謀を繋げた者が飲まれる世界</div>
+        <div class="card-desc">ウンベルト・エーコ由来。陰謀論の自己成就。STEP 2完了。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span>STEP 2</span></div>
+      </a>
+
+      <a href="story_incubator/05_babel_library/philosophy.md" class="card wip">
+        <div class="card-type">◆ Project 05</div>
+        <h3>Babel Library</h3>
+        <div class="card-ja">情報全部ある／何も見つからない世界</div>
+        <div class="card-desc">ボルヘス由来。無限の書庫で意味を探す話。STEP 2完了。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span>STEP 2</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== メソッド ==================== -->
+  <section class="project-group">
+    <div class="section-title">Method</div>
+    <h2 class="project-heading">創作メソッド</h2>
+    <p class="project-sub">物語の立ち上げ方の方法論</p>
+
+    <div class="grid">
+      <a href="creative_flow_method.md" class="card primary">
+        <div class="card-type">◆ Method Doc</div>
+        <h3>Reference-Driven Creative Flow</h3>
+        <div class="card-ja">原典駆動クリエイティブフロー</div>
+        <div class="card-desc">忘れられた原典からムード→設定→歴史へ展開する方法論。RAVEN+隕石世界で実証。</div>
+        <div class="card-meta"><span class="meta-tag">Markdown</span><span class="meta-tag">Method</span></div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  SANDBOX HUB — 2000_Creative/2900_Sandbox/ — 2026.04.20
+</footer>
+
+</body>
+</html>

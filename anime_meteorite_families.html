@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三つの血脈 — 物語と家系図</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a0908;--text:#d0c8bc;--muted:#8a8074;--accent:#b08840;--bone:#c8bfa8;
+    --male:#6a8cb0;--female:#b06a7a;--unknown:#707070;
+    --taka:#b0c090;--vexa:#9080b8;--kross:#c08060;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;line-height:1.8;min-height:100vh}
+
+  /* Header */
+  .header{padding:1.5rem 2rem;border-bottom:1px solid rgba(176,136,64,0.1);text-align:center}
+  .header .label{font-size:0.5rem;letter-spacing:1em;color:var(--muted);margin-bottom:0.5rem}
+  .header h1{font-family:'Cinzel',serif;font-size:clamp(1.2rem,2.5vw,1.6rem);background:linear-gradient(180deg,#d8c8a0,#b08840,#6b4420);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.06em}
+  .home-link{position:absolute;top:1rem;left:1rem;font-size:0.7rem;color:var(--muted);text-decoration:none;padding:0.3rem 0.8rem;border:1px solid rgba(176,136,64,0.2);border-radius:4px;transition:all 0.2s}
+  .home-link:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* Family selector tabs */
+  .family-tabs{display:flex;gap:0;justify-content:center;padding:0 1rem;border-bottom:1px solid rgba(176,136,64,0.1);background:rgba(0,0,0,0.2)}
+  .family-tab{padding:1rem 2rem;background:transparent;border:none;color:var(--muted);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.3em;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;flex-shrink:0}
+  .family-tab:hover{color:var(--bone)}
+  .family-tab.active{color:var(--bone);border-bottom-color:currentColor}
+  .family-tab.taka.active{color:var(--taka)}
+  .family-tab.vexa.active{color:var(--vexa)}
+  .family-tab.kross.active{color:var(--kross)}
+
+  /* Main split layout */
+  .main-split{display:grid;grid-template-columns:minmax(320px, 38%) 1fr;min-height:calc(100vh - 120px)}
+
+  /* Left: Narrative panel */
+  .narrative{padding:2rem 2.5rem;border-right:1px solid rgba(176,136,64,0.1);overflow-y:auto;background:rgba(0,0,0,0.15)}
+  .narrative::-webkit-scrollbar{width:6px}
+  .narrative::-webkit-scrollbar-track{background:rgba(255,255,255,0.04)}
+  .narrative::-webkit-scrollbar-thumb{background:rgba(176,136,64,0.3);border-radius:3px}
+
+  .fam-content{display:none}
+  .fam-content.active{display:block}
+
+  .fam-crest{width:56px;height:56px;margin:0 auto 1rem;border:2px solid;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.4rem}
+  .fam-name{font-family:'Cinzel',serif;font-size:1.3rem;letter-spacing:0.3em;text-align:center;margin-bottom:0.3rem}
+  .fam-motto{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted);text-align:center;margin-bottom:2rem}
+
+  .taka .fam-crest{border-color:var(--taka);color:var(--taka)}
+  .taka .fam-name{color:var(--taka)}
+  .vexa .fam-crest{border-color:var(--vexa);color:var(--vexa)}
+  .vexa .fam-name{color:var(--vexa)}
+  .kross .fam-crest{border-color:var(--kross);color:var(--kross)}
+  .kross .fam-name{color:var(--kross)}
+
+  .section-h{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--accent);margin:1.5rem 0 0.8rem;padding-bottom:0.3rem;border-bottom:1px solid rgba(176,136,64,0.15);text-transform:uppercase}
+
+  .culture-box{padding:1rem 1.2rem;background:rgba(255,255,255,0.02);border-left:3px solid var(--accent);border-radius:3px;margin-bottom:1.5rem;font-size:0.78rem}
+  .culture-box p{color:#a09888;line-height:1.9;margin-bottom:0.4rem}
+  .culture-box strong{color:var(--bone);font-weight:400}
+
+  .narrative-text{font-size:0.82rem;color:#a09888;line-height:2}
+  .narrative-text p{margin-bottom:1.2rem}
+  .narrative-text strong{color:var(--bone);font-weight:400}
+
+  .quote-narr{margin:1.2rem 0;padding:1rem 1.3rem;background:rgba(0,0,0,0.3);border-left:2px solid var(--accent);font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--bone);font-size:0.95rem;line-height:1.8}
+
+  /* Right: Tree panel */
+  .tree-panel{position:relative;overflow:hidden}
+  .tree-wrap{padding:1.5rem 1rem;overflow:auto;height:calc(100vh - 120px)}
+  .tree-wrap::-webkit-scrollbar{width:8px;height:8px}
+  .tree-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,0.04)}
+  .tree-wrap::-webkit-scrollbar-thumb{background:rgba(176,136,64,0.3);border-radius:4px}
+  svg.tree-svg{display:block;margin:0 auto}
+
+  /* Hover popup */
+  .hover-popup{position:fixed;pointer-events:none;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(176,136,64,0.4);border-radius:6px;padding:1rem 1.2rem;max-width:320px;z-index:1000;box-shadow:0 8px 30px rgba(0,0,0,0.7);opacity:0;transition:opacity 0.15s;font-size:0.78rem}
+  .hover-popup.visible{opacity:1}
+  .hover-popup h3{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--bone);margin-bottom:0.2rem;line-height:1.2}
+  .hover-popup .ja{font-size:0.78rem;color:var(--bone);margin-bottom:0.2rem}
+  .hover-popup .role{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.78rem;color:var(--accent);margin-bottom:0.4rem}
+  .hover-popup .years{font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.6rem}
+  .hover-popup .parents{font-size:0.68rem;color:var(--muted);padding:0.4rem 0.6rem;background:rgba(176,136,64,0.05);border-radius:3px;margin-bottom:0.6rem;line-height:1.6}
+  .hover-popup .parents strong{color:var(--bone);font-weight:400}
+  .hover-popup .bio{font-size:0.74rem;color:#a09888;line-height:1.8;margin-bottom:0.5rem}
+  .hover-popup .bio strong{color:var(--bone);font-weight:400}
+  .hover-popup .quote{margin:0.5rem 0;padding:0.5rem 0.8rem;background:rgba(0,0,0,0.3);border-left:2px solid var(--accent);font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--bone);font-size:0.78rem;line-height:1.6}
+  .hover-popup .attrs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.5rem}
+  .hover-popup .attr{font-size:0.58rem;padding:0.15rem 0.45rem;background:rgba(176,136,64,0.1);border:1px solid rgba(176,136,64,0.2);border-radius:8px;color:var(--bone)}
+  .hover-popup .gender-tag{display:inline-block;font-size:0.55rem;padding:0.08rem 0.4rem;border:1px solid;border-radius:7px;margin-left:0.4rem;letter-spacing:0.1em}
+  .gender-tag.male{border-color:var(--male);color:var(--male)}
+  .gender-tag.female{border-color:var(--female);color:var(--female)}
+
+  @media(max-width:768px){
+    .main-split{grid-template-columns:1fr;grid-template-rows:auto auto}
+    .narrative{border-right:none;border-bottom:1px solid rgba(176,136,64,0.1);max-height:50vh}
+    .tree-wrap{height:80vh}
+    .family-tab{padding:0.8rem 1rem;font-size:0.65rem;letter-spacing:0.15em}
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="home-link">← HUB</a>
+<div class="header">
+  <p class="label">Three Bloodlines</p>
+  <h1>三つの血脈 — 物語と家系図</h1>
+</div>
+
+<!-- Family tabs -->
+<div class="family-tabs">
+  <button class="family-tab taka active" data-family="taka">◉ TAKANI</button>
+  <button class="family-tab vexa" data-family="vexa">◇ VEXALIA</button>
+  <button class="family-tab kross" data-family="kross">✦ KROSS</button>
+</div>
+
+<!-- Main split -->
+<div class="main-split">
+  <!-- Left: Narratives -->
+  <div class="narrative">
+
+    <!-- TAKANI -->
+    <div class="fam-content active taka" id="narrative-taka">
+      <div class="fam-crest">◉</div>
+      <div class="fam-name">TAKANI</div>
+      <div class="fam-motto">「聞く者は、答えられる」</div>
+
+      <div class="section-h">Cultural Context</div>
+      <div class="culture-box">
+        <p><strong>親和制度</strong>：血親＋3人の「耳親」で1人を育てる。複数伴侶並行OK。血縁より育ての記憶を重視。</p>
+        <p><strong>姓「タカニ」</strong>：本来は深部の洞窟の名前。イェラの代に植民地政府との交渉のため姓として採用された。</p>
+      </div>
+
+      <div class="section-h">Family Profile</div>
+      <div class="narrative-text">
+        <p><strong>起源</strong>：隕石の深部に千年以上暮らしてきた先住民の系譜。本来は姓の概念がなかった。</p>
+        <p><strong>特徴</strong>：代々「対話師」の血筋。隕石ネットワークと直接「話す」能力を持つ。しかし力の代償として歴代が<strong>短命</strong>。体が結晶化しやすい。</p>
+        <p><strong>現代の立場</strong>：先住民権利運動の中心。同時に、世界の魔法インフラ危機を解決できる数少ない存在。</p>
+      </div>
+
+      <div class="section-h">Story Arc</div>
+      <div class="narrative-text">
+        <p><strong>1715年 — 最初の悲劇</strong>。ナハニが処刑される。娘イェラは深部に逃れ、一族の系譜を守った。タカニ族は以後300年、深部と都市の境界線上で生きることになる。</p>
+        <p><strong>1860年 — 知の越境</strong>。ウィラ・タカニが初めて学院に入学。論文「対話の物理学」で先住民の知恵と西洋科学を統合した。しかし学会は無視。彼女は故郷に帰り、深部で30年間子供たちに教えた。<strong>没後50年で再評価</strong>。</p>
+        <div class="quote-narr">祖母は隕石に「話しかけた」と言う。デュヴァル先生は「エネルギーを測定した」と言う。二人は同じことを違う言葉で言っている。</div>
+        <p><strong>1908年 — 農業革命</strong>。ウィラの孫リオが「掘るのではなく育てる」農法を開発。大結晶恐慌を経て、リオ式農法が世界を救う。</p>
+        <p><strong>1965年 — 真実の日</strong>。デュヴァルの第7法則が証明される。隕石は意志を持つ。ウィラが正しかった。リオは静かに頷いた。</p>
+        <p><strong>現代 — 目覚めの予兆</strong>。マヤ・タカニ、一族で最も強い対話者。<strong>両手の指先が結晶化し始めている</strong>。弟ソラが通訳として付き添う。彼女は「脈動」の解読に人生をかけている。</p>
+        <div class="quote-narr">おじは怒っていない。ただ、300年間答えが返ってこなかったから、もう一度聞いているんだ。</div>
+      </div>
+    </div>
+
+    <!-- VEXALIA -->
+    <div class="fam-content vexa" id="narrative-vexa">
+      <div class="fam-crest">◇</div>
+      <div class="fam-name">VEXALIA</div>
+      <div class="fam-motto">「力なき者こそ、歴史を書く」</div>
+
+      <div class="section-h">Cultural Context</div>
+      <div class="culture-box">
+        <p><strong>長子相続</strong>。政略結婚・再婚・愛人・庶子が常態。<strong>家督争い</strong>が何度も起きた。</p>
+        <p><strong>養子の用途</strong>：血統維持／魔法を避けるため。イザベル（唯一の魔法持ち）以降、血筋に力が出るのを恐れて養子優先。</p>
+      </div>
+
+      <div class="section-h">Family Profile</div>
+      <div class="narrative-text">
+        <p><strong>起源</strong>：1700年代初頭の植民地総督を祖に持つ旧貴族。代々<strong>誰一人として魔法が使えない</strong>（イザベルを除く）。それでも300年間、政治・司法・経済の中枢にいる。</p>
+        <p><strong>特徴</strong>：魔法を持たないことへのコンプレックスと誇りが混在する一族。「力がないからこそ、力を使う者を使える」が家訓。策謀家、政治家、外交官を多数輩出。</p>
+        <p><strong>現代の立場</strong>：魔法規制機関IMEAの創設者一族。魔法社会の倫理的ブレーキ役を自任するが、同時に既得権益の守護者でもある。</p>
+      </div>
+
+      <div class="section-h">Story Arc</div>
+      <div class="narrative-text">
+        <p><strong>1715年 — 原罪</strong>。初代アレクサンデルがナハニを処刑。晩年「私は間違っていたのかもしれない」と日記に書いたが、公にしなかった。<strong>正しさより秩序を選んだ</strong>一族の原型。</p>
+        <p><strong>1745—1812年 — 母娘の悲劇</strong>。カトリーナが魔法規制を法制化。娘イザベルが力を持って生まれたが、<strong>自ら登録した</strong>。娘は母を生涯許さなかった。イザベルは未婚、3人の養子を取り、それが後継系譜になる。<strong>以後、血筋に力を持つ子供は生まれていない</strong>。</p>
+        <div class="quote-narr">私は記録の上にいる。生きていない。</div>
+        <p><strong>1860年 — 裏切り</strong>。3代目シャルルがウィラの論文を審査で黙殺。論文の価値を認識していたが、家名を優先した。晩年、後悔していた。</p>
+        <p><strong>1950—1970年代 — 世界舞台へ</strong>。エルネストがIMEAを設立。「魔法の国連」を作った男。しかし先住民の権利を後回しにし続け、エレナ・マトスと激しく対立した。</p>
+        <p><strong>現代 — 方向転換</strong>。セオドア・ヴェクサリア、若き当主。<strong>異常記憶力</strong>で300年分の規制の沿革を暗唱できる。データから「脈動」の異常を発見。一族の伝統を裏切ってまで、タカニ家と協力する決意をする。</p>
+        <div class="quote-narr">我々ヴェクサリア家は300年、正しい場所で間違い続けてきた。今度は違う場所で、間違ってみようと思う。</div>
+      </div>
+    </div>
+
+    <!-- KROSS -->
+    <div class="fam-content kross" id="narrative-kross">
+      <div class="fam-crest">✦</div>
+      <div class="fam-name">KROSS</div>
+      <div class="fam-motto">「運ぶ手は、世界を編む」</div>
+
+      <div class="section-h">Cultural Context</div>
+      <div class="culture-box">
+        <p><strong>大家族</strong>：7-10人兄弟が普通。<strong>異父母兄弟</strong>が当たり前。戦争や事故で再婚家族が多い。</p>
+        <p><strong>国際結婚</strong>：産業革命期に世界から労働者が集まり混血。姓はハイフン結合（対等の印）。</p>
+        <p><strong>非嫡出子の認知</strong>：貴族のように隠すのではなく、<strong>引き取って育てる</strong>文化。「血の濃さより、飯を食った回数」。</p>
+      </div>
+
+      <div class="section-h">Family Profile</div>
+      <div class="narrative-text">
+        <p><strong>起源</strong>：初代トーマス・ヘンリー・クロスは鉱夫出身の運搬人。貴族ではない。しかし彼が運んだ結晶が<strong>7つの都市の核</strong>になった。以後、技術者と発明家を代々輩出。</p>
+        <p><strong>特徴</strong>：一族の半数が魔法を使える、半数が使えない。しかし<strong>全員が手を使う</strong>。鍛冶、土木、発明、保守。「頭より手を先に動かす」が家風。</p>
+        <p><strong>現代の立場</strong>：カルデラ工業都市の重鎮。結晶機関メーカー、配管会社、発明研究所を経営。労働者階級の代表として政治にも関わる。</p>
+      </div>
+
+      <div class="section-h">Story Arc</div>
+      <div class="narrative-text">
+        <p><strong>1755—1815年 — 種を撒く</strong>。トーマスが先住民の老人から「切るな、分けてもらえ」と教わる。40年で大陸を12回横断。3人の女性との間に7人の子。最後の旅で失踪。<strong>7つの都市の核</strong>は彼の遺産。</p>
+        <div class="quote-narr">結晶は生きている。切るんじゃない。分けてもらうんだ。</div>
+        <p><strong>1862—1941年 — 100年の設計</strong>。サラ・コーツ・クロスが液体魔法エネルギーのパイプラインを実現。母ヘレナ・コーツが会場で拾った<strong>ウィラの論文</strong>が、設計思想の根幹だった。</p>
+        <div class="quote-narr">この管は100年持つように作った。100年後の人間が私より賢いことを祈る。</div>
+        <p><strong>1945—2018年 — 台所の革命</strong>。ユキ・ムラカミ（移民）とベンジャミンの息子カイが、<strong>台所で結晶コンピュータを作った</strong>。魔法を持たない人間にも扉が開いた。1965年、深部発見の立会人。</p>
+        <p><strong>現代 — 曾祖母の遺言</strong>。レン・クロス、家業を継がず現場の保守技師になった。曾祖母サラの設計書を独学で読めるようになった<strong>唯一の現代人</strong>。設計書と現場の配管の乖離を発見し、物語が動き出す。</p>
+        <div class="quote-narr">300年前の人たちは、100年後の我々がもう少し賢いと信じてくれた。裏切るわけにはいかない。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right: Family trees -->
+  <div class="tree-panel">
+    <div class="tree-wrap" id="tree-wrap">
+      <div id="tree-taka"></div>
+      <div id="tree-vexa" style="display:none"></div>
+      <div id="tree-kross" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating hover popup -->
+<div class="hover-popup" id="hover-popup"></div>
+
+<script>
+// =============================================
+// PROFILES (same as v5 but concise)
+// =============================================
+const profiles = {
+  nahani:{name:"Nahani",nameJa:"ナハニ",gender:"f",role:"最初の対話師",years:"c.1640—1715",main:true,bio:"制圧時の老女。「聞く人」。処刑前の言葉が300年後も引用される。",quote:"あなたたちは石を掘っているのではない。誰かの背中を削っている。",attrs:["対話師","処刑"],parents:"（記録なし）"},
+  yera:{name:"Yera",nameJa:"イェラ",gender:"f",role:"深部に逃れた娘",years:"1680—1752",main:true,bio:"ナハニの血親娘。2人の伴侶（同時期）。",attrs:["生存者"],parents:"母：ナハニ"},
+  yera_bro:{name:"Meka",nameJa:"メカ",gender:"m",role:"イェラの兄",years:"1670—1715",main:false,bio:"戦士。制圧時に戦死。",attrs:["兄"],parents:"母：ナハニ"},
+  yera_sis:{name:"Inu",nameJa:"イヌ",gender:"f",role:"イェラの妹",years:"1690—1770",main:false,bio:"深部で薬草師。子孫は途絶えた。",attrs:["妹"],parents:"母：ナハニ"},
+  tarai:{name:"Tarai",nameJa:"タライ",gender:"m",role:"イェラの伴侶（戦士）",years:"1675—1740",main:false,bio:"深部の戦士。サカラの血父。",attrs:["戦士"],parents:"—"},
+  ono:{name:"Ono",nameJa:"オノ",gender:"m",role:"イェラの伴侶（歌い手）",years:"1695—1778",main:false,bio:"歌い手。サカラの耳親。",attrs:["歌い手"],parents:"—"},
+  sakara:{name:"Sakara",nameJa:"サカラ",gender:"f",role:"口伝の継承者",years:"1720—1795",main:true,bio:"口伝を体系化。",attrs:["口伝"],parents:"血母：イェラ／血父：タライ／育て親：オノ"},
+  sakara_sib1:{name:"Vona",nameJa:"ヴォナ",gender:"f",role:"サカラの姉",years:"1717—1790",main:false,bio:"深部で布織り。",attrs:["姉"],parents:"母：イェラ／父：タライ"},
+  sakara_sib2:{name:"Kiru",nameJa:"キル",gender:"m",role:"サカラの弟",years:"1725—1802",main:false,bio:"狩人。子は途絶えた。",attrs:["弟"],parents:"母：イェラ／父：タライ"},
+  mid_gen:{name:"Uka lineage",nameJa:"ウカ家系",gender:"u",role:"省略された4世代",years:"1760—1810",main:false,bio:"口伝のみ。名前は残っていない。",attrs:["省略"],parents:"—"},
+  inika:{name:"Inika",nameJa:"イニカ",gender:"f",role:"語り部",years:"1788—1860",main:true,bio:"口伝を物語として伝える方法を確立。",attrs:["語り部"],parents:"母：ウカ（略）"},
+  inika_sib:{name:"Hela",nameJa:"ヘラ",gender:"f",role:"イニカの姉",years:"1785—1835",main:false,bio:"早逝。結核のような病で。",attrs:["姉","早逝"],parents:"母：ウカ（略）"},
+  yomo:{name:"Yomo",nameJa:"ヨモ",gender:"m",role:"ウィラの父",years:"1810—1875",main:true,bio:"「知識を閉じ込めていても死ぬときは一緒に消える」。開明派。",quote:"知識を閉じ込めていても、死ぬときは一緒に消える。",attrs:["開明派"],parents:"母：イニカ"},
+  yomo_bro:{name:"Nuru",nameJa:"ヌル",gender:"m",role:"ヨモの弟",years:"1818—1882",main:false,bio:"狩人として深部で生きた。",attrs:["弟"],parents:"母：イニカ"},
+  mahara:{name:"Mahara",nameJa:"マハラ",gender:"f",role:"ウィラの母",years:"1815—1889",main:true,bio:"薬草の達人。娘の学院入学を後押し。",attrs:["薬草師"],parents:"別系統（ウラ家）"},
+  willa:{name:"Willa Takani",nameJa:"ウィラ",gender:"f",role:"初の先住民学院生",years:"1838—1920",main:true,bio:"論文「対話の物理学」。学会は無視、没後50年で再評価。",quote:"祖母は隕石に「話しかけた」。デュヴァル先生は「エネルギーを測定した」。同じことを違う言葉で。",attrs:["対話師","科学者"],parents:"父：ヨモ／母：マハラ"},
+  amina:{name:"Amina",nameJa:"アミナ",gender:"f",role:"ウィラの妹",years:"1880—1955",main:true,bio:"深部に残り伝統を守った。3人の伴侶。カナイの養母。",attrs:["守護者"],parents:"父：ヨモ／母：マハラ"},
+  amina_sib:{name:"Reki",nameJa:"レキ",gender:"m",role:"ウィラとアミナの弟",years:"1885—1920",main:false,bio:"若くして事故死。子なし。",attrs:["弟","事故死"],parents:"父：ヨモ／母：マハラ"},
+  willa_lover:{name:"Unknown",nameJa:"不明の都市男",gender:"m",role:"ウィラの一夜の関係",years:"?",main:false,bio:"ウィラが学院時代に関係した男。",attrs:["記録なし"],parents:"—"},
+  amina_sp1:{name:"Olu",nameJa:"オル",gender:"m",role:"アミナの最初の伴侶",years:"1875—1930",main:false,bio:"深部の石工。",attrs:["伴侶1"],parents:"—"},
+  amina_sp2:{name:"Yasa",nameJa:"ヤサ",gender:"m",role:"アミナの2番目の伴侶",years:"1885—1940",main:false,bio:"狩人。ハノの父。",attrs:["伴侶2"],parents:"—"},
+  kanai:{name:"Kanai",nameJa:"カナイ",gender:"m",role:"ウィラの血の子",years:"1878—1942",main:true,bio:"ウィラは育てられず、アミナが引き取った。鉄工労働者。",attrs:["継承拒否"],parents:"血母：ウィラ／育て親：アミナ"},
+  hano:{name:"Hano",nameJa:"ハノ",gender:"m",role:"アミナの長男",years:"1905—1972",main:true,bio:"深部の対話師。",attrs:["対話師"],parents:"母：アミナ／父：ヤサ"},
+  hano_sibs:{name:"Rina ら",nameJa:"リナ他3名",gender:"u",role:"アミナの他の子",years:"1908—",main:false,bio:"4人の兄弟。",attrs:["脇役×4"],parents:"母：アミナ"},
+  lio_mom:{name:"Emilia",nameJa:"エミリア",gender:"f",role:"リオの母",years:"1885—1945",main:false,bio:"カルデラの労働者。",attrs:["労働者"],parents:"—"},
+  lio:{name:"Lio Takani",nameJa:"リオ",gender:"m",role:"結晶農業の創始者",years:"1908—1989",main:true,bio:"「掘るのではなく育てる」農法を開発。1965年、深部発見の立会人。",quote:"結晶は植物と似ている。乱暴に引き抜けば、二度と生えない。",attrs:["結晶農業"],parents:"父：カナイ／母：エミリア"},
+  lio_sister:{name:"Nika",nameJa:"ニカ",gender:"f",role:"リオの姉",years:"1906—1975",main:false,bio:"カルデラで鉄工所の妻として。",attrs:["姉"],parents:"父：カナイ／母：エミリア"},
+  kael_mom:{name:"Mira",nameJa:"ミラ",gender:"f",role:"カエルの母",years:"1915—1990",main:false,bio:"深部の対話師。",attrs:["対話師"],parents:"—"},
+  kael:{name:"Kael",nameJa:"カエル",gender:"m",role:"マヤの祖父",years:"1940—2008",main:true,bio:"深部の対話師。都市に出ず。",attrs:["対話師"],parents:"父：ハノ／母：ミラ"},
+  kael_sib:{name:"Olan",nameJa:"オラン",gender:"m",role:"カエルの弟",years:"1942—",main:false,bio:"深部で生活。",attrs:["弟"],parents:"父：ハノ／母：ミラ"},
+  rena_mom:{name:"Sona",nameJa:"ソナ",gender:"f",role:"レナの母",years:"1945—2015",main:false,bio:"深部で静かに生きた対話師。",attrs:["対話師"],parents:"—"},
+  rena:{name:"Rena Takani",nameJa:"レナ",gender:"f",role:"マヤの母",years:"1970—",main:true,bio:"対話師として活動しつつ娘を都市で育てた。",attrs:["対話師"],parents:"父：カエル／母：ソナ"},
+  rena_bro:{name:"Iki",nameJa:"イキ",gender:"m",role:"レナの兄",years:"1968—",main:false,bio:"深部に残った。",attrs:["兄"],parents:"父：カエル／母：ソナ"},
+  damian:{name:"Damian",nameJa:"ダミアン",gender:"m",role:"レナの伴侶",years:"1968—",main:true,bio:"都市出身の非魔法使い。マヤの育ての父。",attrs:["教師"],parents:"—"},
+  maya:{name:"Maya Takani",nameJa:"マヤ",gender:"f",role:"対話師 / 現代主人公",years:"1998—",main:true,bio:"一族で最も強い対話能力。両手の指先が結晶化し始めている。",quote:"おじは怒っていない。300年間答えが返ってこなかったから、もう一度聞いているんだ。",attrs:["対話師","現代主人公"],parents:"母：レナ／父：ダミアン"},
+  sora:{name:"Sora",nameJa:"ソラ",gender:"m",role:"マヤの弟",years:"2003—",main:true,bio:"対話師の素質はないが、姉の通訳として機能。",attrs:["通訳"],parents:"母：レナ／父：ダミアン"},
+
+  alex_bros:{name:"Henry, Philip",nameJa:"ヘンリー他",gender:"m",role:"アレクサンデルの弟2人",years:"1670s",main:false,bio:"旧大陸に残った。",attrs:["弟×2"],parents:"—"},
+  alexander:{name:"Alexander Vexalia",nameJa:"アレクサンデル",gender:"m",role:"初代植民地総督",years:"1668—1730",main:true,bio:"武力制圧の指揮官。晩年「私は間違っていたのかもしれない」。",quote:"正しさより、秩序を。",attrs:["建国者"],parents:"旧大陸貴族家系"},
+  elizabeth:{name:"Elizabeth",nameJa:"エリザベト",gender:"f",role:"アレクサンデルの初妻",years:"1675—1710",main:true,bio:"旧大陸の貴族令嬢。植民地の風土病で死亡。",attrs:["初妻"],parents:"旧大陸貴族家"},
+  marie:{name:"Marie",nameJa:"マリー",gender:"f",role:"アレクサンデルの後妻",years:"1690—1755",main:true,bio:"植民地の富豪の娘。家督争いに敗北。",attrs:["後妻"],parents:"植民地富豪家"},
+  james:{name:"James Vexalia",nameJa:"ジェームズ",gender:"m",role:"2代目当主",years:"1700—1780",main:true,bio:"父の路線を継承。凡庸。",attrs:["保守"],parents:"父：アレクサンデル／母：エリザベト"},
+  james_other:{name:"Eleanor",nameJa:"エレナー",gender:"f",role:"ジェームズの妹",years:"1703—1778",main:false,bio:"修道院に入った。",attrs:["修道女"],parents:"父：アレクサンデル／母：エリザベト"},
+  roderick:{name:"Roderick",nameJa:"ロデリック",gender:"m",role:"家督争い敗者",years:"1715—1790",main:true,bio:"マリーの息子。カルデラで商人に。",attrs:["敗者"],parents:"父：アレクサンデル／母：マリー"},
+  james_wife:{name:"Anabel",nameJa:"アナベル",gender:"f",role:"ジェームズの妻",years:"1705—1775",main:false,bio:"政略結婚。",attrs:["妻"],parents:"—"},
+  franz:{name:"Franz",nameJa:"フランツ",gender:"m",role:"3代目",years:"1742—1810",main:true,bio:"政治家。カトリーナを育てた。",attrs:["政治家"],parents:"父：ジェームズ／母：アナベル"},
+  franz_sib:{name:"Elisa",nameJa:"エリーザ",gender:"f",role:"フランツの姉",years:"1738—1790",main:false,bio:"他国の貴族に嫁いだ。",attrs:["姉"],parents:"父：ジェームズ／母：アナベル"},
+  franz_wife:{name:"Cecilia",nameJa:"セシリア",gender:"f",role:"カトリーナの母",years:"1748—1800",main:false,bio:"貴族の娘。穏やか。",attrs:["母"],parents:"—"},
+  katrina:{name:"Katrina Vexalia",nameJa:"カトリーナ",gender:"f",role:"魔法恐怖法の起草者",years:"1745—1812",main:true,bio:"現代魔法規制の原型を作った。娘イザベルを登録した。",quote:"私は魔法を憎んではいない。人間を信用していないだけだ。",attrs:["法制化"],parents:"父：フランツ／母：セシリア"},
+  kat_sibs:{name:"Marcus他",nameJa:"マルクス他",gender:"u",role:"カトリーナの兄妹",years:"1740s",main:false,bio:"マルクスは軍人、ヴァレリアは嫁いだ。",attrs:["兄妹×2"],parents:"父：フランツ／母：セシリア"},
+  petros:{name:"Petros",nameJa:"ペトロス",gender:"m",role:"カトリーナの夫",years:"1740—1780",main:true,bio:"イザベルが3歳の時事故死。",attrs:["早逝"],parents:"—"},
+  isabel:{name:"Isabel Vexalia",nameJa:"イザベル",gender:"f",role:"一族唯一の魔法使い",years:"1775—1840",main:true,bio:"力を持って生まれたが母に登録された。生涯未婚、3人の養子。",quote:"私は記録の上にいる。生きていない。",attrs:["例外","登録"],parents:"父：ペトロス／母：カトリーナ"},
+  theo:{name:"Theo",nameJa:"テオ",gender:"m",role:"イザベルの養子（長）",years:"1795—1862",main:true,bio:"孤児院出身。シャルルの養父。",attrs:["養子"],parents:"養母：イザベル"},
+  lilian:{name:"Lilian",nameJa:"リリアン",gender:"f",role:"イザベルの養子（次女）",years:"1798—1865",main:true,bio:"女性初の裁判官。独身。",attrs:["養子","裁判官"],parents:"養母：イザベル"},
+  anna:{name:"Anna",nameJa:"アンナ",gender:"f",role:"イザベルの養子（三女）",years:"1802—1855",main:false,bio:"早世。結核。",attrs:["養子","早逝"],parents:"養母：イザベル"},
+  theo_wife:{name:"Beatrice",nameJa:"ベアトリス（初）",gender:"f",role:"テオの妻",years:"1800—1870",main:false,bio:"貴族の娘。",attrs:["妻"],parents:"—"},
+  charles:{name:"Charles Vexalia",nameJa:"シャルル",gender:"m",role:"学院審査員",years:"1815—1892",main:true,bio:"ウィラの論文を黙殺した男。",attrs:["裏切り"],parents:"父：テオ／母：ベアトリス"},
+  charles_wife1:{name:"Marta",nameJa:"マルタ",gender:"f",role:"シャルルの初妻",years:"1820—1880",main:false,bio:"離婚した。子なし。",attrs:["初妻"],parents:"—"},
+  charles_wife2:{name:"Beatrice",nameJa:"ベアトリス（後）",gender:"f",role:"シャルルの後妻",years:"1835—1905",main:false,bio:"外交官の娘。",attrs:["後妻"],parents:"—"},
+  charles_mistress:{name:"Unknown",nameJa:"愛人",gender:"f",role:"ジュリアンの母",years:"1818—1860",main:false,bio:"貴族ではない。",attrs:["愛人"],parents:"—"},
+  julian:{name:"Julian",nameJa:"ジュリアン",gender:"m",role:"シャルルの庶子",years:"1840—1918",main:true,bio:"認知された庶子。外交官として名を成した。",attrs:["庶子"],parents:"父：シャルル／母：愛人"},
+  helena:{name:"Helena Vexalia",nameJa:"ヘレナ",gender:"f",role:"女性政治家",years:"1865—1940",main:true,bio:"労働法整備で改革派。2度結婚、3人の子。",attrs:["改革派"],parents:"父：シャルル／母：ベアトリス（後）"},
+  helena_bro:{name:"Gaston",nameJa:"ガストン",gender:"m",role:"ヘレナの兄",years:"1860—1910",main:false,bio:"軍人。戦死。",attrs:["戦死"],parents:"父：シャルル／母：ベアトリス（後）"},
+  helena_h1:{name:"Harold",nameJa:"ハロルド",gender:"m",role:"ヘレナの初夫",years:"1862—1900",main:false,bio:"鉱山事故で死亡。",attrs:["事故死"],parents:"—"},
+  helena_h2:{name:"Ricardo",nameJa:"リカルド",gender:"m",role:"ヘレナの後夫",years:"1870—1945",main:false,bio:"商人。",attrs:["後夫"],parents:"—"},
+  victor:{name:"Victor",nameJa:"ヴィクター",gender:"m",role:"エルネストの父",years:"1890—1960",main:false,bio:"堅実な官僚。",attrs:["父"],parents:"父：ハロルド／母：ヘレナ"},
+  victor_sib1:{name:"Ana",nameJa:"アナ",gender:"f",role:"ヴィクターの姉",years:"1885—1970",main:false,bio:"教育者。生涯未婚。",attrs:["姉"],parents:"父：ハロルド／母：ヘレナ"},
+  emmanuel:{name:"Emmanuel",nameJa:"エマニュエル",gender:"m",role:"連れ子",years:"1875—1950",main:false,bio:"リカルドの前妻との子。",attrs:["連れ子"],parents:"父：リカルド／育て母：ヘレナ"},
+  victor_wife:{name:"Irene",nameJa:"イレーヌ",gender:"f",role:"エルネストの母",years:"1895—1980",main:false,bio:"外交官の娘。",attrs:["母"],parents:"—"},
+  ernesto:{name:"Ernesto Vexalia",nameJa:"エルネスト",gender:"m",role:"IMEA創設者",years:"1902—1988",main:true,bio:"「魔法の国連」を作った。1965年、深部発見の立会人。",attrs:["IMEA創設"],parents:"父：ヴィクター／母：イレーヌ"},
+  sofia:{name:"Sofia",nameJa:"ソフィア",gender:"f",role:"エルネストの妻",years:"1908—1995",main:true,bio:"外交官の娘。",attrs:["外交官夫人"],parents:"—"},
+  ernesto_bro:{name:"Leo",nameJa:"レオ",gender:"m",role:"エルネストの弟",years:"1908—1985",main:false,bio:"詩人。",attrs:["詩人"],parents:"父：ヴィクター／母：イレーヌ"},
+  magdalena:{name:"Magdalena",nameJa:"マグダレーナ",gender:"f",role:"グレゴリーの姉",years:"1948—",main:true,bio:"弁護士。女性ゆえ家督を継げなかった。",attrs:["弁護士"],parents:"父：エルネスト／母：ソフィア"},
+  gregory:{name:"Gregory Vexalia",nameJa:"グレゴリー",gender:"m",role:"現当主",years:"1955—",main:true,bio:"IMEA副議長。堅実な官僚。",attrs:["官僚"],parents:"父：エルネスト／母：ソフィア"},
+  mag_husb:{name:"Klaus",nameJa:"クラウス",gender:"m",role:"マグダレーナの夫",years:"1945—2020",main:false,bio:"企業弁護士。",attrs:["夫"],parents:"—"},
+  claudia:{name:"Claudia",nameJa:"クラウディア",gender:"f",role:"セオドアの母",years:"1962—",main:true,bio:"貴族出身。息子の異常記憶力を見抜いた。",attrs:["母"],parents:"—"},
+  theodore:{name:"Theodore Vexalia",nameJa:"セオドア",gender:"m",role:"IMEA監査役 / 現代主人公",years:"1995—",main:true,bio:"魔法は使えない。300年分の規制の沿革を暗唱できる。",quote:"我々ヴェクサリア家は300年、正しい場所で間違い続けてきた。",attrs:["現代主人公"],parents:"父：グレゴリー／母：クラウディア"},
+  mag_kids:{name:"Daniela他",nameJa:"ダニエラ他",gender:"u",role:"マグダレーナの子",years:"1975—",main:false,bio:"独立した人生。",attrs:["いとこ"],parents:"母：マグダレーナ／父：クラウス"},
+
+  thomas_bro:{name:"Henry",nameJa:"ヘンリー",gender:"m",role:"トーマスの兄",years:"1750—1810",main:false,bio:"鉱山で事故。晩年は乞食。",attrs:["兄"],parents:"—"},
+  thomas:{name:"Thomas Henry Kross",nameJa:"トーマス",gender:"m",role:"初代結晶運搬人",years:"1755—1815?",main:true,bio:"鉱夫出身。3人の女性との間に7人の子。失踪。",quote:"結晶は生きている。切るんじゃない。分けてもらうんだ。",attrs:["運搬人","失踪"],parents:"鉱夫の家"},
+  martha:{name:"Martha",nameJa:"マルサ",gender:"f",role:"トーマスの初妻",years:"1760—1795",main:true,bio:"出産死。",attrs:["初妻","出産死"],parents:"—"},
+  hanna:{name:"Hanna",nameJa:"ハンナ",gender:"f",role:"トーマスの事実婚",years:"1765—1830",main:true,bio:"結晶加工の技術者。ウィリアムの母。",attrs:["事実婚","技術者"],parents:"—"},
+  wi:{name:"Wi",nameJa:"ウィ",gender:"f",role:"トーマスの晩年の伴侶（先住民）",years:"1775—1860",main:false,bio:"先住民。トーマスの最後の旅に同行。",attrs:["先住民"],parents:"—"},
+  edgar:{name:"Edgar Kross",nameJa:"エドガー",gender:"m",role:"トーマスの長男",years:"1790—1865",main:true,bio:"運搬業を商会に発展。",attrs:["商人"],parents:"父：トーマス／母：マルサ"},
+  martha_sisters:{name:"Lucy他",nameJa:"ルーシー他",gender:"f",role:"エドガーの姉妹3人",years:"1785—1860",main:false,bio:"他家に嫁いだ。",attrs:["姉妹×3"],parents:"父：トーマス／母：マルサ"},
+  william:{name:"William Kross",nameJa:"ウィリアム",gender:"m",role:"鍛冶職人",years:"1825—1895",main:true,bio:"結晶と金属の融合技術。",attrs:["鍛冶"],parents:"父：トーマス／母：ハンナ"},
+  wi_kids:{name:"Tika他",nameJa:"ティカ他",gender:"u",role:"ウィの子2人",years:"1805—1880s",main:false,bio:"先住民として育ち、タカニ族に吸収された。",attrs:["先住民化"],parents:"父：トーマス／母：ウィ"},
+  edgar_wife:{name:"Rosa",nameJa:"ロザ",gender:"f",role:"エドガーの妻",years:"1795—1875",main:false,bio:"商家の娘。",attrs:["妻"],parents:"—"},
+  william_wife:{name:"Celia",nameJa:"セリア",gender:"f",role:"ウィリアムの妻",years:"1830—1900",main:false,bio:"大工の娘。",attrs:["妻"],parents:"—"},
+  arthur:{name:"Arthur",nameJa:"アーサー",gender:"m",role:"エドガーの長男",years:"1818—1895",main:true,bio:"コーツ家の娘と駆け落ち結婚。姓を結合。",attrs:["駆け落ち"],parents:"父：エドガー／母：ロザ"},
+  arthur_sibs:{name:"Peter他",nameJa:"ピーター他",gender:"u",role:"エドガーの他の3人の子",years:"1820—1890",main:false,bio:"歴史に残らず。",attrs:["兄弟×3"],parents:"父：エドガー／母：ロザ"},
+  nathan:{name:"Nathan",nameJa:"ネイサン",gender:"m",role:"ウィリアムの息子",years:"1855—1930",main:true,bio:"カルデラで工場を起こした。",attrs:["工場創設"],parents:"父：ウィリアム／母：セリア"},
+  nathan_sibs:{name:"George他",nameJa:"ジョージ他",gender:"u",role:"ウィリアムの他の子",years:"1850-1920",main:false,bio:"鍛冶屋系。",attrs:["兄弟×3"],parents:"父：ウィリアム／母：セリア"},
+  helena_k:{name:"Helena Koats",nameJa:"ヘレナ・コーツ",gender:"f",role:"サラの母",years:"1830—1905",main:true,bio:"会場でウィラの論文を拾った女性。",attrs:["拾う人"],parents:"コーツ家"},
+  sarah:{name:"Sarah Koats-Kross",nameJa:"サラ",gender:"f",role:"魔導管設計の母",years:"1862—1941",main:true,bio:"パイプライン設計の母。",quote:"この管は100年持つように作った。100年後の人間が私より賢いことを祈る。",attrs:["土木工学"],parents:"父：アーサー／母：ヘレナ・コーツ"},
+  sarah_sibs:{name:"Walter他",nameJa:"ウォルター他",gender:"u",role:"サラの兄妹",years:"1860-1930",main:false,bio:"ウォルターは早逝、エリーゼは画家。",attrs:["兄妹×2"],parents:"父：アーサー／母：ヘレナ・コーツ"},
+  rafael:{name:"Rafael",nameJa:"ラファエル",gender:"m",role:"サラの夫",years:"1858—1935",main:true,bio:"サラと対等の技術者。",attrs:["水道技師"],parents:"—"},
+  benjamin:{name:"Benjamin Kross",nameJa:"ベンジャミン",gender:"m",role:"軍事魔法技師",years:"1895—1975",main:true,bio:"結晶砲の設計で後悔。3度結婚。",attrs:["軍事技師"],parents:"父：ラファエル／母：サラ"},
+  sarah_daughters:{name:"Irene他",nameJa:"アイリーン他",gender:"f",role:"サラの娘2人",years:"1890-1960s",main:false,bio:"音楽家と教師。",attrs:["娘×2"],parents:"父：ラファエル／母：サラ"},
+  audrey:{name:"Audrey",nameJa:"オードリー",gender:"f",role:"ベンジャミンの初妻",years:"1900—1945",main:false,bio:"看護師。流行病で死亡。",attrs:["初妻"],parents:"—"},
+  noella:{name:"Noella",nameJa:"ノエラ",gender:"f",role:"ベンジャミンの2番目の妻",years:"1918—1995",main:false,bio:"離婚。",attrs:["離婚"],parents:"—"},
+  yuki:{name:"Yuki Murakami",nameJa:"ユキ",gender:"f",role:"ベンジャミンの3番目の妻",years:"1920—1995",main:true,bio:"東方からの移民。カイの母。",attrs:["移民"],parents:"—"},
+  noah:{name:"Noah",nameJa:"ノア",gender:"m",role:"カイの異母兄",years:"1920—1998",main:true,bio:"軍人。",attrs:["異母兄"],parents:"父：ベンジャミン／母：オードリー"},
+  kai:{name:"Kai Murakami-Kross",nameJa:"カイ",gender:"m",role:"結晶コンピュータ開発者",years:"1945—2018",main:true,bio:"結晶コンピュータを発明。1965年、深部発見の立会人。",quote:"呪文は言葉じゃない。構造だ。構造なら計算できる。",attrs:["発明家"],parents:"父：ベンジャミン／母：ユキ"},
+  lea:{name:"Lea",nameJa:"リア",gender:"f",role:"カイの妻",years:"1950—",main:true,bio:"建築家。",attrs:["建築家"],parents:"—"},
+  miranda:{name:"Miranda Kross",nameJa:"ミランダ",gender:"f",role:"レンの母",years:"1972—",main:true,bio:"クロス家の経営を仕切る。",attrs:["経営者"],parents:"父：カイ／母：リア"},
+  daniel:{name:"Daniel",nameJa:"ダニエル",gender:"m",role:"呪文プログラマ",years:"1975—",main:true,bio:"研究者の道へ。",attrs:["叔父"],parents:"父：カイ／母：リア"},
+  sofia_k:{name:"Sofia Kross",nameJa:"ソフィア・K",gender:"f",role:"音楽家",years:"1980—",main:true,bio:"結晶楽器の演奏家。",attrs:["音楽家"],parents:"父：カイ／母：リア"},
+  marcus:{name:"Marcus",nameJa:"マーカス",gender:"m",role:"レンの父",years:"1969—",main:true,bio:"外様の会計士。",attrs:["会計士"],parents:"—"},
+  ren:{name:"Ren Kross",nameJa:"レン",gender:"m",role:"保守技師 / 現代主人公",years:"2001—",main:true,bio:"曾祖母サラの設計書を読める唯一の現代人。",quote:"300年前の人たちは、100年後の我々がもう少し賢いと信じてくれた。",attrs:["現代主人公"],parents:"母：ミランダ／父：マーカス"},
+  ren_sisters:{name:"Emma & Zoe",nameJa:"エマ & ゾーイ",gender:"f",role:"双子の妹",years:"2005—",main:false,bio:"将来の経営者候補。",attrs:["双子"],parents:"母：ミランダ／父：マーカス"}
+};
+
+// Tree definitions (same as v5)
+const trees = {
+  taka: {color:"176,192,144",rows:[
+    [{id:"nahani",pos:"center"}],
+    [{id:"yera_bro"},{id:"yera_sis"},{id:"tarai",spouse:true},{id:"yera",pos:"center",parent:"nahani"},{id:"ono",spouse:true}],
+    [{id:"sakara_sib1"},{id:"sakara",pos:"center",parent:"yera",parent2:"tarai"},{id:"sakara_sib2"}],
+    [{id:"mid_gen",pos:"center",parent:"sakara"}],
+    [{id:"inika_sib"},{id:"inika",pos:"center",parent:"mid_gen"}],
+    [{id:"yomo_bro"},{id:"yomo",pos:"center",parent:"inika"},{id:"mahara",spouse:true}],
+    [{id:"willa",parent:"yomo",parent2:"mahara"},{id:"amina",pos:"center",parent:"yomo",parent2:"mahara"},{id:"amina_sib"}],
+    [{id:"willa_lover",under:"willa"},{id:"amina_sp1",under:"amina"},{id:"amina_sp2",under:"amina",spouseOf:"amina"}],
+    [{id:"kanai",parent:"amina",bloodParent:"willa"},{id:"hano",pos:"center",parent:"amina",parent2:"amina_sp2"},{id:"hano_sibs"}],
+    [{id:"lio_mom",spouseOf:"kanai"},{id:"kael_mom",spouseOf:"hano"}],
+    [{id:"lio_sister"},{id:"lio",parent:"kanai",parent2:"lio_mom"},{id:"kael",pos:"center",parent:"hano",parent2:"kael_mom"},{id:"kael_sib"}],
+    [{id:"rena_mom",spouseOf:"kael"}],
+    [{id:"rena_bro"},{id:"rena",pos:"center",parent:"kael",parent2:"rena_mom"},{id:"damian",spouse:true}],
+    [{id:"maya",pos:"center",parent:"rena",parent2:"damian"},{id:"sora",parent:"rena",parent2:"damian"}]
+  ]},
+  vexa: {color:"144,128,184",rows:[
+    [{id:"alex_bros"},{id:"elizabeth",spouse:true},{id:"alexander",pos:"center"},{id:"marie",spouse:true}],
+    [{id:"james_other"},{id:"james",pos:"center",parent:"alexander",parent2:"elizabeth"},{id:"roderick",parent:"alexander",parent2:"marie"}],
+    [{id:"james_wife",spouseOf:"james"}],
+    [{id:"franz_sib"},{id:"franz",pos:"center",parent:"james",parent2:"james_wife"}],
+    [{id:"franz_wife",spouseOf:"franz"}],
+    [{id:"kat_sibs"},{id:"katrina",pos:"center",parent:"franz",parent2:"franz_wife"},{id:"petros",spouse:true}],
+    [{id:"isabel",pos:"center",parent:"katrina",parent2:"petros"}],
+    [{id:"theo",fosterParent:"isabel"},{id:"lilian",fosterParent:"isabel"},{id:"anna",fosterParent:"isabel"}],
+    [{id:"theo_wife",spouseOf:"theo"}],
+    [{id:"charles",pos:"center",parent:"theo",parent2:"theo_wife"}],
+    [{id:"charles_wife1",spouseOf:"charles"},{id:"charles_wife2",spouseOf:"charles"},{id:"charles_mistress"}],
+    [{id:"helena_bro"},{id:"helena",pos:"center",parent:"charles",parent2:"charles_wife2"},{id:"julian",illegitParent:"charles"}],
+    [{id:"helena_h1",spouseOf:"helena"},{id:"helena_h2",spouseOf:"helena"}],
+    [{id:"victor_sib1"},{id:"victor",pos:"center",parent:"helena",parent2:"helena_h1"},{id:"emmanuel",parent:"helena_h2"}],
+    [{id:"victor_wife",spouseOf:"victor"}],
+    [{id:"ernesto_bro"},{id:"ernesto",pos:"center",parent:"victor",parent2:"victor_wife"},{id:"sofia",spouse:true}],
+    [{id:"mag_husb",spouseOf:"magdalena"},{id:"magdalena",parent:"ernesto",parent2:"sofia"},{id:"gregory",pos:"center",parent:"ernesto",parent2:"sofia"},{id:"claudia",spouse:true}],
+    [{id:"mag_kids",parent:"magdalena",parent2:"mag_husb"},{id:"theodore",pos:"center",parent:"gregory",parent2:"claudia"}]
+  ]},
+  kross: {color:"192,128,96",rows:[
+    [{id:"thomas_bro"},{id:"martha",spouse:true},{id:"thomas",pos:"center"},{id:"hanna",spouse:true},{id:"wi",spouse:true}],
+    [{id:"martha_sisters"},{id:"edgar",parent:"thomas",parent2:"martha"},{id:"william",pos:"center",parent:"thomas",parent2:"hanna"},{id:"wi_kids",parent:"thomas",parent2:"wi"}],
+    [{id:"edgar_wife",spouseOf:"edgar"},{id:"william_wife",spouseOf:"william"}],
+    [{id:"arthur_sibs"},{id:"arthur",parent:"edgar",parent2:"edgar_wife"},{id:"helena_k",spouse:true},{id:"nathan",pos:"center",parent:"william",parent2:"william_wife"},{id:"nathan_sibs"}],
+    [{id:"sarah_sibs"},{id:"sarah",pos:"center",parent:"arthur",parent2:"helena_k"},{id:"rafael",spouse:true}],
+    [{id:"sarah_daughters"},{id:"benjamin",pos:"center",parent:"sarah",parent2:"rafael"}],
+    [{id:"audrey",spouseOf:"benjamin"},{id:"noella",spouseOf:"benjamin"},{id:"yuki",spouseOf:"benjamin"}],
+    [{id:"noah",parent:"benjamin",parent2:"audrey"},{id:"kai",pos:"center",parent:"benjamin",parent2:"yuki"},{id:"lea",spouse:true}],
+    [{id:"miranda",parent:"kai",parent2:"lea"},{id:"daniel",pos:"center",parent:"kai",parent2:"lea"},{id:"sofia_k",parent:"kai",parent2:"lea"}],
+    [{id:"marcus",spouseOf:"miranda"}],
+    [{id:"ren",pos:"center",parent:"miranda",parent2:"marcus"},{id:"ren_sisters",parent:"miranda",parent2:"marcus"}]
+  ]}
+};
+
+function calculateLayout(treeDef) {
+  const ROW_HEIGHT = 110;
+  const MAIN_WIDTH = 130;
+  const MINOR_WIDTH = 90;
+  const GAP = 18;
+  const TOP_MARGIN = 30;
+  const positions = {};
+
+  treeDef.rows.forEach((row, rowIndex) => {
+    const y = TOP_MARGIN + rowIndex * ROW_HEIGHT;
+    const widths = row.map(entry => { const p = profiles[entry.id]; return p && p.main ? MAIN_WIDTH : MINOR_WIDTH; });
+    const totalWidth = widths.reduce((a,b)=>a+b,0) + GAP*(row.length-1);
+    let x = Math.max(30, (1400 - totalWidth) / 2);
+    row.forEach((entry,i)=>{
+      const p = profiles[entry.id];
+      const w = p && p.main ? MAIN_WIDTH : MINOR_WIDTH;
+      const h = p && p.main ? 60 : 44;
+      positions[entry.id] = { x, y:y+(p&&p.main?0:8), w, h, main:p&&p.main, entry, rowIndex };
+      x += w + GAP;
+    });
+  });
+  return positions;
+}
+
+function genderColor(g){ return g==='m'?'var(--male)':g==='f'?'var(--female)':'var(--unknown)'; }
+
+function renderTree(familyId){
+  const treeDef = trees[familyId];
+  const positions = calculateLayout(treeDef);
+  const container = document.getElementById(`tree-${familyId}`);
+  const allPos = Object.values(positions);
+  const maxY = Math.max(...allPos.map(p=>p.y+p.h))+30;
+  const maxX = Math.max(...allPos.map(p=>p.x+p.w))+30;
+  const w = Math.max(maxX,1100), h = maxY;
+
+  let linesHtml = '';
+  treeDef.rows.forEach(row=>{
+    row.forEach(entry=>{
+      const pos = positions[entry.id]; if(!pos) return;
+      const ncx = pos.x + pos.w/2;
+      const drawLine = (parentId, color, dash) => {
+        const pp = positions[parentId]; if(!pp) return '';
+        const px = pp.x+pp.w/2, py = pp.y+pp.h, cy = pos.y, midY = (py+cy)/2;
+        return `<path d="M ${px} ${py} L ${px} ${midY} L ${ncx} ${midY} L ${ncx} ${cy}" stroke="${color}" stroke-width="1.2" fill="none"${dash?` stroke-dasharray="${dash}"`:''}/>`;
+      };
+      if(entry.parent) linesHtml += drawLine(entry.parent, `rgba(${treeDef.color},0.55)`);
+      if(entry.parent2) linesHtml += drawLine(entry.parent2, `rgba(${treeDef.color},0.55)`);
+      if(entry.fosterParent) linesHtml += drawLine(entry.fosterParent, `rgba(176,192,144,0.6)`, "2 3");
+      if(entry.illegitParent) linesHtml += drawLine(entry.illegitParent, `rgba(192,68,68,0.55)`, "4 2");
+      if(entry.bloodParent) linesHtml += drawLine(entry.bloodParent, `rgba(${treeDef.color},0.45)`);
+      if(entry.spouse){
+        const row = treeDef.rows[pos.rowIndex], myIdx = row.indexOf(entry);
+        for(let i=myIdx-1;i>=0;i--){ if(!row[i].spouse){ const pp=positions[row[i].id]; if(pp){ const y=pos.y+pos.h/2; linesHtml += `<line x1="${pp.x+pp.w}" y1="${y}" x2="${pos.x}" y2="${y}" stroke="rgba(${treeDef.color},0.55)" stroke-width="1.2" stroke-dasharray="5 3"/>`; break; }}}
+        for(let i=myIdx+1;i<row.length;i++){ if(!row[i].spouse && row[i].id!==entry.id){ const pp=positions[row[i].id]; if(pp){ const y=pos.y+pos.h/2; linesHtml += `<line x1="${pos.x+pos.w}" y1="${y}" x2="${pp.x}" y2="${y}" stroke="rgba(${treeDef.color},0.55)" stroke-width="1.2" stroke-dasharray="5 3"/>`; break; }}}
+      }
+      if(entry.spouseOf){
+        const pp = positions[entry.spouseOf];
+        if(pp){ const px=pp.x+pp.w/2, py=pp.y+pp.h, cx=ncx, cy=pos.y;
+          linesHtml += `<path d="M ${px} ${py} Q ${(px+cx)/2} ${(py+cy)/2} ${cx} ${cy}" stroke="rgba(${treeDef.color},0.45)" stroke-width="1.1" fill="none" stroke-dasharray="4 3"/>`;
+        }
+      }
+    });
+  });
+
+  let nodesHtml = '';
+  Object.entries(positions).forEach(([id,pos])=>{
+    const p = profiles[id]; if(!p) return;
+    const gcolor = genderColor(p.gender);
+    const fontSize = pos.main ? '0.72rem' : '0.6rem';
+    const bgColor = pos.main ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)';
+    const opacity = pos.main ? '1' : '0.65';
+    const border = pos.main ? '2px' : '1.5px';
+    nodesHtml += `<foreignObject x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}">
+      <div class="tnode" data-person="${id}" xmlns="http://www.w3.org/1999/xhtml"
+           style="padding:0.4rem;background:${bgColor};border:${border} solid ${gcolor};border-radius:4px;text-align:center;cursor:pointer;font-family:'Noto Sans JP',sans-serif;height:100%;display:flex;align-items:center;justify-content:center;opacity:${opacity};transition:all 0.15s">
+        <div style="font-size:${fontSize};color:#c8bfa8;line-height:1.15">${p.nameJa}</div>
+      </div>
+    </foreignObject>`;
+  });
+
+  container.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;margin:0 auto">
+    <g>${linesHtml}</g>${nodesHtml}
+  </svg>`;
+}
+
+// Hover popup
+const popup = document.getElementById('hover-popup');
+let popupTimeout;
+
+function showPopup(personId, event){
+  const p = profiles[personId]; if(!p) return;
+  clearTimeout(popupTimeout);
+  const attrsHtml = (p.attrs||[]).map(a=>`<span class="attr">${a}</span>`).join('');
+  const quoteHtml = p.quote ? `<div class="quote">${p.quote}</div>` : '';
+  const parentHtml = p.parents ? `<div class="parents"><strong>親：</strong>${p.parents}</div>` : '';
+  const gtag = p.gender==='m' ? '<span class="gender-tag male">男</span>' : p.gender==='f' ? '<span class="gender-tag female">女</span>' : '';
+
+  popup.innerHTML = `
+    <h3>${p.name} ${gtag}</h3>
+    <div class="ja">${p.nameJa}</div>
+    <div class="role">${p.role}</div>
+    <div class="years">${p.years}</div>
+    ${parentHtml}
+    <div class="bio">${p.bio}</div>
+    ${quoteHtml}
+    <div class="attrs">${attrsHtml}</div>
+  `;
+  popup.classList.add('visible');
+  positionPopup(event);
+}
+
+function positionPopup(event){
+  const rect = popup.getBoundingClientRect();
+  let x = event.clientX + 15;
+  let y = event.clientY + 15;
+  if (x + rect.width > window.innerWidth - 10) x = event.clientX - rect.width - 15;
+  if (y + rect.height > window.innerHeight - 10) y = window.innerHeight - rect.height - 10;
+  if (y < 10) y = 10;
+  popup.style.left = x + 'px';
+  popup.style.top = y + 'px';
+}
+
+function hidePopup(){
+  popupTimeout = setTimeout(()=>{ popup.classList.remove('visible'); }, 100);
+}
+
+// Setup hover events
+function setupHover(){
+  document.querySelectorAll('.tnode').forEach(node=>{
+    node.addEventListener('mouseenter', (e)=>{
+      showPopup(node.dataset.person, e);
+      node.style.opacity = '1';
+      node.style.background = 'rgba(176,136,64,0.15)';
+    });
+    node.addEventListener('mousemove', (e)=>{ positionPopup(e); });
+    node.addEventListener('mouseleave', ()=>{
+      hidePopup();
+      const p = profiles[node.dataset.person];
+      node.style.opacity = p && p.main ? '1' : '0.65';
+      node.style.background = p && p.main ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)';
+    });
+  });
+}
+
+// Tab switching
+function switchFamily(familyId){
+  document.querySelectorAll('.family-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`.family-tab[data-family="${familyId}"]`).forEach(t => t.classList.add('active'));
+
+  document.querySelectorAll('.fam-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(`narrative-${familyId}`).classList.add('active');
+
+  document.querySelectorAll('[id^="tree-"]').forEach(t => t.style.display = 'none');
+  document.getElementById(`tree-${familyId}`).style.display = 'block';
+
+  // Update body class for narrative style
+  document.body.className = familyId;
+}
+
+document.querySelectorAll('.family-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchFamily(tab.dataset.family));
+});
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  renderTree('taka');
+  renderTree('vexa');
+  renderTree('kross');
+  setupHover();
+  document.body.className = 'taka';
+});
+</script>
+
+</body>
+</html>
