@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMBERFALL — 主要キャラクター</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --fg:#c8bfa8; --muted:#7a7266; --bone:#c8bfa8; --gold:#b08840;
+  --amb:#c09070; --vex:#8890a0; --kro:#a88858; --tak:#90a078; --mer:#a878a0; --com:#7a7266;
+  --panel:rgba(255,255,255,0.04); --border:rgba(176,136,64,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);font-family:'Noto Sans JP',sans-serif;min-height:100vh;line-height:1.65}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{padding:1.8rem 1rem 1.2rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(192,144,112,0.12),transparent)}
+.hbar{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem}
+h1{font-family:'Cinzel',serif;font-weight:500;font-size:1.6rem;letter-spacing:0.18em;color:var(--bone)}
+.sub{font-size:0.78rem;color:var(--muted);letter-spacing:0.1em;margin-top:0.3rem}
+.home{font-size:0.75rem;letter-spacing:0.15em}
+
+.container{max-width:1400px;margin:0 auto;padding:1.5rem 1rem 3rem}
+
+.section-title{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.3em;color:var(--gold);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin:2.5rem 0 1.2rem}
+.section-title:first-of-type{margin-top:0.5rem}
+
+/* Hero card (protagonist) */
+.hero{display:grid;grid-template-columns:180px 1fr;gap:1.5rem;padding:1.5rem;background:linear-gradient(135deg,rgba(192,144,112,0.08),rgba(176,136,64,0.03));border:2px solid var(--amb);border-radius:6px;margin-bottom:2rem}
+.hero-portrait{width:180px;height:220px;background:linear-gradient(180deg,#3a2a1e 0%,#1a1210 60%,#0a0908 100%);border:1px solid rgba(192,144,112,0.4);border-radius:4px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-portrait::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(192,144,112,0.35),transparent 60%)}
+.hero-portrait-letter{font-family:'Cinzel',serif;font-size:4rem;color:var(--amb);letter-spacing:0.05em;z-index:1;text-shadow:0 0 20px rgba(192,144,112,0.5)}
+.hero-portrait-label{position:absolute;bottom:0.5rem;left:0;right:0;text-align:center;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.25em;color:var(--muted);z-index:1}
+
+.hero-body h2{font-family:'Noto Serif JP',serif;font-size:1.5rem;color:var(--amb);margin-bottom:0.15rem}
+.hero-body .h-orig{font-family:'Cinzel',serif;font-size:0.85rem;color:var(--muted);letter-spacing:0.2em;margin-bottom:0.8rem}
+.hero-body .h-desc{font-size:0.88rem;line-height:1.75;margin-bottom:0.8rem}
+.hero-body .h-quote{font-style:italic;padding:0.5rem 0.8rem;border-left:2px solid var(--amb);background:rgba(192,144,112,0.05);margin:0.6rem 0;font-size:0.82rem;color:var(--bone)}
+
+.h-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.5rem;margin-top:1rem}
+.h-meta dt{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--amb);margin-bottom:0.1rem;text-transform:uppercase}
+.h-meta dd{font-size:0.82rem;color:var(--fg)}
+.h-meta .h-meta-block{padding:0.5rem 0.7rem;background:rgba(0,0,0,0.25);border-radius:3px;border-left:2px solid var(--amb)}
+
+/* Peer grid */
+.peers{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+
+.pcard{padding:1.2rem;background:var(--panel);border:1px solid var(--border);border-radius:4px;border-left-width:4px;display:flex;flex-direction:column}
+.pcard .p-top{display:flex;gap:0.9rem;align-items:flex-start;margin-bottom:0.8rem}
+.p-portrait{width:64px;height:76px;background:linear-gradient(180deg,#2a2420,#0e0c0a);border:1px solid rgba(255,255,255,0.1);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.p-portrait::before{content:"";position:absolute;inset:0;opacity:0.3}
+.p-portrait-letter{font-family:'Cinzel',serif;font-size:1.6rem;z-index:1;letter-spacing:0.04em}
+
+.p-head h3{font-family:'Noto Serif JP',serif;font-size:1.1rem;color:var(--bone);margin-bottom:0.1rem;line-height:1.3}
+.p-head .p-orig{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.18em;color:var(--muted);margin-bottom:0.3rem}
+.p-head .p-role{font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
+
+.p-body{flex:1;font-size:0.82rem;line-height:1.65}
+.p-body dl{display:grid;grid-template-columns:auto 1fr;gap:0.25rem 0.8rem;margin-top:0.5rem}
+.p-body dt{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase;padding-top:0.15rem}
+.p-body dd{font-size:0.8rem;color:var(--fg);opacity:0.92}
+
+.p-hook{margin-top:0.8rem;padding:0.5rem 0.7rem;background:rgba(176,136,64,0.05);border-left:2px solid;border-radius:2px;font-size:0.78rem;line-height:1.55;font-style:italic}
+
+.p-threads{display:flex;gap:0.3rem;margin-top:0.6rem;flex-wrap:wrap}
+.t-badge{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;padding:0.15rem 0.45rem;border-radius:2px;background:rgba(176,136,64,0.1);color:var(--gold)}
+
+.pcard.vex{border-left-color:var(--vex)}
+.pcard.vex .p-portrait-letter{color:var(--vex)}
+.pcard.vex .p-hook{border-left-color:var(--vex)}
+.pcard.kro{border-left-color:var(--kro)}
+.pcard.kro .p-portrait-letter{color:var(--kro)}
+.pcard.kro .p-hook{border-left-color:var(--kro)}
+.pcard.tak{border-left-color:var(--tak)}
+.pcard.tak .p-portrait-letter{color:var(--tak)}
+.pcard.tak .p-hook{border-left-color:var(--tak)}
+.pcard.mer{border-left-color:var(--mer)}
+.pcard.mer .p-portrait-letter{color:var(--mer)}
+.pcard.mer .p-hook{border-left-color:var(--mer)}
+.pcard.com{border-left-color:var(--com)}
+.pcard.com .p-portrait-letter{color:var(--com)}
+.pcard.com .p-hook{border-left-color:var(--com)}
+
+/* Relationship diagram */
+.diagram{padding:1.5rem;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:4px;margin:1.5rem 0}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+
+/* Family placeholder */
+.family{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.8rem}
+.fcard{padding:1rem;background:var(--panel);border:1px dashed var(--border);border-radius:4px;opacity:0.75}
+.fcard h4{font-family:'Noto Serif JP',serif;font-size:0.95rem;color:var(--bone);margin-bottom:0.25rem}
+.fcard .f-role{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--amb);margin-bottom:0.4rem;text-transform:uppercase}
+.fcard p{font-size:0.78rem;line-height:1.6;color:var(--fg);opacity:0.85}
+.fcard .tbd{font-size:0.68rem;color:var(--muted);margin-top:0.4rem;font-style:italic}
+
+.legend{display:flex;gap:0.7rem;flex-wrap:wrap;margin-top:0.8rem;font-size:0.72rem}
+.legend span{display:inline-flex;align-items:center;gap:0.3rem}
+.legend span::before{content:"";width:10px;height:10px;border-radius:2px}
+.leg-amb::before{background:var(--amb)}
+.leg-vex::before{background:var(--vex)}
+.leg-kro::before{background:var(--kro)}
+.leg-tak::before{background:var(--tak)}
+.leg-mer::before{background:var(--mer)}
+.leg-com::before{background:var(--com)}
+
+@media (max-width:640px){
+  h1{font-size:1.2rem}
+  .hero{grid-template-columns:1fr;gap:1rem;padding:1rem}
+  .hero-portrait{width:120px;height:150px;margin:0 auto}
+  .hero-body h2{font-size:1.2rem}
+  .container{padding:1rem}
+  .peers,.family{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div>
+      <h1>EMBERFALL — 主要キャラクター</h1>
+      <div class="sub">主人公と同世代の学院クラス 6人 + 家族の構え</div>
+    </div>
+    <a href="index.html" class="home">← SANDBOX HUB</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ============ PROTAGONIST ============ -->
+  <div class="section-title">◆ Protagonist — 主人公</div>
+
+  <div class="hero">
+    <div class="hero-portrait">
+      <div class="hero-portrait-letter">A</div>
+      <div class="hero-portrait-label">EMBERLYN</div>
+    </div>
+    <div class="hero-body">
+      <h2>Ambre — アンブル</h2>
+      <div class="h-orig">EMBERLYN House · 12 years · 末っ子</div>
+      <div class="h-desc">
+        EMBERLYN家の三番目の子、末っ子。兄ひとり姉ひとりの下。家族は「もう魔法は出ないだろう」と諦めていた末に突然**復元魔法**を発現させ、衰退した名家を一気に話題の中心へ押し上げた。
+        当の本人は事態の大きさに困惑しつつ、持ち前の**諦観まじりの朗らかさ**で流されていく。「担がれたら担がれたまま、まあ、しょうがないな」と茶化して逃げる気質。
+      </div>
+      <div class="h-quote">
+        「ねえ、これって本当に私の才能？ 家の壁が勝手に喋ってるだけじゃなくて？」
+      </div>
+      <dl class="h-meta">
+        <div class="h-meta-block"><dt>Magic</dt><dd>復元魔法（表向き）／実体は対話型「残響読み」</dd></div>
+        <div class="h-meta-block"><dt>Secret</dt><dd>1/8 TAKANI血統 — 本人は最後まで知らない</dd></div>
+        <div class="h-meta-block"><dt>Family</dt><dd>兄1・姉1・両親・TAKANI側に曽祖母存命</dd></div>
+        <div class="h-meta-block"><dt>Sign</dt><dd>発現時、瞳が一瞬だけ石の色に変わる</dd></div>
+        <div class="h-meta-block"><dt>Other Name</dt><dd>曽祖母だけが彼女を『Iya（イヤ）』と呼ぶ</dd></div>
+        <div class="h-meta-block"><dt>Threads</dt><dd>①アイロニー ②政治 ③世界の謎 ⑤アイデンティティ</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ============ PEER GROUP ============ -->
+  <div class="section-title">◆ Peer Circle — 同世代の学院クラス 5人</div>
+
+  <div class="peers">
+
+    <!-- VEXALIA -->
+    <div class="pcard vex">
+      <div class="p-top">
+        <div class="p-portrait"><div class="p-portrait-letter">V</div></div>
+        <div class="p-head">
+          <h3>Valerian — ヴァレリアン</h3>
+          <div class="p-orig">VEXALIA House · 13歳 · 嫡子</div>
+          <div class="p-role">測量学英才 / 魔法なし</div>
+        </div>
+      </div>
+      <div class="p-body">
+        真面目で冷淡、でも不器用な善意が時々漏れる。家の方針通り魔法は使わず、**魔力測量学**の英才として育てられた。公正を至上とする思考の持ち主で、学院内でも一目置かれる。Ambreの復元魔法を「公正に評価しよう」として測定した結果、**異常な測量値**を見つけてしまう。
+        <dl>
+          <dt>Magic</dt><dd>なし。代わりに最年少で測量士予修士試験に合格</dd>
+          <dt>家の圧</dt><dd>将来の上院議員と目されている。父は血統審査強化派</dd>
+          <dt>主人公との関係</dt><dd>最初は冷たい。でも主人公の数値を最も正確に知る立場</dd>
+        </dl>
+        <div class="p-hook">第三者の計測者。主人公の真実に論理的に最も近づく人物。敵でも友でもない灰色の位置。</div>
+        <div class="p-threads"><span class="t-badge">①</span><span class="t-badge">②</span><span class="t-badge">③</span></div>
+      </div>
+    </div>
+
+    <!-- KROSS -->
+    <div class="pcard kro">
+      <div class="p-top">
+        <div class="p-portrait"><div class="p-portrait-letter">E</div></div>
+        <div class="p-head">
+          <h3>Emrik — エムリク</h3>
+          <div class="p-orig">KROSS House · 12歳 · 工房見習い</div>
+          <div class="p-role">変成魔法 / 鍛冶</div>
+        </div>
+      </div>
+      <div class="p-body">
+        体育会系で笑い上手、情に厚い。学問より手仕事。既に家の鍛冶場で手を動かしていて、学院の制服の下はいつも煤の匂いがする。**変成魔法**で金属を薄く叩き延ばすと音楽のように鳴らせる。政治の渦に無頓着で、裏切らない。
+        <dl>
+          <dt>Magic</dt><dd>変成型。鍛冶歌で金属に魔力を編み込む</dd>
+          <dt>家の圧</dt><dd>工房を継ぐ予定。学院は「顔を売りに来る場所」扱い</dd>
+          <dt>主人公との関係</dt><dd>一番素直な親友。魔法のタイプが主人公と対照的（出力 vs 受信）</dd>
+        </dl>
+        <div class="p-hook">明るさの源泉。主人公を「普通の12歳」に戻してくれる存在。</div>
+        <div class="p-threads"><span class="t-badge">④</span></div>
+      </div>
+    </div>
+
+    <!-- TAKANI -->
+    <div class="pcard tak">
+      <div class="p-top">
+        <div class="p-portrait"><div class="p-portrait-letter">I</div></div>
+        <div class="p-head">
+          <h3>Ilo — イロ</h3>
+          <div class="p-orig">TAKANI 自治区 · 12歳 · 留学生</div>
+          <div class="p-role">対話魔法 / 長老の孫</div>
+        </div>
+      </div>
+      <div class="p-body">
+        静かで感受性が強い、言葉少ない。TAKANI自治区から学院都市に派遣された留学生で、学院にいる数少ないTAKANIの若者。石と話す。Ambreの「復元魔法」を見て、**私たちの術と似ている**という違和感を感じる最初の人物。でもその正体にはまだ届かない。
+        <dl>
+          <dt>Magic</dt><dd>対話型。石・水・土の記憶を聴く（主人公と同型）</dd>
+          <dt>家の圧</dt><dd>祖父は自治区の長老。学院との橋渡しを期待されている</dd>
+          <dt>主人公との関係</dt><dd>違和感から始まる関心。潜在的な鏡</dd>
+        </dl>
+        <div class="p-hook">アイロニーの鏡。主人公の真実に論理的に辿り着ける唯一の同世代。でも辿り着いていいのか？</div>
+        <div class="p-threads"><span class="t-badge">①</span><span class="t-badge">③</span></div>
+      </div>
+    </div>
+
+    <!-- Merchant -->
+    <div class="pcard mer">
+      <div class="p-top">
+        <div class="p-portrait"><div class="p-portrait-letter">L</div></div>
+        <div class="p-head">
+          <h3>Lyssa — リサ</h3>
+          <div class="p-orig">魔石取引所 娘 · 12歳 · 新興商人階級</div>
+          <div class="p-role">中程度の魔力 / 情報通</div>
+        </div>
+      </div>
+      <div class="p-body">
+        社交的、計算高い、でも孤独。家は魔石売買で財を成した新興成金。名家の子たちに憧れと反発を同時に持つ。情報収集能力が異様に高く、学院内外の噂は彼女を通ればだいたい分かる。Ambreとは利害で友人になるが、後に本当の友情に変わる。
+        <dl>
+          <dt>Magic</dt><dd>中程度。特殊化していない「器用貧乏」</dd>
+          <dt>家の圧</dt><dd>商家の娘としての縁談。名家との閨閥を狙われている</dd>
+          <dt>主人公との関係</dt><dd>情報源であり、政治の窓口</dd>
+        </dl>
+        <div class="p-hook">商人サイドの視点。政治・経済の動きが主人公に流れ込む経路。</div>
+        <div class="p-threads"><span class="t-badge">②</span></div>
+      </div>
+    </div>
+
+    <!-- Commoner -->
+    <div class="pcard com">
+      <div class="p-top">
+        <div class="p-portrait"><div class="p-portrait-letter">C</div></div>
+        <div class="p-head">
+          <h3>Clai — クレ</h3>
+          <div class="p-orig">外周非接触民 · 12歳 · 非魔法</div>
+          <div class="p-role">地上の錨</div>
+        </div>
+      </div>
+      <div class="p-body">
+        地に足のついた、皮肉屋、でも温かい。街の外環で洗濯屋の娘（or息子）として育った。学費免除制度で学院に入った数少ない庶民。魔法を持たないがゆえに、発現後の主人公を**前と変わらず**接してくれる唯一の存在。
+        <dl>
+          <dt>Magic</dt><dd>なし（外周非接触民）</dd>
+          <dt>家の圧</dt><dd>家計を支えるため学費免除を維持する必要がある</dd>
+          <dt>主人公との関係</dt><dd>発現前からの親友。変わらない視線</dd>
+        </dl>
+        <div class="p-hook">日常の温度。観客の感情移入点。社会階層の多様性。主人公が「家に帰れる場所」の象徴。</div>
+        <div class="p-threads"><span class="t-badge">④</span><span class="t-badge">⑤</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ RELATIONSHIP DIAGRAM ============ -->
+  <div class="section-title">◆ 関係図 — 学院クラス6人の初期配置</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="rgba(176,136,64,0.6)"/>
+        </marker>
+      </defs>
+
+      <!-- Lines from Ambre to each peer -->
+      <line x1="450" y1="250" x2="220" y2="130" stroke="rgba(136,144,160,0.55)" stroke-width="1.5"/>
+      <line x1="450" y1="250" x2="680" y2="130" stroke="rgba(168,136,88,0.65)" stroke-width="2"/>
+      <line x1="450" y1="250" x2="760" y2="290" stroke="rgba(144,160,120,0.65)" stroke-width="2" stroke-dasharray="5 3"/>
+      <line x1="450" y1="250" x2="240" y2="420" stroke="rgba(168,120,160,0.55)" stroke-width="1.4"/>
+      <line x1="450" y1="250" x2="660" y2="420" stroke="rgba(200,191,168,0.75)" stroke-width="2.3"/>
+
+      <!-- Hidden TAKANI resonance (dotted) -->
+      <path d="M 760 300 Q 620 270 460 255" stroke="rgba(144,160,120,0.35)" stroke-width="1.2" fill="none" stroke-dasharray="2 4"/>
+
+      <!-- Labels on lines -->
+      <text x="305" y="195" fill="#c8bfa8" font-size="11" font-family="'Noto Sans JP'" opacity="0.75">観察・計測</text>
+      <text x="555" y="195" fill="#c8bfa8" font-size="11" font-family="'Noto Sans JP'" opacity="0.75">親友</text>
+      <text x="600" y="280" fill="#c8bfa8" font-size="11" font-family="'Noto Sans JP'" opacity="0.75">違和感</text>
+      <text x="290" y="355" fill="#c8bfa8" font-size="11" font-family="'Noto Sans JP'" opacity="0.75">情報源</text>
+      <text x="530" y="360" fill="#c8bfa8" font-size="11" font-family="'Noto Sans JP'" opacity="0.75">変わらぬ目</text>
+
+      <!-- Ambre center -->
+      <g transform="translate(450,250)">
+        <circle r="52" fill="#c09070" opacity="0.88" stroke="#c09070" stroke-width="2"/>
+        <text text-anchor="middle" y="-4" fill="#0a0908" font-size="16" font-family="'Noto Serif JP'" font-weight="700">Ambre</text>
+        <text text-anchor="middle" y="15" fill="#0a0908" font-size="9" font-family="'Cinzel'" letter-spacing="0.15em">EMBERLYN</text>
+      </g>
+
+      <!-- Valerian (top-left) -->
+      <g transform="translate(220,130)">
+        <circle r="38" fill="#0a0908" stroke="#8890a0" stroke-width="2"/>
+        <text text-anchor="middle" y="-2" fill="#8890a0" font-size="13" font-family="'Noto Serif JP'" font-weight="600">Valerian</text>
+        <text text-anchor="middle" y="13" fill="#8890a0" font-size="8" font-family="'Cinzel'" letter-spacing="0.15em">VEXALIA</text>
+      </g>
+
+      <!-- Emrik (top-right) -->
+      <g transform="translate(680,130)">
+        <circle r="38" fill="#0a0908" stroke="#a88858" stroke-width="2"/>
+        <text text-anchor="middle" y="-2" fill="#a88858" font-size="13" font-family="'Noto Serif JP'" font-weight="600">Emrik</text>
+        <text text-anchor="middle" y="13" fill="#a88858" font-size="8" font-family="'Cinzel'" letter-spacing="0.15em">KROSS</text>
+      </g>
+
+      <!-- Ilo (middle-right) -->
+      <g transform="translate(760,290)">
+        <circle r="38" fill="#0a0908" stroke="#90a078" stroke-width="2"/>
+        <text text-anchor="middle" y="-2" fill="#90a078" font-size="13" font-family="'Noto Serif JP'" font-weight="600">Ilo</text>
+        <text text-anchor="middle" y="13" fill="#90a078" font-size="8" font-family="'Cinzel'" letter-spacing="0.15em">TAKANI</text>
+      </g>
+
+      <!-- Lyssa (bottom-left) -->
+      <g transform="translate(240,420)">
+        <circle r="38" fill="#0a0908" stroke="#a878a0" stroke-width="2"/>
+        <text text-anchor="middle" y="-2" fill="#a878a0" font-size="13" font-family="'Noto Serif JP'" font-weight="600">Lyssa</text>
+        <text text-anchor="middle" y="13" fill="#a878a0" font-size="8" font-family="'Cinzel'" letter-spacing="0.15em">MERCHANT</text>
+      </g>
+
+      <!-- Clai (bottom-right) -->
+      <g transform="translate(660,420)">
+        <circle r="38" fill="#0a0908" stroke="#a8a090" stroke-width="2"/>
+        <text text-anchor="middle" y="-2" fill="#c8bfa8" font-size="13" font-family="'Noto Serif JP'" font-weight="600">Clai</text>
+        <text text-anchor="middle" y="13" fill="#a8a090" font-size="8" font-family="'Cinzel'" letter-spacing="0.15em">COMMONER</text>
+      </g>
+
+      <!-- Annotation -->
+      <text x="450" y="480" text-anchor="middle" fill="#7a7266" font-size="10" font-family="'Noto Sans JP'" font-style="italic">
+        点線 = Ambre の隠れた血（1/8 TAKANI）と Ilo の潜在的共鳴
+      </text>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <span class="leg-amb">EMBERLYN / 主人公</span>
+    <span class="leg-vex">VEXALIA / 規制・計測</span>
+    <span class="leg-kro">KROSS / 変成・鍛冶</span>
+    <span class="leg-tak">TAKANI / 対話・石</span>
+    <span class="leg-mer">商人 / 情報・経済</span>
+    <span class="leg-com">庶民 / 日常・錨</span>
+  </div>
+
+  <!-- ============ FAMILY PLACEHOLDERS ============ -->
+  <div class="section-title">◆ EMBERLYN家族 — 構えのみ（詳細未決）</div>
+
+  <div class="family">
+
+    <div class="fcard">
+      <div class="f-role">◇ Father</div>
+      <h4>父 — EMBERLYN当主</h4>
+      <p>家の復活に最も熱心。Ambreの発現を利用して上院での影響力を取り戻そうとする最初の人物。政治の駒として娘を使い始める。</p>
+      <div class="tbd">name TBD / 詳細未決</div>
+    </div>
+
+    <div class="fcard">
+      <div class="f-role">◇ Mother</div>
+      <h4>母 — EMBERLYN夫人</h4>
+      <p>冷静な観察者。家の復活に距離がある。「今さら復活なんてしなくていい」と内心思っている数少ない家族。Ambreの違和感を静かに見守る。</p>
+      <div class="tbd">name TBD / 出自は他家？ / 詳細未決</div>
+    </div>
+
+    <div class="fcard">
+      <div class="f-role">◇ Elder Brother</div>
+      <h4>兄 — 長子</h4>
+      <p>Ambreより5〜7歳上。家の跡取りとして育てられたが発現せず、自信を失っている。妹の発現に対して**嫉妬と愛情の複雑**を抱える。</p>
+      <div class="tbd">name TBD / 詳細未決</div>
+    </div>
+
+    <div class="fcard">
+      <div class="f-role">◇ Elder Sister</div>
+      <h4>姉 — 次子</h4>
+      <p>Ambreより3〜5歳上。発現なし。芸術系に逃げている（詩・絵・音楽）。妹の発現後、ひっそりと家を離れる可能性。</p>
+      <div class="tbd">name TBD / 詳細未決</div>
+    </div>
+
+    <div class="fcard" style="border-color:rgba(144,160,120,0.4);border-style:solid;background:rgba(144,160,120,0.04)">
+      <div class="f-role" style="color:var(--tak)">◆ Great-Grandmother</div>
+      <h4>曽祖母 — TAKANI側、存命</h4>
+      <p>超高齢（推定100歳超）。TAKANI自治区の奥地で静かに暮らしている。Ambreを『Iya』と呼ぶ唯一の人物。**1/8 TAKANI血統の原点**となる不義の当事者。秘密の生きた証人。</p>
+      <div class="tbd">name TBD / 本名とTAKANI名の二重構造 / 詳細未決</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:2rem;padding:1rem 1.2rem;background:rgba(176,136,64,0.05);border-left:3px solid var(--gold);border-radius:3px;font-size:0.85rem;line-height:1.75">
+    <strong style="color:var(--gold);font-family:'Cinzel',serif;letter-spacing:0.1em">NEXT STEPS</strong><br>
+    1. 兄・姉の名前と年齢差を確定<br>
+    2. 両親の関係性とEMBERLYN家の日常風景<br>
+    3. 曽祖母のTAKANI名と住む場所<br>
+    4. 学院の先生・政治サイドの大人・TAKANI長老・異端科学者を追加<br>
+    5. 6人の初対面シーン（第1話発現直前）を絵コンテ化
+  </div>
+
+</div>
+
+</body>
+</html>
