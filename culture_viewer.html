@@ -1,0 +1,5593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMBERFALL 文化 — 建築・服装・民族・人文・生活</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --fg:#c8bfa8; --muted:#7a7266; --bone:#c8bfa8; --gold:#b08840;
+  --panel:rgba(255,255,255,0.04); --border:rgba(176,136,64,0.15);
+  --t-arch:#a88858; --t-cloth:#c09070; --t-peop:#90a078; --t-hum:#a878a0; --t-daily:#b09070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);font-family:'Noto Sans JP',sans-serif;min-height:100vh;line-height:1.65}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{padding:1.5rem 1rem 1rem;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(176,136,64,0.08),transparent)}
+.hbar{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem}
+h1{font-family:'Cinzel',serif;font-weight:500;font-size:1.5rem;letter-spacing:0.18em;color:var(--bone)}
+.sub{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
+.home{font-size:0.75rem;letter-spacing:0.15em}
+
+.tab-bar{max-width:1400px;margin:0 auto;padding:0 0.7rem;display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{padding:0.8rem 1.2rem;background:transparent;border:none;color:var(--muted);font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;flex-shrink:0;white-space:nowrap}
+.tab .tab-ja{font-family:'Noto Sans JP',sans-serif;font-size:0.7rem;letter-spacing:0.05em;margin-left:0.4rem;opacity:0.6}
+.tab:hover{color:var(--bone)}
+.tab.active{color:var(--bone)}
+.tab.active.arch{border-bottom-color:var(--t-arch)}
+.tab.active.cloth{border-bottom-color:var(--t-cloth)}
+.tab.active.peop{border-bottom-color:var(--t-peop)}
+.tab.active.hum{border-bottom-color:var(--t-hum)}
+.tab.active.daily{border-bottom-color:var(--t-daily)}
+
+.controls{max-width:1400px;margin:0 auto;padding:0.8rem 1rem;display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;border-bottom:1px solid var(--border)}
+.search{flex:1;min-width:200px}
+.search input{width:100%;padding:0.5rem 0.75rem;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);font-family:inherit;font-size:0.85rem;border-radius:3px}
+.search input:focus{outline:none;border-color:var(--gold)}
+.pill{padding:0.32rem 0.7rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;cursor:pointer;border-radius:20px;transition:all 0.15s;text-transform:uppercase}
+.pill:hover{color:var(--bone);border-color:var(--gold)}
+.pill.active{color:var(--bg);background:var(--gold);border-color:var(--gold)}
+
+.intro{max-width:1400px;margin:0 auto;padding:1rem 1rem 0.5rem;font-size:0.82rem;line-height:1.75;color:var(--fg);opacity:0.85;font-style:italic}
+
+.stats{max-width:1400px;margin:0 auto;padding:0.5rem 1rem;font-size:0.7rem;color:var(--muted);letter-spacing:0.08em}
+.stats b{color:var(--bone);font-weight:400}
+
+main{max-width:1400px;margin:0 auto;padding:0.7rem 1rem 3rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:0.9rem}
+
+.card{padding:1.1rem;background:var(--panel);border:1px solid var(--border);border-radius:4px;transition:all 0.15s;position:relative;cursor:pointer;border-left-width:3px}
+.card:hover{background:rgba(255,255,255,0.06);border-color:var(--gold)}
+.card.read{opacity:0.55}
+.card.fav{border-color:var(--gold)}
+.card.expanded{background:rgba(255,255,255,0.06);grid-column:1/-1;cursor:default;border-color:var(--gold)}
+.card[data-tab="architecture"]{border-left-color:var(--t-arch)}
+.card[data-tab="clothing"]{border-left-color:var(--t-cloth)}
+.card[data-tab="peoples"]{border-left-color:var(--t-peop)}
+.card[data-tab="humanities"]{border-left-color:var(--t-hum)}
+.card[data-tab="daily"]{border-left-color:var(--t-daily)}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.4rem}
+.c-num{font-family:'Cinzel',serif;color:var(--muted);font-size:0.7rem;letter-spacing:0.15em}
+.c-tag{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;padding:0.15rem 0.45rem;border-radius:2px;color:#0a0908;text-transform:uppercase}
+.c-tag.arch{background:var(--t-arch)}
+.c-tag.cloth{background:var(--t-cloth)}
+.c-tag.peop{background:var(--t-peop)}
+.c-tag.hum{background:var(--t-hum)}
+.c-tag.daily{background:var(--t-daily)}
+
+.c-title{font-family:'Noto Serif JP',serif;font-size:1rem;color:var(--bone);font-weight:500;margin-bottom:0.55rem;line-height:1.35}
+.c-hook{font-size:0.82rem;line-height:1.6;padding:0.5rem 0.65rem;background:rgba(176,136,64,0.06);border-left:2px solid var(--gold);border-radius:2px;font-style:italic}
+.card:not(.expanded) .c-hook{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.c-details{display:none;margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--border);font-size:0.8rem;line-height:1.7}
+.card.expanded .c-details{display:block}
+.c-details dt{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;color:var(--gold);margin-top:0.7rem;text-transform:uppercase}
+.c-details dd{color:var(--fg);opacity:0.9;margin-top:0.2rem}
+
+.c-memo{margin-top:0.9rem}
+.c-memo textarea{width:100%;min-height:55px;background:rgba(0,0,0,0.4);border:1px solid var(--border);color:var(--fg);padding:0.5rem;font-family:inherit;font-size:0.78rem;border-radius:3px;resize:vertical;margin-top:0.3rem}
+.c-memo textarea:focus{outline:none;border-color:var(--gold)}
+.c-actions{display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap}
+.c-btn{padding:0.28rem 0.65rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;cursor:pointer;border-radius:2px}
+.c-btn:hover{color:var(--bone);border-color:var(--gold)}
+.c-btn.on{color:var(--gold);border-color:var(--gold)}
+
+.empty{text-align:center;padding:3rem;color:var(--muted);font-style:italic;grid-column:1/-1}
+
+@media (max-width:640px){
+  h1{font-size:1.1rem}
+  .tab{padding:0.7rem 0.8rem;font-size:0.6rem;letter-spacing:0.12em}
+  .tab .tab-ja{display:none}
+  .grid{grid-template-columns:1fr;gap:0.7rem}
+  main{padding:0.7rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div>
+      <h1>EMBERFALL Culture</h1>
+      <div class="sub">隕の燠火 — 文化設計 158項目（建築/服装/民族/人文/生活）</div>
+    </div>
+    <a href="index.html" class="home">← SANDBOX HUB</a>
+  </div>
+</header>
+
+<div class="tab-bar" id="tabs"></div>
+
+<div class="intro" id="intro"></div>
+
+<div class="controls">
+  <div class="search"><input id="q" placeholder="検索：名称・内容・場所・家系・フック ..." /></div>
+  <button class="pill" data-filter="fav">♥ お気に入り</button>
+  <button class="pill" data-filter="unread">未読</button>
+  <button class="pill" data-filter="all">全タブ横断</button>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<main><div class="grid" id="grid"></div></main>
+
+<script>
+const ENTRIES = [
+ {
+  "num": 1,
+  "title": "旧王冠区 / *Vieux-Couronne d'Emberlyn*",
+  "tab": "architecture",
+  "hook": "儀礼用石畳が、革命の夜に誰が王印を隠したかをAmbreにだけ囁く。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "旧王冠区 / *Vieux-Couronne d'Emberlyn*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 最内環。旧王宮と上院、儀礼広場が集中する中央旧都核。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "琥珀色の大理石、燃えガラス、革命期の補修煉瓦が混在する大街区。建物は高くはないが壁厚があり、広場は過剰に大きい。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "儀礼道路を中心に、上院会館、旧華族クラブ、使節宿、礼装店が放射状に並ぶ。昼は官用、夜は社交の街。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "革命前の境界輪線が舗道の真鍮帯として露出し、夜は微弱に発光する。古い壁石には石碑記憶学的な残響が強い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIAと旧華族が顔を出す最前列だが、実務は執事家令、書記官、礼装職人が支える。EMBERLYNはここでは「残った格式」として扱われる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "儀礼用石畳が、革命の夜に誰が王印を隠したかをAmbreにだけ囁く。"
+   }
+  ]
+ },
+ {
+  "num": 2,
+  "title": "学院街 / *Quartier des Collèges*",
+  "tab": "architecture",
+  "hook": "目立たない回廊一本が、旧エンバーリン館の封鎖書庫へ繋がっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院街 / *Quartier des Collèges*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 東環、旧都核と灰燼文庫学院の中間帯。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "黄灰色の切石校舎、銅屋根、尖塔ではなく角塔を多用する。中庭を囲む四角い校舎群が街区単位で連続する。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "講堂、実験棟、中庭、寮、食堂、壁新聞掲示回廊が一体化しており、子どもたちの生活が街そのものになる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "校門ごとに境界工学の簡易輪が埋め込まれ、授業時だけ共鳴密度を抑える。寮の壁には対話石を混ぜた防音層がある。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "名家子弟、免除生、港から来た留学生が同じ制服を着る数少ない空間。身分差が薄まるが、寮の設備差で再び見えてくる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "目立たない回廊一本が、旧エンバーリン館の封鎖書庫へ繋がっている。"
+   }
+  ]
+ },
+ {
+  "num": 3,
+  "title": "商人環街 / *Anneau des Marchands*",
+  "tab": "architecture",
+  "hook": "相場表を書き換えた一行が、七都市規模の取り付け騒ぎを引き起こす。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "商人環街 / *Anneau des Marchands*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 中環、旧王冠区の外側を囲む商業帯。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "石造四階建ての連棟商館が続き、1階は店舗、2階以上は事務と住居。鉄格子付きの出窓が多く、夜も街灯が消えにくい。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "表通りは貴重品と書籍、裏通りは保険、送金、質屋、代書屋に分かれる。屋根裏はしばしば倉庫か秘密の会合場になる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "KROSS製の安全金庫に小型封印符が貼られ、取引記録用の白石印章が毎晩交換される。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "新興商人と旧家の使用人が日常的に交差し、Lyssaのような新階級の子どもが最も自然に立ち回れる空間である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "相場表を書き換えた一行が、七都市規模の取り付け騒ぎを引き起こす。"
+   }
+  ]
+ },
+ {
+  "num": 4,
+  "title": "魔石取引所界隈 / *Bourse de Pierre*",
+  "tab": "architecture",
+  "hook": "ただの商品と思われた欠片が、生きた記憶を含む対話石だったと判明する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "魔石取引所界隈 / *Bourse de Pierre*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 金融街、商人環街の南端。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "白灰石と黒鉄を組み合わせた堂々たる取引館と、周囲の相場紙印刷所、茶店、保険窓口から成る。窓は高く、内部が見えにくい。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "立会場、品質鑑定室、先物卓、保険査定室、子弟向け見学廊が階ごとに分かれる。見た目以上に教育施設的でもある。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "鑑定台の下に測量石が並び、魔石濃度と残留脈動を即座に表示する。誤差を防ぐため床に境界格子が刻まれている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSSとVEXALIAの実務的同盟点であり、EMBERLYNはここで古物の価値を切り売りし、TAKANIは聖石の商品化に反発する。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの商品と思われた欠片が、生きた記憶を含む対話石だったと判明する。"
+   }
+  ]
+ },
+ {
+  "num": 5,
+  "title": "運河西と河港ノール / *Canal-Ouest et Port Nord*",
+  "tab": "architecture",
+  "hook": "沈んだ荷の中から、台帳に存在しない家名の封印箱が引き上がる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "運河西と河港ノール / *Canal-Ouest et Port Nord*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 西側低地、VERDE運河系とBLANCA河港系が接続する水運帯。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "石積み水門、木橋、鉄鎖、荷揚げ小屋、舟宿が密集し、常に湿っている。水面に煤と灯りが二重に映る。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "昼は物流、夜は酒場と情報交換の場。岸壁ごとに荷の種類が決まり、河底倉へ降りる階段が各所にある。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "水門の要所に境界杭が沈められ、脈動の高い夜だけ水位が自動調整される。古い杭は石声を拾いやすい。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "荷役人、曳舟人、税関吏、密輸人が混ざるため、名家の命令より現場の顔が効く。Claiのような外環出身者にも街への接点が多い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "沈んだ荷の中から、台帳に存在しない家名の封印箱が引き上がる。"
+   }
+  ]
+ },
+ {
+  "num": 6,
+  "title": "外環輪街 / *Anneaux Extérieurs*",
+  "tab": "architecture",
+  "hook": "停電した夜にだけ、誰も気づかないはずの古い境界線が路地に浮かび上がる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "外環輪街 / *Anneaux Extérieurs*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 最外縁。首都の日雇い、洗濯屋、配達屋が集住する輪状街区。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "煉瓦、廃材鉄、布屋根、安い石灰塗りの混成。街路は狭く、家々は同じ高さだが、物干しの層で立体感が出る。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "一階は仕事場兼台所、二階は家族部屋、屋上は共同乾燥場。路地単位で相互扶助が組まれている。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "公的には最低限の街灯石しかないが、住民は拾った微弱石を壁や鍋蓋に仕込んで代用する。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "非接触民と接触薄層市民が最も多く、学院の免除生や使用人の出身地でもある。上流からは見えにくいが人口は最大。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "停電した夜にだけ、誰も気づかないはずの古い境界線が路地に浮かび上がる。"
+   }
+  ]
+ },
+ {
+  "num": 7,
+  "title": "北台地・灰燼館外苑 / *Haute Terrasse Cendre*",
+  "tab": "architecture",
+  "hook": "灰燼館の壁が、家に伝わるはずのない別名をAmbreへ返してくる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "北台地・灰燼館外苑 / *Haute Terrasse Cendre*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 北台地、灰燼文庫学院とEMBERLYN旧館がある高地。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "風の強い高台に、黒い燃えガラス、珊瑚石、白灰壁の古い館群が点在する。街路は広いが人通りは少ない。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "旧家の別邸、療養宿、文庫学院の宿舎、研究者向け貸間が散在する。暮らしと学問と没落が混ざる区域。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "地盤そのものにTAKANI由来の古い刻み線が残り、Ambreのような対話型には異様に反応が良い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "EMBERLYNの残存威信の最後の居場所だが、実際には司書、修復師、家内使用人が日常を支える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "灰燼館の壁が、家に伝わるはずのない別名をAmbreへ返してくる。"
+   }
+  ]
+ },
+ {
+  "num": 8,
+  "title": "SOMBRA結晶劇場街 / *Rue des Théâtres de Sombra*",
+  "tab": "architecture",
+  "hook": "舞台装置に刻まれた古い封印が、上演のたびに少しずつ緩んでいく。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "SOMBRA結晶劇場街 / *Rue des Théâtres de Sombra*"
+   },
+   {
+    "label": "所在地",
+    "value": "`SOMBRA` 中核、夢劇回廊と工芸路地のあいだ。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "深青の磨き石、鏡硝子、薄い鉄骨、布幕。昼は静かなのに、夜は同じ建物が別の寸法に見える。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "劇場、衣装房、古書店、夢薬酒場、批評喫茶が縦横に絡む。表口と裏口で客層が違う。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "夢見結晶が壁材に混ぜられ、音と光の残響が長く残る。境界輪が観客の幻視を外に漏らしにくくしている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "上流の放蕩者から地下詩人まで同じ回廊を使う。名家の匿名遊び場でもあり、庶民の昇格幻想の舞台でもある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "舞台装置に刻まれた古い封印が、上演のたびに少しずつ緩んでいく。"
+   }
+  ]
+ },
+ {
+  "num": 9,
+  "title": "CALDERA中央炉都 / *Herzofen Caldera*",
+  "tab": "architecture",
+  "hook": "工場見学の明るさの奥で、呼吸しないような一定拍の炉が子どもたちを怯えさせる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "CALDERA中央炉都 / *Herzofen Caldera*"
+   },
+   {
+    "label": "所在地",
+    "value": "`CALDERA` 中心核。工廠、鍛炉、労働広場が密集する心臓部。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "赤黒い煉瓦、鉄骨、煤に覆われた高煙突、連続する工場屋根。建物そのものが熱を持っているように見える。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "炉室、歌堂、検品場、労災詰所、労働者食堂が一本の動線で繋がる。効率優先の直線構成が多い。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "鍛冶歌を拾う共鳴板が梁に埋め込まれ、炉温と歌の拍を合わせている。暴走時は床の封圧溝が赤く光る。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSSの誇りと労働者の怒りが同居する街。名家の姓より腕前と持久力が物を言う。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "工場見学の明るさの奥で、呼吸しないような一定拍の炉が子どもたちを怯えさせる。"
+   }
+  ]
+ },
+ {
+  "num": 10,
+  "title": "VERDEリオ農帯都心 / *Rio-Verde*",
+  "tab": "architecture",
+  "hook": "豊穣祭の最中に、一枚の畑が突然「返されるべき土地」だと石が証言する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "VERDEリオ農帯都心 / *Rio-Verde*"
+   },
+   {
+    "label": "所在地",
+    "value": "`VERDE` 市街と農帯の境目。運河、水門、市場、薬草園が一体化した緑都。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "石灰壁、緑瓦、木骨回廊、水路に沿った低層家屋。大都市というより大きな庭園都市に近い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "市場、結晶育成槽、料理学校、療養畑、宿屋が歩いて届く距離にまとまる。街全体が食と治療の実験場である。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "結晶農法用の水路石が土壌魔力を均し、夜は畑に淡緑の脈が走る。古い返礼標石も多い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI系と農家層の存在感が強く、VEXALIA官僚はここではよそ者に見えやすい。食文化が身分差を一時的に薄める街でもある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "豊穣祭の最中に、一枚の畑が突然「返されるべき土地」だと石が証言する。"
+   }
+  ]
+ },
+ {
+  "num": 11,
+  "title": "BLANCA白塔群 / *Blanchetour*",
+  "tab": "architecture",
+  "hook": "配信塔の障害記録に、公式放送より先の未来のような映像が混じる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "BLANCA白塔群 / *Blanchetour*"
+   },
+   {
+    "label": "所在地",
+    "value": "`BLANCA` 中心市街、共振塔と通信庁舎が林立する塔都。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "白漆喰、細い鉄骨、磨き石、アンテナ状の塔冠。上へ伸びる垂直性が他都市より際立つ。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "塔ごとに通信、報道、学寮、技官区、投資室が分かれ、下層は飲食と夜間営業が多い。階層移動がそのまま社会上昇の象徴になる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "白結晶の共振核が塔の内部を走り、遠距離通信と速報配信を支える。雷よけと結界が一体設計になっている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIAは管理したがり、KROSSは設備を納め、移民二世と学生はここで言語と流行を作る。最も若い都市感覚が強い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "配信塔の障害記録に、公式放送より先の未来のような映像が混じる。"
+   }
+  ]
+ },
+ {
+  "num": 12,
+  "title": "NOCTURNE石段街 / *Escaliers Nocturne*",
+  "tab": "architecture",
+  "hook": "石段の一段だけが、毎晩別の場所に繋がる「帰らない階段」になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "NOCTURNE石段街 / *Escaliers Nocturne*"
+   },
+   {
+    "label": "所在地",
+    "value": "`NOCTURNE` 地上市街。深部口へ降りる段状街路の集合。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "黒石、湿った木、鉄柵、斜面に貼り付く低層住宅。上から見ると街が階段そのものである。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "地上商店、案内宿、調査隊詰所、地下市場が縦に積み重なり、家の裏口が別の階層の表口になる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "吸収性の黒石が残響を溜め込みやすく、深部に近づくほど音が沈む。警戒用の封鎖符が段鼻に埋められている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI自治圏との接点であり、KROSS採掘の前線でもあるため、誰が案内人かで安全が変わる。外来者は常に値踏みされる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "石段の一段だけが、毎晩別の場所に繋がる「帰らない階段」になる。"
+   }
+  ]
+ },
+ {
+  "num": 13,
+  "title": "PERDIDA流動街区 / *Quartiers Fluides*",
+  "tab": "architecture",
+  "hook": "地図を描いた翌朝には消える路地が、重要な人間だけを通してしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "PERDIDA流動街区 / *Quartiers Fluides*"
+   },
+   {
+    "label": "所在地",
+    "value": "`PERDIDA` 全域。特に実験環と夜市が重なる中層帯。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "可動壁、軽鉄骨、色の変わる結晶板、仮設足場。整った景観より更新速度が速い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "試作室、短期賃貸寮、夜市、臨時講堂、合法と非合法の境目にある工房が混ざる。通り名が月ごとに変わることもある。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "不安定結晶を使った可変壁があり、区画自体が再配置される。安全のため簡易境界が何層にも張られる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "名家の庇護が弱く、若者、発明家、代書人、逃亡者に開かれている。自由の代わりに足場は脆い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "地図を描いた翌朝には消える路地が、重要な人間だけを通してしまう。"
+   }
+  ]
+ },
+ {
+  "num": 14,
+  "title": "冠燼宮 / *Palais de la Cendre Couronnée*",
+  "tab": "architecture",
+  "hook": "博物館展示の裏で、公開されていない焼失前の間取り図が争奪戦になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "冠燼宮 / *Palais de la Cendre Couronnée*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 旧王冠区中央。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "革命で焼けた旧王宮を半ば保存し半ば博物館化した巨大建築。焼け焦げた梁と新しい白石列柱が同居する。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "王家の儀礼室は残るが、居住機能は縮小され、公開広間、戴冠資料室、観覧回廊、接見間が中心となる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "旧封印室だけは今もKROSS技師が保守し、開放区域と閉鎖区域の境界が厳密に分かれる。王印の保管箱は多重結界式。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "象徴君主制の「薄い権力」を視覚化する建物で、民衆には遠いが観光と儀礼で日常に食い込む。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "博物館展示の裏で、公開されていない焼失前の間取り図が争奪戦になる。"
+   }
+  ]
+ },
+ {
+  "num": 15,
+  "title": "連邦議事堂 / *Palais des Communes Fédérées*",
+  "tab": "architecture",
+  "hook": "ある委員会室の壁だけが、公式議事録より本音をよく覚えている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "連邦議事堂 / *Palais des Communes Fédérées*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 旧王冠区南東端。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "革命後に建て直された白石と鉄の折衷建築。王宮より軽く、だが正面階段だけは威圧的に広い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "下院本会議場、州代表室、委員会回廊、新聞傍聴席、地下連絡路から成る。討論のための建物で、動線が複雑である。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "傍聴席と議場の間に感情増幅を防ぐ境界布が張られ、机には測量遮断木が使われる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIA流の制度建築だが、労組や自治体代表も出入りするため、革命後の多極均衡を最も物理的に見せる場である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ある委員会室の壁だけが、公式議事録より本音をよく覚えている。"
+   }
+  ]
+ },
+ {
+  "num": 16,
+  "title": "王立統治大学本館 / *Aula Regia Racine*",
+  "tab": "architecture",
+  "hook": "試験用の基準石が、正しいはずの測量値を拒み始める。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "王立統治大学本館 / *Aula Regia Racine*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 学院街北区。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "琥珀色の石材と規則正しい窓列で構成された巨大校舎。華美ではないが、比例の正しさで威圧する。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "大講堂、法学階段教室、測量標本庫、試験棟、儀礼庭から成る。官僚養成のための空間構成が徹底している。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "測量演習室の床に基準線が刻まれ、血統測量石の校正用台座が中央に固定されている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIA嫡子の聖域に見えるが、奨学生も少数紛れ込む。だからこそ教室の一席一席が政治的である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "試験用の基準石が、正しいはずの測量値を拒み始める。"
+   }
+  ]
+ },
+ {
+  "num": 17,
+  "title": "七環学寮 / *Maison des Sept Anneaux*",
+  "tab": "architecture",
+  "hook": "反則品検査で見つかった小石が、誰かの血統秘密より危険な記憶媒体だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "七環学寮 / *Maison des Sept Anneaux*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 学院街外縁、複数校の共同寮区。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "七つの中庭を持つ長大な連結寮。灰石壁と木廊下で、建て増しの痕が露骨に見える。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "州別棟、共同食堂、洗濯場、談話室、監督室が中庭ごとに分かれる。友人関係はしばしば中庭単位で生まれる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "夜間門限用の簡易結界、密談防止用の共鳴鈍化壁、持込魔石を隠すための死角が絶妙に共存している。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "州色裏地と家具の質で差が出るが、同室になれば身分差が一時的に溶ける。Ambre世代の物語には最適の混成空間。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "反則品検査で見つかった小石が、誰かの血統秘密より危険な記憶媒体だった。"
+   }
+  ]
+ },
+ {
+  "num": 18,
+  "title": "魔石取引所本館 / *Bourse Lithique Centrale*",
+  "tab": "architecture",
+  "hook": "取引停止になった棚番号が、実はAmbreの家とTAKANI祖地の両方を指していた。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "魔石取引所本館 / *Bourse Lithique Centrale*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 魔石取引所界隈の中心。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "白石の正面柱廊と、背面の鉄格子倉庫から成る。前面は宮殿風、裏面は完全に産業施設である。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "品質検査場、相場掲示ホール、商談階、保管庫、教育見学廊、夜間警備回廊が層ごとに分かれる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "地下保管庫は温湿度より脈動密度を優先して管理され、棚ごとに封印等級が違う。誤配防止に記号護符が多用される。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "新興商人が名家へ割り込むための入口であり、政治より価格が人を動かす世界を象徴する。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "取引停止になった棚番号が、実はAmbreの家とTAKANI祖地の両方を指していた。"
+   }
+  ]
+ },
+ {
+  "num": 19,
+  "title": "工房歌堂 / *Liedhalle der Schmiede*",
+  "tab": "architecture",
+  "hook": "亡くなった鍛冶工の声が、事故碑壁の裏から新しい拍を返してくる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "工房歌堂 / *Liedhalle der Schmiede*"
+   },
+   {
+    "label": "所在地",
+    "value": "`CALDERA` 工房谷、中央炉都の脇。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "黒鉄骨と耐火煉瓦でできた長堂。煙抜き塔が教会の鐘楼のように見える。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "鍛造床、合唱立台、道具棚、休憩卓、事故碑壁が一直線に並ぶ。仕事と儀礼が分離していない。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "梁に埋め込まれた共鳴板が歌の周波数を素材へ返す。鎮魂歌と鍛造歌では床の発色まで違う。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSS文化の誇りだが、歌を知る労働者が主役で、名家当主は来ても客に過ぎない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "亡くなった鍛冶工の声が、事故碑壁の裏から新しい拍を返してくる。"
+   }
+  ]
+ },
+ {
+  "num": 20,
+  "title": "TAKANI聖石堂 / *Maison des Pierres Écoutantes*",
+  "tab": "architecture",
+  "hook": "Ambreが偶然触れた石が、堂の人々だけが知る古い親族名で彼女を呼ぶ。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI聖石堂 / *Maison des Pierres Écoutantes*"
+   },
+   {
+    "label": "所在地",
+    "value": "TAKANI山地と`NOCTURNE`外縁の聖地集落。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "切り出さない片岩と黒曜石を積み、木を最小限しか使わない低い堂。外観は控えめだが周囲の静けさが異様に深い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "中央に触れてはならない石、周囲に座の石、返礼棚、子どもの聴石場、外来者の待ち石がある。正面奥行きより円環配置が重視される。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "対話石そのものが壁を兼ね、言葉より沈黙に反応する。VEXALIA式の測量器は誤差が大きく、公式記録に残りにくい。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI共同体の中心で、地位は席順より誰がどれだけ「聴けるか」で決まる。外来者は所有の感覚を持ち込むと拒まれやすい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreが偶然触れた石が、堂の人々だけが知る古い親族名で彼女を呼ぶ。"
+   }
+  ]
+ },
+ {
+  "num": 21,
+  "title": "旧貴族邸宅 / *Hôtel de Vieille Maison*",
+  "tab": "architecture",
+  "hook": "貸し出された一室が、家が隠してきた婚姻記録の隠し場所だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "旧貴族邸宅 / *Hôtel de Vieille Maison*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 貴族区、`SOMBRA` 古物街、`CALDERA` 上館街に点在。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "表は石造、裏は木骨と増築だらけ。革命前の優雅な外観に、革命後の節約改修が露骨に重なる。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "応接間は残るが、舞踏室が貸間や文庫へ転用されていることが多い。表玄関より使用人動線の方が生きている。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "家守りの輪線だけは維持されるが、維持費不足で半壊が多い。古い家印が家具の裏に残っている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "旧華族の薄い影響力そのもの。格式はあるが現金がないため、使用人と借家人が共存することも珍しくない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "貸し出された一室が、家が隠してきた婚姻記録の隠し場所だった。"
+   }
+  ]
+ },
+ {
+  "num": 22,
+  "title": "白塔コーヒーハウス / *Café des Tours Blanches*",
+  "tab": "architecture",
+  "hook": "何気ない雑談から、新党、恋、内部告発が同時に生まれる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "白塔コーヒーハウス / *Café des Tours Blanches*"
+   },
+   {
+    "label": "所在地",
+    "value": "`BLANCA` 白塔群下層、`RACINE` 学院前にも支店がある。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "白壁、細脚の椅子、真鍮照明、黒板式の相場表。塔影に合わせて縦長の窓が多い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "1階は短時間客、2階は読書卓、屋上は夜間観測や密談に使われる。新聞と菓子が常に置かれる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "明かり石は長居しても目が疲れにくい低共鳴型。壁内の対話石は入れておらず、あえて「記録されにくい」安心感を売る店も多い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "学生、記者、技官、名家の放蕩子が一時的に同じ高さの椅子へ座る。若い政治の発酵槽である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "何気ない雑談から、新党、恋、内部告発が同時に生まれる。"
+   }
+  ]
+ },
+ {
+  "num": 23,
+  "title": "地下新聞サロン / *Salon Sous-Presse*",
+  "tab": "architecture",
+  "hook": "盗まれた一葉が、Ambreの家の成り立ちと血統制度の盲点を同時に暴く。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "地下新聞サロン / *Salon Sous-Presse*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 地下印刷街、`SOMBRA` 倉庫街、`PERDIDA` 夜会部屋。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "表向きは貸倉庫や古書室で、内部は低い天井、再利用木材、印刷の油と珈琲の匂いが混じる。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "印刷台、朗読卓、告発箱、即席舞台、逃走用裏階段を持つ。討論と流通が同じ部屋で起こる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "追跡防止用の微弱遮断布、印刷版を隠す小封印、盗聴避けの白ノイズ結晶が使われる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "家名を脱いだ人間が集まりやすく、四家の落伍者と庶民が同卓につく数少ない場所である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "盗まれた一葉が、Ambreの家の成り立ちと血統制度の盲点を同時に暴く。"
+   }
+  ]
+ },
+ {
+  "num": 24,
+  "title": "下町長屋 / *Cour des Locataires*",
+  "tab": "architecture",
+  "hook": "何でもない共同井戸が、実は古い境界杭の真上にある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "下町長屋 / *Cour des Locataires*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 外環、`CALDERA` 南煤区、`BLANCA` 第三環。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "細長い二階建てを中庭で繋ぐ簡素建築。煉瓦、木、布屋根、再利用金具が主材料。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "家族一室、共用井戸、共同竈、屋上物干し、持ち回りの小さな祈り棚を持つ。生活音が常に混ざる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "正式設備は乏しいが、拾い石を使った小さな灯りや自作護符が生活の随所にある。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "非接触民、洗濯屋、配達屋、免除生家庭の典型住居。上流は入ってこないが、都市はここなしに回らない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "何でもない共同井戸が、実は古い境界杭の真上にある。"
+   }
+  ]
+ },
+ {
+  "num": 25,
+  "title": "星肉大聖堂 / *Cathédrale de la Chair Stellaire*",
+  "tab": "architecture",
+  "hook": "慈善台帳の片隅から、隠された出生記録が見つかる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "星肉大聖堂 / *Cathédrale de la Chair Stellaire*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 大聖堂区。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "高い尖塔より重い壁を重視した石造大聖堂。革新派礼拝堂と古い納骨室が左右非対称に増築されている。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "礼拝堂、施療室、告解廊、孤児食堂、説教壇、王家用小礼拝室を備える。宗教施設であると同時に福祉拠点でもある。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "祝福石灯が常時点り、施療室だけは霊性医療向けに共鳴を和らげる設計になっている。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIAに近いが、現場では外環の困窮者や事故遺族の方が多い。説教と施しの温度差が大きい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "慈善台帳の片隅から、隠された出生記録が見つかる。"
+   }
+  ]
+ },
+ {
+  "num": 26,
+  "title": "河岸中央市場 / *Grand Marché des Quais*",
+  "tab": "architecture",
+  "hook": "ただの食材と思われた荷が、禁区由来の記憶種だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "河岸中央市場 / *Grand Marché des Quais*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 河岸、`VERDE` からの食料と`BLANCA` からの海産が交わる地点。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "大木骨の屋根、市場石床、吊り看板、布日除け。豪奢ではないが、規模は連邦屈指である。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "朝市、常設屋台、鑑定台、子ども使い走りの待機場、失せ物掲示板までが一体化する。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "生鮮用の冷却石、腐敗遅延布、偽装防止の印章台があり、庶民が最も日常的に魔法建築へ触れる場でもある。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "名家専用店もあるが、市場の主役は荷役人、農家、料理屋、子ども配達である。階層が混ざるが値段が序列を作る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの食材と思われた荷が、禁区由来の記憶種だった。"
+   }
+  ]
+ },
+ {
+  "num": 27,
+  "title": "名家の書斎 / *Cabinet de Maison*",
+  "tab": "architecture",
+  "hook": "一枚の書簡ではなく、机の木目そのものが改竄前の文面を覚えている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "名家の書斎 / *Cabinet de Maison*"
+   },
+   {
+    "label": "所在地",
+    "value": "各名家邸宅内部。特に`RACINE` 貴族区と北台地に多い。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "重い木机、低い書棚、家印入りの窓金具、地味だが高価な絨毯。外からの威圧より内向きの密度が高い。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "手紙机、鍵付き文書箱、家系図壁、贈答棚、呼鈴紐から成る。政治より「家をどう見せるか」を決める部屋である。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "一見ただの紙部屋だが、封印神秘学の小技が最も多い。手紙箱と床板に簡易封印がよく仕込まれる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "当主だけの部屋に見えて、実際には家令と司書が情報の流れを制御する。家の真実はしばしば主より使用人が知る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一枚の書簡ではなく、机の木目そのものが改竄前の文面を覚えている。"
+   }
+  ]
+ },
+ {
+  "num": 28,
+  "title": "測量事務所 / *Bureau d'Arpentage*",
+  "tab": "architecture",
+  "hook": "ほんの一段ずれた棚番号が、誰かの人生を合法にも違法にもする。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "測量事務所 / *Bureau d'Arpentage*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 法廷丘周辺、各都市庁舎の隣接区画。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "白壁、格子窓、異様に整った棚、金属器具の冷たい光が目立つ。無駄のない官僚建築。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "受付、測定室、校正室、台帳庫、遺漏保留棚に分かれる。人間の秘密が書類の流れへ変換される場所である。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "KROSS製測量石とVEXALIA式基準線が常設され、血統記録と土地記録が同じ室内で扱われる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "権力が石と紙へ変わる場所。名家子弟も庶民もここでは番号を与えられる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ほんの一段ずれた棚番号が、誰かの人生を合法にも違法にもする。"
+   }
+  ]
+ },
+ {
+  "num": 29,
+  "title": "鍛冶工房の火床室 / *Feuerbett*",
+  "tab": "architecture",
+  "hook": "失われた拍子ひとつが、古い武具ではなく人間の記憶を鍛え直してしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛冶工房の火床室 / *Feuerbett*"
+   },
+   {
+    "label": "所在地",
+    "value": "`CALDERA`、`NOCTURNE`、`PERDIDA` の工房内部。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "炉、鉄床、吊り鎚、焼け跡だらけの石床で構成される。外観以上に音の反射で空間を感じる部屋。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "火床、叩き場、冷却槽、歌立ち位置、見習い待機帯が厳格に分かれる。身体の動線が設計そのものである。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "歌と熱の同調が必要で、火床縁に刻まれた拍線が作業の基準になる。封圧溝が事故時に熱を逃がす。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSS文化の核心。家名ではなく誰がどの拍で叩けるかが序列になる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "失われた拍子ひとつが、古い武具ではなく人間の記憶を鍛え直してしまう。"
+   }
+  ]
+ },
+ {
+  "num": 30,
+  "title": "学院寮の一室 / *Chambre de Pensionnaire*",
+  "tab": "architecture",
+  "hook": "机の下に貼られた小さな護符が、前の住人の逃亡計画を示している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院寮の一室 / *Chambre de Pensionnaire*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 七環学寮、`BLANCA` 学寮群、灰燼文庫学院宿舎。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "狭いが天井は高く、木机、鉄寝台、箱、洗面台が標準。州ごとの裏地色が部屋の唯一の鮮やかさになる。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "勉強机、私物箱、壁の覚え書き、ベッド下の秘密、窓辺の植物で個性が出る。子どもの自立が初めて建築化される空間である。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "公認灯石と私物魔石のせめぎ合いが日常。壁の一部は防音だが、完全には秘密を守ってくれない。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "身分差が最も露骨に縮む場所。だからこそ匂い、持ち物、靴で階層が再び見えてしまう。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "机の下に貼られた小さな護符が、前の住人の逃亡計画を示している。"
+   }
+  ]
+ },
+ {
+  "num": 31,
+  "title": "灰燼館の冬庭 / *Jardin d'Hiver Cendré*",
+  "tab": "architecture",
+  "hook": "冬庭の割れた床が、家伝ではない別系統の儀礼線を浮かび上がらせる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "灰燼館の冬庭 / *Jardin d'Hiver Cendré*"
+   },
+   {
+    "label": "所在地",
+    "value": "`RACINE` 北台地、EMBERLYN旧宅内部。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "黒い燃えガラス天井、珊瑚混じりの白石床、枯れかけの温室植物。荒廃と上品さが同時に残る。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "家族の半私室、古いお茶席、密談所、子どもの逃げ場として機能する。使われなくなった回廊が複数ある。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "地盤に残る対話痕が強く、外へ石を持ち出すと残響が弱まる。Ambreの復元が最も起こりやすいのもこの種の空間である。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "EMBERLYNの衰退を最も美しく見せる部屋。家族はここで昔を語るが、使用人はここを「石が喋る場所」と恐れる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "冬庭の割れた床が、家伝ではない別系統の儀礼線を浮かび上がらせる。"
+   }
+  ]
+ },
+ {
+  "num": 32,
+  "title": "TAKANI族長の石の間 / *Salle des Pierres Anciennes*",
+  "tab": "architecture",
+  "hook": "Ambreが正しい席へ座ってしまった瞬間、部屋全体が彼女を昔の名で迎える。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI族長の石の間 / *Salle des Pierres Anciennes*"
+   },
+   {
+    "label": "所在地",
+    "value": "TAKANI山地奥、旧聖石帯の共同体会所。"
+   },
+   {
+    "label": "外観・規模・素材",
+    "value": "外からは単純な石堂だが、内部は段差の少ない円室で、壁も椅子も同じ石から続いているように見える。"
+   },
+   {
+    "label": "内部構造・用途",
+    "value": "中央の記憶石、周縁の相談石、子ども席、外来者席、返礼棚のみ。会議も裁きも教育もこの一室で行われる。"
+   },
+   {
+    "label": "魔法要素",
+    "value": "誰がどこに座るかで聞こえる石の記憶が変わる。文字記録より座の配置が重要で、測量では把握しきれない。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANIでは爵位より座の責任が重いことを示す空間。VEXALIA官僚には「何もない部屋」に見えやすい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreが正しい席へ座ってしまった瞬間、部屋全体が彼女を昔の名で迎える。"
+   }
+  ]
+ },
+ {
+  "num": 1,
+  "title": "上院礼装 / *Habit du Sénat*",
+  "tab": "clothing",
+  "hook": "古い家紋の刺繍位置ひとつで、失われた血縁か偽装かが露見する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "上院礼装 / *Habit du Sénat*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "長い燕尾上着に灰金の襟章、深緑または黒の厚地毛織、銀糸の控えめな縁取り。肩は堅く、動きは小さく見える。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "上院議員、旧華族代表、儀礼陪席者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "開院式、王家行幸、弔意決議、予算審議初日。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "革命後も爵位が完全には死んでいないことを示す服。格式を保ちつつ権力の細さを隠す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "古い家紋の刺繍位置ひとつで、失われた血縁か偽装かが露見する。"
+   }
+  ]
+ },
+ {
+  "num": 2,
+  "title": "官吏詰襟制服 / *Uniforme Cadastre*",
+  "tab": "clothing",
+  "hook": "子どもが恐れる制服の襟裏に、こっそり血統隠しの協力印が縫い込まれている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "官吏詰襟制服 / *Uniforme Cadastre*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "立ち襟の濃紺外套、灰白の肩線、金属留具、硬い毛布地。筆記具を差す細い胸ポケットが多い。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "書記官、検量査定吏、若手行政官、現場巡察補。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常勤務、学校検診、現地査察、議会補助。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "VEXALIAの「測る・記録する・許可する」を身体化した制服。感情より整列を優先する。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "子どもが恐れる制服の襟裏に、こっそり血統隠しの協力印が縫い込まれている。"
+   }
+  ]
+ },
+ {
+  "num": 3,
+  "title": "学院初等制服 / *Uniforme Première Année*",
+  "tab": "clothing",
+  "hook": "ほどけた裏地から、本来隠していた州や里の出自が見えてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院初等制服 / *Uniforme Première Année*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "膝丈の外套と短いベスト、州色の細い裏地、動きやすい半ズボンまたはプリーツ裙。布は丈夫だが安価。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "10歳前後から13歳前後の初等生。名家子弟から免除生まで共通。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "授業日、校外見学、発表会、対外儀礼の練習。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "子どもを家から切り離して「学院の子」にする最初の衣服。だが州色裏地が出自を完全には消さない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ほどけた裏地から、本来隠していた州や里の出自が見えてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 4,
+  "title": "学院上級制服 / *Uniforme Senior*",
+  "tab": "clothing",
+  "hook": "袖帯の色から、表向きの優等生が地下誌と繋がっていると分かる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院上級制服 / *Uniforme Senior*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "長丈外套、濃い色の襟章、課外会所属を示す袖帯。初等より布が重く、線が直線的になる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "上級生、寮監補、学会見習い、弁論会代表。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "試験週、学院討論、留学生歓迎、卒業前行事。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "子どもから制度の末端へ移る通過点。学年より所属サークルで序列が見える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "袖帯の色から、表向きの優等生が地下誌と繋がっていると分かる。"
+   }
+  ]
+ },
+ {
+  "num": 5,
+  "title": "州色裏地外套 / *Manteau à Doublure d'État*",
+  "tab": "clothing",
+  "hook": "裏地だけを入れ替えた外套が、誰かの履歴を偽装している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "州色裏地外套 / *Manteau à Doublure d'État*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "表は灰または黒で統一、裏地だけがVEXALIAの琥珀、KROSSの赤銅、TAKANIの深緑、EMBERLYN圏の灰青を持つ。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "学院生、若手官吏、州代表団の随員。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "移動日、視察、雨天、他州訪問。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "連邦の一体感と州帰属を同時に見せる服。完全な同化ではなく、折り返したときにだけ色が出るのが重要。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "裏地だけを入れ替えた外套が、誰かの履歴を偽装している。"
+   }
+  ]
+ },
+ {
+  "num": 6,
+  "title": "王家礼装 / *Grand Habit de la Couronne*",
+  "tab": "clothing",
+  "hook": "王印の刺繍糸に使われた石粉が、隠された行幸先を示してしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "王家礼装 / *Grand Habit de la Couronne*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "白金と薄琥珀を基調にした長衣、細い王印刺繍、象徴的な短い肩マント。重すぎず、象徴君主らしく軽い。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "王家、近侍、儀礼楽士の一部。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "行幸、接触記念日の式典、議会開会式、弔問。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "「実権の薄い荘重さ」を演じる服。豪奢さよりも中立の演出を狙う。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "王印の刺繍糸に使われた石粉が、隠された行幸先を示してしまう。"
+   }
+  ]
+ },
+ {
+  "num": 7,
+  "title": "裁判官黒襞服 / *Robe des Arrêts*",
+  "tab": "clothing",
+  "hook": "喪服に近い布地が、裁く側も何かを悼んでいることを匂わせる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "裁判官黒襞服 / *Robe des Arrêts*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "黒一色の長衣に、胸元だけ灰銀の襞を垂らす。布は厚いが音を立てにくい。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "裁判官、魔法法務官、上級審理書記。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "公判、再審審理、血統紛争、封印事故の責任聴聞。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "個人を消して法を立てるための服。だが黒一色ゆえ、誰がどこで裁くかは声と態度でしか見えない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "喪服に近い布地が、裁く側も何かを悼んでいることを匂わせる。"
+   }
+  ]
+ },
+ {
+  "num": 8,
+  "title": "測量士の白手袋 / *Gants Blancs d'Arpenteur*",
+  "tab": "clothing",
+  "hook": "手袋の汚れ方から、測量士が公式以外の誰かを測ったと分かる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "測量士の白手袋 / *Gants Blancs d'Arpenteur*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "指先が薄く、手首側が二重になった白革手袋。掌だけに微細な基準線が縫われる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "公認測量士、訓練生、上級査定吏。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "血統審査、地籍測量、危険物鑑定、公的証言採取。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "直接触れたくないものへ合法的に触れる資格の象徴。白は清潔さでなく「誤差を残さない」の意味である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "手袋の汚れ方から、測量士が公式以外の誰かを測ったと分かる。"
+   }
+  ]
+ },
+ {
+  "num": 9,
+  "title": "EMBERLYN灰燼正装 / *Habit Cendre-Emberlyn*",
+  "tab": "clothing",
+  "hook": "留具の意匠がTAKANI系の古い返礼文様と一致してしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "EMBERLYN灰燼正装 / *Habit Cendre-Emberlyn*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "灰青の長衣に燃えガラス色の細い差し色、古い珊瑚留具。豪華というより、静かな残光のような服。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "EMBERLYN家の成員、親族、家臣筋。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "家祭、文庫寄贈式、婚礼、公式訪問。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "没落を隠さず、美しさへ変換する衣装。復元への執着と「まだ終わっていない」という矜持を示す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "留具の意匠がTAKANI系の古い返礼文様と一致してしまう。"
+   }
+  ]
+ },
+ {
+  "num": 10,
+  "title": "TAKANI返礼衣 / *Nare Iya*",
+  "tab": "clothing",
+  "hook": "ほどけた織端に、家の秘密を知る者だけが読める返礼履歴が残っている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI返礼衣 / *Nare Iya*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "深緑、岩灰、土色を基調にした巻き布と肩掛け。織りは粗く見えるが、触れると層が多い。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "TAKANI共同体の老若男女。子どもは短く、長老は層を重ねる。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常、聴石、返礼、旅立ち、和解。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "所有より関係と返礼を示す服。高価さではなく、誰から誰へ渡った布かが価値になる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ほどけた織端に、家の秘密を知る者だけが読める返礼履歴が残っている。"
+   }
+  ]
+ },
+ {
+  "num": 11,
+  "title": "KROSS工房装 / *Werkschurz Kross*",
+  "tab": "clothing",
+  "hook": "前掛けの焼け跡が、禁じられた素材を扱った証拠になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "KROSS工房装 / *Werkschurz Kross*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "赤銅色の耐火前掛け、短い袖、重い革帯、膝当て。煤で黒くなる前提の設計。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "鍛冶見習い、変成術師、工房歌監、工場労働者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "鍛造、夜間保守、炉輪競技、工房祭礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "身分より腕前の世界を示す労働服。火と歌に耐えることが大人の条件とされる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "前掛けの焼け跡が、禁じられた素材を扱った証拠になる。"
+   }
+  ]
+ },
+ {
+  "num": 12,
+  "title": "VEXALIA貴族装 / *Habit Vexal*",
+  "tab": "clothing",
+  "hook": "一見完璧な折り目の裏に、秘密婚姻の印だけが隠されている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "VEXALIA貴族装 / *Habit Vexal*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "琥珀、象牙、墨の三色を基調にした直線的な服。レースや装飾は少なく、裁断の正確さで身分を見せる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "VEXALIA系貴族、司法家系、行政名門。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "社交、聴聞会、婚約披露、官学卒業式。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "非魔法の秩序が魔法より上位であるという思想の衣服化。派手さを「下品」と見なす。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一見完璧な折り目の裏に、秘密婚姻の印だけが隠されている。"
+   }
+  ]
+ },
+ {
+  "num": 13,
+  "title": "学生の普段外套 / *Mantelet d'Étude*",
+  "tab": "clothing",
+  "hook": "外套の匂いだけで、誰がどの街区と交わっていたか分かる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学生の普段外套 / *Mantelet d'Étude*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "制服より柔らかい灰布の短外套で、州色の紐や靴紐で個性を出す。袖口に課題の汚れが残りやすい。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "学院生、予修士、図書館通いの子ども。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "放課後、図書館、コーヒーハウス、遠足。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "制服と私服の境界。大人が管理しきれない余白がここにある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "外套の匂いだけで、誰がどの街区と交わっていたか分かる。"
+   }
+  ]
+ },
+ {
+  "num": 14,
+  "title": "煤布作業着 / *Schwarzschurz*",
+  "tab": "clothing",
+  "hook": "補修布の色の違いから、裏稼業の仲間内符牒が読める。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "煤布作業着 / *Schwarzschurz*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "黒や茶の粗布、肘当て、補修痕だらけのズボン、頑丈な靴。見た目以上に洗いやすい。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "港湾荷役人、配管保守手、工場雑工、河運曳舟人。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常労働、夜勤、荷下ろし、補修時。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "庶民の実務能力の制服。名もないが、都市を本当に動かしている服である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "補修布の色の違いから、裏稼業の仲間内符牒が読める。"
+   }
+  ]
+ },
+ {
+  "num": 15,
+  "title": "商人の街着 / *Habit des Quais*",
+  "tab": "clothing",
+  "hook": "見慣れない布合わせが、他大陸との密輸ルートを示す。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "商人の街着 / *Habit des Quais*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "上質だが動きやすい外套、細い帳簿帯、指先の出る手袋。港系は明るく、首都系は渋い色を好む。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "商館子弟、相場師、代書屋、巡回売り。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "商談、学校見学、市場回り、旅先の信用作り。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "貴族ほど硬くなく、庶民ほど擦り切れてもいない中間層の自信。成り上がりの夢が最も可視になる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "見慣れない布合わせが、他大陸との密輸ルートを示す。"
+   }
+  ]
+ },
+ {
+  "num": 16,
+  "title": "庶民の仕事着 / *Toile Commune*",
+  "tab": "clothing",
+  "hook": "地味な衣の縫い目から、失踪者逃がし路の連絡符が見つかる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "庶民の仕事着 / *Toile Commune*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "生成り、灰、褐色の洗いやすい布。前で結ぶだけの簡素な上衣に、地域で形が変わる靴を合わせる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "洗濯屋、パン屋、配達子、外環の家族層。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "毎日。祝日以外ではほぼこの服で暮らす。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "目立たないこと自体が防御になる社会の服。仕事と生活が分かれていない階層を示す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "地味な衣の縫い目から、失踪者逃がし路の連絡符が見つかる。"
+   }
+  ]
+ },
+ {
+  "num": 17,
+  "title": "農民の野良着 / *Rio-Habit*",
+  "tab": "clothing",
+  "hook": "ただの泥染みと思われた模様が、返礼祭の参加者しか知らない土地印だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "農民の野良着 / *Rio-Habit*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "緑褐色の薄手布、泥よけ前垂れ、広い帽子、季節で重ねる肩布。濡れても重くなりにくい。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "VERDE農民、段畑民、結晶農家、薬草摘み。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "播種、収穫、返礼祭、水門見回り。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "土地と身体の距離が近い暮らしの服。都市からは素朴に見えるが、機能は高度である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの泥染みと思われた模様が、返礼祭の参加者しか知らない土地印だった。"
+   }
+  ]
+ },
+ {
+  "num": 18,
+  "title": "血統ブローチ / *Broche de Lignée*",
+  "tab": "clothing",
+  "hook": "交換されたブローチ一個で、誰が誰になりすましていたかが逆算される。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "血統ブローチ / *Broche de Lignée*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "小ぶりの金属台に家色の石粉や琺瑯を埋める。旧家ほど意匠は簡素で、新興層ほど大きい。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "名家子弟、婚約者、上院関係者、格付けを欲する新興層。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "社交、婚礼、学校行事、認定式。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "帰属と誇示の装身具。だが強すぎる血統表示は、差別と監視の呼び水にもなる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "交換されたブローチ一個で、誰が誰になりすましていたかが逆算される。"
+   }
+  ]
+ },
+ {
+  "num": 19,
+  "title": "鍛冶の鈴 / *Clochette de Forge*",
+  "tab": "clothing",
+  "hook": "音色だけで、失われた工房系譜の子だと見抜かれる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛冶の鈴 / *Clochette de Forge*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "小さな鉄鈴や黄銅鈴を革紐で腰か胸に下げる。見習い用は鈍い音、親方用は澄んだ音を持つ。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "KROSS系見習い、工房子弟、労働祭の参加者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "工房入り初日、鍛冶の夜、祭礼、旅先の自己紹介。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "腕前と所属工房を音で知らせる印。名乗りより先に響きで覚えられる文化である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "音色だけで、失われた工房系譜の子だと見抜かれる。"
+   }
+  ]
+ },
+ {
+  "num": 20,
+  "title": "TAKANI式髪結い / *Tresse Iya*",
+  "tab": "clothing",
+  "hook": "Ambreが無意識に同じ編み方をしていたと気づく人物がいる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI式髪結い / *Tresse Iya*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "頭皮に沿う細編みと、返礼相手ごとに増減する結び紐。石灰や染草で淡い色をつけることもある。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "TAKANI系の子どもから長老まで。年齢と役目で編み方が変わる。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常、和解、祭礼、喪の期間。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "見た目以上に情報量が多く、親族、旅歴、返礼関係を示す。書類ではなく髪が履歴書になる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreが無意識に同じ編み方をしていたと気づく人物がいる。"
+   }
+  ]
+ },
+ {
+  "num": 21,
+  "title": "家紋の縫い取り / *Broderie d'Armes*",
+  "tab": "clothing",
+  "hook": "裾裏の縫い取りが、公開系譜と異なる母系を示してしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "家紋の縫い取り / *Broderie d'Armes*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "袖裏、襟裏、裾裏など目立たない位置に入る繍章。表には出さず、近しい者だけが見せ合うものも多い。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "旧華族、家臣筋、婚姻交渉中の親族。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "弔意、婚礼、養子入り、秘密会合。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "公的権力の衰えた家ほど、こうした半隠しの印で自分たちを保つ。格式の地下水脈。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "裾裏の縫い取りが、公開系譜と異なる母系を示してしまう。"
+   }
+  ]
+ },
+ {
+  "num": 22,
+  "title": "爵位リボン / *Ruban de Pairie*",
+  "tab": "clothing",
+  "hook": "リボンの結び替えひとつで、政治的忠誠の行き先が変わったと読まれる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "爵位リボン / *Ruban de Pairie*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "小さな幅の色帯を肩、胸、帽に結ぶ。色数と留め方で旧爵位差を示す。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "旧華族、高位の婚礼列席者、儀礼官。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "王家行幸、議会開会、社交季、追悼式。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "実権の薄い身分を、それでも完全には捨てきれない社会の習慣。若者からは古臭いが便利な暗号扱いもされる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "リボンの結び替えひとつで、政治的忠誠の行き先が変わったと読まれる。"
+   }
+  ]
+ },
+ {
+  "num": 23,
+  "title": "密かな私服 / *Cache-Monde*",
+  "tab": "clothing",
+  "hook": "ただの私服改造と思われた縫い替えが、地下サロンの会員符だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "密かな私服 / *Cache-Monde*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "制服の形を保ちつつ丈や色味だけを少し崩した服。古布の継ぎ、港の布、舞台の端切れが混ざる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "学院生、寮生、同人サークル、夜劇回廊に通う若者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "放課後、学院祭、朗読の夜、秘密の外出。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "子どもが最初に行う自己編集。校則ぎりぎりの差異が、友人関係と反抗心を作る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの私服改造と思われた縫い替えが、地下サロンの会員符だった。"
+   }
+  ]
+ },
+ {
+  "num": 24,
+  "title": "反骨アクセサリー / *Signe Gris*",
+  "tab": "clothing",
+  "hook": "同じ印をつけていたことで、見知らぬ者同士が逃亡を助け合う。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "反骨アクセサリー / *Signe Gris*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "釘、廃材金具、煤硝子片、無地の革紐などで作る小装身具。美しさより「意味のずれ」を狙う。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "外環の若者、Forge-Beat系、港区二世、学院占拠サークル。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "街歩き、ライブ、デモ、夜市。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "家名より街区と趣味で連帯する新世代のしるし。高価でないから広がる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "同じ印をつけていたことで、見知らぬ者同士が逃亡を助け合う。"
+   }
+  ]
+ },
+ {
+  "num": 25,
+  "title": "禁制魔石ブローチ / *Broche Interdite*",
+  "tab": "clothing",
+  "hook": "可愛い贈り物のはずが、持ち主の測量値を意図的に歪める。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "禁制魔石ブローチ / *Broche Interdite*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "微弱石を装飾品へ偽装した小ブローチ。色は綺麗だが、近くで見ると測量遮断処理の跡がある。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "若い接触市民、身分詐称者、違法サロンの常連。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "夜会、地下サロン、試験前、恋文受け渡し。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "危険を承知で自分の力や秘密を持ち歩きたい欲望の象徴。大人が最も嫌う若者装身具。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "可愛い贈り物のはずが、持ち主の測量値を意図的に歪める。"
+   }
+  ]
+ },
+ {
+  "num": 26,
+  "title": "発現祝の衣 / *Habit d'Apparition*",
+  "tab": "clothing",
+  "hook": "祝衣の色の選び方で、家がその発現を誇るのか隠すのかが分かる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "発現祝の衣 / *Habit d'Apparition*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "白や淡色を基調にし、家や地域ごとに一色だけ強い差し色を入れる。子どもの可動域を邪魔しない軽さが重視される。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "初発現した子ども、その近親者、招かれた証人。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "初発現の直後数日から一週間以内。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "祝福と監視が同時に始まる服。家族は喜び、制度は記録し、子どもはまだ意味を飲み込めない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "祝衣の色の選び方で、家がその発現を誇るのか隠すのかが分かる。"
+   }
+  ]
+ },
+ {
+  "num": 27,
+  "title": "接触記念日の装い / *Tenue du Jour du Choc*",
+  "tab": "clothing",
+  "hook": "ある州だけが別の色を選び、政治的対立が視覚化される。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "接触記念日の装い / *Tenue du Jour du Choc*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "灰、白、琥珀を基調に、小さな欠片意匠や黒帯を加える。都市ごとに明るさが違う。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "ほぼ全民。王家から市場の子どもまで参加する。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "毎年の接触記念日。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "慶事か弔いかで必ず意見が割れる服。同じ日を着方で解釈し直す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ある州だけが別の色を選び、政治的対立が視覚化される。"
+   }
+  ]
+ },
+ {
+  "num": 28,
+  "title": "喪服 / *Drap Noir*",
+  "tab": "clothing",
+  "hook": "喪色の違いが、死者が誰の共同体に属していたかを争点にする。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "喪服 / *Drap Noir*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "連邦標準は黒だが、TAKANIでは岩灰、港では深藍を混ぜる。飾りはほぼなく、布の質感だけが残る。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "遺族、同業組合、事故追悼者、共同体の近しい者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "葬送、失踪届、事故遺族院の集会、再審の日。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "国家が黒で統一したがる一方、共同体は死者観の違いを色に残す。ここにも統一と抵抗がある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "喪色の違いが、死者が誰の共同体に属していたかを争点にする。"
+   }
+  ]
+ },
+ {
+  "num": 29,
+  "title": "婚礼衣装 / *Voile des Deux Maisons*",
+  "tab": "clothing",
+  "hook": "一見華やかな重ね色が、実は政治的な吸収婚の証明になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "婚礼衣装 / *Voile des Deux Maisons*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "二家の色を合わせる長衣や重ね布、港では多言語刺繍帯、農村では畦花冠を加える。男女差はあるが、近年は混成型も増える。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "婚姻当事者、媒酌家、近親者。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "婚礼、婚約披露、養子縁組の式。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "婚姻が感情だけでなく血統・財産・地域帰属の再配線であることを露骨に見せる衣装。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一見華やかな重ね色が、実は政治的な吸収婚の証明になる。"
+   }
+  ]
+ },
+ {
+  "num": 30,
+  "title": "北方遊牧民の毛皮衣 / *Rhen-Kyr Felt*",
+  "tab": "clothing",
+  "hook": "切り替え布の配置が、どの草原路を通ってきたかを示す地図になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "北方遊牧民の毛皮衣 / *Rhen-Kyr Felt*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "毛皮裏打ちの外套、厚いフェルト帽、馬具と一体化する腰帯。色は自然の褐色と深青が中心。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "北方遊牧民、草原交易者、冬市の馬方。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "放牧、移動、冬市、長距離警戒。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "所有より移動を優先する生活の服。固定建築の文明に対する別の誇りがある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "切り替え布の配置が、どの草原路を通ってきたかを示す地図になる。"
+   }
+  ]
+ },
+ {
+  "num": 31,
+  "title": "南方群島民の珊瑚布 / *Corail Tissé*",
+  "tab": "clothing",
+  "hook": "明るい布の結び方が、密かな航路情報を暗号化している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "南方群島民の珊瑚布 / *Corail Tissé*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "軽い綿布や樹皮布に、珊瑚色、白、海青の染めを重ねる。腰布、肩布、頭布の組み合わせで着る。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "群島民、港区二世、航路歌手、料理屋一家。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常、港祭り、潮律ポップの舞台、婚礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "海と風の時間を持ち込む衣服。BLANCAの若者文化を変えた「動く色」である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "明るい布の結び方が、密かな航路情報を暗号化している。"
+   }
+  ]
+ },
+ {
+  "num": 32,
+  "title": "砂漠交易民の風除け衣 / *Sable-Mante*",
+  "tab": "clothing",
+  "hook": "裾の隠し袋から、中央が知らない隕石欠片の物語が出てくる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "砂漠交易民の風除け衣 / *Sable-Mante*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "砂色の長布、顔を覆う薄布、乾燥に強い革帯、隠し袋の多い裾。遠目には同じだが細部で氏族が分かる。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "砂塩回廊の交易民、泉守、物語り手、護衛。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "交易、長旅、泉の会合、砂嵐。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "風と視線から身を守る服。匿名であることが生存技術になる文化を示す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "裾の隠し袋から、中央が知らない隕石欠片の物語が出てくる。"
+   }
+  ]
+ },
+ {
+  "num": 33,
+  "title": "移民二世の混成服 / *Habit Port-Mix*",
+  "tab": "clothing",
+  "hook": "ただの雑多な服に見えて、出自を守るための精密な擬装でもある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "移民二世の混成服 / *Habit Port-Mix*"
+   },
+   {
+    "label": "形状・素材・色",
+    "value": "港布、学院外套、古着礼装、群島紐、外環靴を平気で混ぜる。色合わせは多言語スラングと同じく速い。"
+   },
+   {
+    "label": "着用する人／身分",
+    "value": "BLANCA港区の若者、学院免除生、配達員、配信者、料理屋の子。"
+   },
+   {
+    "label": "場面・時期",
+    "value": "日常、夜市、ライブ、学院祭、抗議集会。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "「どこに属するか」より「何を混ぜるか」を優先する新世代の服。中央の美意識から最も自由で、最も警戒される。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの雑多な服に見えて、出自を守るための精密な擬装でもある。"
+   }
+  ]
+ },
+ {
+  "num": 1,
+  "title": "ヴェクサリア系 / *Vexaliens*",
+  "tab": "peoples",
+  "hook": "公正を信じる若いVEXALIA系ほど、制度が自分の友人を切り捨てる瞬間に揺らぐ。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "ヴェクサリア系 / *Vexaliens*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "固有の体格は幅広いが、淡色の装い、硬い姿勢、非魔法ゆえの「変化の少ない顔つき」が文化的に共有される。瞳や肌に発現徴候が出にくい。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "記録、法、席順、正確な言葉づかいを重んじる。家系より制度へ忠誠を寄せると教育されるが、実際には名門ネットワークが濃い。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "連邦中枢では最大の政治層だが、人口全体では少数。`RACINE`、行政都市、法学教育圏に集中する。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "自らは基本的に魔法を持たず、測量と規制の側へ立つ。だからこそ魔法に触れる技術と法の独占に執着する。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家のうちVEXALIA自身。革命後は王権を薄めつつ制度の中枢を維持し、他家を「管理対象」として扱う癖を残した。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "官僚、司法、議会、上級教育で強いが、若年層ではBLANCA的な混成文化に押され気味である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "公正を信じる若いVEXALIA系ほど、制度が自分の友人を切り捨てる瞬間に揺らぐ。"
+   }
+  ]
+ },
+ {
+  "num": 2,
+  "title": "クロス系 / *Krossleute*",
+  "tab": "peoples",
+  "hook": "工房の子が誇りとして習った技が、聖地破壊にも繋がっていたと知る。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "クロス系 / *Krossleute*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "熱と重労働に適応した厚い手、火傷跡、煤による肌の濃淡が印象になりやすい。接触者では金属臭に敏感な者が多い。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "作る、刻む、守るを美徳とし、技能が血統より先に人を測る。歌と道具の継承を重んじる。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "工業地帯では大きな多数派。`CALDERA`、`NOCTURNE`、`PERDIDA` の工房圏に広い。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "変成術と境界術に強く、出力型が多い。読めないが書ける力として自分たちの魔法を理解する。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家のうちKROSS自身。TAKANI聖地と鉱区を重ねてしまった歴史が、現代でも最大の摩擦を生む。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "経済的影響力は大きいが、文化的にはまだ粗野と見下されることがある。若者文化では逆に格好良さへ転化されつつある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "工房の子が誇りとして習った技が、聖地破壊にも繋がっていたと知る。"
+   }
+  ]
+ },
+ {
+  "num": 3,
+  "title": "タカニ系 / *Takani Iya*",
+  "tab": "peoples",
+  "hook": "自分たちの術が「存在しない」と法で扱われること自体が、最大の対立になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "タカニ系 / *Takani Iya*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "決定的な共通形質はないが、接触者には瞳が石色へ寄る瞬間、静止時の聴覚集中、髪結いの履歴性が見られる。老世代ほど動きが静かである。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "聴く、覚える、保つを中心に据え、土地を所有物ではなく関係相手とみなす。口承、返礼、座の責任が重い。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "山地と保全圏に多いが、都市流出と混血化で可視人口は減少。`NOCTURNE`、山地学寮、`VERDE` 上流にも散る。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "対話術の担い手。石、水、壁、道の記憶を受け取る受信型が多い。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家のうちTAKANI自身。最初期接触者の一群でありながら、後世に最も土地を奪われた。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "共同体承認は強いが、国家法廷では弱い。若い世代は学院と自治の両方に足場を置き始めている。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "自分たちの術が「存在しない」と法で扱われること自体が、最大の対立になる。"
+   }
+  ]
+ },
+ {
+  "num": 4,
+  "title": "エンバーリン系 / *Emberlyns*",
+  "tab": "peoples",
+  "hook": "復活の希望と、他者の技術を自家の遺産と誤認した罪が同時に露わになる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "エンバーリン系 / *Emberlyns*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "血統的には混成が進んでおり共通点は薄いが、燃えガラス色の装飾、静かな所作、疲れた上品さが「それらしさ」として演出される。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "読む、復元する、繋ぐを美徳とし、断片から家を保つ。没落の自意識と古典趣味が強い。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "旧家筋としては少数。`RACINE` 北台地、灰燼文庫学院周辺に集中し、地方にはほとんど残らない。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "表向きは復元術の家だが、現代では発現者が少ない。失われた名門として神話化されやすい。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家のうちEMBERLYN自身。VEXALIAに社交的に取り込まれ、KROSSには時代遅れと見られ、TAKANIとは奪った記憶を抱える。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "上院や学院理事、文化事業ではまだ名が効くが、実力の空洞化が進む。だから一人の子の発現で一気に注目が集まる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "復活の希望と、他者の技術を自家の遺産と誤認した罪が同時に露わになる。"
+   }
+  ]
+ },
+ {
+  "num": 5,
+  "title": "セケ混住民 / *Cequae*",
+  "tab": "peoples",
+  "hook": "誰の側にも立たない通訳者が、最も危険な真実だけは知っている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "セケ混住民 / *Cequae*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "体格や顔立ちは多様で、特定の血統徴候より生活痕が前に出る。山地靴と工房手袋を同時に使う者も多い。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "通婚、共同労働、二重言語運用が当たり前で、「どちらか一方である」ことを拒む村が多い。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "TAKANI山地とKROSS鉱区の境界村に小規模だが広く分布する。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "対話型と変成型が同居し、弱い混成発現も珍しくない。制度側には把握しづらい層である。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "TAKANIとKROSS双方の圧力下で生き、VEXALIAには不安定人口として嫌われ、EMBERLYN研究者に記録されてきた。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "未来の共存モデルとして若者からは魅力的に見える一方、保守派には「境界を曖昧にする者」と見なされる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "誰の側にも立たない通訳者が、最も危険な真実だけは知っている。"
+   }
+  ]
+ },
+ {
+  "num": 6,
+  "title": "硝子岸クレオール / *Créoles du Verre*",
+  "tab": "peoples",
+  "hook": "大人にはただの崩れた言葉にしか見えない会話が、最速の政治暗号になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "硝子岸クレオール / *Créoles du Verre*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "港の混血層であり、外見の共通性は薄い。発音、髪型、布合わせの速さが共同体認識の中心になる。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "複数言語を混ぜ、料理、音楽、商いを一気に変える。家名より港区の通り名が帰属になる。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "`BLANCA` 硝子岸と共振塔港周辺に集中し、`SOMBRA` 夜市にも流入する。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "特定系統に偏らず、弱い発現を生活の器用さへ変える者が多い。魔法なしでも情報回路で強い。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家のいずれにも完全には属さず、BLANCA文化の再編で各家の言葉づかいを崩した。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "若者文化の最先端だが、公的台帳では雑に一括りにされやすい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "大人にはただの崩れた言葉にしか見えない会話が、最速の政治暗号になる。"
+   }
+  ]
+ },
+ {
+  "num": 7,
+  "title": "深部還り子 / *Enfants du Retour*",
+  "tab": "peoples",
+  "hook": "故郷に戻った子が、故郷の言葉を話せないこと自体が政治になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "深部還り子 / *Enfants du Retour*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "都市育ちの所作と祖地の髪結いや足運びが混在し、どこか身体が二つの速度を持つ。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "青年期に都市から祖地へ戻り、言葉や儀礼を学び直す。帰還そのものが教育制度になっている。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "TAKANI系・混血系の若い世代に限られる。`NOCTURNE`、山地学寮、保全圏に多い。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "潜在的な対話感受性を再活性化する例があり、都市では弱かった力が戻ることがある。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "TAKANIの未来を担う一方、VEXALIAの台帳制度からは居住履歴の不安定層とみなされる。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "共同体再生の希望だが、都市の友人関係や学歴との断絶に苦しみやすい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "故郷に戻った子が、故郷の言葉を話せないこと自体が政治になる。"
+   }
+  ]
+ },
+ {
+  "num": 8,
+  "title": "亡命語族 / *Parleurs Exils*",
+  "tab": "peoples",
+  "hook": "失われた資料を読めるのが、社会的に最も信用されていない人だけである。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "亡命語族 / *Parleurs Exils*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "出自が多様で、身体的共通性はほぼない。通訳時の表情制御や身振りの多さが特徴として語られる。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "言語を生存技術として扱い、翻訳、代書、書類読み、古文書解読で生計を立てる。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "`BLANCA` 港区、`RACINE` 外環、群島中継港に点在する少数集団。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "魔法の有無より、言葉のずれを扱う技術で価値を持つ。封印文や古い家記の解読者がここから出る。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "どの家の公用語にも完全には染まらず、必要な時だけ各家に雇われる。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "周縁だが、翻訳文化の中心。危機時には彼らがいないと外交も学術も止まる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "失われた資料を読めるのが、社会的に最も信用されていない人だけである。"
+   }
+  ]
+ },
+ {
+  "num": 9,
+  "title": "北方遊牧民 / *Rhen-Kyr*",
+  "tab": "peoples",
+  "hook": "科学者より先に異変を歌で言い当てたせいで、逆に迷信扱いされる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "北方遊牧民 / *Rhen-Kyr*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "風と寒冷に強い装備により、大きく見える。顔立ちより姿勢と騎乗の安定感で見分けられることが多い。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "星読み、馬群、移動歌を中心に暮らし、固定境界より季節圏を信じる。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "北方草原に広く散在する。都市常住人口は少ない。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "強い家系魔法は少ないが、脈動変化を歌で早く察知する。測れない予兆知を持つ。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "VEXALIAは登録を嫌がり、TAKANIとは自然観で共鳴し、商館とは皮革と馬で結ぶ。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "辺境扱いされるが、戦時・災害時には機動力の高さで一気に重要になる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "科学者より先に異変を歌で言い当てたせいで、逆に迷信扱いされる。"
+   }
+  ]
+ },
+ {
+  "num": 10,
+  "title": "南方群島民 / *Insulaires Corail*",
+  "tab": "peoples",
+  "hook": "一曲の流行歌が、政治スローガンの語彙まで変えてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "南方群島民 / *Insulaires Corail*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "日差しに合わせた浅色布と軽い足運びが印象になる。身体特徴より海に合わせた動きの柔らかさが語られる。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "潮、航路歌、香草、家舟、親族首長制を軸にする。都市へ持ち込んだ音楽と料理の影響が大きい。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "南方群島に多数、`BLANCA` 港へ継続流入する。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "魔法体系は薄いが、潮と共鳴する歌や海難回避の経験知が強い。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "商館と航運会社に搾られつつ、BLANCAの若者文化と言語感覚を塗り替えた。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "港区文化の中心勢力の一つ。中央からは異国趣味化されやすいが、本人たちは自分たちを周縁と思っていない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一曲の流行歌が、政治スローガンの語彙まで変えてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 11,
+  "title": "砂塩回廊民 / *Caravaniers Sable-Sel*",
+  "tab": "peoples",
+  "hook": "彼らが語る「別の落下」の伝承が、連邦の起源神話を揺らす。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "砂塩回廊民 / *Caravaniers Sable-Sel*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "砂と風を防ぐ布で外見差が見えにくい。目元だけで人を読む文化が強い。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "泉の中立、通商の実利、物語による知識伝達を重んじる。境界線より回廊を信じる民。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "南内陸の砂塩回廊とオアシス宿に広く分布する。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "強い発現より、隕石片伝承や危険地帯回避の知が価値を持つ。秘石流通にも関与しやすい。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "どの家にも属さず、中継者として必要とされるが信頼はされすぎない。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "情報と物資の外部回路。中央が閉じても彼らの交易線はしぶとく残る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "彼らが語る「別の落下」の伝承が、連邦の起源神話を揺らす。"
+   }
+  ]
+ },
+ {
+  "num": 12,
+  "title": "氷鏡橇民 / *Spiegel Sledders*",
+  "tab": "peoples",
+  "hook": "彼らだけが知る凍結路が、救援路にも密輸路にもなる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "氷鏡橇民 / *Spiegel Sledders*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "厚い防寒具で体格差が見えにくい。冬季のまばたきの少なさや静かな発声が印象になる。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "氷路、冬市、冷晶素材、橇共同体を基盤に暮らす。時間感覚が季節で一変する。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "北岸氷帯の少数民。冬季にだけ都市へ大きく姿を見せる。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "冷晶と低温環境の扱いに長けるが、体系的魔法家系は少ない。素材知が重要。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "4家とは距離が遠いが、希少素材で冬だけ交渉力が急上昇する。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "辺境少数派だが、脈動暴走に強い素材供給者として研究者から注目される。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "彼らだけが知る凍結路が、救援路にも密輸路にもなる。"
+   }
+  ]
+ },
+ {
+  "num": 13,
+  "title": "下枝タカニ / *Takani de la Basse-Racine*",
+  "tab": "peoples",
+  "hook": "ただの民間祭祀と思われた樹皮文様が、失われた境界網の最後の地図だった。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "下枝タカニ / *Takani de la Basse-Racine*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "古い記録では、森と湿地に適応した軽い足運びと、樹皮染めを多用する姿が記される。現存者はほとんどいない。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "石より樹皮文様と湿地の記憶を重んじたTAKANI系下位集団。文字化されない樹皮記録を持った。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "接触期と開発初期に壊滅的減少。現在は数家族の末裔がいるかもしれない程度。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "対話術の中でも植物と湿地へ特化していたとされるが、実践者はほぼ途絶した。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "TAKANI本流にも周縁視され、VEXALIA記録からは早くに消され、KROSS湿地開発の犠牲になった。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "学術上は「消えた民」に近いが、民俗魔術学と保全派の間で再発見の機運がある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの民間祭祀と思われた樹皮文様が、失われた境界網の最後の地図だった。"
+   }
+  ]
+ },
+ {
+  "num": 14,
+  "title": "河礫民 / *Galets du Fleuve*",
+  "tab": "peoples",
+  "hook": "子どもの遊び歌が、絶滅したはずの民族名を無邪気に保存している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "河礫民 / *Galets du Fleuve*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "旧記録にのみ残る小民族で、川沿い生活に適した浅舟文化を持っていたとされる。現在は混血化し外見的識別は不能。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "川石の並べ方で家史を記録した接触期の小民族。洪水と落下後の汚染で共同体が崩壊した。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "ほぼ絶滅。河口舟上民や外環の一部に断片的な風習だけが残る。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "石配置による微弱な記憶固定を行っていたらしいが、学問化されなかった。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "VEXALIA台帳に取り込まれず、KROSSの河川改修で痕跡を失い、EMBERLYN文庫に断片記録だけが残る。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "正式な民族名としては忘れられている。けれど河岸の遊びや葬送習慣に影が残る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "子どもの遊び歌が、絶滅したはずの民族名を無邪気に保存している。"
+   }
+  ]
+ },
+ {
+  "num": 15,
+  "title": "石食獣 / *Lithovores*",
+  "tab": "peoples",
+  "hook": "逃げた一頭を追うだけのはずが、誰も知らない石脈へ導かれる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "石食獣 / *Lithovores*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "山羊と猪の中間のような体躯で、歯が異様に硬く、腹部に磨かれた石嚢を持つ。角や背骨に結晶粉が付着しやすい。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "群れで聖石帯の周縁を巡り、普通の草より石粉や鉱塩を好む。人に馴れにくい。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "TAKANI山地、`NOCTURNE` 外縁、隕落盆地周辺に散発的に生息。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "接触後に生じた変異種と考えられ、石脈の異常を先に察する。胃石はKROSSが素材化したがる。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "TAKANIは聖地の番とみなし、KROSSは有用資源とみなし、VEXALIAは危険生物として管理したがる。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "保全派と工業派の対立対象。学術的にも経済的にも注目されすぎている。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "逃げた一頭を追うだけのはずが、誰も知らない石脈へ導かれる。"
+   }
+  ]
+ },
+ {
+  "num": 16,
+  "title": "響羽鳥 / *Ailes-Résonance*",
+  "tab": "peoples",
+  "hook": "鳥が覚えていた声だけが、失われた証言の唯一の残りになる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "響羽鳥 / *Ailes-Résonance*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "小型の黒青色の鳥で、胸骨が鈴のように薄く共鳴する。翼裏に銀粉めいた反射を持つ個体がいる。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "群れで都市と山地を往復し、人の言葉より石や塔の残響を真似る。港では吉兆、法廷では不吉とされる。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "`BLANCA` の塔群、`SOMBRA` 劇場屋根、`NOCTURNE` 石段街に多い。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "接触以後に模倣対象が変化し、単なる鳴き真似ではなく「場の声」を返す鳥になった。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "EMBERLYNは残響の象徴として好み、VEXALIAは法廷周辺から追い払いたがる。TAKANIは聞き手として敬う。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "子どもには人気だが、重要記録のある場所では嫌われる。学者も芸術家も追いかける。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "鳥が覚えていた声だけが、失われた証言の唯一の残りになる。"
+   }
+  ]
+ },
+ {
+  "num": 17,
+  "title": "記憶樹 / *Arbres-Mémoire*",
+  "tab": "peoples",
+  "hook": "倒木の切り口から、石でも紙でもない第三の記録媒体が見つかる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "記憶樹 / *Arbres-Mémoire*"
+   },
+   {
+    "label": "身体的特徴",
+    "value": "樹皮に石灰線のような縞を持ち、切断面が年輪ではなく淡い層文様を示す。古木ほど根が石へ絡む。"
+   },
+   {
+    "label": "文化的特徴",
+    "value": "人ではないが、TAKANIや森縁採集民は「老いた聞き手」として扱う。港では木材、山地では祖霊の座に近い。"
+   },
+   {
+    "label": "人口規模・分布",
+    "value": "VERDE森縁、湿地、旧聖石帯の周縁に点在し、伐採で減少している。"
+   },
+   {
+    "label": "魔法との関係",
+    "value": "接触に耐え、石と植物の中間のような記憶保持性を得たと考えられる。対話型は断片的な声を拾える。"
+   },
+   {
+    "label": "4家との歴史的関係",
+    "value": "TAKANIは保護し、KROSSは加工価値を測り、VEXALIAは林政対象として数え、EMBERLYNは古記録と照合する。"
+   },
+   {
+    "label": "現代での位置",
+    "value": "魔力生態学の重要対象であり、絶滅寸前の保護種。政治より先に子どもたちがその希少さを知っていることも多い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "倒木の切り口から、石でも紙でもない第三の記録媒体が見つかる。"
+   }
+  ]
+ },
+ {
+  "num": 1,
+  "title": "接触意味論 / *Herméneutique du Choc*",
+  "tab": "humanities",
+  "hook": "同じ「接触」をどう定義するかで、Ambreの力が奇跡にも違法にもなる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "接触意味論 / *Herméneutique du Choc*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実在原典では『コルプス・ヘルメティクム』、Ficino『De Vita』が頻繁に引用される。架空の代表はサンドリーヌ・レーヴェン（架空）『落下は何を割ったか』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "隕石落下を罰、贈与、偶然、世界の再配線のどれとして読むかを争う。抽象的だが、政治と信仰へ直結する。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIAは秩序の起点として、TAKANIは関係の始点として、EMBERLYNは断裂の起点として読み替える。学院では入門講義の定番。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "革命前は王権正統化の学で、革命後は多極均衡を正当化する議論へ転じた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "同じ「接触」をどう定義するかで、Ambreの力が奇跡にも違法にもなる。"
+   }
+  ]
+ },
+ {
+  "num": 2,
+  "title": "魔法倫理主義 / *Éthique Arcane*",
+  "tab": "humanities",
+  "hook": "善意の調査が、子どもの秘密を暴く暴力に変わる瞬間がある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "魔法倫理主義 / *Éthique Arcane*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実在原典ではWeyer『De Praestigiis Daemonum』、Evans-Pritchard『Azande』。架空の代表はヤルダ・セラン（架空）『同意なき測量』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "同意、未成年保護、共同体知の扱い、家系差別を中心に議論する。論文だけでなく審査意見書の文体が重視される。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "研究者に嫌われがちだが、庶民とTAKANI側からは必要悪として支持される。VEXALIAは制度へ組み込みたがる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "研究の足かせ扱いから、禁書閲覧や人体研究の前提条件へと地位を上げた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "善意の調査が、子どもの秘密を暴く暴力に変わる瞬間がある。"
+   }
+  ]
+ },
+ {
+  "num": 3,
+  "title": "非魔法人文主義 / *Humanisme Non-Arcane*",
+  "tab": "humanities",
+  "hook": "Claiのような非魔法の友人の視線が、物語の倫理の基準になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "非魔法人文主義 / *Humanisme Non-Arcane*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は判事アロイス・ヴェルム（架空）『魔法がなくても人は人である』、評論家クレール・ノール（架空）『外環の尊厳』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "魔法の有無で人間価値を決めるな、という政治的人文主義。法廷弁論、新聞論説、街頭パンフで広がる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "非接触民や庶民層の言葉だが、VEXALIAの一部改革派も使う。魔法家系からは自己正当化の道具と疑われることもある。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "革命後の市民権論から、近年は学校差別・就業差別批判へ重心が移った。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Claiのような非魔法の友人の視線が、物語の倫理の基準になる。"
+   }
+  ]
+ },
+ {
+  "num": 4,
+  "title": "TAKANI生命観 / *Voie d'Iya*",
+  "tab": "humanities",
+  "hook": "「家の壁が喋っているだけ」というAmbreの冗談が、思想としては正確すぎる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI生命観 / *Voie d'Iya*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実在原典ではMooney『Cherokees』の「石が『同意』したかどうかを判断する」という記述、David Malo『Hawaiian Antiquities』が参照される。架空の語り手は老女ウナ・イヤ（架空）『石は先に聞いている』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "生物と無機物の境界を硬く切らず、石・水・道・壁も関係相手とみなす。命題より譬え、論証より返礼談が重んじられる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI共同体の思想核であり、EMBERLYN復元主義の深部にも影を落とす。VEXALIAは宗教か民俗へ押し込みたがる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "口承共同体内部の知から、魔力生態学や民俗魔術学を通じて学院へ部分流入してきた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "「家の壁が喋っているだけ」というAmbreの冗談が、思想としては正確すぎる。"
+   }
+  ]
+ },
+ {
+  "num": 5,
+  "title": "EMBERLYN復元主義 / *Restauratio Ember*",
+  "tab": "humanities",
+  "hook": "復元が救済ではなく盗用かもしれない、という疑いが物語全体を刺す。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "EMBERLYN復元主義 / *Restauratio Ember*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は司書エリオット・アンブルラン（架空）『灰の継承』、詩集『燃え残りの家名』（架空）。実在原典としてThomas Vaughanや『Sefer Raziel』が頻用される。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "断片を繋ぐことそれ自体に価値があるとし、失われた形式を現代へ「戻す」ことを使命とみなす。文献学と家族ロマンが混ざる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "EMBERLYN系、旧家礼装層、灰燼文庫学院生に強い。庶民には気取りと見られ、地下誌にはしばしば風刺される。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "家名復活の政治言説から、最近は個人の記憶修復や地域史再編の言葉へ広がった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "復元が救済ではなく盗用かもしれない、という疑いが物語全体を刺す。"
+   }
+  ]
+ },
+ {
+  "num": 6,
+  "title": "VEXALIA啓蒙理性 / *Raison Vexalienne*",
+  "tab": "humanities",
+  "hook": "誠実な理性が、友人を救うためには最も邪魔な制度になることがある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "VEXALIA啓蒙理性 / *Raison Vexalienne*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は法学者ベルトラン・ヴェクス（架空）『測れるものだけが公共である』、教育官イネス・ラシーヌ（架空）『公民の作法』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "数値化、標準化、普遍法を通じて魔法を管理可能にする思想。散文は簡潔で、感情語を避ける。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIA官僚層の知的背骨だが、都市中間層にも浸透している。KROSS技術者とは相性がよく、TAKANI口承者とは衝突する。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "王権の理性から市民国家の理性へ看板を変えたが、管理欲はむしろ強まった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "誠実な理性が、友人を救うためには最も邪魔な制度になることがある。"
+   }
+  ]
+ },
+ {
+  "num": 7,
+  "title": "王党派史観 / *Chronique de la Couronne*",
+  "tab": "humanities",
+  "hook": "家の物語と国の物語が食い違うとき、どちらが「正式な過去」になるのかが争われる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "王党派史観 / *Chronique de la Couronne*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実在原典としてHocart『Kingship』が権威づけに使われる。架空の代表は『王冠年代記』編纂局（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "接触後の混乱を王家とVEXALIAが収拾したという物語で連邦史を組み立てる。儀礼と継承を重視する。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "上院、宮廷論説誌、儀礼官層に強く、旧華族の自己物語でもある。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "革命後は露骨な王権礼賛から、「安定の記憶」を守る穏健保守へ言い換えられた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "家の物語と国の物語が食い違うとき、どちらが「正式な過去」になるのかが争われる。"
+   }
+  ]
+ },
+ {
+  "num": 8,
+  "title": "共和派史観 / *Histoire du Serment*",
+  "tab": "humanities",
+  "hook": "革命の理想が、今の血統制度とどう同居してしまったのかが問われる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "共和派史観 / *Histoire du Serment*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は歴史家マリエット・ソル（架空）『五十年前の広場』、小冊子『王ではなく誓約が国を作った』（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "革命と立憲化こそが近代連邦の起点だとする。民衆の広場、パンフ、議場、労組を主役に書く。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "学生討論共闘、外環ジン工房、労働者同盟と近い。VEXALIA改革派の一部も読む。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "英雄史から制度史へ、最近は市民権と地域自治の歴史へ重心が移った。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "革命の理想が、今の血統制度とどう同居してしまったのかが問われる。"
+   }
+  ]
+ },
+ {
+  "num": 9,
+  "title": "TAKANI口承史学 / *Mémoires d'Iya*",
+  "tab": "humanities",
+  "hook": "公文書にない真実が、口承の方ではあまりにも当たり前に保存されている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI口承史学 / *Mémoires d'Iya*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実在原典として『Popol Vuh』やMooneyが比較対象にされる。架空の代表は語り部アユ・サナ（架空）『石の長い朝』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "年号より座の連なり、土地の返礼、石の証言を重視する。語り直しそのものが史料である。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANIの長老会、若い還り子、石語学寮に継承される。国家史学とは資料観が根本的に違う。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "民俗採集の対象から、自立した史学方法として再評価され始めた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "公文書にない真実が、口承の方ではあまりにも当たり前に保存されている。"
+   }
+  ]
+ },
+ {
+  "num": 10,
+  "title": "KROSS技術史学 / *Werkgeschichte*",
+  "tab": "humanities",
+  "hook": "英雄の名より、部材の刻印の方が本当の責任者を示す。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "KROSS技術史学 / *Werkgeschichte*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は工房史家イェルン・カルデラ（架空）『炉と国家』、図録『歌う鎚の百年』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "家や王より炉、橋、道具、規格、事故碑を歴史の主役に据える。図面と歌詞を同列の史料とみなす。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSS系工房、技官、労災遺族に根強い。上流には無骨、庶民には誇りとして読まれる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "成功史中心から、事故と労働搾取も含む産業史へ広がった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "英雄の名より、部材の刻印の方が本当の責任者を示す。"
+   }
+  ]
+ },
+ {
+  "num": 11,
+  "title": "名家小説 / *Roman de Maison*",
+  "tab": "humanities",
+  "hook": "Ambreの家が話題になれば、まずこのジャンルが即座に食いつく。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "名家小説 / *Roman de Maison*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空作品『灰の廊下』『七つの婚約』『最後の理事会』。作家ルシール・ド・ソンブラ（架空）が人気。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "没落、縁談、相続、執事、書庫、隠し子を中心に、家名の内側から連邦政治を描く。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "旧華族層の自己神話でもあり、庶民にとっては覗き見の娯楽でもある。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "かつては没落を美化したが、近年は家の暴力や借金も描くようになった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreの家が話題になれば、まずこのジャンルが即座に食いつく。"
+   }
+  ]
+ },
+ {
+  "num": 12,
+  "title": "鍛冶小説 / *Roman de Forge*",
+  "tab": "humanities",
+  "hook": "友人の明るさが、いつ工業都市の恐怖へ反転するかを予告するジャンルでもある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛冶小説 / *Roman de Forge*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空作品『炉都の息子』『鎚橋の花嫁』『赤い夜勤』。作者エム・グラーダ（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "工房の友情、事故、発明、労働歌、ストの前夜を描く。文体は短く、音の反復が多い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "KROSS文化圏と労働者層に強い人気。学院生には「熱くて分かりやすい」読み物として愛される。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "工房美談から、資本と規格に飲まれる現場の怒りを描く方向へ変わった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "友人の明るさが、いつ工業都市の恐怖へ反転するかを予告するジャンルでもある。"
+   }
+  ]
+ },
+ {
+  "num": 13,
+  "title": "街角新聞小説 / *Feuilleton des Quais*",
+  "tab": "humanities",
+  "hook": "Ambreたちの現実が、本人たちの知らない形で先に小説化される。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "街角新聞小説 / *Feuilleton des Quais*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "『白塔恋文事件』『港門街の失踪者』『議場裏の子ら』などの連載物。媒体は『首都日報』『白塔通信』が主。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "毎日の事件と恋愛を即時にフィクション化し、現実と創作の境目を曖昧にする。続きが読める速度が命。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "商人、学生、配達少年、通勤官吏が同じ連載を追う。名家はしばしば風刺される。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "文字中心から共振放送朗読へも展開し、読者参加型の文化になった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreたちの現実が、本人たちの知らない形で先に小説化される。"
+   }
+  ]
+ },
+ {
+  "num": 14,
+  "title": "地下詩 / *Poésie Sous-Sol*",
+  "tab": "humanities",
+  "hook": "落書きにしか見えない数行が、行方不明者への連絡網になっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "地下詩 / *Poésie Sous-Sol*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空詩集『台帳の焼ける匂い』『外環三行詩』、匿名詩人「灰のクレ」（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "短い行、反復、落書き性、盗用、引用、切り貼りを武器にする。革命詩と失踪者の弔詩が近い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "外環、学生、地下印刷網、SOMBRA夜劇回廊に広がる。権威ある解釈を嫌う。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "酒場朗読から、壁新聞、ジン、配信字幕へ媒体を広げた。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "落書きにしか見えない数行が、行方不明者への連絡網になっている。"
+   }
+  ]
+ },
+ {
+  "num": 15,
+  "title": "接触祝祭詩 / *Odes du Choc*",
+  "tab": "humanities",
+  "hook": "同じ詩を誰がどの言葉で読むかで、その場の政治が露呈する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "接触祝祭詩 / *Odes du Choc*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空作品『欠片の朝』『琥珀の灰曜日』。実在原典ではCodringtonや『黄帝内経』が注釈に引かれることもある。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "接触記念日を祝うか悼むかで語彙が割れる定型詩。明るい祝祭と黒帯の悲哀が同じ形式へ入る。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "学校教育、教会行事、家内祭祀、国家式典すべてで使われるため、最も広い層が知る詩型である。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "王家賛歌から、多義的な共同体詩へ変質した。今では反対意見も同じ韻律を使ってしまう。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "同じ詩を誰がどの言葉で読むかで、その場の政治が露呈する。"
+   }
+  ]
+ },
+ {
+  "num": 16,
+  "title": "TAKANI口承叙事 / *Épopées Iya*",
+  "tab": "humanities",
+  "hook": "Ambreの物語が、後にこの形式へ取り込まれた時、誰の娘として歌われるのかが問題になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI口承叙事 / *Épopées Iya*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空叙事『眠る叔父の長い巡り』『石を返した娘』。比較対象として実在原典『Popol Vuh』やトルコ口承叙事研究が引かれる。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "長い反復、呼び返し、聴き手の相槌を必要とする叙事。英雄は征服者より「関係を壊さなかった者」として描かれる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI共同体内部の教育で重要だが、学院では断片だけが紹介されがちで誤読も多い。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "非公開の家内叙事から、若い還り子が短縮版を都市へ持ち込む段階に入った。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreの物語が、後にこの形式へ取り込まれた時、誰の娘として歌われるのかが問題になる。"
+   }
+  ]
+ },
+ {
+  "num": 17,
+  "title": "接触期歴史小説 / *Roman des Premiers Jours*",
+  "tab": "humanities",
+  "hook": "フィクションの方が、公文書より真実に近いことがある。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "接触期歴史小説 / *Roman des Premiers Jours*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空作品『一七〇〇年の井戸』『最初に石へ触れた子ども』。研究的背景として接触災厄考古学が利用される。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "落下直後の混乱、初発現、土地争いを子どもや小集団の視点から描く。考古学的断片を情動へ翻訳するジャンル。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "大衆人気が高く、上流は教養ぶって読む。TAKANI側からはしばしば盗用批判も出る。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "王や名家中心の叙事から、庶民や小民族の視点へ移った。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "フィクションの方が、公文書より真実に近いことがある。"
+   }
+  ]
+ },
+ {
+  "num": 18,
+  "title": "学院歌劇 / *Opéra d'Académie*",
+  "tab": "humanities",
+  "hook": "学院祭の出し物にしか見えない演目が、現実の血統秘密をなぞってしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院歌劇 / *Opéra d'Académie*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空演目『白塔の測量士』『灰燼館の娘』『七環寮の春』。作曲家ソフィア・クロス（架空系譜上の名として流用可）が古典扱いされる。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "若者の友情、制度、恋、試験を大きな旋律へ乗せる。華やかだが、必ず一幕どこかで政治が混じる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "学院生と中産層に人気が高い。名家の子も庶民の子も同じ役を演じうるので、配役が政治化する。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "宮廷模倣から、学生自治と地方色を前面に出す青春歌劇へ変わった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "学院祭の出し物にしか見えない演目が、現実の血統秘密をなぞってしまう。"
+   }
+  ]
+ },
+ {
+  "num": 19,
+  "title": "燠火演劇 / *Théâtre des Braises*",
+  "tab": "humanities",
+  "hook": "Ambreの家の物語が、本人より先に古典劇の型へ回収されてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "燠火演劇 / *Théâtre des Braises*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空古典『最後の炉守』『燃え残りの客間』『赤い段差』。EMBERLYN圏の古い劇書が多い。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "暗い舞台、少人数、長い沈黙、失われた家や都市の残り火を描く。明るい子ども向けではないが、強い美しさがある。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "EMBERLYN文化圏とSOMBRA芸術圏が継承する。上流の趣味に見えるが、没落者の感情をよく掬う。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "家内上演から公演化し、最近は若い演出家が政治寓話として再解釈している。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreの家の物語が、本人より先に古典劇の型へ回収されてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 20,
+  "title": "街頭劇・人形劇 / *Guignol des Anneaux*",
+  "tab": "humanities",
+  "hook": "子どもが笑っていた人形劇の筋が、翌週の現実事件を先取りしていた。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "街頭劇・人形劇 / *Guignol des Anneaux*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空演目『外環の靴』『役人と石』『港の鈴』。大道芸一座「欠片まわし」（架空）が有名。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "短く、笑えて、痛い。子どもも見られるが大人への風刺が強い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "外環、市場、港、農村祭りで根強い。名家は軽視するが、自分たちがどんな怪物として見られているかをここで知る。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "道端の即興芸から、パンフレットと連動した政治風刺へ広がった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "子どもが笑っていた人形劇の筋が、翌週の現実事件を先取りしていた。"
+   }
+  ]
+ },
+ {
+  "num": 21,
+  "title": "連邦公用語とヴェクサリア古典語遺産 / *Racinois et Vexalatin*",
+  "tab": "humanities",
+  "hook": "古典語の一語だけが、婚姻契約と養子契約を分けてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "連邦公用語とヴェクサリア古典語遺産 / *Racinois et Vexalatin*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "公用語の標準文法書『ラシネ語公民読本』（架空）、古典語規範書『ヴェクサラテン修辞法』（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "日常行政と教育を担うのはラシネ語、公文・紋章・法格言の威信を支えるのは古典ヴェクサラテンという二層構造。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "上流ほど古典語を知り、庶民ほど公用語だけで生きる。言語格差がそのまま制度アクセス差になる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "革命後に公用語化が進み、古典語は教養と権威の道具へ縮退した。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "古典語の一語だけが、婚姻契約と養子契約を分けてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 22,
+  "title": "KROSS諸方言 / *Krossisch*",
+  "tab": "humanities",
+  "hook": "一語の作業方言を知っているかどうかで、見習いか内通者かを見抜ける。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "KROSS諸方言 / *Krossisch*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "工房手引書『炉前語彙集』（架空）、歌集『赤煤の拍』（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "短く硬い子音、作業動作と結びつく命令形、鍛冶歌と相性のよい強拍が特徴。書き言葉より現場口承が強い。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "工房、労働者、技官の連帯語であり、上流には粗野と見なされがちだが、BLANCA若者語へ多大な影響を与えた。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "標準語教育で減衰しつつも、音楽やスポーツスラングを通じて再流入している。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一語の作業方言を知っているかどうかで、見習いか内通者かを見抜ける。"
+   }
+  ]
+ },
+ {
+  "num": 23,
+  "title": "TAKANI語 / *Takani-Iya*",
+  "tab": "humanities",
+  "hook": "Ambreが知らないはずの接頭辞だけを、無意識に正しく使ってしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI語 / *Takani-Iya*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "口承教材『石に入る前のことば』（架空）、採録書『山地返礼句集』（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "接頭辞が多く、相手との関係や距離を先に示す。名詞より動詞と呼びかけが強い表音語で、沈黙も文法に含める。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "TAKANI共同体の核だが、都市では失われやすい。還り子世代の再学習対象でもある。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "国家教育から排除された分だけ、若い世代が録音・採譜・二重表記で守ろうとしている。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreが知らないはずの接頭辞だけを、無意識に正しく使ってしまう。"
+   }
+  ]
+ },
+ {
+  "num": 24,
+  "title": "港商ピジン / *Port-Mix*",
+  "tab": "humanities",
+  "hook": "大人には崩れた言葉にしか見えない一文が、最も機密性の高い連絡文になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "港商ピジン / *Port-Mix*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "実用会話集『港門三日で通じる本』（架空）、人気喜劇『全部まざればだいたい通じる』（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "連邦公用語、KROSS方言、群島語、砂漠商語が混ざった短い取引言語。速く、雑で、しかし非常に創造的。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "BLANCA港区、荷役人、料理屋、通訳士、若者文化に必須。公式文書では嫌われる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "取引専用語から、ポップ音楽とスラングの源へ変わった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "大人には崩れた言葉にしか見えない一文が、最も機密性の高い連絡文になる。"
+   }
+  ]
+ },
+ {
+  "num": 25,
+  "title": "学院俗語 / *Cant d'Académie*",
+  "tab": "humanities",
+  "hook": "秘密の噂ほど、ふざけた略語で一気に広がる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "学院俗語 / *Cant d'Académie*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "『七環寮語辞典』（架空）、壁新聞欄「今日の寮語」（架空）。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "教師名のもじり、試験名の短縮、州色や寮生活から生まれる内輪語。半年で流行が変わる。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "学院生の階級混成を最もよく示す言語層。名家の子も庶民の子も、同じ悪ふざけ語で仲良くなる。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "以前は学院内だけだったが、白塔配信網とジン文化で全国へ広がるようになった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "秘密の噂ほど、ふざけた略語で一気に広がる。"
+   }
+  ]
+ },
+ {
+  "num": 26,
+  "title": "翻訳者ギルド / *Guilde des Traducteurs*",
+  "tab": "humanities",
+  "hook": "一語をどう訳したかが、古い術を復元術と対話術のどちらへも傾ける。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "翻訳者ギルド / *Guilde des Traducteurs*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "架空の代表は翻訳司書メレク・ブラン（架空）、ギルド誌『転写と裏切り』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "翻訳は透明な移し替えではなく、政治的選択だという立場。欄外注、異本比較、誤訳履歴を重視する。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "EMBERLYN文庫、港通詞、亡命語族、学院司書を繋ぐ横断組織。VEXALIAは重宝しつつ警戒する。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "原典崇拝から、翻訳史そのものを研究対象にする段階へ進んだ。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一語をどう訳したかが、古い術を復元術と対話術のどちらへも傾ける。"
+   }
+  ]
+ },
+ {
+  "num": 27,
+  "title": "未翻訳古典論争 / *Querelle des Textes Clos*",
+  "tab": "humanities",
+  "hook": "閉じられていたのが知識の危険性ゆえか、支配側に都合が悪いゆえかは別問題である。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "未翻訳古典論争 / *Querelle des Textes Clos*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "論争対象には『Picatrix』未校訂断章、南方群島の航路歌写本、TAKANI樹皮文様録などが含まれる。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "危険だから閉じるべきか、危険だからこそ公開すべきかを争う。学問と検閲が最も直結する論点である。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "VEXALIAは管理、EMBERLYNは閲覧権、TAKANIは共同体同意、KROSSは技術転用の可否を主張する。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "禁書棚の管理論から、共同体由来資料の返還論へ広がった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "閉じられていたのが知識の危険性ゆえか、支配側に都合が悪いゆえかは別問題である。"
+   }
+  ]
+ },
+ {
+  "num": 28,
+  "title": "三大新聞と批評文化 / *Presse des Trois Voix*",
+  "tab": "humanities",
+  "hook": "事件そのものより「どの媒体がどう書いたか」が、子どもたちの世界認識を変えてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "三大新聞と批評文化 / *Presse des Trois Voix*"
+   },
+   {
+    "label": "代表的人物・作品",
+    "value": "『首都日報』『炉都新報』『白塔通信』、そして学術誌『Cineres Restituti Review』、地下誌『Presse Sous-Sol』。"
+   },
+   {
+    "label": "主要な主張・様式",
+    "value": "`RACINE` は制度を語り、`CALDERA` は現場を語り、`BLANCA` は速度を語る。批評は作品評に見えて、実際には階級評である。"
+   },
+   {
+    "label": "家系・階層との関係",
+    "value": "どの紙面も4家と距離を取るふりをしつつ、違う仕方で依存している。地下誌だけが露骨に全方位へ牙を向く。"
+   },
+   {
+    "label": "この100年の変化",
+    "value": "一方向の公報社会から、多層メディア社会へ移行し、同じ事件が同時に複数の真実を持つようになった。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "事件そのものより「どの媒体がどう書いたか」が、子どもたちの世界認識を変えてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 1,
+  "title": "石響戦 / *Lithoréson*",
+  "tab": "daily",
+  "hook": "試合中にだけ反応する古い石が、競技場の下に別の記憶層があると示す。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "石響戦 / *Lithoréson*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "学校競技会、州対抗戦、接触記念日前後。"
+   },
+   {
+    "label": "担い手",
+    "value": "学院生、予備訓練団、街区クラブ。男女混成で行われることが多い。"
+   },
+   {
+    "label": "概要",
+    "value": "中央の共鳴石へ球を反射させ、音と得点の両方で競う混合競技。魔法を持たない者も位置取りで勝てる。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "血統だけでは勝てない、連邦版の公平神話。だが共鳴感度の差は完全には消えない。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "試合中にだけ反応する古い石が、競技場の下に別の記憶層があると示す。"
+   }
+  ]
+ },
+ {
+  "num": 2,
+  "title": "炉輪 / *Ofenring*",
+  "tab": "daily",
+  "hook": "遊び用の輪の材質が、違法工房の横流し品だと判明する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "炉輪 / *Ofenring*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "CALDERAの工房祭、鍛冶の夜、労働者学校の体育。"
+   },
+   {
+    "label": "担い手",
+    "value": "KROSS系の子ども、見習い、若い工員。男子人気が高いが近年は女子選手も増えている。"
+   },
+   {
+    "label": "概要",
+    "value": "熱された輪を長棒で転がし、障害物を越えて時間を競う非魔法系競技。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "熱と危険を笑い飛ばす工業都市の身体感覚。子どもの遊びと職業訓練の境目が曖昧。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "遊び用の輪の材質が、違法工房の横流し品だと判明する。"
+   }
+  ]
+ },
+ {
+  "num": 3,
+  "title": "ヴェラリア / *Velaria*",
+  "tab": "daily",
+  "hook": "競技用地図に混ざった一本の古線が、本物の聖地境界を示している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "ヴェラリア / *Velaria*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "VEXALIA系学校、官学校、議会開会週の余興。"
+   },
+   {
+    "label": "担い手",
+    "value": "測量志望の学生、官吏子弟、理屈好きの学院生。"
+   },
+   {
+    "label": "概要",
+    "value": "地面へ引かれた複数の線と旗を読み、最短で領域を確保する戦術競技。走力より判断が重要。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "「線を引く者が世界を決める」というVEXALIA的価値観の遊戯化。理性の遊びだが、排除の予行演習にもなる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "競技用地図に混ざった一本の古線が、本物の聖地境界を示している。"
+   }
+  ]
+ },
+ {
+  "num": 4,
+  "title": "燠火跳び / *Saute-Braise*",
+  "tab": "daily",
+  "hook": "ただの遊び歌と思われた文句が、古い封印解除の語順と一致している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "燠火跳び / *Saute-Braise*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "冬の夜、工房裏、外環の路地祭り。"
+   },
+   {
+    "label": "担い手",
+    "value": "子ども、外環の若者、工員の家族。年少者中心。"
+   },
+   {
+    "label": "概要",
+    "value": "消えかけの火床や温管を飛び越え、決められた言葉を唱えながら回数を競う遊び。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "危ないものを遊びへ変える庶民の知恵。怖さと明るさが同居する。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの遊び歌と思われた文句が、古い封印解除の語順と一致している。"
+   }
+  ]
+ },
+ {
+  "num": 5,
+  "title": "結晶球競技 / *Arcaballe*",
+  "tab": "daily",
+  "hook": "友情の試合が、そのまま徴募や選抜の入口になっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "結晶球競技 / *Arcaballe*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "七都市競技大会、学校対抗、休日の街区リーグ。"
+   },
+   {
+    "label": "担い手",
+    "value": "学生、街区クラブ、予備役、賭け好きの観客。"
+   },
+   {
+    "label": "概要",
+    "value": "軽い結晶球を手足で運び、共鳴門へ通す連邦最大の球技。接触者も非接触者も役割を分けて活躍できる。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "階級越えの友情を作る一方、軍務向け身体訓練とも重なる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "友情の試合が、そのまま徴募や選抜の入口になっている。"
+   }
+  ]
+ },
+ {
+  "num": 6,
+  "title": "管路走 / *Ligue des Conduits*",
+  "tab": "daily",
+  "hook": "最速ランナーしか知らない通路が、事件現場への最短路である。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "管路走 / *Ligue des Conduits*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "夜、保守通路、雨上がり、非公式大会。"
+   },
+   {
+    "label": "担い手",
+    "value": "保守手見習い、BLANCAとCALDERAの危険好きの若者。"
+   },
+   {
+    "label": "概要",
+    "value": "配管上や塔基部の狭路を最短で走破する違法競技。地図より身体感覚がものを言う。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "インフラの上で育つ現代都市の若者文化。禁止されるほど人気が出る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "最速ランナーしか知らない通路が、事件現場への最短路である。"
+   }
+  ]
+ },
+ {
+  "num": 7,
+  "title": "坑道レース / *Tunnel Sprint*",
+  "tab": "daily",
+  "hook": "競技コースの一角が、本当に入ってはいけない深部封鎖へ繋がっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "坑道レース / *Tunnel Sprint*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "NOCTURNEの観光季、休日夜、地下配信企画。"
+   },
+   {
+    "label": "担い手",
+    "value": "地下育ちの若者、配信者、他都市の挑戦者。"
+   },
+   {
+    "label": "概要",
+    "value": "旧坑道網を走り、封鎖札に触れずに複数地点を回る。方向感覚と恐怖耐性の競技である。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "危険区域を遊びに変えるNOCTURNEの反抗。大人には悪趣味、若者には通過儀礼。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "競技コースの一角が、本当に入ってはいけない深部封鎖へ繋がっている。"
+   }
+  ]
+ },
+ {
+  "num": 8,
+  "title": "曳舟綱引き / *Traction des Écluses*",
+  "tab": "daily",
+  "hook": "優勝チームの進路が、密輸に使われた抜け運河を偶然なぞってしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "曳舟綱引き / *Traction des Écluses*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "水門祭、収穫期、VERDEとRACINEの合同行事。"
+   },
+   {
+    "label": "担い手",
+    "value": "河運曳舟人、農家、港湾民、子どもチーム。"
+   },
+   {
+    "label": "概要",
+    "value": "実際の曳舟技術を遊戯化し、長い綱で舟を一定距離引く団体競技。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "物流の背骨を祝う庶民の祭礼。勝敗以上に呼吸合わせが尊ばれる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "優勝チームの進路が、密輸に使われた抜け運河を偶然なぞってしまう。"
+   }
+  ]
+ },
+ {
+  "num": 9,
+  "title": "石脈盤 / *Table des Veines*",
+  "tab": "daily",
+  "hook": "盤上にしかないと思われた配置が、現実の禁区地図と一致する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "石脈盤 / *Table des Veines*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "冬の室内、学院寮、コーヒーハウス。"
+   },
+   {
+    "label": "担い手",
+    "value": "学生、測量士見習い、退職官吏、暇な兄姉。"
+   },
+   {
+    "label": "概要",
+    "value": "六角盤の石脈を読み合い、採掘、保全、返礼を競合させる戦略盤戯。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "KROSSとTAKANIの価値衝突がそのままゲームになっている。勝ち方で思想が見える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "盤上にしかないと思われた配置が、現実の禁区地図と一致する。"
+   }
+  ]
+ },
+ {
+  "num": 10,
+  "title": "家名取り札 / *Cartes des Maisons*",
+  "tab": "daily",
+  "hook": "冗談で配られた札並びが、実際の縁談計画を言い当ててしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "家名取り札 / *Cartes des Maisons*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "宴席、寮の消灯後、長距離列車や舟旅。"
+   },
+   {
+    "label": "担い手",
+    "value": "子どもから上流まで幅広い。大人は政治読み、子どもは単純勝負として遊ぶ。"
+   },
+   {
+    "label": "概要",
+    "value": "4家と外周諸集団の札を組み合わせ、婚姻、同盟、裏切りで得点するカードゲーム。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "結婚と政治が日常の遊びへまで浸透している証拠。人間関係を勢力図として覚える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "冗談で配られた札並びが、実際の縁談計画を言い当ててしまう。"
+   }
+  ]
+ },
+ {
+  "num": 11,
+  "title": "七欠片 / *Sept-Fragments*",
+  "tab": "daily",
+  "hook": "子どもの唱える順番だけが、古い都市成立順を正しく残している。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "七欠片 / *Sept-Fragments*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "学校の休み時間、路地、公園、待ち時間。"
+   },
+   {
+    "label": "担い手",
+    "value": "主に子ども。寮でも外環でも広く遊ばれる。"
+   },
+   {
+    "label": "概要",
+    "value": "石片や木片を投げて拾い、欠片ごとに都市名や役割を唱える手遊び。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "七都市の地理が、まず遊び歌として身体へ入る。国家教育の最も柔らかい入口。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "子どもの唱える順番だけが、古い都市成立順を正しく残している。"
+   }
+  ]
+ },
+ {
+  "num": 12,
+  "title": "灰盃回し / *Coupe de Cendre*",
+  "tab": "daily",
+  "hook": "軽口のはずの一言が、隠していた血統や裏取引を突き当てる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "灰盃回し / *Coupe de Cendre*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "大人の宴席、学生の隠れ酒会、工房終業後。"
+   },
+   {
+    "label": "担い手",
+    "value": "若者から老年まで。特にSOMBRAとCALDERAで盛ん。"
+   },
+   {
+    "label": "概要",
+    "value": "盃を回しながら、前の人の嘘と本当を一つずつ言い当てる余興。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "共同体の空気を読む遊びであり、場の緊張を柔らげつつ秘密を少しずつ漏らす装置でもある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "軽口のはずの一言が、隠していた血統や裏取引を突き当てる。"
+   }
+  ]
+ },
+ {
+  "num": 13,
+  "title": "脈拍賭博卓 / *Tables du Pouls*",
+  "tab": "daily",
+  "hook": "賭け率だけが、まだ報じられていない事故を先に示す。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "脈拍賭博卓 / *Tables du Pouls*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "夜市、地階酒場、試合の日、相場が荒れる日。"
+   },
+   {
+    "label": "担い手",
+    "value": "労働者、学生、没落上流、相場師。未成年も潜り込む。"
+   },
+   {
+    "label": "概要",
+    "value": "試合結果、相場、議会採決、脈動周期まで何にでも賭ける地下賭博。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "公式発表より先に民間の予感を数字化してしまう場。非政治を装うが、実際には政治の匂いに敏感。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "賭け率だけが、まだ報じられていない事故を先に示す。"
+   }
+  ]
+ },
+ {
+  "num": 14,
+  "title": "井戸鏡占 / *Miroir du Puits*",
+  "tab": "daily",
+  "hook": "遊び半分の占いが、誰にも言っていない出発日を当てる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "井戸鏡占 / *Miroir du Puits*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "祭の前夜、恋占いの季節、雨待ちの夕方。"
+   },
+   {
+    "label": "担い手",
+    "value": "子ども、若い恋人たち、谷井戸母祭団の年長女性。"
+   },
+   {
+    "label": "概要",
+    "value": "水面へ小石と花弁を落とし、波紋と映り込みで一年の縁や旅を占う遊戯的儀礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "宗教、恋愛、暇つぶしの境界にある庶民占い。深刻すぎないから広く残る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "遊び半分の占いが、誰にも言っていない出発日を当てる。"
+   }
+  ]
+ },
+ {
+  "num": 15,
+  "title": "接触記念日 / *Jour du Choc*",
+  "tab": "daily",
+  "hook": "同じ日を祝うか悼むかで、友人同士の距離が急に見える。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "接触記念日 / *Jour du Choc*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "毎年1700年落下日に対応する連邦最大の祝祭日。"
+   },
+   {
+    "label": "担い手",
+    "value": "王家、学校、教会、外環、港、TAKANI共同体まで全国規模。"
+   },
+   {
+    "label": "概要",
+    "value": "黙祷、行進、追悼、屋台、講話、花火、議論が同日に並ぶ。州ごとに祝い方の温度差が大きい。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "祝日であり、弔日であり、起源論争の年中行事でもある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "同じ日を祝うか悼むかで、友人同士の距離が急に見える。"
+   }
+  ]
+ },
+ {
+  "num": 16,
+  "title": "血統審査の日 / *Jour des Registres*",
+  "tab": "daily",
+  "hook": "何気ない検査で、隠してきた発現や混血が露見する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "血統審査の日 / *Jour des Registres*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "学校区ごとに年一回、春の始業期に実施。"
+   },
+   {
+    "label": "担い手",
+    "value": "検量査定吏、教師、子ども、保護者。嫌がる者も多い。"
+   },
+   {
+    "label": "概要",
+    "value": "測量石による定期検査と台帳確認を行う半行政半学校行事。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "安全確認と差別の入口が同じ形で来る日。子どもにとっては怖いが、社会は平然と回す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "何気ない検査で、隠してきた発現や混血が露見する。"
+   }
+  ]
+ },
+ {
+  "num": 17,
+  "title": "発現祝 / *Fête d'Apparition*",
+  "tab": "daily",
+  "hook": "祝福の席で交わされた冗談が、後に出生の謎の伏線になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "発現祝 / *Fête d'Apparition*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "初発現直後、家ごとに一度。"
+   },
+   {
+    "label": "担い手",
+    "value": "発現した子ども、その家族、近しい友人、証人役。"
+   },
+   {
+    "label": "概要",
+    "value": "祝衣、甘菓子、家系紹介、今後の教育相談が同時に行われる小宴。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "喜びと義務が始まる日。子どもの人生が家の問題へ変わる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "祝福の席で交わされた冗談が、後に出生の謎の伏線になる。"
+   }
+  ]
+ },
+ {
+  "num": 18,
+  "title": "聴石祭 / *Fête des Pierres Écoutées*",
+  "tab": "daily",
+  "hook": "今年だけ石が沈黙した場所があり、皆がその意味を恐れる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "聴石祭 / *Fête des Pierres Écoutées*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "初夏、山地と保全圏で実施。"
+   },
+   {
+    "label": "担い手",
+    "value": "TAKANI共同体、還り子、招かれた研究者、少数の好奇心旺盛な学院生。"
+   },
+   {
+    "label": "概要",
+    "value": "聖石を洗い、返礼し、今年聞こえたことと聞こえなかったことを共有する祭。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "成功だけでなく「聞こえなかった」ことも共同体で抱える、TAKANI的な知の儀礼。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "今年だけ石が沈黙した場所があり、皆がその意味を恐れる。"
+   }
+  ]
+ },
+ {
+  "num": 19,
+  "title": "鍛冶の夜 / *Nuit des Forgerons*",
+  "tab": "daily",
+  "hook": "祭用の小品にしか見えない品が、封印鍵として機能する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛冶の夜 / *Nuit des Forgerons*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "秋、CALDERAと工房圏の最大行事。"
+   },
+   {
+    "label": "担い手",
+    "value": "鍛冶師、見習い、家族、労働者同盟、見物人。"
+   },
+   {
+    "label": "概要",
+    "value": "一晩中炉を消さず、歌と鍛造を続け、最も美しい小品を翌朝市場へ出す。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "労働と祭礼が分かれていないKROSS文化の象徴。誇りと疲労が同じ顔をする。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "祭用の小品にしか見えない品が、封印鍵として機能する。"
+   }
+  ]
+ },
+ {
+  "num": 20,
+  "title": "朗読の夜 / *Nuit de Lecture*",
+  "tab": "daily",
+  "hook": "匿名原稿の朗読が、当人の秘密を本人より先に暴く。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "朗読の夜 / *Nuit de Lecture*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "冬、学院街、SOMBRA、コーヒーハウスで多い。"
+   },
+   {
+    "label": "担い手",
+    "value": "文芸同人、学生、司書、新聞記者、恋人たち。"
+   },
+   {
+    "label": "概要",
+    "value": "小説、詩、地下誌、恋文、訳文を順番に読み合う小規模の夜会。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "書物がまだ共同体芸でもあることを示す。声に出した瞬間、文章は私物ではなくなる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "匿名原稿の朗読が、当人の秘密を本人より先に暴く。"
+   }
+  ]
+ },
+ {
+  "num": 21,
+  "title": "建国五十周年祭 / *Cinquantenaire Fédéral*",
+  "tab": "daily",
+  "hook": "祝賀展示の片隅に、消された共同体の名前が一つだけ欠けている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "建国五十周年祭 / *Cinquantenaire Fédéral*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "革命から50年の節目年に大規模開催。"
+   },
+   {
+    "label": "担い手",
+    "value": "連邦全域、議会、王家、自治体、労組、学院。"
+   },
+   {
+    "label": "概要",
+    "value": "行進、記念博覧会、式典、批判集会、特別連載、限定商品が同時多発する。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "「まとまった国」を演じたい中央と、「まだ終わっていない革命」を主張したい周縁が正面衝突する祭。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "祝賀展示の片隅に、消された共同体の名前が一つだけ欠けている。"
+   }
+  ]
+ },
+ {
+  "num": 22,
+  "title": "王家行幸 / *Progression Royale*",
+  "tab": "daily",
+  "hook": "行幸ルートの変更だけで、どの勢力へ配慮したかが丸見えになる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "王家行幸 / *Progression Royale*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "災害慰問、周年祭、学校訪問、港開き。"
+   },
+   {
+    "label": "担い手",
+    "value": "王家、儀礼官、警備隊、見物の市民。"
+   },
+   {
+    "label": "概要",
+    "value": "象徴君主が各都市を巡る公開儀礼。通りの飾り付けと礼装が街ぐるみで準備される。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "実権より感情的統合を担う王家の仕事。歓迎と冷笑が同時に起きる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "行幸ルートの変更だけで、どの勢力へ配慮したかが丸見えになる。"
+   }
+  ]
+ },
+ {
+  "num": 23,
+  "title": "議会開会式 / *Ouverture des Chambres*",
+  "tab": "daily",
+  "hook": "傍聴した子どもが見た一つの身振りが、後の政争の伏線になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "議会開会式 / *Ouverture des Chambres*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "議会期の初日。"
+   },
+   {
+    "label": "担い手",
+    "value": "議員、官僚、記者、学院の見学隊、デモ隊。"
+   },
+   {
+    "label": "概要",
+    "value": "儀礼演説、州代表の入場、傍聴席の公開、周辺での即席演説やパンフ配布が一体化した日。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "高い政治と街路の政治が最も近づく。子どもたちも「政治は見物できる」と知る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "傍聴した子どもが見た一つの身振りが、後の政争の伏線になる。"
+   }
+  ]
+ },
+ {
+  "num": 24,
+  "title": "測量官の歩き / *Marche des Arpenteurs*",
+  "tab": "daily",
+  "hook": "一本の測量線が、遊び場を聖地にも鉱区にも変えてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "測量官の歩き / *Marche des Arpenteurs*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "春の地籍更新期。"
+   },
+   {
+    "label": "担い手",
+    "value": "測量官、書記補、地元の子ども案内人、嫌々付き添う地主。"
+   },
+   {
+    "label": "概要",
+    "value": "測量官一行が境界杭や水路を確認しながら村と街区を歩く半公務半巡礼の習慣。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "線が引き直される日。制度が足で来る実感を庶民に与える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一本の測量線が、遊び場を聖地にも鉱区にも変えてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 25,
+  "title": "灰燼スープ / *Potage Cendre*",
+  "tab": "daily",
+  "hook": "家の味として出された一椀から、外部由来の香草が混じっていると気づく。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "灰燼スープ / *Potage Cendre*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "EMBERLYN圏の家庭、冬、来客時。"
+   },
+   {
+    "label": "担い手",
+    "value": "旧家の料理人、北台地の家庭、司書たち。"
+   },
+   {
+    "label": "概要",
+    "value": "根菜、黒パン、燻香草、少量の乳を煮込む灰色がかった温スープ。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "華美でなく、残っているものを丁寧にまとめるEMBERLYN的食感覚の象徴。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "家の味として出された一椀から、外部由来の香草が混じっていると気づく。"
+   }
+  ]
+ },
+ {
+  "num": 26,
+  "title": "リオ結晶パン / *Pain Riovert*",
+  "tab": "daily",
+  "hook": "今年だけ味が微妙に違うことが、生態変動の最初の兆候になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "リオ結晶パン / *Pain Riovert*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "VERDEの日常食、市場の朝、遠足の携行食。"
+   },
+   {
+    "label": "担い手",
+    "value": "農家、街のパン屋、学校給食係。"
+   },
+   {
+    "label": "概要",
+    "value": "結晶育成畑の穀粉を混ぜた淡緑色の軽いパン。腹持ちがよく、少し甘い。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "VERDEの豊穣と実用の両方を示す国民食。どの階層も知っているが、質で差が出る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "今年だけ味が微妙に違うことが、生態変動の最初の兆候になる。"
+   }
+  ]
+ },
+ {
+  "num": 27,
+  "title": "炉都腸詰 / *Wurst Caldera*",
+  "tab": "daily",
+  "hook": "腸詰屋の仕入れ先を辿ると、立入禁止区域の家畜流通が見えてくる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "炉都腸詰 / *Wurst Caldera*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "工房昼食、試合の日、夜市場。"
+   },
+   {
+    "label": "担い手",
+    "value": "KROSS労働者、観戦客、配達少年。"
+   },
+   {
+    "label": "概要",
+    "value": "強い塩と煙で保存を効かせた肉腸。熱い鉄板で焼いて食べる。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "素早く、濃く、働くための食。工業都市の時間感覚そのもの。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "腸詰屋の仕入れ先を辿ると、立入禁止区域の家畜流通が見えてくる。"
+   }
+  ]
+ },
+ {
+  "num": 28,
+  "title": "白塔串魚 / *Brochettes Blanchetour*",
+  "tab": "daily",
+  "hook": "串袋に刷られた広告が、地下配信者の暗号連絡になっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "白塔串魚 / *Brochettes Blanchetour*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "BLANCA港、通信庁舎前、夜の屋台街。"
+   },
+   {
+    "label": "担い手",
+    "value": "港の料理人、学生、夜勤技官、観光客。"
+   },
+   {
+    "label": "概要",
+    "value": "小魚や海菜を香草だれで焼く軽食。歩きながら食べやすい。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "速度の街BLANCAらしい立ち食い文化。情報と食が同時に流れる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "串袋に刷られた広告が、地下配信者の暗号連絡になっている。"
+   }
+  ]
+ },
+ {
+  "num": 29,
+  "title": "TAKANI石湯粥 / *Bouillie Iya*",
+  "tab": "daily",
+  "hook": "Ambreだけが、鍋の石の「機嫌の悪さ」を言葉にしてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "TAKANI石湯粥 / *Bouillie Iya*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "病後、長旅前、聴石祭の朝。"
+   },
+   {
+    "label": "担い手",
+    "value": "TAKANI家庭、山地宿、療養畑の台所。"
+   },
+   {
+    "label": "概要",
+    "value": "温めた滑石を布に包んで鍋へ沈め、穀と薬草をゆっくり煮る粥。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "料理と治療と返礼が分かれていない食。石を燃料でなく相手として扱う感覚が出る。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreだけが、鍋の石の「機嫌の悪さ」を言葉にしてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 30,
+  "title": "コーヒーハウス三角パイ / *Triangles du Café*",
+  "tab": "daily",
+  "hook": "具の印が、店主から常連への「今夜来るな」の合図になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "コーヒーハウス三角パイ / *Triangles du Café*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "放課後、討論会、夜更かし、壁新聞づくり。"
+   },
+   {
+    "label": "担い手",
+    "value": "学生、記者、起業家志望、恋人たち。"
+   },
+   {
+    "label": "概要",
+    "value": "肉、豆、果実ジャムなどを詰めた小型パイで、片手に紙、片手に食べ物を成立させる軽食。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "話しながら食べる都市の発酵食。時間を止めない食文化。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "具の印が、店主から常連への「今夜来るな」の合図になる。"
+   }
+  ]
+ },
+ {
+  "num": 31,
+  "title": "珊瑚糖 / *Sucre Corail*",
+  "tab": "daily",
+  "hook": "土産袋の色だけで、送り主の本当の出身地がばれる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "珊瑚糖 / *Sucre Corail*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "群島祭、婚礼、学院の土産交換。"
+   },
+   {
+    "label": "担い手",
+    "value": "港の菓子職人、群島系家庭、子どもたち。"
+   },
+   {
+    "label": "概要",
+    "value": "珊瑚色の砂糖菓子を小片に砕き、袋へ詰める。見た目が華やかで持ち運びやすい。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "BLANCAと群島文化の混成の象徴。軽やかな甘さが若者文化と結びつく。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "土産袋の色だけで、送り主の本当の出身地がばれる。"
+   }
+  ]
+ },
+ {
+  "num": 32,
+  "title": "炉麦酒 / *Bière de Braise*",
+  "tab": "daily",
+  "hook": "祝杯の席が、内部告発の出発点になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "炉麦酒 / *Bière de Braise*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "工房終業後、鍛冶の夜、勝利祝い、喪のあと。"
+   },
+   {
+    "label": "担い手",
+    "value": "労働者、楽師、新聞売り、大人の学生。"
+   },
+   {
+    "label": "概要",
+    "value": "強い発酵と焦がし麦香を持つ濃色酒。都市ごとに香草や果実で変種がある。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "労働と連帯の酒であり、同時に事故遺族の慰めでもある。明るい場と暗い場を同じ飲み物が繋ぐ。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "祝杯の席が、内部告発の出発点になる。"
+   }
+  ]
+ },
+ {
+  "num": 33,
+  "title": "鍛冶歌 / *Smithsong*",
+  "tab": "daily",
+  "hook": "正しい拍が一瞬だけ狂い、工房全体が異常を感じる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛冶歌 / *Smithsong*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "鍛造時、工房祭、鍛冶の夜。"
+   },
+   {
+    "label": "担い手",
+    "value": "KROSS鍛冶師、見習い、工房楽長。"
+   },
+   {
+    "label": "概要",
+    "value": "作業拍と音高を揃え、熱と呼吸を安定させる歌。仕事歌であり技術でもある。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "歌が芸術でなくインフラの一部であることを示す。声は共同財産だという感覚が強い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "正しい拍が一瞬だけ狂い、工房全体が異常を感じる。"
+   }
+  ]
+ },
+ {
+  "num": 34,
+  "title": "対話歌 / *Chant d'Iya*",
+  "tab": "daily",
+  "hook": "Ambreが知らない歌を、何故か二番だけ正しく口ずさむ。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "対話歌 / *Chant d'Iya*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "聴石、喪、返礼、長旅の前夜。"
+   },
+   {
+    "label": "担い手",
+    "value": "TAKANI共同体、還り子、山地の子ども。"
+   },
+   {
+    "label": "概要",
+    "value": "石や土地へ向けて短く繰り返す呼びかけの歌。旋律より間と呼吸が重要。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "歌うことで相手を支配するのでなく、先に聞いているものへ自分を合わせる文化。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "Ambreが知らない歌を、何故か二番だけ正しく口ずさむ。"
+   }
+  ]
+ },
+ {
+  "num": 35,
+  "title": "王室音楽 / *Musique de la Couronne*",
+  "tab": "daily",
+  "hook": "一音だけ混じった異音が、護送列の異常を先に知らせる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "王室音楽 / *Musique de la Couronne*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "行幸、戴冠記念、上院開会、公式喪。"
+   },
+   {
+    "label": "担い手",
+    "value": "宮廷楽師、儀礼合唱隊、招待された学院楽士。"
+   },
+   {
+    "label": "概要",
+    "value": "安定した和声と整然とした進行を重視する儀礼音楽。驚きより秩序感を優先する。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "王家の薄い権威を「崩れない響き」で支える装置。政治が弱いほど音楽は堅い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一音だけ混じった異音が、護送列の異常を先に知らせる。"
+   }
+  ]
+ },
+ {
+  "num": 36,
+  "title": "鍛拍楽 / *Forge-Beat*",
+  "tab": "daily",
+  "hook": "ライブのリズムが、群衆を意図せず同じ方向へ動かしてしまう。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "鍛拍楽 / *Forge-Beat*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "CALDERA夜広場、外環ライブ、抗議集会。"
+   },
+   {
+    "label": "担い手",
+    "value": "労働者の子、学生、保守手、打楽器好きの若者。"
+   },
+   {
+    "label": "概要",
+    "value": "鍛冶歌を都市ビートへ翻案した大音量の打楽系音楽。廃材器具を楽器化する。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "工場騒音を誇りと連帯へ変える若者文化。保守派には下品、本人たちには解放である。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ライブのリズムが、群衆を意図せず同じ方向へ動かしてしまう。"
+   }
+  ]
+ },
+ {
+  "num": 37,
+  "title": "潮律ポップ / *Coral Pulse*",
+  "tab": "daily",
+  "hook": "恋愛曲にしか聞こえない歌詞が、港湾ストの連絡網になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "潮律ポップ / *Coral Pulse*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "港祭り、白塔配信、夏の夜市。"
+   },
+   {
+    "label": "担い手",
+    "value": "群島民ミュージシャン、港区の若者、ダンサー、配信者。"
+   },
+   {
+    "label": "概要",
+    "value": "群島の航路歌と都市ビートを混ぜた軽快な流行歌。覚えやすく、踊りやすい。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "周縁が中央の流行になる瞬間の音楽。言葉づかいまで変える。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "恋愛曲にしか聞こえない歌詞が、港湾ストの連絡網になる。"
+   }
+  ]
+ },
+ {
+  "num": 38,
+  "title": "越境舞踏 / *Danse Cequae*",
+  "tab": "daily",
+  "hook": "一緒に踊ったことが、そのまま禁じられた連帯の証拠になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "越境舞踏 / *Danse Cequae*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "セケ辺界線の祭、学院舞踏会の余興、SOMBRA舞台。"
+   },
+   {
+    "label": "担い手",
+    "value": "境界村の若者、群島系ダンサー、街のクラブ層。"
+   },
+   {
+    "label": "概要",
+    "value": "TAKANIの足踏み、群島の腰使い、工房の拍打ちを混ぜた混成舞踊。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "「どこにも完全には属さない」世代の身体言語。恋と政治連帯の両方に使われる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "一緒に踊ったことが、そのまま禁じられた連帯の証拠になる。"
+   }
+  ]
+ },
+ {
+  "num": 39,
+  "title": "石彫り / *Gravure de Pierre*",
+  "tab": "daily",
+  "hook": "子どもの落書き石が、古い家印の変形だと判明する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "石彫り / *Gravure de Pierre*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "休日、冬の室内、工芸市、家内修行。"
+   },
+   {
+    "label": "担い手",
+    "value": "子ども、修復師見習い、退職石工、手先の器用な学生。"
+   },
+   {
+    "label": "概要",
+    "value": "小石へ紋や風景や遊び印を彫る趣味。実用品から玩具まで幅広い。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "石をただの資源でなく触って覚える文化。工芸と記憶が近い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "子どもの落書き石が、古い家印の変形だと判明する。"
+   }
+  ]
+ },
+ {
+  "num": 40,
+  "title": "標本採集 / *Cabinet des Spécimens*",
+  "tab": "daily",
+  "hook": "友だちの標本箱に、持ち帰ってはいけない石が混ざっている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "標本採集 / *Cabinet des Spécimens*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "遠足、夏休み、学院課題、保全圏見学。"
+   },
+   {
+    "label": "担い手",
+    "value": "学院生、自然哲学好きの子ども、若い記者、還り子。"
+   },
+   {
+    "label": "概要",
+    "value": "植物、鉱片、羽、虫、古い紙片を集めて箱へ並べる知的趣味。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "世界を所有したい欲望と、理解したい欲望が同じ箱に入る。明るい趣味だが収奪とも隣り合う。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "友だちの標本箱に、持ち帰ってはいけない石が混ざっている。"
+   }
+  ]
+ },
+ {
+  "num": 41,
+  "title": "魔石相場遊び / *Jeu des Cotes*",
+  "tab": "daily",
+  "hook": "遊びの相場予測が、実際の市場操作より正確だったと分かる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "魔石相場遊び / *Jeu des Cotes*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "放課後、商人街、取引所見学の帰り。"
+   },
+   {
+    "label": "担い手",
+    "value": "商家の子、学院生、外環の賢い子ども、若い事務員。"
+   },
+   {
+    "label": "概要",
+    "value": "紙の札や豆を使って相場の上下を当てる模擬投資遊び。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "経済が子どもの遊びへまで降りている時代の象徴。勝ち負けがそのまま将来像へ結びつきやすい。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "遊びの相場予測が、実際の市場操作より正確だったと分かる。"
+   }
+  ]
+ },
+ {
+  "num": 42,
+  "title": "植物栽培 / *Jardin de Fenêtre*",
+  "tab": "daily",
+  "hook": "育てている草だけが、誰かの体調や脈動異常に先に反応する。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "植物栽培 / *Jardin de Fenêtre*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "寮の窓辺、外環の共同中庭、北台地の温室。"
+   },
+   {
+    "label": "担い手",
+    "value": "子ども、療養者、司書、工房見習い、祖母世代。"
+   },
+   {
+    "label": "概要",
+    "value": "小鉢や空き缶で香草や花を育てる生活趣味。都市では窓辺が小さな土地になる。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "自分の場所を持ちにくい社会で、育てる行為そのものが安定の手触りになる。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "育てている草だけが、誰かの体調や脈動異常に先に反応する。"
+   }
+  ]
+ },
+ {
+  "num": 43,
+  "title": "卓名式 / *Table des Noms*",
+  "tab": "daily",
+  "hook": "卓名の記録が改竄されていれば、出生そのものが揺らぐ。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "卓名式 / *Table des Noms*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "誕生から数日以内、家内で行う。"
+   },
+   {
+    "label": "担い手",
+    "value": "家族、親しい隣人、名付け役、時に共同体長。"
+   },
+   {
+    "label": "概要",
+    "value": "家の卓へ子を迎え、名を読み上げ、誰がこの子の世話を引き受けるかを確認する誕生儀礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "出生が血統だけでなく、誰の食卓へ入るかで社会化される文化を示す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "卓名の記録が改竄されていれば、出生そのものが揺らぐ。"
+   }
+  ]
+ },
+ {
+  "num": 44,
+  "title": "成人路踏み / *Marche d'Âge*",
+  "tab": "daily",
+  "hook": "どの道を選ぶかで、その若者がどちらの世界へ進むかが見える。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "成人路踏み / *Marche d'Âge*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "地域ごとに年齢差はあるが、十代半ばから後半の節目。"
+   },
+   {
+    "label": "担い手",
+    "value": "若者、家族、師匠、友人。男女差は地域差の方が大きい。"
+   },
+   {
+    "label": "概要",
+    "value": "自分の属する街路や山道、水路、塔階を一人か少人数で踏み通し、帰ってくる通過儀礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "成人とは法的年齢だけでなく、土地の一部を自分の足で知った者だという感覚を残す。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "どの道を選ぶかで、その若者がどちらの世界へ進むかが見える。"
+   }
+  ]
+ },
+ {
+  "num": 45,
+  "title": "婚姻対灯式 / *Veillée des Deux Lampes*",
+  "tab": "daily",
+  "hook": "灯の明るさが不自然に揃いすぎている時、誰かが手を加えている。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "婚姻対灯式 / *Veillée des Deux Lampes*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "婚礼当夜。"
+   },
+   {
+    "label": "担い手",
+    "value": "婚姻当事者、両家、媒酌人、友人たち。"
+   },
+   {
+    "label": "概要",
+    "value": "二つの灯石を向かい合わせ、同じ明るさで朝まで保てるかを見守る婚姻儀礼。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "家と家、あるいは街区と街区の均衡を象徴する。恋愛だけでなく調停の形式でもある。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "灯の明るさが不自然に揃いすぎている時、誰かが手を加えている。"
+   }
+  ]
+ },
+ {
+  "num": 46,
+  "title": "葬送舟灯 / *Barque des Veillées*",
+  "tab": "daily",
+  "hook": "流したはずの灯舟が、ありえない岸へ戻ってくる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "葬送舟灯 / *Barque des Veillées*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "河口や運河の共同体での葬送、失踪一年後の追悼。"
+   },
+   {
+    "label": "担い手",
+    "value": "河口舟上民、港湾民、遺族、子どもたち。"
+   },
+   {
+    "label": "概要",
+    "value": "小さな灯を載せた紙舟や木舟を流し、戻ってこない者へ名を呼びかける。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "遺体の有無にかかわらず弔いを成立させる庶民の知恵。事故の多い社会に必要な儀礼。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "流したはずの灯舟が、ありえない岸へ戻ってくる。"
+   }
+  ]
+ },
+ {
+  "num": 47,
+  "title": "魔石ブローチ交換 / *Échange des Broches*",
+  "tab": "daily",
+  "hook": "ただの交換品が、後に誰が誰を守ろうとしたかの証拠になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "魔石ブローチ交換 / *Échange des Broches*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "学院祭、発現祝の後、好きな相手との秘密の約束。"
+   },
+   {
+    "label": "担い手",
+    "value": "主に若者と子ども。ときに兄姉世代も行う。"
+   },
+   {
+    "label": "概要",
+    "value": "小さなブローチや模造石を友人、恋人、同盟相手と交換する遊び半分の習俗。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "家が定める縁ではなく、自分で選ぶ帰属の練習。だから大人は軽く見つつ警戒する。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "ただの交換品が、後に誰が誰を守ろうとしたかの証拠になる。"
+   }
+  ]
+ },
+ {
+  "num": 48,
+  "title": "反骨アクセ取引 / *Marché Gris*",
+  "tab": "daily",
+  "hook": "安い耳飾り一つが、地下組織と学院クラスを繋ぐ合図になる。",
+  "fields": [
+   {
+    "label": "名称",
+    "value": "反骨アクセ取引 / *Marché Gris*"
+   },
+   {
+    "label": "場面・時期",
+    "value": "夜市、学院祭、外環フリマ、ライブ終演後。"
+   },
+   {
+    "label": "担い手",
+    "value": "若者、舞台衣装崩れ、移民二世、地下誌まわりの子たち。"
+   },
+   {
+    "label": "概要",
+    "value": "廃材金具、名家礼装の端切れ、無害な模造石、時に禁制品を混ぜたアクセの交換市場。"
+   },
+   {
+    "label": "文化的意味",
+    "value": "階級美学を解体し、自分たちの印を自分で作る若者経済。遊びだが、政治の匂いが濃い。"
+   },
+   {
+    "label": "物語のフック",
+    "value": "安い耳飾り一つが、地下組織と学院クラスを繋ぐ合図になる。"
+   }
+  ]
+ }
+];
+const INTROS = {"architecture": "本稿では、行政上の首都 `RACINE` を含む中央旧都圏を文化名として「エンバーリン圏」と呼ぶ。学院生や旧家の会話で「エンバーリン」と言う場合、多くは `RACINE` の旧王冠区、灰燼文庫学院、北台地の旧館群までを含んだ生活圏を指す。", "clothing": "本稿の服飾は、VEXALIAの制度、KROSSの労働、TAKANIの返礼、EMBERLYNの残存格式、そしてBLANCA以後の若者的混成を同時に反映する。衣服は保温や身分表示だけでなく、血統の秘匿、所属の偽装、反抗の暗号にもなる。", "peoples": "本世界の中心はあくまで人間社会であり、エルフやドワーフのような独立した定番ファンタジー種族は存在しない。その代わり、1700年の接触以後に生じた血統差、混成文化、そして「人以外にも起きた変化」が、連邦の人間多様性と生態系を複雑にしている。", "humanities": "本世界の人文学は、魔法をどう呼ぶか、接触をどう意味づけるか、そして誰の記録を「歴史」と認めるかをめぐって成立している。制度側の学問30分野に対し、ここで扱うのはそれを支える思想潮流、文学慣習、言語実践、翻訳文化、批評の地層である。", "daily": "本稿は、七都市の明るい日常と、その裏にある階層・血統・規制の緊張が同時に見えるよう構成した。子ども視点では楽しく、シリーズが進むほど同じ文化要素が別の重さを帯びる。"};
+const TABS = [{"id": "architecture", "ja": "建築・都市", "en": "Architecture", "color": "#a88858"}, {"id": "clothing", "ja": "服装・身装", "en": "Clothing", "color": "#c09070"}, {"id": "peoples", "ja": "民族・種族", "en": "Peoples", "color": "#90a078"}, {"id": "humanities", "ja": "人文・思想", "en": "Humanities", "color": "#a878a0"}, {"id": "daily", "ja": "生活・娯楽", "en": "Daily Life", "color": "#b09070"}];
+
+const LS = {
+  get(k, def){ try { return JSON.parse(localStorage.getItem('cv_'+k)) ?? def; } catch(e){ return def; } },
+  set(k, v){ localStorage.setItem('cv_'+k, JSON.stringify(v)); }
+};
+
+let favs = new Set(LS.get('favs', []));
+let reads = new Set(LS.get('reads', []));
+let memos = LS.get('memos', {});
+let expanded = new Set();
+
+let filters = { tab: 'architecture', q: '', fav: false, unread: false, all: false };
+
+// Build tabs
+const tabBar = document.getElementById('tabs');
+TABS.forEach((t, i) => {
+  const b = document.createElement('button');
+  b.className = 'tab ' + t.id.substring(0,5);
+  if (i === 0) b.classList.add('active');
+  b.dataset.tab = t.id;
+  b.innerHTML = `◆ ${t.en}<span class="tab-ja">${t.ja}</span>`;
+  tabBar.appendChild(b);
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    filters.tab = t.id;
+    filters.all = false;
+    document.querySelectorAll('.pill[data-filter="all"]').forEach(p => p.classList.remove('active'));
+    document.getElementById('intro').textContent = INTROS[t.id] || '';
+    render();
+  });
+});
+
+document.getElementById('intro').textContent = INTROS['architecture'] || '';
+
+const grid = document.getElementById('grid');
+const statsEl = document.getElementById('stats');
+
+function getKey(e){ return `${e.tab}-${e.num}`; }
+
+function matches(e){
+  if (!filters.all && e.tab !== filters.tab) return false;
+  const key = getKey(e);
+  if (filters.fav && !favs.has(key)) return false;
+  if (filters.unread && reads.has(key)) return false;
+  if (filters.q){
+    const q = filters.q.toLowerCase();
+    const hay = (e.title+' '+e.hook+' '+e.fields.map(f=>f.label+' '+f.value).join(' ')).toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const list = ENTRIES.filter(matches);
+  grid.innerHTML = '';
+  if (!list.length){ grid.innerHTML = '<div class="empty">該当なし</div>'; updateStats(list); return; }
+  list.forEach(e => {
+    const key = getKey(e);
+    const card = document.createElement('div');
+    const shortTab = {architecture:'arch',clothing:'cloth',peoples:'peop',humanities:'hum',daily:'daily'}[e.tab];
+    card.className = 'card' + (reads.has(key)?' read':'') + (favs.has(key)?' fav':'') + (expanded.has(key)?' expanded':'');
+    card.dataset.key = key;
+    card.dataset.tab = e.tab;
+    const memo = memos[key] || '';
+    const fieldsHtml = e.fields.filter(f => !f.label.includes('フック')).map(f =>
+      `<dt>${f.label}</dt><dd>${f.value}</dd>`
+    ).join('');
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="c-num">#${String(e.num).padStart(2,'0')}</span>
+        <span class="c-tag ${shortTab}">${TABS.find(t=>t.id===e.tab).en}</span>
+      </div>
+      <div class="c-title">${e.title}</div>
+      <div class="c-hook">${e.hook || ''}</div>
+      <div class="c-details">
+        <dl>${fieldsHtml}</dl>
+        <div class="c-memo">
+          <dt style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">メモ Memo</dt>
+          <textarea data-memo="${key}" placeholder="気になった点・採用決定・削除候補 ...">${memo.replace(/"/g,'&quot;')}</textarea>
+        </div>
+        <div class="c-actions">
+          <button class="c-btn ${favs.has(key)?'on':''}" data-act="fav" data-key="${key}">${favs.has(key)?'♥':'♡'} お気に入り</button>
+          <button class="c-btn ${reads.has(key)?'on':''}" data-act="read" data-key="${key}">${reads.has(key)?'✓ 既読':'未読'}</button>
+          <button class="c-btn" data-act="collapse" data-key="${key}">閉じる</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  updateStats(list);
+}
+
+function updateStats(list){
+  statsEl.innerHTML = `表示 <b>${list.length}</b> / 全 <b>${ENTRIES.length}</b> &nbsp;&nbsp; ♥ <b>${favs.size}</b> &nbsp;&nbsp; 既読 <b>${reads.size}</b>`;
+}
+
+grid.addEventListener('click', (ev)=>{
+  const card = ev.target.closest('.card'); if (!card) return;
+  const key = card.dataset.key;
+  const act = ev.target.dataset.act;
+  if (act === 'fav'){
+    if (favs.has(key)) favs.delete(key); else favs.add(key);
+    LS.set('favs', [...favs]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'read'){
+    if (reads.has(key)) reads.delete(key); else reads.add(key);
+    LS.set('reads', [...reads]); render(); ev.stopPropagation(); return;
+  }
+  if (act === 'collapse'){ expanded.delete(key); render(); ev.stopPropagation(); return; }
+  if (ev.target.tagName === 'TEXTAREA') return;
+  if (expanded.has(key)){ expanded.delete(key); } else { expanded.add(key); reads.add(key); LS.set('reads', [...reads]); }
+  render();
+});
+
+grid.addEventListener('input', (ev)=>{
+  const t = ev.target;
+  if (t.tagName === 'TEXTAREA' && t.dataset.memo){
+    memos[t.dataset.memo] = t.value;
+    LS.set('memos', memos);
+  }
+});
+
+document.querySelectorAll('.pill[data-filter]').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const f = p.dataset.filter;
+    filters[f] = !filters[f];
+    p.classList.toggle('active', filters[f]);
+    render();
+  });
+});
+
+document.getElementById('q').addEventListener('input', (e)=>{
+  filters.q = e.target.value.trim();
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
