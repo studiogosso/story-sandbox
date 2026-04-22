@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELEKTRON — 琥珀の道</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1816;
+    --parchment: #f5ecdc;
+    --parchment-warm: #ede0c8;
+    --amber: #c7892b;
+    --amber-deep: #8c5a00;
+    --amber-glow: #e8b245;
+    --atlantic: #4a5a6b;
+    --atlantic-pale: #8b9bad;
+    --forest: #2a3a2e;
+    --forest-pale: #5a6a5e;
+    --silver: #b8c4c7;
+    --silver-dark: #4a5457;
+    --border-rule: #c7892b33;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Noto Serif JP", "Cormorant Garamond", serif;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--parchment);
+    line-height: 1.85;
+    font-size: 17px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #f5ecdc;
+    overflow: hidden;
+    background: #0a0805;
+  }
+  .hero__bg {
+    position: absolute; inset: 0;
+    background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/Peter_Paul_Rubens_-_The_Fall_of_Phaeton_(National_Gallery_of_Art).jpg");
+    background-size: cover;
+    background-position: center 30%;
+    filter: brightness(0.45) contrast(1.1) saturate(1.15);
+  }
+  .hero__overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(10,8,5,0.2) 0%, rgba(10,8,5,0.85) 100%);
+  }
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 900px;
+  }
+  .hero__eyebrow {
+    font-family: "Cinzel", serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    color: var(--amber-glow);
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+  }
+  .hero__title {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    font-size: clamp(3rem, 10vw, 7rem);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+    color: #f0d890;
+    text-shadow: 0 0 60px rgba(199, 137, 43, 0.5);
+  }
+  .hero__greek {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--amber-glow);
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+  .hero__subtitle {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 4rem;
+    color: #e4d4b4;
+  }
+  .hero__meta {
+    font-family: "Cinzel", serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: #c2a87a;
+    border-top: 1px solid var(--amber);
+    padding-top: 1.5rem;
+    display: inline-block;
+    min-width: 300px;
+  }
+  .hero__caption {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    z-index: 2;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section.chapter {
+    padding: 7rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  section.full-bleed {
+    padding: 7rem 0;
+  }
+  section.full-bleed > .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .chapter-num {
+    font-family: "Cinzel", serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    color: var(--amber-deep);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  h2.chapter-title {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 3rem;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+  }
+  h2.chapter-title .en {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 0.55em;
+    color: var(--amber-deep);
+    font-weight: 400;
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .lede {
+    font-size: 1.35rem;
+    line-height: 1.9;
+    color: var(--ink);
+    max-width: 780px;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+  .lede strong {
+    color: var(--amber-deep);
+    font-weight: 600;
+  }
+
+  p {
+    max-width: 760px;
+    margin-bottom: 1.3rem;
+  }
+
+  /* ---------- IMAGES ---------- */
+  .fig {
+    margin: 3rem 0;
+    text-align: center;
+  }
+  .fig img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(26, 24, 22, 0.15);
+  }
+  .fig figcaption {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--silver-dark);
+    margin-top: 1rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  .fig figcaption strong {
+    font-style: normal;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .fig--wide img { max-height: 700px; object-fit: cover; width: 100%; }
+  .fig--tall { max-width: 500px; margin-left: auto; margin-right: auto; }
+
+  .fig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+  .fig-grid .fig { margin: 0; }
+  .fig-grid .fig img { height: 280px; object-fit: cover; width: 100%; }
+
+  .fig-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+  @media (max-width: 720px) {
+    .fig-duo { grid-template-columns: 1fr; }
+  }
+  .fig-duo .fig { margin: 0; }
+  .fig-duo .fig img { height: 400px; object-fit: cover; width: 100%; }
+
+  /* ---------- PULL QUOTE ---------- */
+  blockquote {
+    margin: 4rem 0;
+    padding: 2rem 3rem;
+    border-left: 3px solid var(--amber);
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--amber-deep);
+    max-width: 740px;
+    line-height: 1.6;
+    background: rgba(199, 137, 43, 0.05);
+  }
+  blockquote cite {
+    display: block;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: var(--silver-dark);
+    font-style: normal;
+    font-family: "Noto Serif JP", serif;
+  }
+
+  /* ---------- SECTION VARIANTS ---------- */
+  .chapter--amber-bg {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-warm) 100%);
+  }
+  .chapter--atlantic {
+    background: linear-gradient(180deg, #3d4a57 0%, #2a3540 100%);
+    color: #dde4ec;
+  }
+  .chapter--atlantic h2.chapter-title,
+  .chapter--atlantic .lede,
+  .chapter--atlantic p { color: #dde4ec; }
+  .chapter--atlantic .chapter-num { color: var(--atlantic-pale); }
+  .chapter--atlantic h2.chapter-title .en { color: var(--atlantic-pale); }
+  .chapter--atlantic blockquote {
+    background: rgba(139, 155, 173, 0.1);
+    border-left-color: var(--atlantic-pale);
+    color: #e4eaf2;
+  }
+  .chapter--atlantic .fig figcaption { color: var(--atlantic-pale); }
+  .chapter--atlantic .fig figcaption strong { color: #f0f4f8; }
+
+  .chapter--forest {
+    background: linear-gradient(180deg, #222c25 0%, #1a221c 100%);
+    color: #d4dcd6;
+  }
+  .chapter--forest h2.chapter-title,
+  .chapter--forest .lede,
+  .chapter--forest p { color: #d4dcd6; }
+  .chapter--forest .chapter-num { color: #8ea294; }
+  .chapter--forest h2.chapter-title .en { color: #8ea294; }
+  .chapter--forest blockquote {
+    background: rgba(142, 162, 148, 0.08);
+    border-left-color: #8ea294;
+    color: #e0e8e2;
+  }
+  .chapter--forest .fig figcaption { color: #8ea294; }
+  .chapter--forest .fig figcaption strong { color: #e8eee8; }
+
+  .chapter--silver {
+    background: linear-gradient(180deg, #e4e8ea 0%, #cdd4d7 100%);
+    color: var(--silver-dark);
+  }
+
+  /* ---------- ORNAMENT ---------- */
+  .ornament {
+    text-align: center;
+    font-family: "Cinzel", serif;
+    color: var(--amber);
+    margin: 4rem 0;
+    font-size: 1.5rem;
+    letter-spacing: 1em;
+  }
+
+  /* ---------- ROUTE STAGES ---------- */
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 3rem 0;
+    border: 1px solid var(--border-rule);
+  }
+  @media (max-width: 720px) {
+    .stages { grid-template-columns: 1fr; }
+  }
+  .stage {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-right: 1px solid var(--border-rule);
+  }
+  .stage:last-child { border-right: none; }
+  @media (max-width: 720px) {
+    .stage { border-right: none; border-bottom: 1px solid var(--border-rule); }
+    .stage:last-child { border-bottom: none; }
+  }
+  .stage--gold { background: linear-gradient(180deg, #f4e2b0 0%, #e8c878 100%); color: #5a3d00; }
+  .stage--blue { background: linear-gradient(180deg, #8b9bad 0%, #5a6b7e 100%); color: #fff; }
+  .stage--forest { background: linear-gradient(180deg, #4a5a4e 0%, #2a3a2e 100%); color: #d4dcd6; }
+  .stage--silver { background: linear-gradient(180deg, #e4e8ea 0%, #b8c4c7 100%); color: #2a3538; }
+  .stage__num {
+    font-family: "Cinzel", serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+  .stage__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+  .stage__desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  /* ---------- BEAT SHEET ---------- */
+  .beats {
+    margin: 3rem 0;
+    border-top: 1px solid var(--border-rule);
+  }
+  .beat {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-rule);
+  }
+  @media (max-width: 720px) {
+    .beat { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+  .beat__time {
+    font-family: "Cinzel", serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--amber-deep);
+  }
+  .beat__content strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .beat__content p { margin: 0; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: var(--ink);
+    color: #c2a87a;
+    padding: 4rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  footer .footer__title {
+    font-family: "Cinzel", serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.4em;
+    color: var(--amber-glow);
+    margin-bottom: 1.5rem;
+  }
+  footer p { margin: 0.5rem auto; max-width: 600px; }
+
+  /* ---------- TOC ---------- */
+  .toc {
+    background: rgba(26, 24, 22, 0.04);
+    padding: 2rem;
+    margin-bottom: 0;
+    border-top: 1px solid var(--border-rule);
+    border-bottom: 1px solid var(--border-rule);
+  }
+  .toc__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: center;
+    font-family: "Cinzel", serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+  }
+  .toc a {
+    color: var(--silver-dark);
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc a:hover { color: var(--amber-deep); border-bottom-color: var(--amber); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ HERO ═══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <div class="hero__eyebrow">Studio Pitch — 2026</div>
+    <h1 class="hero__title">ELEKTRON</h1>
+    <div class="hero__greek">ἤλεκτρον</div>
+    <div class="hero__subtitle">琥 珀 の 道</div>
+    <div class="hero__meta">90-MINUTE ANIMATED FEATURE</div>
+  </div>
+  <div class="hero__caption">Peter Paul Rubens, <i>The Fall of Phaeton</i> (c. 1604-1605) · National Gallery of Art</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ TOC ═══════════════════════════════════════════════════ -->
+<nav class="toc">
+  <div class="toc__inner">
+    <a href="#question">I. 問い</a>
+    <a href="#myth">II. 神話</a>
+    <a href="#amber">III. 琥珀</a>
+    <a href="#era">IV. 時代</a>
+    <a href="#massalia">V. マッサリア</a>
+    <a href="#pytheas">VI. ピュテアス</a>
+    <a href="#road">VII. 琥珀の道</a>
+    <a href="#north">VIII. 北の民</a>
+    <a href="#route">IX. ルート</a>
+    <a href="#structure">X. 構造</a>
+    <a href="#patron">XI. パトロンと船長</a>
+    <a href="#protagonist">XII. 主人公</a>
+    <a href="#mystery">XIII. 不思議</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ I. 問い ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="question">
+  <div class="chapter-num">Chapter I</div>
+  <h2 class="chapter-title">物語の問い<span class="en">The Central Question</span></h2>
+
+  <p class="lede">
+    <strong>愛は、使命感の産物ではないか。</strong>
+  </p>
+
+  <p>恋愛や血縁の感情以前に、*役割を引き受けて続ける行為*の中にこそ、愛と呼ばれるものが発生する——ではないか。結婚制度、親子の役、師弟、戦友、畑を継ぐ者、誰かを看取る者。人は運命の相手や奇跡の感情を待つのではなく、*役割を引き受ける*ことで、そこに愛を生じさせてきたのではないか。</p>
+
+  <p>この仮説が正しいなら、それは前向きな発見でもある。——愛は、運命でも才能でもない。*技能*であり、*実践*であり、誰の手にも作れるもの。恋愛で満たされなかった者にも、家族に恵まれなかった者にも、それは開かれている。</p>
+
+  <blockquote>
+    愛は、役割を引き受けた者の中に発生し、その者が引き継がれる限り、続いていく。
+  </blockquote>
+
+  <p>この仮説を、ヘレニズム期の若者一人の半年の航海を通して、静かに、前向きに、証明する。——それが『ELEKTRON』の仕事である。</p>
+</section>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- ═══════════════════════════════════════════════════ II. 神話 ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="myth">
+  <div class="chapter-num">Chapter II</div>
+  <h2 class="chapter-title">神話の背骨 — パエトーンとヘリアデス<span class="en">The Mythic Spine — Phaethon and the Heliades</span></h2>
+
+  <p class="lede">この物語には、すでに完璧な神話がひとつ埋め込まれている。——それは *琥珀* の起源神話である。</p>
+
+  <figure class="fig fig--wide">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Peter_Paul_Rubens_-_The_Fall_of_Phaeton_(National_Gallery_of_Art).jpg" alt="Rubens - Fall of Phaeton">
+    <figcaption><strong>Peter Paul Rubens</strong> — <i>The Fall of Phaeton</i>（1604-1605頃） / National Gallery of Art<br>太陽の子パエトーンが父ヘリオスの戦車を操縦しきれず、天から墜ちる瞬間</figcaption>
+  </figure>
+
+  <p>パエトーンは太陽神ヘリオスの息子。父の戦車を一日だけ操縦する許しを得るが、馬を制御できず、世界を焼きかけ、ゼウスの雷で墜落する。川に落ちて死んだ彼を、姉たち——ヘリアデス(*太陽の娘たち*)——は岸辺で泣き続けた。</p>
+
+  <p>彼女たちは泣き止まなかった。泣き続けるうちに、足が地に根を張り、腕が枝になり、髪が葉に変わった。——ポプラの木に変身した。それでも涙だけは、葉と幹を伝って流れ落ち続けた。</p>
+
+  <p>その涙が、川に落ち、冷え、固まって、*琥珀* になった。</p>
+
+  <div class="fig-duo">
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Santi_di_Tito_001.jpg" alt="Santi di Tito - Heliades">
+      <figcaption><strong>Santi di Tito</strong> — <i>ポプラに変身するパエトーンの姉たち</i>（16世紀後半）</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Heliades_by_Rupert_Bunny.jpg" alt="Rupert Bunny - Heliades">
+      <figcaption><strong>Rupert Bunny</strong> — <i>The Heliades</i>（1920年代）</figcaption>
+    </figure>
+  </div>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pierre_Brébiette_-_La_mort_de_Phaèton_et_la_transformation_des_Héliades,_ses_soeurs.jpg" alt="Brébiette - Death of Phaethon and transformation of Heliades">
+    <figcaption><strong>Pierre Brébiette</strong> — <i>パエトーンの死と、姉たちヘリアデスの変身</i>（17世紀）/ 墜落と変身が同じ画面に描かれている</figcaption>
+  </figure>
+
+  <blockquote>
+    琥珀 = 喪失を引き受け続けた者の涙が、石に変わったもの。<br>
+    役割(悼み続ける)を捨てずに貫いた者たちの、愛の結晶。
+    <cite>— テーマの視覚化</cite>
+  </blockquote>
+
+  <p>古代ギリシアのこの神話は、そのまま本作のテーマの*物質化*である。愛(悼むこと、役割を引き受けること)が、時間をかけて、触れられる物質になる。——最後のカットで主人公が琥珀を光に透かすとき、観客には一度も説明せずに、すべてが静かに繋がる。</p>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ III. 琥珀 ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--amber-bg" id="amber" style="max-width: none; padding-left: calc((100vw - 1200px) / 2); padding-right: calc((100vw - 1200px) / 2);">
+  <div style="max-width: 1200px; margin: 0 auto;">
+  <div class="chapter-num">Chapter III</div>
+  <h2 class="chapter-title">琥珀 — 涙が石になるということ<span class="en">Amber — When Tears Become Stone</span></h2>
+
+  <p class="lede">琥珀は古代の針葉樹の樹脂が4,500万年かけて化石化したもの。バルト海沿岸は世界最大の琥珀産地。——古代ギリシア人はその語源を *ἤλεκτρον*(エレクトロン)と呼んだ。*太陽の物質*、あるいは*輝くもの*、という意味。</p>
+
+  <p>擦ると静電気を帯び、物を引き寄せる性質があった。——後に "electric" "electron" という語のすべてが、この石から派生した。「何もないところから、関係を引き寄せる力」。愛の発生そのものの隠喩として、これ以上の素材はない。</p>
+
+  <div class="fig-grid">
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bryłki_Bursztynu_Bałtyckiego_(sukcynitu).jpg" alt="Raw Baltic amber">
+      <figcaption><i>原石のままの琥珀</i> / バルト海産</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Colours_of_Baltic_Amber.jpg" alt="Colors of Baltic Amber">
+      <figcaption><i>琥珀の色の振幅</i> / 白、蜂蜜色、赤、青、緑</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Baltic_amber_Coleoptera_Brentidae_Apion_3.JPG" alt="Insect in amber">
+      <figcaption><i>琥珀の中の虫</i> / 4000万年前の甲虫、そのまま凍結</figcaption>
+    </figure>
+  </div>
+
+  <p>琥珀の中には、しばしば虫や植物の断片が閉じ込められている。*時間そのもの*が止まったかのような標本。——森の案内人が主人公に手渡す一欠片には、小さな虫が一匹、閉じ込められている。その意味は、作中では明かされない。</p>
+
+  <div class="fig-duo">
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Amber_Fisher.jpg" alt="Amber fisher on Baltic coast">
+      <figcaption><i>琥珀拾い</i> / ポーランド沿岸、伝統的な採集</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Baltic_beach_sand_containing_amber.jpg" alt="Baltic beach with amber">
+      <figcaption><i>琥珀を含むバルト海岸の砂</i> / 嵐の翌朝、地元の人々がこれを拾う</figcaption>
+    </figure>
+  </div>
+
+  <p>嵐の翌朝、海岸に打ち上げられた琥珀を、地元の女たちが拾っていく——。物語のクライマックスは、この場面である。</p>
+  </div>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ IV. 時代 ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="era">
+  <div class="chapter-num">Chapter IV</div>
+  <h2 class="chapter-title">時代 — ヘレニズム期<span class="en">Era — The Hellenistic Period</span></h2>
+
+  <p class="lede"><strong>前323年(アレクサンドロス大王の死)〜前31年(アクティウムの海戦)</strong>。ギリシア文化が地中海全域と小アジア、中東、エジプトまで広がり、混交した時代。</p>
+
+  <p>この時代の特徴:</p>
+  <ul style="margin-left: 2rem; margin-bottom: 2rem;">
+    <li>アレクサンドリア、ペルガモン、アンティオキアなど大都市の学園と図書館</li>
+    <li>哲学(ストア派、エピクロス派)と修辞学の学校が機能している</li>
+    <li>地中海全域の交易が活発、船と海図の技術が高まる</li>
+    <li>地中海を越えた先——大西洋、北方、黒海奥地——への探索が試みられる</li>
+    <li>ギリシア人・ローマ人が徐々に混ざりはじめる</li>
+    <li>*異国への好奇心*が、哲学的・文学的な主題になっている</li>
+  </ul>
+
+  <p>本作は、このヘレニズム期の中葉(前3〜前2世紀頃)を想定する。——大西洋への西方航路が*可能だが危険*であり、学園と修辞学校が整備されているが、主人公のような地方の若者にとっては*遠い制度*でもあった、という時代背景。</p>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ V. マッサリア ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--atlantic" id="massalia">
+  <div class="chapter-num">Chapter V</div>
+  <h2 class="chapter-title">出発地 — マッサリア<span class="en">The Departure — Massalia</span></h2>
+
+  <p class="lede">現在のマルセイユ。前600年頃、小アジアのフォカイア(イオニア系ギリシア人)が西方交易の拠点として建設した植民都市。——古代ギリシア世界が*西*と向き合った最前線。</p>
+
+  <div class="fig-duo">
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Massalia_large_coin_5th_1st_century_BCE.jpg" alt="Massalia coin">
+      <figcaption><i>マッサリアのドラクマ銀貨</i> / アルテミスの頭、裏面にライオン。前5〜前1世紀</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Heavy_drachm_Massilia_reverse_CdM_Paris.jpg" alt="Massilia drachm reverse">
+      <figcaption><i>マッサリアのドラクマ裏面</i> / 前390-220年、パリ・カビネ・デ・メダイユ蔵</figcaption>
+    </figure>
+  </div>
+
+  <p>マッサリアは*西方の窓*だった。ここからケルト系の内陸部と交易し、さらに先——イベリア半島、ブリタニア、大西洋の向こう——への航路が知られていた。琥珀、錫、毛皮、奴隷、そして*噂*が、この港を通って地中海に流れ込んだ。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marseille_-_Le_jardin_des_vestiges.JPG" alt="Ancient port of Marseille vestiges">
+    <figcaption><strong>古代マッサリアの港の遺構</strong> / 現マルセイユ旧港近く・ヴェスティージュ庭園</figcaption>
+  </figure>
+
+  <p>本作の主人公 <i>Glaukos</i>(灰色の海)は、この都市の商人の息子として生まれる。祖父は書記、父は西方交易の商人。——アテナイの修辞学校に送られるが馴染めず、一年で中退して帰郷する。父との衝突の末、港に流れ、書記を一人失った船に紛れ込む。そこから物語が始まる。</p>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ VI. ピュテアス ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="pytheas">
+  <div class="chapter-num">Chapter VI</div>
+  <h2 class="chapter-title">先駆者 — ピュテアス<span class="en">The Precursor — Pytheas of Massalia</span></h2>
+
+  <p class="lede">前325年頃、マッサリアのギリシア人ピュテアスは、地中海を越え、ジブラルタルを抜け、大西洋を北上し、*ブリタニア*の沿岸を周り、さらにその先の「トゥーレ」(*Thule*)という伝説の島まで至ったと記録している。——ヘレニズム世界が知っていた、*実在した北方遠征*。</p>
+
+  <div class="fig-duo">
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Parisinus_gr_1397_f.162_pytheas_of_massalia_from_Strabo_7.3.1.jpg" alt="Pytheas of Massalia manuscript">
+      <figcaption><i>ピュテアスを記した10世紀写本</i> / ストラボン『地誌』より</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pythéas.jpg" alt="Statue of Pytheas">
+      <figcaption><i>ピュテアス像</i> / Auguste Ottin作、マルセイユ・パレ・ドゥ・ラ・ブルス</figcaption>
+    </figure>
+  </div>
+
+  <p>ピュテアスの航海記『大洋について』は現存しない。ストラボン、プリニウスらの引用断片のみが残る。彼は*白夜*、*凍る海*、*琥珀の浜*、そして「海と空と大地が区別できない場所」(*pancake ice*——パンケーキ氷のこと、と推定される)を記している。</p>
+
+  <figure class="fig fig--tall">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Olive_Carleton_Smyth_-_e8syymayx4.jpg" alt="Pytheas Buys Amber">
+    <figcaption><strong>Olive Carleton Smyth</strong> — <i>Pytheas Buys Amber</i><br>ピュテアスが北方の民から琥珀を購う場面</figcaption>
+  </figure>
+
+  <p>本作の遠征は、このピュテアスの航路を*半ば追体験する*ものとして設定する。主人公のクルーもまた、*ピュテアスの航海記*の断片を持参している。彼らは先駆者の足跡を辿りながら、同時にその先を探しにいく。——物語の中で、この記録がどのように*書き継がれる*かが、書記である主人公の役割になる。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ptolemy-british-isles.jpg" alt="Ptolemy's map of British Isles">
+    <figcaption><strong>プトレマイオスのブリタニア地図</strong>(1490年イタリア復元版) / 古代人の世界観の西端</figcaption>
+  </figure>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ VII. 琥珀の道 ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--amber-bg" id="road" style="max-width: none;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+  <div class="chapter-num">Chapter VII</div>
+  <h2 class="chapter-title">琥珀の道<span class="en">The Amber Road</span></h2>
+
+  <p class="lede"><strong>Amber Road</strong>(ラテン: <i>Via Sucinaria</i>)——バルト海沿岸から地中海までを繋いだ、古代ヨーロッパ最大の交易路のひとつ。数千年にわたり、*北の金*と呼ばれた琥珀が南へ流れた。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Baltis_amber_road.jpg" alt="Amber Road map">
+    <figcaption><strong>琥珀の道</strong> / バルト海から地中海までの交易路</figcaption>
+  </figure>
+
+  <p>主要ルートは複数。一つはバルト海岸 → ヴィスワ川/オーデル川 → ドナウ川 → アドリア海 → イタリア半島。もう一つは北海/フリースランド → ライン川 → ローヌ川 → マッサリア。——本作が採用するのは、後者の*海と川の複合ルート*である。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Amber_sources_in_Europe.jpg" alt="Amber sources in Europe">
+    <figcaption><strong>ヨーロッパの琥珀産地</strong> / バルト海岸が圧倒的に最大</figcaption>
+  </figure>
+
+  <p>古代ローマ帝国期には、軍用道路に匹敵する整備がなされた。しかしヘレニズム期にはまだ、この経路は*半ば伝説*であり、片道だけで数ヶ月から一年を要した。危険、未踏、高値の交易品が動く道。——主人公の船は、その最初期の試みの一つとして設定される。</p>
+  </div>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ VIII. 北の民 ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--forest" id="north">
+  <div class="chapter-num">Chapter VIII</div>
+  <h2 class="chapter-title">北の民と、その神々<span class="en">The Peoples of the North and Their Gods</span></h2>
+
+  <p class="lede">航海の後半、船はケルト系、ゲルマン系、そしてバルト系の民の領域に入る。彼らは地中海とは別の神話体系を持ち、*別の言葉*で、同じような物語を語っていた。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Nerthus_by_Emil_Doepler.jpg" alt="Nerthus procession by Emil Doepler">
+    <figcaption><strong>Emil Doepler</strong> — <i>ネルトゥスの行列</i>(1905) / ゲルマンの大地母神の聖なる車</figcaption>
+  </figure>
+
+  <p>ローマの歴史家タキトゥスが『ゲルマニア』で記したネルトゥス(*Nerthus*)——北方ゲルマン人の大地母神。聖なる車に乗せられ、女神として村々を巡る。行列が終わると、奴隷たちが車と神像を湖で清め、その奴隷たちは*湖に沈められた*、という。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dejbjergvognen_DO-621_original.jpg" alt="Dejbjerg wagon">
+    <figcaption><strong>デイビャウの儀式用車</strong> / 鉄器時代、デンマーク国立博物館蔵<br>ネルトゥス信仰で使われた可能性がある実物</figcaption>
+  </figure>
+
+  <p>本作の*陸の章*(森の道行き)では、クルーはネルトゥスの行列に遭遇する、あるいは聖なる森(*nemeton*)を*迂回*することを強いられる。彼らが知っているヘレニズム的な神々とは別の、しかし同じ強度を持った神性が、この森には住んでいる。</p>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/St_Fagans_Celtic_Village_the_main_hut.jpg" alt="Celtic village hut reconstruction">
+    <figcaption><i>ケルトの集落の復元</i> / 茅葺きの主屋。クルーが通り過ぎるような、北の小さな集落の風景</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tollundmannen.jpg" alt="Tollund Man">
+    <figcaption><strong>トーロンド人</strong> / 前4世紀頃、デンマークの沼地で発掘された人体。<br>*北方の神々との契約*が、遺体という形で残った</figcaption>
+  </figure>
+
+  <p>クルーが見た*別言語の神話*——それは、琥珀の海に辿り着いたとき、地元の老婆が語る*ヘリアデスとそっくりの話*として決着する。兄を失った姉たちが泣き続け、木になり、涙が琥珀になった、という物語が、ギリシアでも、北方でも、語られている。——「愛は世界中で同じ構造で生まれる」という、物語の核となる発見。</p>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ IX. ルート ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="route">
+  <div class="chapter-num">Chapter IX</div>
+  <h2 class="chapter-title">航海のルートと、色の転調<span class="en">The Voyage — Palette in Four Movements</span></h2>
+
+  <p class="lede">航海は、海と川と陸を繋ぐ。*色彩*は、それぞれの舞台で転調する。——黄金から青灰、緑黒を経て、白銀へ。一本の映画の中で、古代地中海から北の海までの*全世界*を体験させる。</p>
+
+  <div class="stages">
+    <div class="stage stage--gold">
+      <div class="stage__num">I</div>
+      <div class="stage__title">地中海 — 黄金</div>
+      <div class="stage__desc">マッサリア → ジブラルタル(ヘラクレスの柱)<br>乾いた陽、白い石、オリーブ、赤ワイン</div>
+    </div>
+    <div class="stage stage--blue">
+      <div class="stage__num">II</div>
+      <div class="stage__title">大西洋 — 青灰</div>
+      <div class="stage__desc">イベリア沿岸 → ガリア沿岸<br>霧、塩、星の位置が変わっていく</div>
+    </div>
+    <div class="stage stage--forest">
+      <div class="stage__num">III</div>
+      <div class="stage__title">川と森 — 緑黒</div>
+      <div class="stage__desc">河口で小舟に乗り換え、遡る → 森を徒歩<br>苔、樹皮、焚火、神の気配</div>
+    </div>
+    <div class="stage stage--silver">
+      <div class="stage__num">IV</div>
+      <div class="stage__title">北海 — 白銀</div>
+      <div class="stage__desc">琥珀の海辺 → 嵐の翌朝 → 発見<br>白い空、冷たい砂、透き通った石</div>
+    </div>
+  </div>
+
+  <figure class="fig">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Islossning_(119329313).jpg" alt="Pancake ice in the Baltic">
+    <figcaption><strong>バルト海のパンケーキ氷</strong> / ピュテアスが「海と空と陸の区別がつかない場所」と記した現象。<br>第IV章の視覚の核となる</figcaption>
+  </figure>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ X. 構造 ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="structure">
+  <div class="chapter-num">Chapter X</div>
+  <h2 class="chapter-title">90分の構造<span class="en">The 90-Minute Structure</span></h2>
+
+  <div class="beats">
+    <div class="beat">
+      <div class="beat__time">00:00 — 10:00</div>
+      <div class="beat__content">
+        <strong>開幕・地中海</strong>
+        <p>失恋(大学進学で別れた)の圧縮提示。主人公は修辞学校を一年で中退。父と衝突、家を出る。港で、書記を一人失った船に紛れ込む。——ドラマは小さく、しかし観客は彼が*何かを失った者*として旅に出ることを知る。</p>
+      </div>
+    </div>
+    <div class="beat">
+      <div class="beat__time">10:00 — 35:00</div>
+      <div class="beat__content">
+        <strong>海の章 — 青灰への転調</strong>
+        <p>ジブラルタルを越える夜の呪文。大西洋の嵐。クルーの構成と役割。書記という役割を引き受けていく過程。誰かが落ちる、誰かが助ける。星が変わる。</p>
+      </div>
+    </div>
+    <div class="beat">
+      <div class="beat__time">35:00 — 55:00</div>
+      <div class="beat__content">
+        <strong>川の章 — 緑黒への転調</strong>
+        <p>河口の港町、小舟への乗り換え。ケルトの河神への捧げ物の儀式。クルーの一人が喪失の名を水に投げる。ここで船長宛に*パトロン死去の手紙*が追いつく。船長は何も言わず、航海を続ける。そして*森の案内人*が加わる——性別曖昧、人ならざる気配を纏った存在。</p>
+      </div>
+    </div>
+    <div class="beat">
+      <div class="beat__time">55:00 — 75:00</div>
+      <div class="beat__content">
+        <strong>陸の章 — 森と神々</strong>
+        <p>森を徒歩で横断。ネルトゥスの行列を迂回する。クルーの間で*任務的家族*が成立していく。案内人が夜、古い話を知っていることが示される。主人公は書き続ける。</p>
+      </div>
+    </div>
+    <div class="beat">
+      <div class="beat__time">75:00 — 85:00</div>
+      <div class="beat__content">
+        <strong>琥珀の海 — 白銀への転調</strong>
+        <p>辿り着く。嵐の翌朝、地元の女たちが琥珀を拾っている。通訳が老婆から*現地版のヘリアデス神話*を聞く。——兄を失った姉たちが木になり、涙が琥珀に。船長も主人公も黙る。案内人は別れの朝、消える。主人公に琥珀を一欠片(虫が閉じ込められている)渡して。</p>
+      </div>
+    </div>
+    <div class="beat">
+      <div class="beat__time">85:00 — 90:00</div>
+      <div class="beat__content">
+        <strong>帰還と終幕</strong>
+        <p>帰港(圧縮)。クルーは散らばる。船長は琥珀を一欠片、パトロンの墓に置く。主人公は書いたものを誰かに渡す。最後のカット——彼は*自分の*琥珀を光に透かす。中に虫が見える。観客は、一度も説明されないまま、すべてを理解する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ XI. パトロンと船長 ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--amber-bg" id="patron" style="max-width: none;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+  <div class="chapter-num">Chapter XI</div>
+  <h2 class="chapter-title">パトロンと船長<span class="en">The Patron and the Captain</span></h2>
+
+  <p class="lede">物語の*影の重心*は、この二人にある。——老いた学者と、彼の長年の友である船長。主人公 Glaukos は、このふたりの関係を遠くから見ることで、言葉にならない何かを学んでいく。</p>
+
+  <h3 style="font-family: 'Noto Serif JP', serif; font-weight: 500; font-size: 1.4rem; margin: 2.5rem 0 1.2rem; color: var(--amber-deep); letter-spacing: 0.05em;">老学者 — ピュテアス狂い</h3>
+
+  <p>マッサリアの老商人にして学者。若い頃、ピュテアスの航海記の断片を読んで人生が変わった。彼は自分では航海に出なかった。商売で財を成し、家を継ぎ、地元の学問の庇護者として生きた。今、死の床にいる。</p>
+
+  <p>最後の望みはひとつだけ——「琥珀の浜で、夜明けに何が起きるのか、この目で見たかった」。自分で行くことはもう叶わない。長年の友である船長に託す。片道の資金と、自分の蔵書一式を船に積ませる。</p>
+
+  <blockquote>
+    「お前が見てくれたら、それでいい。戻ってこなくてもかまわん」<br>
+    <cite>— 老学者、出航前夜、船長に</cite>
+  </blockquote>
+
+  <p>パトロン本人は航海に出ない。しかし、彼の*存在*は船に積まれた蔵書と、船長の記憶の中で、航海の全行程に染み渡っている。——そして航海の半ば(川の章)、故郷で彼が死んだという手紙が港で船長に追いつく。船長は何も言わず、航海を続ける。</p>
+
+  <h3 style="font-family: 'Noto Serif JP', serif; font-weight: 500; font-size: 1.4rem; margin: 2.5rem 0 1.2rem; color: var(--amber-deep); letter-spacing: 0.05em;">船長 — 物語の影の重心</h3>
+
+  <p>60代、マッサリア出身の海の男。若い頃から西方航路を走り、ケルトの民とも、北方の商人とも、長年の取引関係を築いてきた。寡黙で、飲みもしない。老学者とは*若い頃からの古い友*で、お互いの人生の大半を見てきた。</p>
+
+  <p>彼は*パトロンの役割を引き受け続ける*。パトロンが死んでも、航海は続く。なぜなら、役割はパトロン個人に対して負ったものではなく、*彼との関係そのもの*に対して負ったものだから。——これが、本作のテーマの最深の実践である。若い主人公は、船長が手紙を読んで黙って海を見る横顔を、船尾から見ている。その時はまだ、何を見たのか理解していない。</p>
+
+  <blockquote>
+    船長の存在そのものが、「愛=使命感の産物」という仮説の、劇中における最も純粋な実例である。
+    <cite>— 設計メモ</cite>
+  </blockquote>
+
+  <h3 style="font-family: 'Noto Serif JP', serif; font-weight: 500; font-size: 1.4rem; margin: 2.5rem 0 1.2rem; color: var(--amber-deep); letter-spacing: 0.05em;">ラストの画</h3>
+
+  <p>帰港後、船長は琥珀の海から持ち帰った琥珀をひとつ、パトロンの墓に置く。——その絵が、映画のエンディングの直前に、数秒だけ差し込まれる。観客には、そこで何が起きているのかが静かに伝わる。主人公のラストカット(*自分の*琥珀を光に透かす)と、二重写しになる。</p>
+  </div>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ XII. 主人公 ═══════════════════════════════════════════════════ -->
+<section class="chapter" id="protagonist">
+  <div class="chapter-num">Chapter XII</div>
+  <h2 class="chapter-title">主人公 — Glaukos<span class="en">The Protagonist — Glaukos, Grey Sea</span></h2>
+
+  <p class="lede">名前: <strong>Glaukos(グラウコス)</strong>——古代ギリシア語で「灰色の海」。彼が向かう大西洋と北海の色を、名前が既に予言している。</p>
+
+  <ul style="margin-left: 2rem; margin-bottom: 2rem;">
+    <li>19歳、男、マッサリア出身</li>
+    <li>商家の息子。祖父は書記、父は西方交易商人</li>
+    <li><em>書く技能</em>だけが自然に身についている</li>
+    <li>高校時代の恋人と、大学進学(アテナイの修辞学校)で別れた</li>
+    <li>学校に馴染めず、一年で中退。<em>なんとなく</em>辞めた</li>
+    <li>帰郷したが父と衝突、家を出る。港をうろつき、書記を一人失った船に紛れ込む</li>
+    <li>クルー内では最年少、最も役に立たない、最も学ぶことの多い一人</li>
+    <li><em>書くこと</em>を役割として引き受けて、航海の記録者になる</li>
+  </ul>
+
+  <p><em>大学を引き受けられなかった(=役割にコミットしなかった)から、愛が湧かなかった</em>——という、テーマの逆証明を、主人公は開幕で無自覚に体現している。観客は、後半で役割の愛を見た瞬間に、遡ってそれを理解する。主人公は最後まで自覚しない。</p>
+
+  <div style="border-left: 3px solid var(--amber); padding: 1.2rem 1.5rem; margin: 2.5rem 0; background: rgba(199,137,43,0.06);">
+    <p style="margin: 0; font-size: 1.05rem; line-height: 1.9;"><strong>巻き込まれ型の目撃者</strong></p>
+    <p style="margin: 0.8rem 0 0; color: #3a3028;">グラウコスは英雄ではない。英雄になりに来たわけでもない。ただ、書ける人間が船に一人必要だったから、たまたま港にいた。</p>
+    <p style="margin: 0.8rem 0 0; color: #3a3028;">しかし彼が目撃するのは——ヘラクレスの柱(世界の端)を越える瞬間、ケルトの河神への捧げ物、大地母神の聖林、そして琥珀の浜で老婆がヘリアデスと同じ神話を語る瞬間——神話と歴史が交差する場所ばかりだ。</p>
+    <p style="margin: 0.8rem 0 0; color: #3a3028;">逆説: <strong>クルーで最も「小さい」人間が、唯一の証人になる。</strong></p>
+    <p style="margin: 0.8rem 0 0; color: #3a3028;">彼が毎日書き続けることで、この遠征は記録になる。記録になることで、この遠征は歴史になる。英雄的な行為は何もない。ただ役割を引き受けて、書き続ける——それが、最も長く残る愛の形になる。</p>
+  </div>
+</section>
+
+<div class="ornament">✦</div>
+
+<!-- ═══════════════════════════════════════════════════ XII. 不思議 ═══════════════════════════════════════════════════ -->
+<section class="chapter chapter--forest" id="mystery">
+  <div class="chapter-num">Chapter XIII</div>
+  <h2 class="chapter-title">不思議 — 森の案内人<span class="en">The Uncanny — The Forest Guide</span></h2>
+
+  <p class="lede">川の章で加わり、陸の章と琥珀の海を伴走し、別れの朝に消える存在。——性別を感じさせない造形、人ならざる気配、しかしクルーの中では役割を引き受けて働く。</p>
+
+  <ul style="margin-left: 2rem; margin-bottom: 2rem;">
+    <li>加入: 川を遡る舟に、いつの間にか乗っている</li>
+    <li>能力: 森を迷わずに歩く、古い神々の名を知っている</li>
+    <li>言語: ギリシア語を少しだけ話す、他にいくつもの言語を持っている</li>
+    <li>違和感: 焚火の向こうで、影が木と溶けている瞬間がある</li>
+    <li>贈り物: 主人公に琥珀を一欠片(中に虫)渡す</li>
+    <li>退場: 琥珀の海からの帰路、別れの朝、いなくなる。誰も名を覚えていない</li>
+  </ul>
+
+  <p>案内人の正体は、作中では明示されない。観客の解釈に委ねる。——ただし*彼/彼女もまた、何かの役割を引き受けて世界と関わっている*ことは、絵で静かに示される。クルーと違う時間の尺度で生きているが、同じ構造で愛を知っている存在。</p>
+</section>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- ═══════════════════════════════════════════════════ FOOTER ═══════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer__title">ELEKTRON · ἤλεκτρον</div>
+  <p>90分アニメーション企画 / 起案 2026-04-21</p>
+  <p>次の決定事項: 船長の具体 / クルー構成 / 失恋の具体 / 船の名前 / 案内人の登場と退場の画</p>
+  <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.8rem;">
+    画像出典: Wikimedia Commons(パブリックドメイン、またはクリエイティブ・コモンズ)<br>
+    Rubens, Santi di Tito, Rupert Bunny, Brébiette, Olive Carleton Smyth, Emil Doepler, and museum/archival photographs
+  </p>
+</footer>
+
+</body>
+</html>

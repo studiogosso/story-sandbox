@@ -1,0 +1,42 @@
+{
+  "description": "既に生成された/既存の映画企画。新規生成時に重複させない。TOP候補として残ったものは ./top/ に詳細がある。",
+  "updated": "2026-04-21",
+
+  "existing_projects": [
+    { "name": "EMBERFALL", "keywords": ["隕石", "1700年", "4家", "12歳主人公", "TAKANI血統", "1/8"] },
+    { "name": "BISTANCLAQUE", "keywords": ["1831リヨン", "canut", "絹織物", "産業革命", "④⑤意味と未来"] },
+    { "name": "SAUDADE", "keywords": ["南欧", "南蛮渡来妖怪", "少年", "コインブラ", "400年前", "ロードムービー"] },
+    { "name": "ELEKTRON", "keywords": ["ヘレニズム", "マッサリア", "琥珀の道", "パエトーン神話", "愛=使命感"] },
+    { "name": "The Unmapped", "keywords": ["ポストトゥルース", "妖精", "野獣", "トリオ旅", "地図にない"] },
+    { "name": "patchwork", "keywords": ["仕立て屋少女", "化け物", "赤ん坊", "山", "90分"] },
+    { "name": "THIRD PLACE", "keywords": ["公共圏崩壊", "ハバーマス", "議論が噛み合わない"] },
+    { "name": "HyperNormalisation", "keywords": ["カーティス", "偽物を演じる世界"] },
+    { "name": "Foucault's Pendulum", "keywords": ["エーコ", "陰謀を繋げた者が飲まれる"] },
+    { "name": "Babel Library", "keywords": ["ボルヘス", "情報全部ある/何も見つからない"] }
+  ],
+
+  "harness_top_cache": [
+    { "score": 50, "name": "中朝国境郵便局×450通の空封筒", "axis": "location_secret", "date": "2026-04-21" },
+    { "score": 46, "name": "氷床コア×南極ドームC越冬×戦争犯罪", "axis": "science_emotion_location", "date": "2026-04-21" },
+    { "score": 46, "name": "レニングラード包囲×種子標本", "axis": "era_material", "date": "2026-04-21" },
+    { "score": 46, "name": "クマムシ×クライオ凍結した母と娘", "axis": "creature_emotion", "date": "2026-04-21" },
+    { "score": 46, "name": "グラスハーモニカ×1816夏のない年", "axis": "sound_disaster", "date": "2026-04-21" },
+    { "score": 46, "name": "海霧×サンフランシスコ霧笛守と同性愛者息子", "axis": "weather_emotion", "date": "2026-04-21" },
+    { "score": 46, "name": "バーバヤガー×戦時下キーウ", "axis": "creature_location", "date": "2026-04-21" },
+    { "score": 46, "name": "ベイルート左官×内戦後の密告", "axis": "location_profession_secret", "date": "2026-04-21" },
+    { "score": 45, "name": "FAST電波望遠鏡×自閉症兄妹×FRB", "axis": "science_emotion_location", "date": "2026-04-21" },
+    { "score": 45, "name": "チタン×ウクライナ鉱山父×義足の娘", "axis": "material_emotion", "date": "2026-04-21" },
+    { "score": 45, "name": "広島現像所×米軍撮影隊員×赤ランプ", "axis": "material_era_emotion", "date": "2026-04-21" },
+    { "score": 45, "name": "X線管×世紀末ウィーン×既婚放射線学者と結核画家", "axis": "material_era_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "遺品整理人×レヴィナス×自閉青年", "axis": "profession_thought_body", "date": "2026-04-21" },
+    { "score": 44, "name": "蚕の卵×6世紀ビザンツ×腸内密輸", "axis": "era_material", "date": "2026-04-21" },
+    { "score": 44, "name": "凍結時刻症×夫婦", "axis": "body_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "語彙漏出症×辞書編纂家", "axis": "body_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "サラエボ不発弾×青春音楽劇", "axis": "sound_disaster", "date": "2026-04-21" },
+    { "score": 44, "name": "蓄音機蝋管×パリ万博×声を失った歌手", "axis": "material_era_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "ソノルミネッセンス×吃音少年と聾少女×廃プール", "axis": "science_emotion_location", "date": "2026-04-21" },
+    { "score": 44, "name": "ハス×クメールルージュ×9歳", "axis": "creature_disaster_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "竹の一斉開花×カレン×11歳", "axis": "creature_disaster_emotion", "date": "2026-04-21" },
+    { "score": 44, "name": "ゴム×コンゴ自由国×9歳の手首", "axis": "creature_disaster_emotion", "date": "2026-04-21" }
+  ]
+}

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アニメ映画企画 横断ハブ — Studio Gosso</title>
+<style>
+  :root {
+    --bg: #0d0e12;
+    --bg2: #141620;
+    --bg3: #1a1d2a;
+    --fg: #e7e4dd;
+    --fg2: #9a9488;
+    --fg3: #6b6558;
+    --accent: #d4a65a;
+    --active: #6bb88a;
+    --building: #d4a65a;
+    --hold: #8a8377;
+    --border: #2a2d3a;
+    --border2: #3a3d4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header {
+    padding: 32px 40px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+  }
+  header .subtitle {
+    color: var(--fg2);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  header .meta {
+    margin-top: 16px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--fg2);
+  }
+  header .meta strong { color: var(--fg); font-weight: 500; }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 40px 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .tab {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: var(--fg2);
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--fg); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  main {
+    padding: 32px 40px 80px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card.hidden { display: none; }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .card-num {
+    color: var(--fg3);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .status {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .status.active { background: rgba(107,184,138,0.15); color: var(--active); }
+  .status.building { background: rgba(212,166,90,0.15); color: var(--building); }
+  .status.hold { background: rgba(138,131,119,0.15); color: var(--hold); }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--fg2);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+  .card-catch {
+    font-size: 13px;
+    color: var(--fg);
+    background: var(--bg3);
+    padding: 10px 12px;
+    border-left: 2px solid var(--accent);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .section {
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--fg3);
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .section li {
+    font-size: 12.5px;
+    color: var(--fg);
+    padding: 2px 0 2px 14px;
+    position: relative;
+  }
+  .section li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--fg3);
+  }
+  .section.next li::before {
+    content: '→';
+    color: var(--accent);
+    font-size: 10px;
+    top: 4px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .link {
+    font-size: 11px;
+    padding: 4px 9px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--fg2);
+    transition: all 0.15s;
+  }
+  .link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+  .link.primary {
+    color: var(--accent);
+    border-color: rgba(212,166,90,0.3);
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .tag {
+    font-size: 10px;
+    color: var(--fg3);
+    padding: 2px 7px;
+    background: var(--bg3);
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  footer {
+    padding: 24px 40px;
+    border-top: 1px solid var(--border);
+    color: var(--fg3);
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 600px) {
+    header, main, .tabs, footer { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>アニメ映画企画 横断ハブ</h1>
+  <div class="subtitle">ANIME FILM PROJECTS — STUDIO GOSSO</div>
+  <div class="meta">
+    <span>最終更新: <strong>2026-04-22</strong></span>
+    <span>企画数: <strong id="count-total">8</strong></span>
+    <span><span class="status active">ACTIVE</span> <strong id="count-active">3</strong></span>
+    <span><span class="status building">BUILDING</span> <strong id="count-building">5</strong></span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-filter="all">ALL</button>
+  <button class="tab" data-filter="active">活性化中</button>
+  <button class="tab" data-filter="building">立ち上げ</button>
+</nav>
+
+<main>
+  <div class="grid" id="grid">
+
+    <!-- ① The Unmapped -->
+    <div class="card" data-status="active">
+      <div class="card-head">
+        <span class="card-num">01 / STORY INCUBATOR</span>
+        <span class="status active">ACTIVE</span>
+      </div>
+      <div class="card-title">The Unmapped</div>
+      <div class="card-subtitle">地図にない</div>
+      <div class="tags">
+        <span class="tag">CGアニメ</span>
+        <span class="tag">ポストトゥルース</span>
+        <span class="tag">3人旅</span>
+      </div>
+      <div class="card-catch">妖精と野獣、2種族の境界にある唯一の「地図にない場所」。3人は社会的にも地図にない存在。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>世界観+3人キャラ(真逆3軸)+3幕構造確定</li>
+          <li>試作シーン16個完成(結婚式/逃亡/アクション)</li>
+          <li>嘘の発音パターン研究の本を設計済み</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>第2→3幕転換(本音の対話)</li>
+          <li>「見える日」の中身</li>
+          <li>ラストカット「目が合う」の具体</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../story_incubator/01_post_truth/progress.md">progress.md</a>
+        <a class="link" href="../story_incubator/01_post_truth/world_synthesis.md">world</a>
+        <a class="link" href="../story_incubator/01_post_truth/characters.md">characters</a>
+        <a class="link" href="../story_incubator/01_post_truth/drifter_book.md">drifter_book</a>
+        <a class="link" href="../story_incubator/01_post_truth/narrative_structure.md">narrative</a>
+        <a class="link" href="../story_incubator/01_post_truth/scenes_draft.md">scenes</a>
+      </div>
+    </div>
+
+    <!-- ② EMBERFALL -->
+    <div class="card" data-status="active">
+      <div class="card-head">
+        <span class="card-num">02 / STANDALONE</span>
+        <span class="status active">ACTIVE</span>
+      </div>
+      <div class="card-title">EMBERFALL</div>
+      <div class="card-subtitle">隕の燠火 — 1700年、空から魔法が降った</div>
+      <div class="tags">
+        <span class="tag">アニメ</span>
+        <span class="tag">血統遺伝魔法</span>
+        <span class="tag">学院+政治</span>
+        <span class="tag">12歳主人公</span>
+      </div>
+      <div class="card-catch">12歳のAmbre。復元の家の末っ子。実は1/8 TAKANI血統(本人は知らない)。観客だけが真実を知る二重構造。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>世界観+4家+魔法5系統+学院クラス6人確定</li>
+          <li>文化5冊(建築/服装/民族/人文/日常)完成</li>
+          <li>社会構造(50年前立憲革命)確定</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>兄姉・両親・曽祖母の名前と関係性</li>
+          <li>EMBERLYN家系図の追加</li>
+          <li>第1話の発現シーン</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="https://studiogosso.github.io/story-sandbox/" target="_blank">🌐 公開サイト</a>
+        <a class="link" href="../anime_meteorite_world.html">world</a>
+        <a class="link" href="../anime_meteorite_families.html">families</a>
+        <a class="link" href="../anime_meteorite_family_trees_v5.html">家系図</a>
+        <a class="link" href="../characters_peers.html">学院6人</a>
+        <a class="link" href="../magic_systems_viewer.html">魔法</a>
+        <a class="link" href="../academic_viewer.html">学問</a>
+        <a class="link" href="../social_viewer.html">社会</a>
+        <a class="link" href="../culture_architecture.md">建築</a>
+        <a class="link" href="../culture_clothing.md">服装</a>
+        <a class="link" href="../culture_peoples.md">民族</a>
+        <a class="link" href="../culture_humanities.md">人文</a>
+        <a class="link" href="../culture_daily.md">日常</a>
+      </div>
+    </div>
+
+    <!-- ③ BISTANCLAQUE -->
+    <div class="card" data-status="active">
+      <div class="card-head">
+        <span class="card-num">03 / STANDALONE</span>
+        <span class="status active">ACTIVE</span>
+      </div>
+      <div class="card-title">BISTANCLAQUE</div>
+      <div class="card-subtitle">1831年リヨン、絹工の娘</div>
+      <div class="tags">
+        <span class="tag">90分映画</span>
+        <span class="tag">産業革命</span>
+        <span class="tag">poetic engine</span>
+        <span class="tag">self-inquiry</span>
+      </div>
+      <div class="card-catch">bis-tan-claque-pan=家族の呼吸のリズムが、蒸気機関の無変化なrhythmに置き換わっていく。director自身への自己探求装置。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>雰囲気・世界観ほぼ完了</li>
+          <li>time-inversion engine確立(彼女が先を行っている)</li>
+          <li>ファンタジー軸は保留、蚕は片隅に残す</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>スコープ決定(A秋/B1年/C3年/D三世代/E蜂起1週)</li>
+          <li>主人公視点確定(娘16歳 / cropper19歳 / 織工妻30代)</li>
+          <li>2026年の扱い(並走するか、冒頭と終わりのみか)</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../bistanclaque/STATUS.md">STATUS.md</a>
+        <a class="link" href="../bistanclaque/research_codex_macro.md">マクロ史</a>
+        <a class="link" href="../bistanclaque/research_claude_atmosphere.md">光/音/匂い</a>
+        <a class="link" href="../bistanclaque/protagonist_and_family.md">主人公/家族</a>
+        <a class="link" href="../bistanclaque/scene_fragments.md">scene断片</a>
+      </div>
+    </div>
+
+    <!-- ④ ELEKTRON -->
+    <div class="card" data-status="building">
+      <div class="card-head">
+        <span class="card-num">04 / STANDALONE</span>
+        <span class="status building">BUILDING</span>
+      </div>
+      <div class="card-title">ELEKTRON</div>
+      <div class="card-subtitle">琥珀の道</div>
+      <div class="tags">
+        <span class="tag">90分映画</span>
+        <span class="tag">ヘレニズム期</span>
+        <span class="tag">遠征</span>
+        <span class="tag">パエトーン神話</span>
+      </div>
+      <div class="card-catch">マッサリア発→北方琥珀の海への遠征。主題は「愛は使命感(役割を引き受けること)の産物ではないか」。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>主題・時代・ルート・神話背骨確定</li>
+          <li>主人公Glaukos(19歳商家息子)確定</li>
+          <li>パトロン=ピュテアス狂いの老学者、船長=60代寡黙</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>船長の具体(名前・過去・パトロンとの馴れ初め)</li>
+          <li>クルー構成(人数・民族混合)</li>
+          <li>船の名前、森の案内人の登場/退場</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../elektron/index.html">index.html</a>
+      </div>
+    </div>
+
+    <!-- ⑤ SAUDADE -->
+    <div class="card" data-status="building">
+      <div class="card-head">
+        <span class="card-num">05 / STANDALONE</span>
+        <span class="status building">BUILDING</span>
+      </div>
+      <div class="card-title">SAUDADE</div>
+      <div class="card-subtitle">南欧コインブラ、400年前の南蛮渡来妖怪</div>
+      <div class="tags">
+        <span class="tag">110-120分</span>
+        <span class="tag">ポルトガル</span>
+        <span class="tag">妖怪7体</span>
+        <span class="tag">本気モード</span>
+      </div>
+      <div class="card-catch">画家の屋根裏から消えた1枚の絵。壁の隙間から出てきた弱った妖怪と、9歳ハーフ少年の追走劇。普段ダメ/本気で400年前の巨大姿。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>世界観・キャラ7体+敵コレクター・3幕構造確定</li>
+          <li>3Hybrid候補(α絵の二重機能推し/β虚像vs実体/γ軽量王道)</li>
+          <li>両親は薄い扱い、家族ドラマは排除</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>Hybrid α/β/γ 最終選定</li>
+          <li>コレクターの正体(純商人/400年家系/画家旧知/非人間)</li>
+          <li>主役妖怪と本体の関係(親子/分霊/兄弟)</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../../../3000_Work/3300_Tools/3340_Utility/anime_pitch/proposals/SAUDADE.md">SAUDADE.md</a>
+        <a class="link" href="../../../3000_Work/3300_Tools/3340_Utility/anime_pitch/proposals/SAUDADE_research_portugal_japan.md">リサーチ</a>
+      </div>
+    </div>
+
+    <!-- ⑥ SF Space Opera -->
+    <div class="card" data-status="building">
+      <div class="card-head">
+        <span class="card-num">06 / STANDALONE</span>
+        <span class="status building">BUILDING</span>
+      </div>
+      <div class="card-title">小さな師匠<span style="color:var(--fg3);font-size:12px;"> (仮)</span></div>
+      <div class="card-subtitle">SF Space Opera</div>
+      <div class="tags">
+        <span class="tag">SF</span>
+        <span class="tag">非対称</span>
+        <span class="tag">メカ転写</span>
+      </div>
+      <div class="card-catch">大国家+新AI vs 中年の遅咲き弟子+手乗りメカ師匠(死んだ武人の魂)。剣の柄頭にカチッと嵌まる。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>非対称コンセプト・師匠形・転写設計確定</li>
+          <li>中年遅咲き弟子(師匠より年上)確定</li>
+          <li>戦闘美学: 届ける/逃がす/書き換える</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>作品名</li>
+          <li>主人公の前職(時計師/船大工/楽器職人)</li>
+          <li>転写のトーン(A禁忌/B儀式/C事故)</li>
+          <li>敵国家AIのスケール型</li>
+        </ul>
+      </div>
+      <div class="links">
+        <span class="link" style="opacity:0.5;">資料未作成(メモリのみ)</span>
+      </div>
+    </div>
+
+    <!-- ⑦ patchwork -->
+    <div class="card" data-status="building">
+      <div class="card-head">
+        <span class="card-num">07 / STORY INCUBATOR</span>
+        <span class="status building">BUILDING</span>
+      </div>
+      <div class="card-title">patchwork</div>
+      <div class="card-subtitle">仕立て屋少女と100年の逆流</div>
+      <div class="tags">
+        <span class="tag">90分映画</span>
+        <span class="tag">群像劇</span>
+        <span class="tag">ロードムービー</span>
+        <span class="tag">水のトーテム</span>
+      </div>
+      <div class="card-catch">異界に漂着した少女、化け物夫婦の仕立て屋で働く。最初の客は死んだ兄。赤ん坊を山へ届け、100年に1度の川の逆流で帰還する。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>スケッチ39枚で大幅進展</li>
+          <li>パーティー5人+悪役(戦艦の神々)確定</li>
+          <li>主人公=生かされた側、能力=普通の裁縫</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>熊の広間で起こる事件の具体</li>
+          <li>Stop 2(55-75)中継点、神々の戦艦の位置</li>
+          <li>帰還の代償、兄の正体気づきタイミング</li>
+          <li>企画書化(現状index.htmlのみ)</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../patchwork/index.html">index.html</a>
+        <span class="link" style="opacity:0.5;">スケッチ: C:\Users\studi\Downloads\Illust.zip</span>
+      </div>
+    </div>
+
+    <!-- ⑧ THIRD PLACE -->
+    <div class="card" data-status="building">
+      <div class="card-head">
+        <span class="card-num">08 / STORY INCUBATOR</span>
+        <span class="status building">BUILDING</span>
+      </div>
+      <div class="card-title">THIRD PLACE</div>
+      <div class="card-subtitle">第三の場 — 2000年後の一軒のカフェ</div>
+      <div class="tags">
+        <span class="tag">SF CGアニメ</span>
+        <span class="tag">銀河規模</span>
+        <span class="tag">人類7種</span>
+        <span class="tag">公共圏崩壊</span>
+      </div>
+      <div class="card-catch">2000年ぶりに、全7種の人類が同じ場に立てる一軒のカフェを建てるため、銀河を巡って部品を集める旅。</div>
+      <div class="section">
+        <div class="section-title">現在地</div>
+        <ul>
+          <li>世界設定・物語構造(7惑星)確定</li>
+          <li>主人公=Liminalハイブリッドの見習いカフェ建築家</li>
+          <li>師匠=Revenantの元カフェマスター</li>
+        </ul>
+      </div>
+      <div class="section next">
+        <div class="section-title">次タスク</div>
+        <ul>
+          <li>師匠像の詳細化</li>
+          <li>7惑星エピソード</li>
+          <li>敵役、ビジュアル方針</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a class="link primary" href="../story_incubator/02_public_sphere/progress.md">progress.md</a>
+        <a class="link" href="../story_incubator/02_public_sphere/world_2000years.md">world</a>
+        <a class="link" href="../story_incubator/02_public_sphere/story_structure.md">structure</a>
+        <a class="link" href="../story_incubator/02_public_sphere/protagonist_liminal.md">protagonist</a>
+        <a class="link" href="../story_incubator/02_public_sphere/philosophy.md">philosophy</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  STUDIO GOSSO — 企画統括 / 全8企画 / 活性3+立ち上げ5 / 自動同期: Windows mirror (workspace → SynologyDrive)
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const cards = document.querySelectorAll('.card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.status === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

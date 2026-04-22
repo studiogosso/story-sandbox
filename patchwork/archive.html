@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神と化け物のアーカイブ — patchwork</title>
+<style>
+:root {
+  --bg:       #090e18;
+  --bg2:      #0e1520;
+  --bg3:      #141d2e;
+  --ink:      #ddd8c4;
+  --dim:      #9d998c;
+  --faint:    #5a5850;
+  --border:   #232d40;
+
+  --cat-a:    #7a9e72;  /* 裁縫・布 */
+  --cat-b:    #8a7abf;  /* 家・建物 */
+  --cat-c:    #5a8fac;  /* 水・川・溺死 */
+  --cat-d:    #b87060;  /* 身体変形 */
+  --cat-e:    #b8984a;  /* 多神共存 */
+  --cat-f:    #6aaba8;  /* 赤ん坊・子 */
+
+  --tag-bg: rgba(255,255,255,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ───── header ───── */
+header {
+  padding: 48px 40px 36px;
+  border-bottom: 1px solid var(--border);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--faint);
+  font-family: "Georgia", serif;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+
+.header-note {
+  font-size: 13px;
+  color: var(--dim);
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* ───── filters ───── */
+.filters {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 40px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--dim);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover { border-color: var(--dim); color: var(--ink); }
+.filter-btn.active { background: var(--bg3); color: var(--ink); border-color: var(--dim); }
+.filter-btn[data-cat="a"].active { border-color: var(--cat-a); color: var(--cat-a); }
+.filter-btn[data-cat="b"].active { border-color: var(--cat-b); color: var(--cat-b); }
+.filter-btn[data-cat="c"].active { border-color: var(--cat-c); color: var(--cat-c); }
+.filter-btn[data-cat="d"].active { border-color: var(--cat-d); color: var(--cat-d); }
+.filter-btn[data-cat="e"].active { border-color: var(--cat-e); color: var(--cat-e); }
+.filter-btn[data-cat="f"].active { border-color: var(--cat-f); color: var(--cat-f); }
+
+/* ───── section labels ───── */
+.section-label {
+  max-width: 1400px;
+  margin: 40px auto 0;
+  padding: 0 40px;
+}
+
+.section-label h2 {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--faint);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label h2::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+
+.section-label .cat-title {
+  font-size: 20px;
+  color: var(--ink);
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
+.section-label .cat-note {
+  font-size: 13px;
+  color: var(--dim);
+  font-style: italic;
+}
+
+/* ───── grid ───── */
+.grid {
+  max-width: 1400px;
+  margin: 20px auto 0;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* ───── card ───── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.card:hover { border-color: var(--dim); }
+
+.card-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  background: var(--bg3);
+  filter: sepia(15%) brightness(0.9);
+}
+
+.card-img-placeholder {
+  width: 100%;
+  height: 220px;
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--faint);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.card-cat-bar {
+  height: 3px;
+  width: 100%;
+}
+
+.card[data-cat="a"] .card-cat-bar { background: var(--cat-a); }
+.card[data-cat="b"] .card-cat-bar { background: var(--cat-b); }
+.card[data-cat="c"] .card-cat-bar { background: var(--cat-c); }
+.card[data-cat="d"] .card-cat-bar { background: var(--cat-d); }
+.card[data-cat="e"] .card-cat-bar { background: var(--cat-e); }
+.card[data-cat="f"] .card-cat-bar { background: var(--cat-f); }
+
+.card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+
+.card-origin {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--faint);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.card-name {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.card-romaji {
+  font-size: 12px;
+  color: var(--dim);
+  font-style: italic;
+  margin-bottom: 12px;
+  font-family: "Georgia", serif;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.8;
+  flex: 1;
+  margin-bottom: 14px;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: var(--tag-bg);
+  color: var(--faint);
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border);
+}
+
+.card-patch {
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.7;
+}
+
+.card-patch::before {
+  content: "◇ patchwork との接続 — ";
+  color: var(--faint);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ───── hidden ───── */
+.card.hidden { display: none; }
+.section-wrap.hidden { display: none; }
+
+/* ───── footer ───── */
+footer {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 24px 40px 48px;
+  border-top: 1px solid var(--border);
+  color: var(--faint);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 600px) {
+  header, .filters, .section-label, .grid { padding-left: 16px; padding-right: 16px; }
+  h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-title">patchwork / 世界観素材集</div>
+    <h1>神と化け物のアーカイブ</h1>
+  </div>
+  <div class="header-note">荒唐無稽な世界の元ネタ — 一体系に縛られず、雑居する神と化け物</div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">すべて</button>
+  <button class="filter-btn" data-cat="a" style="--c:var(--cat-a)">裁縫・糸・布</button>
+  <button class="filter-btn" data-cat="b">家・建物に宿る</button>
+  <button class="filter-btn" data-cat="c">水・川・溺死</button>
+  <button class="filter-btn" data-cat="d">身体変形・奇形</button>
+  <button class="filter-btn" data-cat="e">多神共存の体系</button>
+  <button class="filter-btn" data-cat="f">赤ん坊・子の形</button>
+</div>
+
+<!-- ═══════════════════════════════════
+     A: 裁縫・糸・布
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="a">
+<div class="section-label">
+  <h2 style="color:var(--cat-a)">Category A</h2>
+  <div class="cat-title" style="color:var(--cat-a)">裁縫・糸・布</div>
+  <div class="cat-note">少女の職能「普通の裁縫」と共鳴する存在</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="a">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Kikimora.jpg" alt="キキーモラ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">スラブ神話</div>
+      <div class="card-name">キキーモラ</div>
+      <div class="card-romaji">Kikimora</div>
+      <div class="card-desc">家に棲む女性精霊。機織り機を愛し、夜中に機を織る音を立てる。働き者の主婦には協力し、怠け者を食べてしまう。ドモヴォイの妻とされることも。</div>
+      <div class="card-tags">
+        <span class="tag">機織り</span><span class="tag">家の精霊</span><span class="tag">夜の仕事</span>
+      </div>
+      <div class="card-patch">仕立て屋夫婦の「妻側」の血統。布・糸と人間の家の間に棲む存在として参照できる。夜中の作業音が少女の仕事場の空気になる。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="a">
+    <div class="card-img-placeholder">針女（はりおんな）<br><span style="font-size:10px;margin-top:8px;display:block">画像：伝承記録なし</span></div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">日本 / 愛媛県伊和島</div>
+      <div class="card-name">針女</div>
+      <div class="card-romaji">Hari-onna</div>
+      <div class="card-desc">長く乱れた髪の先端が針状に曲がった女妖怪。夜に現れて笑いかけ、笑い返した者を髪の針で捕まえる。身体そのものが縫製道具に変化した存在。</div>
+      <div class="card-tags">
+        <span class="tag">針</span><span class="tag">髪</span><span class="tag">捕獲</span>
+      </div>
+      <div class="card-patch">少女の針と糸の鏡像。「縫う行為」が武器にも儀式にもなることを示すイメージ。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     B: 家・建物に宿る
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="b">
+<div class="section-label">
+  <h2 style="color:var(--cat-b)">Category B</h2>
+  <div class="cat-title" style="color:var(--cat-b)">家・建物に宿る</div>
+  <div class="cat-note">仕立て屋夫婦・街の住人の血統。場所に縛られた神</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="b">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Domovoi.jpg" alt="ドモヴォイ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">スラブ民間信仰</div>
+      <div class="card-name">ドモヴォイ</div>
+      <div class="card-romaji">Domovoi</div>
+      <div class="card-desc">家の暖炉や隅に棲む精霊。供物があれば家を守り、ないがしろにすると害をなす。家主の死とともに家を離れ、新居に移ることも。家そのものと一体化した存在。</div>
+      <div class="card-tags">
+        <span class="tag">家の守護</span><span class="tag">暖炉</span><span class="tag">供物</span>
+      </div>
+      <div class="card-patch">仕立て屋夫婦の「夫側」の血統。店（家）に縛られ、漂流してきた少女を「拾う」論理がある。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="b">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Hyakki-Yagyo-Emaki_Tsukumogami_1.jpg" alt="百鬼夜行絵巻" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">日本 / 室町時代</div>
+      <div class="card-name">付喪神の行列</div>
+      <div class="card-romaji">Tsukumogami</div>
+      <div class="card-desc">99年経った道具が命を持ち、百鬼夜行に加わる。からかさ小僧（一本足・一つ目・長い舌）が代表。道具が変化した存在であり、人間の生活の残骸が歩き始める。</div>
+      <div class="card-tags">
+        <span class="tag">道具→生命</span><span class="tag">百鬼夜行</span><span class="tag">一本足</span>
+      </div>
+      <div class="card-patch">街の住人の設計原理。「変な身体」の多くは、元は別のものだったという出自を持てる。服を縫われた身体が変化する、という逆転も可能。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="b">
+    <div class="card-img-placeholder">バンニク<br><span style="font-size:10px;margin-top:8px;display:block">画像：伝承記録なし</span></div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">スラブ神話</div>
+      <div class="card-name">バンニク</div>
+      <div class="card-romaji">Bannik</div>
+      <div class="card-desc">浴槽に住む精霊。湯を残さず出ると水中に引きずり込む。浴場そのものが人格を持った場所として機能する。洗うこと・湯気・水辺の管理者。</div>
+      <div class="card-tags">
+        <span class="tag">浴槽</span><span class="tag">水辺</span><span class="tag">引きずり込む</span>
+      </div>
+      <div class="card-patch">「水と家の境界」に棲む存在。少女の仕立て屋（家）と川（水）の間に挟まる層の住人として。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     C: 水・川・溺死
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="c">
+<div class="section-label">
+  <h2 style="color:var(--cat-c)">Category C</h2>
+  <div class="cat-title" style="color:var(--cat-c)">水・川・溺死</div>
+  <div class="cat-note">水がトーテム。死んだ兄（ドラウグル系）、漂流する少女の血統</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="c">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Iwan_Nikolajewitsch_Kramskoj_002.jpg" alt="ルサールカ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">スラブ民間信仰</div>
+      <div class="card-name">ルサールカ</div>
+      <div class="card-romaji">Rusalka</div>
+      <div class="card-desc">水の事故で死んだ女性が変化した精霊。緑色の髪、透き通った肌。川で死者の衣服を洗う姿も目撃される。死と水が融合した存在で、男性を水中に誘い込む。</div>
+      <div class="card-tags">
+        <span class="tag">溺死→変化</span><span class="tag">川</span><span class="tag">死者の衣服を洗う</span>
+      </div>
+      <div class="card-patch">「川で死者の衣服を洗う」イメージが少女の裁縫と直結する。死→水→布→縫う、という連鎖のモデル。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="c">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Norse_draugr_by_Kim_Diaz_Holm.jpg" alt="ドラウグル" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">北欧伝承</div>
+      <div class="card-name">ドラウグル</div>
+      <div class="card-romaji">Draugr</div>
+      <div class="card-desc">溺死者の亡霊。死後も腐敗した身体で動き続ける。巨大な力を持ち、船を沈め、叫び声で死を予兆する。人間の時より大きく、より制御不可能になった存在。</div>
+      <div class="card-tags">
+        <span class="tag">溺死</span><span class="tag">死後も動く</span><span class="tag">巨大化</span><span class="tag">船を沈める</span>
+      </div>
+      <div class="card-patch">最初の客（死んだ兄）の最も直接的な血統。溺死→大きい→制御できない力、という三要素が完全に一致する。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="c">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/Banshee.jpg" alt="バンシー" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">アイルランド / ケルト</div>
+      <div class="card-name">バンシー</div>
+      <div class="card-romaji">Banshee</div>
+      <div class="card-desc">死が近い人の家で泣く女妖精。川で死者の衣服を洗いながら泣く姿が目撃される。その泣き声が死の予兆。声が水を伝って世界を変える存在。</div>
+      <div class="card-tags">
+        <span class="tag">泣き声</span><span class="tag">川で洗濯</span><span class="tag">死の予兆</span>
+      </div>
+      <div class="card-patch">赤ん坊「泣くと水が応える」との共鳴。泣き声が川に届くというモチーフの祖型。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="c">
+    <div class="card-img-placeholder">カイポクングル<br><span style="font-size:10px;margin-top:8px;display:block">アイヌ神話 / 画像資料なし</span></div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">アイヌ神話</div>
+      <div class="card-name">カイポクングル</div>
+      <div class="card-romaji">Kaipok-un-guru</div>
+      <div class="card-desc">「波下に棲む者」の意。海辺の波下に棲み、船を沈めて人間を溺死させる悪神。水面の下にいて上から見えない、というのが恐怖の構造。</div>
+      <div class="card-tags">
+        <span class="tag">波の下</span><span class="tag">船を沈める</span><span class="tag">不可視</span>
+      </div>
+      <div class="card-patch">横転した戦艦と川の底、という世界の「下」にある存在として参照できる。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     D: 身体変形・奇形
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="d">
+<div class="section-label">
+  <h2 style="color:var(--cat-d)">Category D</h2>
+  <div class="cat-title" style="color:var(--cat-d)">身体変形・奇形</div>
+  <div class="cat-note">街の住人たちの血統。人間の形を逸脱した存在</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="d">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Jiang_Yinghao_-_Xingtian.jpg" alt="形天" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">中国 / 山海経</div>
+      <div class="card-name">形天</div>
+      <div class="card-romaji">Xingtian</div>
+      <div class="card-desc">黄帝に首を斬られた無頭の神。胸に目、臍に口を持ち、楯と斧を手に永遠に戦い続ける。首がなくても生きている、器官の位置が完全に倒錯した存在。</div>
+      <div class="card-tags">
+        <span class="tag">無頭</span><span class="tag">胸に目</span><span class="tag">倒錯した器官</span><span class="tag">山海経</span>
+      </div>
+      <div class="card-patch">身体変形の住人設計の典型例。「どこに目があってもいい」「頭がなくていい」というラディカルな身体観。少女にとって採寸から始まる服作りの難度を示す。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="d">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Wu-Renchen-Shanhai-jing-guangzhu-Kui.jpg" alt="夔" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">中国 / 山海経</div>
+      <div class="card-name">夔</div>
+      <div class="card-romaji">Kui</div>
+      <div class="card-desc">一本足の神牛。雷と音の神とも言われ、太鼓の材料になったとされる。欠損した身体こそが神聖さの証。一本足のバランスを保って立ち続ける。</div>
+      <div class="card-tags">
+        <span class="tag">一本足</span><span class="tag">雷神</span><span class="tag">欠損の神聖さ</span>
+      </div>
+      <div class="card-patch">街の住人に「足が一本」「腕が一本」の存在が登場するとき、そこに夔の血統がある。欠損は呪いではなく由緒として機能できる。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="d">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/9/98/Stone_amulet._The_demon_Lamashtu_stands_on_a_donkey...jpg" alt="ラマシュトゥ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">バビロニア神話</div>
+      <div class="card-name">ラマシュトゥ</div>
+      <div class="card-romaji">Lamashtu</div>
+      <div class="card-desc">ライオンの頭、ロバの牙、猛禽の爪を持つ悪神。ロバの上に立ち、野豚とジャッカルに乳を与える。乳児を連れ去る夜の存在。複数の動物器官が継ぎはぎされた身体。</div>
+      <div class="card-tags">
+        <span class="tag">複合身体</span><span class="tag">乳児を狙う</span><span class="tag">ロバの上</span>
+      </div>
+      <div class="card-patch">「赤ん坊を届ける旅」の緊張の祖型。ラマシュトゥ的な存在が赤ん坊を求めているかもしれない。継ぎはぎ身体は少女の裁縫の鏡像でもある。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="d">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Troll_woman.gif" alt="フルドラ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">北欧民話</div>
+      <div class="card-name">フルドラ</div>
+      <div class="card-romaji">Huldra</div>
+      <div class="card-desc">美しい女性の姿をした精霊。しかしスカートの下に牛の尻尾と空洞の背中を隠している。見た目と真の身体が異なる。森で男性を誘惑し、破滅させる。</div>
+      <div class="card-tags">
+        <span class="tag">空洞の背中</span><span class="tag">尻尾を隠す</span><span class="tag">外見と身体の乖離</span>
+      </div>
+      <div class="card-patch">「服で隠されていた身体が採寸で暴かれる」という仕立て屋の行為の核心。服を縫う前に、身体の秘密が少女だけに見える、という場面の設計に使える。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="d">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Plaque_against_Lamashtu-AO_22205-IMG_9971-gradient.jpg" alt="パズズ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">メソポタミア神話</div>
+      <div class="card-name">パズズ</div>
+      <div class="card-romaji">Pazuzu</div>
+      <div class="card-desc">ラマシュトゥを護符の表面から監視する有翼の悪霊。悪を封じるもう一つの悪。身体は複数動物の混合体で、正面から見ると四肢の方向がバラバラに広がる。</div>
+      <div class="card-tags">
+        <span class="tag">有翼</span><span class="tag">複合身体</span><span class="tag">対立する悪</span>
+      </div>
+      <div class="card-patch">神々の一家の誰かに使える身体造形の参照。「悪を制する悪」としての役割は、神々の家族の中の誰か一人に与えられる可能性がある。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     E: 多神共存の体系
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="e">
+<div class="section-label">
+  <h2 style="color:var(--cat-e)">Category E</h2>
+  <div class="cat-title" style="color:var(--cat-e)">多神共存の体系</div>
+  <div class="cat-note">荒唐無稽な世界の設計原理。一体系に縛られず神と化け物が雑居する</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="e">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hyakki_Yako_1.jpg" alt="百鬼夜行" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">日本 / 国際日文研蔵</div>
+      <div class="card-name">百鬼夜行絵巻</div>
+      <div class="card-romaji">Hyakki Yagyo</div>
+      <div class="card-desc">夜、百の鬼や妖怪が行列をなして練り歩く光景。各個体はそれぞれの出自と形状を持ちながら、同じ夜の空間に雑居する。体系なき多様性の祝祭。</div>
+      <div class="card-tags">
+        <span class="tag">多神雑居</span><span class="tag">行列</span><span class="tag">夜の世界</span>
+      </div>
+      <div class="card-patch">patchworkの世界の設計原理そのもの。街の住人は「どこかの神話体系に属する」のではなく、百鬼夜行的に各自の出自を持ちながら雑居している。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="e">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/0/03/Pwca_Wirt_Sikes_British_Goblins_1880.png" alt="プーカ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">アイルランド / ケルト</div>
+      <div class="card-name">プーカ</div>
+      <div class="card-romaji">Púca</div>
+      <div class="card-desc">山・丘に棲む変身能力を持つ妖精。「救われるほど良くもなく、救われぬほど悪くもない」道徳的に曖昧な存在。秋の収穫と結びつき、11月1日が「プーカの日」。</div>
+      <div class="card-tags">
+        <span class="tag">変身</span><span class="tag">道徳的曖昧さ</span><span class="tag">山に棲む</span>
+      </div>
+      <div class="card-patch">神々の一家の設計原理として。完全な悪でも善でもない、ただ強い、という存在の典型。山に住む、というのも符合。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="e">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Naga_et_Nagini_%28Temple_de_Chennakeshava_%C3%A0_Belur%2C_Inde%29_%2814319408898%29_%28cropped%29.jpg" alt="ナーガ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">インド / 東南アジア</div>
+      <div class="card-name">ナーガ</div>
+      <div class="card-romaji">Nāga</div>
+      <div class="card-desc">蛇の体と人間の上半身を持つ水の神。夫婦で存在することが多く、寺院の守護者として広く描かれる。仏教とヒンドゥーが混在した存在で、地域によって性格が異なる。</div>
+      <div class="card-tags">
+        <span class="tag">夫婦で存在</span><span class="tag">蛇×人間</span><span class="tag">水と寺院</span>
+      </div>
+      <div class="card-patch">仕立て屋夫婦の別バリエーション。夫婦で一対になる神という構造の参照。川と建物（仕立て屋）の両方と関係する存在として。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     F: 赤ん坊・子の形をした神
+═══════════════════════════════════ -->
+<div class="section-wrap" data-cat="f">
+<div class="section-label">
+  <h2 style="color:var(--cat-f)">Category F</h2>
+  <div class="cat-title" style="color:var(--cat-f)">赤ん坊・子の形をした神</div>
+  <div class="cat-note">「泣くと水が応える」赤ん坊の血統</div>
+</div>
+<div class="grid">
+
+  <div class="card" data-cat="f">
+    <div class="card-img-placeholder">雪女の赤ん坊<br><span style="font-size:10px;margin-top:8px;display:block">鳥山石燕「今昔百鬼拾遺」<br>デジタル画像は著作権確認要</span></div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">日本民間伝承</div>
+      <div class="card-name">雪女の抱く赤ん坊</div>
+      <div class="card-romaji">Yuki-onna / baby</div>
+      <div class="card-desc">豪雪の夜に現れる雪女は赤ん坊を抱いている。「この子を受け取って」と言い、受け取った者は凍死する。赤ん坊は武器、餌、あるいは呪いそのもの。</div>
+      <div class="card-tags">
+        <span class="tag">赤ん坊を抱く</span><span class="tag">受け取ると死</span><span class="tag">冬の怪</span>
+      </div>
+      <div class="card-patch">「赤ん坊を誰かに渡す」という行為の危険性と神聖性。少女が受け取った赤ん坊は、雪女の赤ん坊のような呪いの質感を少し持っていてもいい。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="f">
+    <div class="card-img-placeholder">水虎（うがら）<br><span style="font-size:10px;margin-top:8px;display:block">九州地方の伝承 / 図像資料なし</span></div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">日本 / 九州</div>
+      <div class="card-name">水虎</div>
+      <div class="card-romaji">Suiko / Ugara</div>
+      <div class="card-desc">子どもの姿をした川の怪。川遊びをしている子どもに見えるが、水中に引きずり込む。子どもの形をした危険な水の精。無邪気さと致命性が同居する。</div>
+      <div class="card-tags">
+        <span class="tag">子どもの形</span><span class="tag">川</span><span class="tag">引きずり込む</span>
+      </div>
+      <div class="card-patch">赤ん坊の「泣くと水が動く」力の祖型。子どもの形をした水の存在、という設計の参照。</div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="f">
+    <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Lamashtu_plaque_9167.jpg" alt="ラマシュトゥ護符" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="card-img-placeholder" style="display:none">IMAGE</div>
+    <div class="card-cat-bar"></div>
+    <div class="card-body">
+      <div class="card-origin">バビロニア神話</div>
+      <div class="card-name">ラマシュトゥ除け護符</div>
+      <div class="card-romaji">Anti-Lamashtu plaque</div>
+      <div class="card-desc">乳児を守るために作られた護符板。ラマシュトゥが乳児を狙うため、あらゆる魔除けが生まれた。乳児＝最も守られるべき存在、かつ最も危険な存在。</div>
+      <div class="card-tags">
+        <span class="tag">乳児を守る</span><span class="tag">護符</span><span class="tag">古代の不安</span>
+      </div>
+      <div class="card-patch">「赤ん坊を山へ届けなければならない」という物語の緊張の古代的祖型。護符が必要なほど危険にさらされた赤ん坊、という原型。</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  patchwork 世界観素材集 · 画像出典：Wikimedia Commons（パブリックドメイン） · 2026-04-22<br>
+  荒唐無稽な世界——一体系に縛られず、世界中の神と化け物が雑居する
+</footer>
+
+<script>
+const btns = document.querySelectorAll('.filter-btn');
+const sections = document.querySelectorAll('.section-wrap');
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    sections.forEach(sec => {
+      if (cat === 'all' || sec.dataset.cat === cat) {
+        sec.classList.remove('hidden');
+      } else {
+        sec.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

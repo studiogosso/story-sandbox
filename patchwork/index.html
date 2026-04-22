@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>patchwork — 企画整理</title>
+<style>
+:root {
+  --bg: #0a1420;
+  --bg-2: #0f1d2e;
+  --ink: #e8e4d4;
+  --ink-dim: #b8b4a4;
+  --ink-faint: #7a7668;
+  --water: #4a7c94;
+  --water-glow: #6fa5c2;
+  --paper: #d4c9a8;
+  --thread: #c89862;
+  --blood: #a04848;
+  --decided: #8fa88c;
+  --undecided: #d4a056;
+  --seam: #3a4858;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "MS PMincho", serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 15px;
+  padding: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(74,124,148,0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 60%, rgba(200,152,98,0.05), transparent 50%);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+}
+
+header {
+  text-align: center;
+  padding: 40px 0 60px;
+  border-bottom: 1px solid var(--seam);
+  margin-bottom: 60px;
+  position: relative;
+}
+
+h1.title {
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-style: italic;
+}
+
+.subtitle {
+  color: var(--ink-dim);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  margin-bottom: 20px;
+}
+
+.logline {
+  color: var(--paper);
+  font-size: 18px;
+  line-height: 1.9;
+  max-width: 700px;
+  margin: 30px auto 0;
+  font-style: italic;
+  border-top: 1px solid var(--seam);
+  border-bottom: 1px solid var(--seam);
+  padding: 20px 0;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--water-glow);
+  margin: 60px 0 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--seam);
+  letter-spacing: 0.05em;
+}
+
+h2::before {
+  content: "◇ ";
+  color: var(--thread);
+  margin-right: 6px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--paper);
+  margin: 24px 0 10px;
+  letter-spacing: 0.03em;
+}
+
+p { margin-bottom: 12px; color: var(--ink); }
+strong { color: var(--water-glow); font-weight: 500; }
+em { color: var(--thread); font-style: normal; }
+
+.meta-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.meta {
+  background: var(--bg-2);
+  border-left: 2px solid var(--water);
+  padding: 16px 20px;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  color: var(--paper);
+  font-size: 16px;
+}
+
+/* パッチワーク的な不揃いカード */
+.patch-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  margin: 30px 0;
+}
+
+.patch {
+  background: var(--bg-2);
+  padding: 22px 24px;
+  border: 1px solid var(--seam);
+  position: relative;
+}
+
+.patch::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid var(--thread);
+  border-left: 2px solid var(--thread);
+}
+
+.patch::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid var(--thread);
+  border-right: 2px solid var(--thread);
+}
+
+.patch.w-12 { grid-column: span 12; }
+.patch.w-8  { grid-column: span 8; }
+.patch.w-6  { grid-column: span 6; }
+.patch.w-4  { grid-column: span 4; }
+
+@media (max-width: 700px) {
+  .patch.w-8, .patch.w-6, .patch.w-4 { grid-column: span 12; }
+  .container { padding: 30px 20px 80px; }
+  h1.title { font-size: 48px; }
+}
+
+/* キャラカード */
+.char-card {
+  background: var(--bg-2);
+  padding: 20px 24px;
+  border-left: 3px solid var(--water);
+  margin-bottom: 14px;
+}
+
+.char-name {
+  font-size: 18px;
+  color: var(--paper);
+  margin-bottom: 4px;
+}
+
+.char-role {
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.char-desc {
+  color: var(--ink-dim);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* 90分タイムライン */
+.timeline {
+  margin: 30px 0;
+  padding: 20px 0;
+  position: relative;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px dotted var(--seam);
+  align-items: start;
+}
+
+.timeline-row:last-child { border-bottom: none; }
+
+.time {
+  color: var(--water-glow);
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  padding-top: 2px;
+}
+
+.act {
+  color: var(--paper);
+}
+
+.act-title {
+  font-size: 16px;
+  color: var(--paper);
+  margin-bottom: 4px;
+}
+
+.act-desc {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+/* 決定 vs 未決 */
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 30px 0;
+}
+
+@media (max-width: 700px) { .status-grid { grid-template-columns: 1fr; } }
+
+.status-col {
+  background: var(--bg-2);
+  padding: 24px 28px;
+}
+
+.status-col.decided { border-top: 2px solid var(--decided); }
+.status-col.undecided { border-top: 2px solid var(--undecided); }
+
+.status-col h3 {
+  margin-top: 0;
+}
+
+.status-col.decided h3 { color: var(--decided); }
+.status-col.undecided h3 { color: var(--undecided); }
+
+.status-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.status-col li {
+  padding: 8px 0;
+  color: var(--ink-dim);
+  font-size: 14px;
+  border-bottom: 1px dotted var(--seam);
+  position: relative;
+  padding-left: 18px;
+}
+
+.status-col li:last-child { border-bottom: none; }
+
+.status-col.decided li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--decided);
+}
+
+.status-col.undecided li::before {
+  content: "?";
+  position: absolute;
+  left: 0;
+  color: var(--undecided);
+}
+
+.status-col li strong {
+  color: var(--paper);
+  font-weight: 500;
+}
+
+/* 水の流れ */
+.water-flow {
+  background: linear-gradient(135deg, rgba(74,124,148,0.15), rgba(74,124,148,0.03));
+  padding: 24px 28px;
+  margin: 30px 0;
+  border-left: 3px solid var(--water);
+  border-right: 3px solid var(--water);
+  font-style: italic;
+  color: var(--paper);
+}
+
+/* 引用 */
+blockquote {
+  border-left: 2px solid var(--thread);
+  padding: 4px 20px;
+  margin: 16px 0;
+  color: var(--ink-dim);
+  font-style: italic;
+}
+
+/* フッター */
+footer {
+  margin-top: 80px;
+  padding-top: 30px;
+  border-top: 1px solid var(--seam);
+  color: var(--ink-faint);
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+/* スケッチ参照 */
+.sketch-ref {
+  display: inline-block;
+  background: rgba(200,152,98,0.12);
+  color: var(--thread);
+  padding: 1px 8px;
+  font-size: 12px;
+  border-radius: 2px;
+  margin: 0 2px;
+  font-family: "Georgia", serif;
+}
+
+/* 神々一家 */
+.gods-card {
+  background: linear-gradient(180deg, var(--bg-2), rgba(160,72,72,0.08));
+  padding: 24px 28px;
+  border: 1px solid var(--blood);
+  margin: 20px 0;
+}
+
+.gods-card h3 { color: var(--blood); }
+
+/* リストスタイル統一 */
+ul.clean {
+  list-style: none;
+  padding-left: 0;
+}
+ul.clean li {
+  padding: 4px 0 4px 16px;
+  color: var(--ink-dim);
+  position: relative;
+}
+ul.clean li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--water);
+}
+
+.divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--seam) 0, var(--seam) 8px, transparent 8px, transparent 16px);
+  margin: 40px 0;
+}
+
+.highlight-box {
+  background: var(--bg-2);
+  padding: 20px 24px;
+  border: 1px dashed var(--water);
+  margin: 20px 0;
+}
+
+.highlight-box .label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--water-glow);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="subtitle">STORY INCUBATOR 06 / WIP</div>
+  <h1 class="title">patchwork</h1>
+  <div class="subtitle" style="margin-top: 8px; color: var(--ink-faint);">90分アニメ映画 · 企画整理 · 2026-04-21</div>
+
+  <div class="logline">
+    異界に流れ着いた仕立て屋の少女が、<br>
+    化け物の身体にあわせて服を縫いながら、<br>
+    化け物の赤ん坊を山へ届け、<br>
+    100年に一度の川の逆流で、元の世界へ帰る。
+  </div>
+</header>
+
+<div class="meta-row">
+  <div class="meta">
+    <div class="meta-label">Format</div>
+    <div class="meta-value">90分 長編アニメ</div>
+  </div>
+  <div class="meta">
+    <div class="meta-label">Genre</div>
+    <div class="meta-value">群像劇 × ロードムービー</div>
+  </div>
+  <div class="meta">
+    <div class="meta-label">Totem</div>
+    <div class="meta-value">水</div>
+  </div>
+  <div class="meta">
+    <div class="meta-label">Emotional Core</div>
+    <div class="meta-value">借り — 生かされた側の物語</div>
+  </div>
+</div>
+
+<div class="water-flow">
+  この作品の全てを貫くのは <strong>水</strong>。<br>
+  少女は水で兄を失い、水に流されて異界に漂着し、水を逆流して帰る。<br>
+  水が神でも敵でもなく、物語そのものの呼吸である。
+</div>
+
+<!-- ========= 物語の骨格 ========= -->
+<h2>物語の骨格</h2>
+
+<div class="patch-grid">
+  <div class="patch w-6">
+    <h3>世界</h3>
+    <p>異界の街。住人は身体が変形している（腕3本、下半身なし、羽、毛、液体が染みる、ねじれ）。普通の仕立て屋では服が作れない。<strong>外来者の少女だけが、既成概念に縛られず変な身体用の服を縫える</strong>。だから彼女は生きていける。</p>
+  </div>
+  <div class="patch w-6">
+    <h3>魔法じゃなく職能</h3>
+    <p>少女の能力は<strong>普通の裁縫</strong>。魔法ではなく現実の技術。この街が歪んでいるから、普通の技術が珍しい力になる。針・糸・型紙・採寸。それだけ。</p>
+  </div>
+  <div class="patch w-8">
+    <h3>ストーリーエンジン</h3>
+    <p>ある日、店に駆け込んだ誰かが赤ん坊を置いていく。「この子を山へ届けて」。化け物夫婦は関わりたがらない。少女が引き受ける。最初の客（兄）が付いてくる。</p>
+    <p>旅の途中、100年に一度の川の逆流が近づいていることを知る。<strong>その日に間に合わなければ、少女は元の世界へ帰れない</strong>。</p>
+  </div>
+  <div class="patch w-4">
+    <h3>感情核</h3>
+    <p>少女は兄に水の中でかばわれて死なせた側。<em>生かされた命をどう使うか</em>の試行。</p>
+    <p>赤ん坊を山へ届ける＝受け取った命を次の誰かに託す行為。</p>
+  </div>
+</div>
+
+<!-- ========= キャラクター ========= -->
+<h2>キャラクター・パーティー</h2>
+
+<p style="color: var(--ink-dim); margin-bottom: 20px;">最小構成5人。旅の中で段階的に加入する。</p>
+
+<div class="char-card">
+  <div class="char-name">少女 <span style="color: var(--ink-faint); font-size: 13px;">— 主人公</span></div>
+  <div class="char-role">WEAK / IGNORED / STITCHER</div>
+  <div class="char-desc">
+    弱い。腕っ節もない。口も立たない。街の誰にも見えない、無視される。<br>
+    だが裁縫ができる。生前、兄に川でかばわれて生き残った過去を抱える。<br>
+    兄を失って、泣けなかった子。<span class="sketch-ref">[20]</span>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-name">最初の客 <span style="color: var(--ink-faint); font-size: 13px;">— 死んだ兄</span></div>
+  <div class="char-role">FIRST CUSTOMER / LARGE / BERSERK</div>
+  <div class="char-desc">
+    ガタイがとても大きい。狂暴化できる。かつて少女を水でかばって死んだ兄が、異界で最初の客として現れる。<br>
+    少女が彼に服を縫ってあげる＝生前できなかった喪の儀式。<br>
+    <strong>少女は最後まで彼が兄だと気づかない</strong>。観客だけが途中で気づく。
+    <span class="sketch-ref">[5]</span> <span class="sketch-ref">[18]</span>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-name">赤ん坊 <span style="color: var(--ink-faint); font-size: 13px;">— 化け物＋特別な力</span></div>
+  <div class="char-role">BABY / WATER-SUMMONER</div>
+  <div class="char-desc">
+    化け物の赤ん坊。<strong>泣くと水が応える</strong>（動く・満ちる・引く）。<br>
+    山へ届けなければならない、ここに居てはいけない存在。<br>
+    100年の逆流の奇跡のトリガーになる可能性。
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-name">仕立て屋の夫婦 <span style="color: var(--ink-faint); font-size: 13px;">— 拾い主</span></div>
+  <div class="char-role">MASTER COUPLE / NOT-HUMAN</div>
+  <div class="char-desc">
+    化け物の老いた夫婦。人ではない。かつて人間と関わった経験があり、漂着した少女を拾う。<br>
+    少女のガイド・通訳として機能するが、本当の家族にはなれない距離感を最後まで保つ。
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-name">熊のぬいぐるみ × 2 <span style="color: var(--ink-faint); font-size: 13px;">— 旅の途中で加入</span></div>
+  <div class="char-role">BEARS / TONE BUFFER</div>
+  <div class="char-desc">
+    熊の広間での事件を経て一行に加わる。トーンの緩衝材、観客の入口、少女の幼さの名残り。<br>
+    2匹で掛け合える＝画面が持つ。<span class="sketch-ref">[17]</span>
+  </div>
+</div>
+
+<!-- ========= 神々 ========= -->
+<h2>最終関門 — 戦艦に住み着いた神々</h2>
+
+<div class="gods-card">
+  <h3>悪役ではなく、越えがたい他者</h3>
+  <p>川の終わり、横転した巨大な戦艦の残骸に、<strong>神々の家族</strong>が住み着いている。父神・母神・子の神々。かつて世界を荒らした。今は敗れて沈黙している。</p>
+  <p>少女たちは彼らを倒すのではなく、<em>祈る／捧げる／通過する</em>。90分で戦闘を入れずに緊張を出す装置。</p>
+  <p>帰還の日、少女たちはこの横転した戦艦に乗って、逆流する川を上る。<strong>神々は川を止められない側</strong>。水は神々に味方しない。</p>
+  <p style="color: var(--undecided); font-size: 13px; margin-top: 10px;">◇ 未決：神々がかつて誰と戦ったか（推し＝水神／水そのもの）</p>
+</div>
+
+<!-- ========= 構造 ========= -->
+<h2>構造 — 90分配分</h2>
+
+<div class="timeline">
+  <div class="timeline-row">
+    <div class="time">0:00 – 25:00</div>
+    <div class="act">
+      <div class="act-title">Act 1 — 漂着／仕立て屋</div>
+      <div class="act-desc">少女が川に流されて街へ流れ着く → 化け物夫婦に拾われる → 仕立て仕事を覚える → <strong>最初の客（兄）が来店、服を縫う</strong></div>
+    </div>
+  </div>
+
+  <div class="timeline-row">
+    <div class="time">25:00 – 35:00</div>
+    <div class="act">
+      <div class="act-title">Act 2a — 依頼・出発</div>
+      <div class="act-desc">誰かが赤ん坊を抱えて店に駆け込む → 「山へ届けて」と残して去る → 夫婦は関わりたがらない → 少女が引き受ける → <strong>最初の客が同行</strong></div>
+    </div>
+  </div>
+
+  <div class="timeline-row">
+    <div class="time">35:00 – 55:00</div>
+    <div class="act">
+      <div class="act-title">Stop 1 — 熊の広間 <span class="sketch-ref">[17]</span></div>
+      <div class="act-desc">大量の熊が椅子に整然と座る審議／裁判の場 → 何かが起きて逃走 → <strong>熊のぬいぐるみ2匹が一行に加わる</strong></div>
+      <div style="color: var(--undecided); font-size: 12px; margin-top: 6px;">◇ 未決：具体的に何が起きるか</div>
+    </div>
+  </div>
+
+  <div class="timeline-row">
+    <div class="time">55:00 – 75:00</div>
+    <div class="act">
+      <div class="act-title">Stop 2 — 中継点</div>
+      <div class="act-desc">旅の続き。ここで神々の戦艦を先行提示するか、別の中継点を置くか。</div>
+      <div style="color: var(--undecided); font-size: 12px; margin-top: 6px;">◇ 未決：場所・事件</div>
+    </div>
+  </div>
+
+  <div class="timeline-row">
+    <div class="time">75:00 – 90:00</div>
+    <div class="act">
+      <div class="act-title">Act 3 — 山／逆流／帰還</div>
+      <div class="act-desc">山に到着 → 赤ん坊を渡す → 赤ん坊の泣き声が川の逆流を呼ぶ → 横転した神々の戦艦に乗る → <strong>兄との別れ（少女は気づかないまま）</strong> → 元の世界へ</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========= スケッチの血統 ========= -->
+<h2>スケッチの血統</h2>
+
+<p>Geminiの読み（コム・デ・ギャルソン／リック／バレンシアガ）は誤読。<br>実際の絵の血統は：</p>
+
+<ul class="clean">
+  <li>アール・ブリュット／シーレ／デュビュッフェの線質</li>
+  <li>ロシア正教イコン／タルコフスキーの空間</li>
+  <li>東欧フォークホラー／異教儀礼</li>
+  <li>宮崎駿のダーク側（王蟲系）</li>
+  <li>絵本の悪夢</li>
+</ul>
+
+<div class="highlight-box">
+  <div class="label">中心画</div>
+  <p><span class="sketch-ref">[38]</span> パッチワーク人間 — タイトルそのものの意味。断片を繋ぎ合わせた人間。</p>
+  <p><span class="sketch-ref">[32]</span> 黄土色の水に浮かぶ小さな青い舟、対岸に教会 — 物語の重力源。漂流と帰還のイメージ。</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========= 決定 vs 未決 ========= -->
+<h2>決定事項 / 未決事項</h2>
+
+<div class="status-grid">
+  <div class="status-col decided">
+    <h3>決定済み</h3>
+    <ul>
+      <li><strong>90分群像劇ロードムービー</strong></li>
+      <li><strong>水がトーテム</strong>（冒頭漂着 ↔ ラスト逆流）</li>
+      <li><strong>少女＝普通の裁縫、弱い、無視される</strong></li>
+      <li><strong>街の住人は身体が変形</strong>／外来者だけが縫える</li>
+      <li><strong>化け物夫婦の仕立て屋に拾われる</strong></li>
+      <li><strong>赤ん坊を山へ届ける</strong>（ストーリーエンジン）</li>
+      <li><strong>最初の客＝死んだ兄</strong>（ガタイ大、狂暴化可）</li>
+      <li><strong>兄は水で少女をかばって溺死</strong></li>
+      <li><strong>感情核＝借り</strong>（生かされた側）</li>
+      <li><strong>兄の正体は少女に最後まで明かされない</strong>／観客は途中で気づく</li>
+      <li><strong>赤ん坊の力＝泣くと水が応える</strong></li>
+      <li><strong>熊のぬいぐるみ2匹が旅の仲間</strong></li>
+      <li><strong>最終関門＝戦艦に住み着いた神々</strong>（家族構成）</li>
+      <li><strong>100年に一度の川の逆流で帰還</strong></li>
+      <li><strong>横転した神々の戦艦に乗って元の世界へ</strong></li>
+      <li><strong>神々は水に味方されない側</strong></li>
+    </ul>
+  </div>
+
+  <div class="status-col undecided">
+    <h3>未決事項</h3>
+    <ul>
+      <li><strong>観客に持ち帰らせる一行</strong>（トーンの最終決定）</li>
+      <li><strong>神々がかつて誰と戦ったか</strong>（A内乱／B下の者／<em>C水神・推し</em>／D忘れた）</li>
+      <li><strong>熊の広間で起こる事件</strong>の具体</li>
+      <li><strong>Stop 2（55-75分）</strong>の中継点</li>
+      <li><strong>帰還の代償</strong>（奇跡案採用時、少女が差し出す何か）</li>
+      <li><strong>神々との関係</strong>（祈る／捧げる／取引／通過）</li>
+      <li><strong>兄の正体を観客が気づくタイミング</strong>（早め／中盤／ラスト手前）</li>
+      <li><strong>赤ん坊が駆け込んでくる経緯</strong>の詳細</li>
+      <li><strong>山の具体的な絵面</strong>（候補A〜E検討中）</li>
+      <li><strong>旅の途中の客たち</strong>（店の客＝群像劇の単位）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========= 作業スタンス ========= -->
+<h2>作業スタンス</h2>
+
+<blockquote>
+  スケッチに縛られすぎないように。<br>
+  企画書で固めず、雰囲気から積む。<br>
+  手本（参考作品）を並べない。
+</blockquote>
+
+<p style="color: var(--ink-dim); font-size: 14px;">
+  スケッチは出発点であって足枷ではない。三幕構造や市場戦略は後工程。光・音・匂い・断片を一つずつ積んで、物語の手触りを先に決める。
+</p>
+
+<!-- ========= 次に決めること ========= -->
+<h2>次に決めること</h2>
+
+<div class="highlight-box">
+  <div class="label">IMMEDIATE</div>
+  <p><strong>神々がかつて誰と戦ったか</strong>（A／B／C／D）</p>
+  <p style="color: var(--ink-dim); font-size: 13px; margin-top: 6px;">
+    推し＝C（水神）。水のトーテムと完全に連動。神々は水に敗れた側となり、少女たちの帰還が「水に味方されている」意味を持つ。
+  </p>
+</div>
+
+<div class="highlight-box" style="margin-top: 16px;">
+  <div class="label">NEXT</div>
+  <p>観客に持ち帰らせる一行／熊の広間で起こる事件／Stop 2 の中継点</p>
+</div>
+
+<footer>
+  patchwork · Story Incubator 06 · 2026-04-21 更新<br>
+  sketch source · Illust.zip (39 pages, Dropbox)
+</footer>
+
+</div>
+</body>
+</html>

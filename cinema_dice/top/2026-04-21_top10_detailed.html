@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinema Dice TOP10 厚レビュー | 2026-04-21</title>
+<style>
+:root {
+  --bg: #0a0a0c;
+  --card: #141418;
+  --card-hover: #1c1c22;
+  --border: #2a2a32;
+  --text: #e8e8ec;
+  --text-mid: #c8c8d0;
+  --text-dim: #8a8a93;
+  --gold: #d4a04c;
+  --hot: #e8564c;
+  --label: #b88350;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  line-height: 1.85;
+  font-size: 15px;
+  font-feature-settings: "palt";
+}
+.wrap {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  max-width: 1080px;
+  margin: 0 auto;
+  gap: 48px;
+  padding: 48px 24px 80px;
+}
+nav.toc {
+  position: sticky;
+  top: 40px;
+  align-self: start;
+  font-size: 13px;
+}
+nav.toc h2 {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding-left: 2px;
+}
+nav.toc ol { list-style: none; border-left: 1px solid var(--border); }
+nav.toc a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 7px 14px;
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  transition: all 0.15s;
+  font-size: 13px;
+}
+nav.toc a:hover {
+  color: var(--text);
+  border-left-color: var(--gold);
+  background: rgba(212, 160, 76, 0.06);
+}
+nav.toc .rk {
+  color: var(--text-dim);
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  margin-right: 8px;
+}
+nav.toc .sc {
+  color: var(--hot);
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+main { min-width: 0; }
+
+header.hero {
+  margin-bottom: 60px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.kicker {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+h1 {
+  font-family: "Shippori Mincho", "Noto Serif JP", "Yu Mincho", YuMincho, serif;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.meta {
+  color: var(--text-dim);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  font-family: "Courier New", monospace;
+}
+.lede {
+  font-size: 15px;
+  color: var(--text-mid);
+  border-left: 2px solid var(--gold);
+  padding: 4px 0 4px 16px;
+  line-height: 1.85;
+}
+
+article.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  transition: background 0.2s, border-color 0.2s;
+  scroll-margin-top: 30px;
+}
+article.card:hover {
+  background: var(--card-hover);
+  border-color: #38383f;
+}
+
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.rank {
+  font-family: "Courier New", monospace;
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  white-space: nowrap;
+  padding-top: 4px;
+}
+h2.title {
+  font-family: "Shippori Mincho", "Noto Serif JP", "Yu Mincho", YuMincho, serif;
+  font-size: 26px;
+  font-weight: 600;
+  flex: 1;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+.score {
+  background: var(--hot);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+.score.perfect {
+  background: linear-gradient(90deg, #e8564c 0%, #d4a04c 100%);
+  box-shadow: 0 0 20px rgba(232, 86, 76, 0.35);
+}
+
+dl.fields {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px 24px;
+}
+dt {
+  color: var(--label);
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  padding-top: 6px;
+  text-transform: uppercase;
+  font-family: "Courier New", monospace;
+  white-space: nowrap;
+}
+dd {
+  color: var(--text);
+  line-height: 1.85;
+}
+
+.foot {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  margin-top: 80px;
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 820px) {
+  .wrap {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 24px 16px 60px;
+  }
+  nav.toc {
+    position: static;
+    margin-bottom: 36px;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.toc h2 { margin-bottom: 10px; }
+  article.card { padding: 24px 20px; }
+  dl.fields { grid-template-columns: 1fr; gap: 4px 0; }
+  dt { padding-top: 12px; }
+  h1 { font-size: 24px; }
+  h2.title { font-size: 20px; }
+  .card-head { flex-wrap: wrap; gap: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toc">
+    <h2>TOP 10</h2>
+    <ol>
+      <li><a href="#r01"><span><span class="rk">01</span>450通</span><span class="sc">50</span></a></li>
+      <li><a href="#r02"><span><span class="rk">02</span>種子標本</span><span class="sc">46</span></a></li>
+      <li><a href="#r03"><span><span class="rk">03</span>クマムシと母</span><span class="sc">46</span></a></li>
+      <li><a href="#r04"><span><span class="rk">04</span>夏のない年</span><span class="sc">46</span></a></li>
+      <li><a href="#r05"><span><span class="rk">05</span>海霧</span><span class="sc">46</span></a></li>
+      <li><a href="#r06"><span><span class="rk">06</span>バーバ・ヤガー／キーウ</span><span class="sc">46</span></a></li>
+      <li><a href="#r07"><span><span class="rk">07</span>ベイルート左官</span><span class="sc">46</span></a></li>
+      <li><a href="#r08"><span><span class="rk">08</span>ハレー彗星と靴磨き</span><span class="sc">46</span></a></li>
+      <li><a href="#r09"><span><span class="rk">09</span>チタン</span><span class="sc">45</span></a></li>
+      <li><a href="#r10"><span><span class="rk">10</span>赤ランプ</span><span class="sc">45</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="kicker">Cinema Dice · 1000本爆撃より</div>
+      <h1>TOP10 厚レビュー</h1>
+      <p class="meta">2026-04-21 / Opus 20並列生成 → Codex xhigh 厚評価</p>
+      <p class="lede">
+        この上位10本は、広い事件を狭い場所に圧縮できている企画が強い。長編アニメとして見ると、悲劇の大きさそのものより、誰が何を隠し、どこで共犯になり、どの物質が記憶を保持するかが核になる。2Dは顔・手・質感の倫理、3DCGは空間・層・重量の歴史を担当させると、説教でも美談でもない強度が出る。
+      </p>
+    </header>
+
+    <article class="card" id="r01">
+      <div class="card-head">
+        <span class="rank">RANK 01</span>
+        <h2 class="title">450通</h2>
+        <span class="score perfect">50点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>中朝国境の郵便局で20年届き続けた、存在しない北朝鮮家族宛ての空封筒450通。郵便局員ミヨンの前に差出人の孫娘ユナが現れ、封筒は遺品か証拠かに変わる。</dd>
+        <dt>世界観</dt>
+        <dd>舞台は霧の濃い国境河畔の小郵便局。ミヨン、宛先なき家族を追うユナ、検閲と密輸の境界を知る局長ギソク。窓光の縞、湿った棚、河向こうの灯りで、国家の不在が室内に染み出す。</dd>
+        <dt>市場</dt>
+        <dd>極小空間の政治サスペンスで、製作規模を抑えつつ国境・分断・家族記憶の普遍性を持てる。韓仏日系の共同製作、映画祭経由のアートハウス配給、配信でのロングテールが見える。</dd>
+        <dt>地雷</dt>
+        <dd>北朝鮮を異国趣味の謎にすると薄くなる。空封筒はロマンではなく、届かなかった生活の物証として扱い、ミヨン自身も見て見ぬふりの共犯者だった設計にするべき。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは紙の繊維、濡れた指、視線のためらい。3DCGは棚の反復、霧の層、窓光の奥行き。キービジュアルは、縞光の中で棚一面の450通がゆるく傾き、封も開かれない一枚。</dd>
+        <dt>構成</dt>
+        <dd>第一幕はユナ来訪で均衡が崩れる。第二幕は郵便記録と私的記憶を辿るうち、ミヨンが返送や廃棄に関わっていた過去が浮く。第三幕は最後の集配で、封筒を送達するのでなく存在を公に記録する選択へ。</dd>
+        <dt>次の一手</dt>
+        <dd>棚・霧・窓光だけで成立するイメージボードを先に作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r02">
+      <div class="card-head">
+        <span class="rank">RANK 02</span>
+        <h2 class="title">種子標本</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>包囲下レニングラードで、世界25万点の種子を守る研究所の学者たちが飢えて死んでいく。19歳の見習いエレーナは、人類の未来という言葉の残酷さごと継承する。</dd>
+        <dt>世界観</dt>
+        <dd>凍った研究所の保管庫、腐った馬革の匂い、麻布の袋、配給の尽きた廊下。エレーナ、師ニコライ、家族を飢えさせながら倉庫を守る門番アンドレイ。科学は希望である前に、帝国と国家の収奪史でもある。</dd>
+        <dt>市場</dt>
+        <dd>成人向け歴史アニメとして突出しており、教育・博物館回路と映画祭回路を両立できる。欧州資金と相性がよく、限定公開でも批評的寿命が長い題材。</dd>
+        <dt>地雷</dt>
+        <dd>殉教譚にすると危うい。種子を守る行為自体が善ではなく、いま死ぬ身体を未来の抽象に差し出す暴力でもあると明示し、研究所もまた無垢ではない構図を保つべき。</dd>
+        <dt>画の核</dt>
+        <dd>2Dはひび割れた唇、指先、種子袋の織り。3DCGは保管庫の遠近、雪に沈む都市、凍結した空気。キービジュアルは、飢えた手が袋の上で止まり、最後まで掴まない一瞬。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は包囲開始と徒弟入り。第二幕は死亡者が増え、盗難や食用転用の誘惑のなかで標本台帳の継承が進む。第三幕は崩壊寸前の保管庫で、エレーナが「守る」の意味を書き換える。</dd>
+        <dt>次の一手</dt>
+        <dd>年表より先に、倫理対立ごとの8場面スケッチを作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r03">
+      <div class="card-head">
+        <span class="rank">RANK 03</span>
+        <h2 class="title">クマムシと母</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>30年前に凍結保存された母が、自分より若い姿で戻ってくる。クマムシ研究を続ける娘は、延命技術が家族の時間を救うのでなく歪めることを突きつけられる。</dd>
+        <dt>世界観</dt>
+        <dd>近未来の再生医療ラボと、昔の匂いが残る娘の部屋。研究者の娘ソラ、若く再起動した母・麻里、復活プロトコルを管理する倫理担当の真鍋。死は終端でなくサービス化され、愛情も権利も再契約される。</dd>
+        <dt>市場</dt>
+        <dd>高概念なのに家族劇へ落とせるので、配信と映画祭の両方に届く。科学設定は入口で、本当の売りは「娘が母の親になる」ねじれた感情の強さ。</dd>
+        <dt>地雷</dt>
+        <dd>泣ける再会劇にすると凡庸。母は理想の被害者ではなく、過去に娘を支配した人でもあり、娘もまた母よりデータを欲してしまう設計にして、相互搾取を避けずに描きたい。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは皮膚、胎内エコー、顕微鏡下の有機的リズム。3DCGは低温槽、培養設備、ミクロからマクロへの移行。キービジュアルは、クマムシの節が母の虹彩へ連続する一カット。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は復活成功と同居の違和感。第二幕は同意、財産、研究利用、育児記憶をめぐって母娘が逆転していく。第三幕は学会発表か母の失踪かという選択で、科学と血縁の優先順位が裂ける。</dd>
+        <dt>次の一手</dt>
+        <dd>ミクロ映像から人物芝居へ接続する1分パイロットを作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r04">
+      <div class="card-head">
+        <span class="rank">RANK 04</span>
+        <h2 class="title">夏のない年</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>1816年、太陽を失ったスイス湖畔で、盲目の少女ルーシエはグラスハーモニカで見えない天候を聴こうとする。音楽は救済ではなく、飢えた共同体の不安を増幅する。</dd>
+        <dt>世界観</dt>
+        <dd>灰色の湖、失敗する収穫、蝋燭の煤、湿った別荘。ルーシエ、流れの調律師マティアス、彼女の音を信仰と商売の両方で見つめる未亡人アデル。気候の異変にまだ名前がなく、迷信と観測が同じ卓上にある。</dd>
+        <dt>市場</dt>
+        <dd>音響と時代空気が強く、長編アニメでは希少な音楽史・気候史の融合になる。欧州共同製作、ライブ伴奏上映、映画祭プレミアからの巡回展開が組みやすい。</dd>
+        <dt>地雷</dt>
+        <dd>盲目の少女を神託装置にすると危険。彼女は世界を超越しているのでなく、誰よりも音に労働として向き合う存在に留め、天候を変える奇跡は起こさない方が強い。</dd>
+        <dt>画の核</dt>
+        <dd>2Dはガラス縁の水滴、指腹、呼吸。3DCGは湖面、灰雲、室内の蝋燭空間。キービジュアルは、灰色の外光のなか、見えない少女の指先だけが濡れたガラスを鳴らしている画。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は楽器の到来と村の期待。第二幕は演奏が評判になるほど飢饉と不安が増し、音が共同体の投影板になる。第三幕は失われた夏の終幕で、彼女は太陽ではなく喪失の輪郭を演奏する。</dd>
+        <dt>次の一手</dt>
+        <dd>音モチーフ先行で6曲ぶんの絵コンテ断片を作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r05">
+      <div class="card-head">
+        <span class="rank">RANK 05</span>
+        <h2 class="title">海霧</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>48年霧笛を守ってきた老父が、エイズで逝った息子の元恋人から電話を受ける。閉鎖まで72時間の霧笛所で、追悼と告発が同じ音になる。</dd>
+        <dt>世界観</dt>
+        <dd>人の減った岬、錆びた機械室、濡れた寝具、塩を吸った書類。老父・征二、息子の元恋人・槙人、港の看護師・啓子。海辺の時間には、AIDSを口にしなかった時代の沈黙がまだ沈殿している。</dd>
+        <dt>市場</dt>
+        <dd>海と音の装置が強く、クィアの記憶を高齢者の視点で掘る企画は希少。映画祭向きの密度があり、公共放送・ミニシアター・配信で深く残るタイプ。</dd>
+        <dt>地雷</dt>
+        <dd>「遅すぎた和解」だけだと薄い。父は息子を守れなかっただけでなく沈黙に加担した人として描き、元恋人も純粋な聖人ではなく、遺骨や録音を求める利己を持たせたい。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは濡れた顔、手の震え、遺骨の粉感。3DCGは霧笛の内壁、塔の高さ、層流の霧。キービジュアルは、巨大な霧笛の口の前に小さな骨壺が置かれ、夜明けの灰色が滲む一枚。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は電話と再会。第二幕は遺品整理と機械修理を通じて、息子の生と父の拒絶が掘り返される。第三幕は最後の霧笛で、許しより先に記憶の所在を決める。</dd>
+        <dt>次の一手</dt>
+        <dd>岬のロケーションボードと霧笛音のデザインテストを作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r06">
+      <div class="card-head">
+        <span class="rank">RANK 06</span>
+        <h2 class="title">バーバ・ヤガー／キーウ</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>空襲警報の鳴るキーウで、鶏の脚で歩く老婆の家が避難所になる。孤児ミラは、生き延びることが選ばれることではなく、何を差し出すかだと知る。</dd>
+        <dt>世界観</dt>
+        <dd>13階アパート、真っ暗な階段室、発電機の音、瓦礫だらけの中庭。ミラ、家と一体化した老婆、近隣のドローン義勇兵タラス。民話は避難民の慰めでなく、戦時の取引言語として立ち上がる。</dd>
+        <dt>市場</dt>
+        <dd>戦時下都市と神話の接続は国際的な関心が高く、長編アニメとしてのビジュアル差別化も明快。欧州共同製作、映画祭、図録・展示まで波及しやすい。</dd>
+        <dt>地雷</dt>
+        <dd>現在進行形の戦争を幻想で上塗りすると不誠実。家は守護神でなく捕食者でもあり、救済と破壊を同時に行う存在として設計し、国家寓話へ安直に回収しないこと。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは骨の柵、呪具、子どもの怯えた芝居。3DCGは家の重量、瓦礫の踏破、停電都市の深度。キービジュアルは、暗い団地の裂け目から蛍光の骨柵が光り、鶏脚が一歩を踏み出す瞬間。</dd>
+        <dt>構成</dt>
+        <dd>第一幕はミラが家に入るまで。第二幕は移動のたびに名前・物・記憶を差し出す規則が判明し、生存が汚れていく。第三幕はミラが継承者になるか、家そのものを終わらせるかの決断。</dd>
+        <dt>次の一手</dt>
+        <dd>家の可動設計と室内規則だけを先行させた12枚ボードを作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r07">
+      <div class="card-head">
+        <span class="rank">RANK 07</span>
+        <h2 class="title">ベイルート左官</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>内戦直後のベイルートで、左官職人ハビブは昼に弾痕を埋め、夜に逃亡先の情報を売る。ある壁の下から、自分が裏切った家族の痕跡が再び浮いてくる。</dd>
+        <dt>世界観</dt>
+        <dd>垂直に崩れた都市、再建中の外壁、非常電源の夜、塗りたての湿り。ハビブ、失踪者の妻サルマ、各派閥を横断して情報を買う仲介屋ナビル。停戦は来ているが、信用だけが戻らない。</dd>
+        <dt>市場</dt>
+        <dd>職人の手業が政治スリラーの機構そのものになっているのが強い。中東題材でも説明過多に陥らず、仏語圏配給や映画祭文脈との接続が明瞭。</dd>
+        <dt>地雷</dt>
+        <dd>廃墟の美しさに酔うと終わる。宗派や陣営は講義でなく、壁の材質、噂の値段、移動可能な通りとして具体化し、ハビブを善悪どちらにも逃がさないこと。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは漆喰の筆触、手首の返し、汗のにじみ。3DCGは足場、崩れた高層、月光を返す壁面。キービジュアルは、黒い弾痕の星座を白い漆喰が半分だけ覆っている壁。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は高額依頼と旧い名前の再浮上。第二幕は壁を塗るたびに失踪ネットワークが見えてきて、ハビブの売った情報が現在を侵食する。第三幕は最後の壁で、埋めるか暴くかを選ばされる。</dd>
+        <dt>次の一手</dt>
+        <dd>裏切りの時系列と壁面テクスチャの二本立て資料を作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r08">
+      <div class="card-head">
+        <span class="rank">RANK 08</span>
+        <h2 class="title">ハレー彗星と靴磨き</h2>
+        <span class="score">46点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>2061年リヨン、91歳の靴磨きマルセルは76年ぶりのハレー彗星を待つ。だが本当の賭けは、最後の客の靴を磨き切るだけの手の時間が残っているかどうかだ。</dd>
+        <dt>世界観</dt>
+        <dd>暑熱順応した川沿いの都市、半自動化された街区、修理屋だけが残る歩道。マルセル、天文台研修中の孫娘レア、最後の客になりうる配達員サミール。長寿社会でも労働は均等に延びない。</dd>
+        <dt>市場</dt>
+        <dd>見た目は穏やかでも、老い・労働・都市SFを一本に束ねられる。仏拠点の共同製作と相性がよく、映画祭経由で配信や文化施設上映に広げやすい。</dd>
+        <dt>地雷</dt>
+        <dd>ほっこり老人物語に落とすと弱い。祖父との記憶も美談ではなく、屈んで働く姿勢が世代を越えて継承された事実として描き、階級の影を消さない方がよい。</dd>
+        <dt>画の核</dt>
+        <dd>2Dはブラシ毛、皺の寄る手、反射に映る目。3DCGはリヨンの通り、彗星の空、靴の曲面光。キービジュアルは、エナメルの靴先に彗星が走り、その中で祖父と現在の手が二重に重なるカット。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は観測日決定と身体の限界提示。第二幕は最後の営業行路が記憶の回廊になり、街の変化と労働の消失が見えてくる。第三幕は彗星を見ることより、手仕事を誰に渡すかへ着地させる。</dd>
+        <dt>次の一手</dt>
+        <dd>反射面表現と手芝居の相性を見る1分テストを作る。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r09">
+      <div class="card-head">
+        <span class="rank">RANK 09</span>
+        <h2 class="title">チタン</h2>
+        <span class="score">45点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>ウクライナの鉱山町で、寡黙な父は義勇兵の娘が失った脚の代わりに、自分の掘った鉱石が使われている事実を言い出せない。救済と搾取が同じ金属でできている。</dd>
+        <dt>世界観</dt>
+        <dd>粉塵の住宅地、坑道の湿り、精錬炉の赤、リハビリ施設の無機質。父ペトロ、娘オクサナ、供給元を知る義肢技師イリーナ。戦争は前線だけでなく、資源と再建の産業として町を支配している。</dd>
+        <dt>市場</dt>
+        <dd>家族劇として読めるのに、資源戦争と身体改造の政治まで届くのが強い。欧州映画祭との相性がよく、批評的文脈で長く残る企画。</dd>
+        <dt>地雷</dt>
+        <dd>愛国的感動や障害克服譚にすると即座に弱体化する。義足は誇りでなく、重さ・便利さ・商品性・痛みを同時に持つものとして描き、父も守る人でなく機械の一部として置くべき。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは表情の抑制、指紋、歩行訓練の微差。3DCGは鉱脈、炉、義足の可動。キービジュアルは、娘の指がチタン結晶の筋をなぞり、その線が義足の擦り傷へ繋がる一枚。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は帰還と沈黙。第二幕はリハビリと鉱山の現場を並走させ、義足の出自が父娘の会話を壊していく。第三幕は父が供給を壊すか告白するか、それとも働き続けるかで終える。</dd>
+        <dt>次の一手</dt>
+        <dd>まず鉱山と義足の質感ボードを作り、脚本はその後でよい。</dd>
+      </dl>
+    </article>
+
+    <article class="card" id="r10">
+      <div class="card-head">
+        <span class="rank">RANK 10</span>
+        <h2 class="title">赤ランプ</h2>
+        <span class="score">45点</span>
+      </div>
+      <dl class="fields">
+        <dt>Logline</dt>
+        <dd>被爆3週間後の広島で、米軍撮影技師ダニエルと現像所の17歳ミチが出会う。二人を結ぶのは恋ではなく、残すべき像と奪われる像をめぐる危険な共同作業である。</dd>
+        <dt>世界観</dt>
+        <dd>焼け跡、影の焼きついた壁、薬品不足の暗室、占領下の検問。ダニエル、ミチ、画像そのものを信用しない兄タツオ。記録は正義でも真実でもなく、誰が持ち帰るかで意味が反転する。</dd>
+        <dt>市場</dt>
+        <dd>最も高リスクだが、成立すれば最も大きい。実写では近寄りにくい視覚設計をアニメで制御でき、映画祭、文化施設、国際批評の射程は大きい。</dd>
+        <dt>地雷</dt>
+        <dd>惨禍のロマンス化、占領者視点の再演、年齢差の倫理が最大の地雷。禁忌愛は成就させず、現像と没収の政治に欲望を閉じ込め、ミチの主体性を「選ばれる少女」でなく「像を扱う技師」に置くべき。</dd>
+        <dt>画の核</dt>
+        <dd>2Dは顔、熱傷、液中で像が立つ瞬間。3DCGは瓦礫の奥行き、暗室の幾何、カメラ機構。キービジュアルは、赤ランプの下でコンタクトシートに都市が傷のように浮かび上がるカット。</dd>
+        <dt>構成</dt>
+        <dd>第一幕は撮る側と現像する側の遭遇。第二幕は見せられる像と隠される像の線引きが崩れ、権力の差が二人の距離を規定する。第三幕は関係の成否でなく、どのネガを未来へ残すかで締める。</dd>
+        <dt>次の一手</dt>
+        <dd>倫理メモを付した8場面アウトラインを最初に作る。</dd>
+      </dl>
+    </article>
+
+    <div class="foot">
+      Cinema Dice · 2026-04-21 · Opus × Codex Hybrid
+    </div>
+  </main>
+</div>
+</body>
+</html>

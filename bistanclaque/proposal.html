@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BISTANCLAQUE — 企画書</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#efeae2;
+    --ink:#2a2a2a;
+    --mute:#7a7a7a;
+    --faint:#aaa;
+    --line:#d3ccbf;
+    --accent:#8a6e4b;
+    --amber:#c79a5e;
+    --crimson:#9b3d3d;
+    --dark-panel:#2d2a26;
+    --light-panel:#f6f1e7;
+  }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans JP',sans-serif;
+    line-height:1.95;
+    font-weight:300;
+    font-size:15px;
+  }
+  .hero{
+    padding:6rem 2rem 3rem;
+    text-align:center;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .hero .subtitle{
+    font-size:0.72rem;
+    color:var(--accent);
+    letter-spacing:0.35em;
+    margin-bottom:1.2rem;
+    text-transform:uppercase;
+  }
+  .hero h1{
+    font-family:'Noto Serif JP',serif;
+    font-size:clamp(2.2rem,5.5vw,4rem);
+    font-weight:500;
+    letter-spacing:0.18em;
+    margin-bottom:1.5rem;
+    color:var(--ink);
+  }
+  .hero .lead{
+    font-family:'Noto Serif JP',serif;
+    font-size:clamp(0.95rem,1.6vw,1.15rem);
+    color:var(--ink);
+    max-width:680px;
+    margin:0 auto 0.5rem;
+    line-height:2.2;
+    font-weight:400;
+  }
+  .hero .meta{
+    margin-top:2.5rem;
+    font-size:0.72rem;
+    color:var(--mute);
+    letter-spacing:0.2em;
+  }
+  .hero-image{
+    max-width:1400px;
+    margin:2rem auto 0;
+    padding:0 1rem;
+  }
+  .hero-image img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:2px;
+  }
+  .hero-image .caption{
+    font-size:0.72rem;
+    color:var(--mute);
+    text-align:center;
+    margin-top:0.7rem;
+    letter-spacing:0.1em;
+    font-style:italic;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:2rem 2rem 5rem;
+  }
+  section{
+    margin-top:4.5rem;
+  }
+  h2{
+    font-family:'Noto Serif JP',serif;
+    font-size:1.35rem;
+    font-weight:500;
+    letter-spacing:0.12em;
+    color:var(--ink);
+    padding-bottom:0.8rem;
+    margin-bottom:2rem;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  h2::before{
+    content:'';
+    position:absolute;
+    bottom:-1px;
+    left:0;
+    width:60px;
+    height:2px;
+    background:var(--accent);
+  }
+  h3{
+    font-family:'Noto Serif JP',serif;
+    font-size:1.05rem;
+    font-weight:500;
+    letter-spacing:0.08em;
+    color:var(--ink);
+    margin-top:2rem;
+    margin-bottom:1rem;
+  }
+  h4{
+    font-family:'Noto Serif JP',serif;
+    font-size:0.92rem;
+    font-weight:500;
+    color:var(--accent);
+    margin-top:1.5rem;
+    margin-bottom:0.6rem;
+    letter-spacing:0.05em;
+  }
+  p{
+    margin-bottom:1rem;
+  }
+  strong{
+    color:var(--ink);
+    font-weight:500;
+  }
+  em{
+    color:var(--accent);
+    font-style:normal;
+    font-weight:400;
+  }
+
+  .quote{
+    border-left:3px solid var(--accent);
+    padding:1rem 1.5rem;
+    margin:1.5rem 0;
+    background:var(--light-panel);
+    font-family:'Noto Serif JP',serif;
+    font-size:0.98rem;
+    color:var(--ink);
+    line-height:2.1;
+  }
+  .quote .original{
+    color:var(--mute);
+    font-style:italic;
+    font-size:0.85rem;
+    margin-bottom:0.4rem;
+    display:block;
+  }
+
+  .card{
+    background:var(--light-panel);
+    padding:1.8rem 2rem;
+    margin:1.5rem 0;
+    border-radius:2px;
+    border-left:2px solid var(--accent);
+  }
+  .card h4{
+    margin-top:0;
+  }
+
+  .dark-card{
+    background:var(--dark-panel);
+    color:#e8e2d5;
+    padding:2rem 2.2rem;
+    margin:2rem 0;
+    border-radius:2px;
+  }
+  .dark-card h3, .dark-card h4{
+    color:#f5eedd;
+  }
+  .dark-card strong{
+    color:#f5eedd;
+  }
+  .dark-card em{
+    color:#d6b88a;
+  }
+
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2rem;
+    margin:2rem 0;
+  }
+  @media(max-width:720px){
+    .grid-2{grid-template-columns:1fr}
+  }
+
+  .image-block{
+    margin:2.5rem 0;
+  }
+  .image-block img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:2px;
+  }
+  .image-block .caption{
+    font-size:0.78rem;
+    color:var(--mute);
+    margin-top:0.6rem;
+    font-style:italic;
+    letter-spacing:0.05em;
+    text-align:center;
+  }
+  .image-missing{
+    width:100%;
+    padding:4rem 2rem;
+    background:linear-gradient(135deg, #e8e0d0 0%, #d8cfbd 100%);
+    color:var(--mute);
+    text-align:center;
+    font-size:0.8rem;
+    letter-spacing:0.15em;
+    border-radius:2px;
+    font-style:italic;
+  }
+
+  .undecided{
+    background:#f3ebd5;
+    border:1px dashed var(--accent);
+    padding:1.5rem 1.8rem;
+    margin:1.5rem 0;
+    border-radius:2px;
+  }
+  .undecided h4{
+    color:var(--crimson);
+    margin-top:0;
+  }
+  .undecided h4::before{
+    content:'? ';
+    color:var(--crimson);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1.5rem 0;
+    font-size:0.88rem;
+  }
+  th, td{
+    padding:0.8rem 1rem;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  th{
+    background:var(--light-panel);
+    font-weight:500;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    color:var(--accent);
+  }
+  tr:last-child td{
+    border-bottom:none;
+  }
+
+  ul.clean{
+    list-style:none;
+    padding:0;
+    margin:1rem 0;
+  }
+  ul.clean li{
+    padding:0.3rem 0 0.3rem 1.5rem;
+    position:relative;
+  }
+  ul.clean li::before{
+    content:'—';
+    position:absolute;
+    left:0;
+    color:var(--accent);
+  }
+
+  .beat-diagram{
+    font-family:'Noto Serif JP',serif;
+    font-size:1.8rem;
+    letter-spacing:0.3em;
+    text-align:center;
+    padding:2rem;
+    color:var(--accent);
+    background:var(--light-panel);
+    margin:1.5rem 0;
+    border-radius:2px;
+  }
+  .beat-diagram .sub{
+    display:block;
+    font-size:0.75rem;
+    letter-spacing:0.15em;
+    color:var(--mute);
+    margin-top:0.6rem;
+  }
+
+  .tl{
+    margin:2rem 0;
+    position:relative;
+    padding-left:2rem;
+    border-left:2px solid var(--line);
+  }
+  .tl-item{
+    position:relative;
+    padding:0.7rem 0 1rem 1rem;
+  }
+  .tl-item::before{
+    content:'';
+    position:absolute;
+    left:-2.5rem;
+    top:1.2rem;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    border:2px solid var(--bg);
+  }
+  .tl-item .date{
+    font-family:'Noto Serif JP',serif;
+    font-size:0.78rem;
+    color:var(--accent);
+    letter-spacing:0.08em;
+    margin-bottom:0.2rem;
+  }
+  .tl-item .event{
+    font-size:0.92rem;
+    line-height:1.8;
+  }
+
+  .footer{
+    margin-top:6rem;
+    padding:3rem 2rem;
+    text-align:center;
+    font-size:0.72rem;
+    color:var(--faint);
+    letter-spacing:0.25em;
+    border-top:1px solid var(--line);
+  }
+
+  .tagline{
+    font-family:'Noto Serif JP',serif;
+    font-size:1.1rem;
+    text-align:center;
+    color:var(--accent);
+    padding:2.5rem 1rem;
+    margin:2rem 0;
+    font-weight:400;
+    line-height:2.2;
+  }
+
+  .color-palette{
+    display:flex;
+    gap:0.5rem;
+    margin:1rem 0 2rem;
+    flex-wrap:wrap;
+  }
+  .color-chip{
+    flex:1;
+    min-width:110px;
+    padding:1.2rem 0.8rem;
+    text-align:center;
+    font-size:0.75rem;
+    color:#fff;
+    letter-spacing:0.05em;
+    border-radius:2px;
+  }
+  .chip-garance{background:#c83e3e}
+  .chip-indigo{background:#3a4766}
+  .chip-cochineal{background:#881a33}
+  .chip-woad{background:#3a6b6e}
+  .chip-mauve{background:#8b6e9c}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="subtitle">Animated Feature Project</div>
+  <h1>BISTANCLAQUE</h1>
+  <p class="lead">
+    1831年のリヨンで、一人のカニュの娘が、<br>
+    自分の家族の craft が、誰にも気づかれないまま<br>
+    世界の底に沈んでいく数ヶ月を、生きる。
+  </p>
+  <p class="meta">Lyon · 1831 · 90-110 min · Hand-crafted Animation</p>
+
+  <div class="hero-image">
+    <img src="images/01_hero_croix_rousse_dawn.png" alt="Croix-Rousse at dawn"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="image-missing" style="display:none">[ 画像生成中 — Croix-Rousse at dawn ]</div>
+    <div class="caption">Croix-Rousse の夜明け — 絹織物街の千の窓に灯が灯る</div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- 企画の芯 -->
+  <section>
+    <h2>企画の芯</h2>
+    <p>
+      この映画は、<strong>ある産業（手織りの絹工業）が、転換の中でじわじわと衰えていく数ヶ月</strong>を、
+      その真ん中で生きる一人の少女を通して描く。
+    </p>
+    <p>
+      物語の軸となる問いは:
+    </p>
+    <div class="tagline">
+      変化が怖い。<br>でも、変化って、何だろう？
+    </div>
+    <p>
+      この問いは観客に向けられた教訓ではない。<br>
+      <strong>director 自身が自分に向けた問い</strong>として成立する映画。
+      答えを先に用意してから作らない。
+      不確定性を作る側が体で抱え続ける。
+    </p>
+    <div class="dark-card">
+      <h4 style="color:#d6b88a;">根本姿勢</h4>
+      <p style="margin:0;">
+        自分が答えられない問いを、観客に押し付けない。<br>
+        一緒に抱えて、最後まで答えを出さないまま、でも美しく保つ。
+      </p>
+    </div>
+  </section>
+
+  <!-- 舞台 -->
+  <section>
+    <h2>舞台 — 1831年、リヨン、クロワ=ルース</h2>
+
+    <p>
+      リヨン市の北、丘の上に広がる絹織物の街 <strong>Croix-Rousse（クロワ=ルース）</strong>。
+      17世紀以来、<em>ヨーロッパの絹の都</em>。教会祭壇布、王侯貴族の衣、パリのクチュールに送る高級品が、
+      この丘の屋根裏工房で織られている。
+    </p>
+
+    <h3>工房＝家</h3>
+    <ul class="clean">
+      <li><strong>65㎡</strong> の一部屋。天井は <strong>4メートル</strong>（ジャカード織機の高さに合わせ）</li>
+      <li><strong>床から天井までの採光窓</strong></li>
+      <li>織機 <strong>4–6台</strong>、親方夫婦、徒弟 2–3人、子どもたち</li>
+      <li>夜は屋根裏 <strong>sous-pente</strong> で眠る</li>
+      <li><strong>仕事と生活の境界が物理的にない</strong></li>
+    </ul>
+
+    <div class="image-block">
+      <img src="images/05_lyon_traboules.png" alt="Lyon traboules"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Lyon traboules ]</div>
+      <div class="caption">Traboules — 建物を貫く秘密通路網。絹を雨から守るために中世から作られた。街全体が絹のために設計されている</div>
+    </div>
+
+    <h3>絹の色</h3>
+    <div class="color-palette">
+      <div class="color-chip chip-garance">茜 / Garance</div>
+      <div class="color-chip chip-indigo">藍 / Indigo</div>
+      <div class="color-chip chip-cochineal">コチニール</div>
+      <div class="color-chip chip-woad">ウォード</div>
+      <div class="color-chip chip-mauve">モーヴ</div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--mute);margin-top:-1rem;">
+      1831年時点で使われる色。モーヴは1856年以降の合成染料（未来の予兆として台詞か暗示で）
+    </p>
+
+    <h3>絹の行き先 — 時代の三層が一工房内に同居</h3>
+    <table>
+      <thead>
+        <tr><th>行き先</th><th>時代の位置</th><th>作中の扱い</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>教会祭壇布</strong></td>
+          <td>変わらないもの</td>
+          <td>祖父の代から続く仕事。revolution を越えて注文は来る</td>
+        </tr>
+        <tr>
+          <td><strong>王侯貴族の衣</strong></td>
+          <td>消えていくもの</td>
+          <td>7月革命後、注文が減り始めた。途中で止まる半完成品</td>
+        </tr>
+        <tr>
+          <td><strong>パリのクチュール</strong></td>
+          <td>来つつあるもの</td>
+          <td>ブルジョワ市場、速く回る流行、fabricants が押す</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 音響核 -->
+  <section>
+    <h2>音響核 — Bistanclaque-pan</h2>
+    <p>
+      ジャカード織機の音を示すフランス語の擬音語。
+      canut たちの工房で、朝5時から夜まで、街全体で同時に、違う位相で鳴り続けた。
+    </p>
+
+    <div class="beat-diagram">
+      bis · tan · claque · pan
+      <span class="sub">ペダルを踏む · 筬が上がる · 杼が止まる · 緯糸を打ち込む</span>
+    </div>
+
+    <p>
+      この4拍が、<strong>家族の呼吸のリズム</strong>そのもの。
+      朝食、会話、徒弟への指示、近所への呼びかけ、全てがこの4拍の上で行われる。
+    </p>
+
+    <div class="dark-card">
+      <p style="margin:0;">
+        物語の中盤、この <strong>bistanclaque</strong>（呼吸する音）が、
+        遠くから届く <em>蒸気機関の "rhythmical, unvarying pace"</em>（呼吸しない音）と対比される。
+      </p>
+      <p style="margin:0.8rem 0 0;">
+        これはアニメの技術そのもので表現可能:
+        bistanclaque は <strong>2コマ打ちの微妙な揺らぎ</strong>、
+        蒸気は <strong>1コマ打ちの完璧な均一</strong>。
+        観客は意識しない。でも体でわかる。
+      </p>
+    </div>
+
+    <div class="image-block">
+      <img src="images/04_bistanclaque_abstract.png" alt="Bistanclaque — silk and punch cards"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Bistanclaque abstract ]</div>
+      <div class="caption">絹糸が穿孔カードに、カードがバイナリに、バイナリが現代の信号線になる</div>
+    </div>
+  </section>
+
+  <!-- 主人公たち -->
+  <section>
+    <h2>主人公たち — ダブル・プロタゴニスト</h2>
+    <p>
+      二人。それぞれが、歴史の変化の<strong>反対側に立っている</strong>。
+      そして、<strong>どちらもそれを知らない</strong>。
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4>彼女 — カニュの娘（16歳）</h4>
+        <p style="font-size:0.88rem;">
+          沈む側。元ある世界の住人。
+          家族の craft に誇りを持っている。
+          外から観察する目であり、内で生きる体。
+          映画の emotional center。
+        </p>
+        <p style="font-size:0.78rem;color:var(--mute);margin-top:0.8rem;">
+          比重: <strong>6</strong>
+        </p>
+      </div>
+      <div class="card">
+        <h4>彼 — 外国人エンジニア（40代）</h4>
+        <p style="font-size:0.88rem;">
+          沈める側。新しい世界を呼び寄せる人。
+          穿孔カードの仕組みを観察しに来た。
+          真摯で好奇心深く倫理的。
+          だが、彼の仕事は彼女の世界を変えていく。
+        </p>
+        <p style="font-size:0.78rem;color:var(--mute);margin-top:0.8rem;">
+          比重: <strong>4</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="image-block">
+      <img src="images/03_bouchon_interior.png" alt="Bouchon interior — their meeting place"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Bouchon ]</div>
+      <div class="caption">毎朝10時の mâchon。リヨン独特の朝食文化。彼と彼女が出会う場所</div>
+    </div>
+
+    <h3>二人の関係</h3>
+    <ul class="clean">
+      <li>毎朝の bouchon で mâchon を共にする。週に一度の約束が、やがて毎朝になる</li>
+      <li>仕事の話はしない。だから二人にとって気楽</li>
+      <li>哲学的な小さな問い、街のこと、天気、昨日見た鳥、子どもの頃の歌</li>
+      <li><strong>互いの素性を最後まで告げない</strong></li>
+      <li>年齢差があるので恋愛ではない。<strong>稀有な友情、不等な心の対話</strong></li>
+    </ul>
+
+    <div class="dark-card">
+      <h4 style="color:#d6b88a;">ドラマ・アイロニー</h4>
+      <p style="margin:0;">
+        彼は <strong>彼女の家族が織る布の、穿孔カードのメカニズム</strong>について論文を書くつもりでいる。<br>
+        彼女は <strong>父や徒弟が働く工房が、どう世界を変えていくか</strong>を考えたこともない。
+      </p>
+      <p style="margin:0.8rem 0 0;">
+        <em>二人の会話は、二つの未来の回路が、お互いを知らないまま響き合っている。</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- 彼女 -->
+  <div class="image-block">
+    <img src="images/02_canut_girl_loom.png" alt="Canut girl at the Jacquard loom"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="image-missing" style="display:none">[ 画像生成中 — Canut girl at loom ]</div>
+    <div class="caption">彼女、織機に向かって — 屋根裏の床から天井までの窓、銀灰色の光</div>
+  </div>
+
+  <!-- 時間の反転 -->
+  <section>
+    <h2>Poetic Engine — 時間の逆転</h2>
+    <p>
+      観客と canut の娘の関係は、<strong>四重に捻れている</strong>:
+    </p>
+    <table>
+      <thead>
+        <tr><th>次元</th><th>彼女の位置</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>歴史的</strong></td><td>我々より前（1831年）</td></tr>
+        <tr><td><strong>体験的</strong></td><td>我々より <em>先を行っている</em>（既に閾値を跨いだ）</td></tr>
+        <tr><td><strong>認識的</strong></td><td>我々は彼女より多くを知っている（彼女の ending を知っている）</td></tr>
+        <tr><td><strong>倫理的</strong></td><td>でも彼女が我々に教える側</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      普通のドラマ・アイロニー（神の視点）とは逆。
+      <strong>「知っている我々」が「知らない彼女」から学ぶ</strong>、という奇妙で正しい構造。
+    </p>
+    <p>
+      観客は彼女の無知を見て悲哀を感じる途中で、<strong>「自分も同じ状態」</strong>と気づく。
+    </p>
+    <div class="tagline">
+      時間が逆流する。<br>歴史が現在を教える。<br>無知が知を超える。
+    </div>
+  </section>
+
+  <!-- 構造 -->
+  <section>
+    <h2>構造 — Fall 1831</h2>
+    <p>
+      <strong>2-3ヶ月、1831年10月〜12月</strong>。
+      約 <strong>90-110分</strong>の長編。
+    </p>
+
+    <h3>Act 1 — 日常と到着（10月前半〜半ば）</h3>
+    <p>
+      彼女の日常、家族、じわじわの前提、tarif 交渉の緊張。<br>
+      彼の到着——リヨンを歩く、工房を観察する、偶然彼女と出会う（bouchon）。
+    </p>
+    <p style="font-size:0.88rem;color:var(--mute);">
+      開幕5分で <strong>「この家族はもう長いことじわじわ痩せている」</strong> を仕込む:
+      古い織機の擦り切れた木、年々下がる tarif の帳簿、父の呟き、辞めていく徒弟の噂。
+    </p>
+
+    <h3>Act 2a — 二人の朝、街の緊張（10月後半〜11月前半）</h3>
+    <p>
+      毎朝の会話が <strong>週に一度の約束</strong>になる。
+      tarif 協定が結ばれる → fabricants が反故にする。
+      街の空気が変わる。
+    </p>
+
+    <h3>Act 2b — 蜂起（11月21日〜24日、12月5日まで）</h3>
+
+    <div class="dark-card">
+      <p style="margin:0;">
+        この蜂起は <strong>反機械ではない</strong>。<strong>革命ではない</strong>。<br>
+        純粋に <strong>「既に結ばれた賃率協定を、守れ」</strong> という要求の蜂起が、<br>
+        国民衛兵の発砲によって暴力化したもの。
+      </p>
+      <p class="quote" style="background:rgba(255,255,255,0.05);color:#e8e2d5;border-left-color:#d6b88a;margin-top:1.5rem;">
+        <span class="original" style="color:#c4b59a;">"Vivre en travaillant ou mourir en combattant."</span>
+        働いて生きるか、戦って死ぬか。
+      </p>
+    </div>
+
+    <h4>歴史的流れ</h4>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="date">11月18日</div>
+        <div class="event">小さな工房で tarif を巡る最初の衝突</div>
+      </div>
+      <div class="tl-item">
+        <div class="date">11月21日（月）</div>
+        <div class="event">Croix-Rousse から市街への行進 → Rue d'Orsel で国民衛兵が発砲、canut Bernard 死亡。デモが蜂起になる</div>
+      </div>
+      <div class="tl-item">
+        <div class="date">11月22-23日</div>
+        <div class="event">市街戦、バリケード。両軍600人前後死亡</div>
+      </div>
+      <div class="tl-item">
+        <div class="date">11月24日〜12月3日</div>
+        <div class="event">canut たちが街を掌握。秩序を保って自治する「奇妙な勝利」</div>
+      </div>
+      <div class="tl-item">
+        <div class="date">12月5日</div>
+        <div class="event">パリから20,000人の軍到着。canut は戦わず街を引き渡す</div>
+      </div>
+      <div class="tl-item">
+        <div class="date">12月6日以降</div>
+        <div class="event">逮捕、失職多数。賃金は戻らない</div>
+      </div>
+    </div>
+
+    <div class="image-block">
+      <img src="images/06_uprising_night.png" alt="Uprising night"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Uprising night ]</div>
+      <div class="caption">11月21日の夜、クロワ=ルースのバリケード — スペクタクルとしてではなく、混乱の経験として</div>
+    </div>
+
+    <h4>二人の経験</h4>
+    <div class="grid-2">
+      <div class="card">
+        <h4>彼女（内側から）</h4>
+        <p style="font-size:0.85rem;">
+          bouchon が空。家に急ぐ。遠い銃声。
+          父が軽傷で戻る。沈黙。
+          翌日、彼女は誰かを探しに街へ。
+          知っている顔が遺体で運ばれる。言葉が出ない。
+          街は奇妙に静か。軍が来る。通りを歩く兵士たち。
+        </p>
+      </div>
+      <div class="card">
+        <h4>彼（外側から、窓越し）</h4>
+        <p style="font-size:0.85rem;">
+          宿主が外出を禁じる。窓から整列する国民衛兵を見る。
+          遠い銃声。煙。外出できない日々。
+          街を歩いてみる。bouchon は閉まっている。
+          ブルジョワのディナーに呼ばれる。彼らの「秩序」に違和感。
+          軍の到着。彼は安堵できない。
+        </p>
+      </div>
+    </div>
+    <p>
+      Act 2b の全期間、<strong>二人は会わない</strong>。
+      物理的に隔てられている。歴史が二人の間に入ってくる。
+      <em>同じ時間を、全く違う濃度で生きている。</em>
+    </p>
+
+    <h3>Act 3 — 再会と別れ（12月）</h3>
+    <p>
+      <strong>工房の再開</strong>。織機の上に埃。父は黙って座る。
+      最初の bistanclaque が鳴る。<strong>でも音が少し違う。なぜかわからない</strong>。
+    </p>
+    <p>
+      <strong>彼との最後の再会</strong>。bouchon、朝。二人ともお互い何を言うべきか持たない。でも座る。
+      沈黙。スープを啜る。
+    </p>
+    <div class="quote">
+      彼: 「また、いつか」<br>
+      彼女: 「きっと」
+    </div>
+    <p>
+      彼がリヨンを去る車の音。
+      彼女が工房で織り続ける bistanclaque。
+      <strong>二つの音が並ぶ</strong>。
+    </p>
+    <p style="font-size:0.88rem;color:var(--accent);">
+      映画の emotional climax は、蜂起じゃない。<br>
+      <strong>泣く場所は、蜂起の後、二人が沈黙したまま座っている bouchon の朝</strong>。
+    </p>
+  </section>
+
+  <!-- 没落の扱い -->
+  <section>
+    <h2>没落をどう描くか — 時間の折り畳み</h2>
+    <p>
+      1831年時点では、絹工業は <strong>まだ健在</strong>。bistanclaque は鳴り続けている。
+      <strong>本当の没落は19世紀末〜20世紀初頭</strong>。
+    </p>
+    <p>
+      2-3ヶ月の物語の中で、200年の没落をどう含めるか。
+      答えは <strong>アニメの時間圧縮能力</strong>。
+    </p>
+
+    <div class="dark-card">
+      <h4 style="color:#d6b88a;">戦略: 時間の折り畳み</h4>
+      <ul class="clean" style="color:#d6cfbf;">
+        <li>物語の時間軸は <strong style="color:#f5eedd;">2-3ヶ月のまま</strong>（character intimacy を守る）</li>
+        <li>特定のシーンで <strong style="color:#f5eedd;">時間を折り畳む</strong>（没落を視覚的に含意する）</li>
+        <li>ラストに <strong style="color:#f5eedd;">2-3分の圧縮エピローグ</strong>で、1832→1870s→2026 を一息で通過する</li>
+      </ul>
+    </div>
+
+    <h4>具体例: 織機のワンカット</h4>
+    <p>
+      15秒で150年を通過:
+    </p>
+    <ol style="padding-left:1.5rem;">
+      <li>彼女が織機を操作する（1831年）</li>
+      <li>カメラが木目に寄る</li>
+      <li>木目が時間の経過で変色・割れる（数秒で数十年）</li>
+      <li>カメラが引く。誰もいない工房</li>
+      <li>蜘蛛の巣。埃</li>
+      <li>窓の外、1870年代の街</li>
+      <li>カメラがさらに引く。博物館のガラスケース、2026年</li>
+      <li>そして、また1831年の彼女の手に戻る</li>
+    </ol>
+
+    <div class="image-block">
+      <img src="images/07_time_folding_loom.png" alt="Time folding — loom aging"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Time folding loom ]</div>
+      <div class="caption">忘れられた工房 — 蜘蛛の巣と埃が時間の重さを物語る</div>
+    </div>
+
+    <h4>ラストの圧縮エピローグ（2-3分）</h4>
+    <ul class="clean">
+      <li>彼女が工房に戻る（1831年12月）、bistanclaque が鳴る</li>
+      <li>カットが繰り返される。徐々に音がぼやけ、リズムが機械的に</li>
+      <li>1870年代: 彼女は老婆、<strong>最後の bistanclaque</strong></li>
+      <li>1890年代: 工房は空</li>
+      <li>2026年: ロンドン、博物館。バベッジの Analytical Engine の展示。穿孔カード</li>
+      <li>誰かが画面を見ている。<strong>その顔は、1831年の娘に似ている</strong></li>
+    </ul>
+  </section>
+
+  <!-- なぜアニメか -->
+  <section>
+    <h2>なぜアニメか — 媒体＝メッセージ</h2>
+    <p>
+      この物語は <strong>手仕事の物語</strong>。
+      アニメーションは <strong>手仕事そのもの</strong>。
+      <strong>canut の物語を、canut の仕事の方法で作る</strong>。
+    </p>
+
+    <h3>アニメでしかできない6つのこと</h3>
+    <ol style="padding-left:1.5rem;">
+      <li><strong>時間の崩壊を一つの画面に収められる</strong> — 娘の指が現代のキーボードを叩く指になる</li>
+      <li><strong>ジャカード穿孔カード → コンピュータの系譜</strong>を流れるシークエンスで200年旅できる</li>
+      <li><strong>絹が生きる素材</strong> — 糸が水になり、煙になり、血になり、信号線になる</li>
+      <li><strong>呼吸のリズム vs 機械のリズム</strong>が技術そのもので区別できる（2コマ打ちと1コマ打ち）</li>
+      <li><strong>内面の視覚化</strong> — 彼女の瞳の中で穿孔カードの光が踊る</li>
+      <li><strong>メタ</strong>: アニメは canut の仕事である。手で描く行為そのものが映画の主題の実践</li>
+    </ol>
+
+    <div class="image-block">
+      <img src="images/08_punch_cards_genealogy.png" alt="Punch cards genealogy — from silk to computer"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="image-missing" style="display:none">[ 画像生成中 — Punch cards genealogy ]</div>
+      <div class="caption">織物 → 穿孔カード → 機械計算 — 200年の系譜</div>
+    </div>
+
+    <div class="dark-card">
+      <p style="margin:0;">
+        そして2026年、<strong>アニメ制作にも AI が入りつつある</strong>。<br>
+        director 自身が、この映画を作りながら、<strong>自分の手仕事の意味を問い続ける</strong>。
+      </p>
+      <p style="margin:0.8rem 0 0;">
+        live action で撮ったら、この映画は成立しない。<br>
+        <em>手で描くという行為そのものが、映画の主題の実践</em>だから。
+      </p>
+    </div>
+  </section>
+
+  <!-- AI時代への響き -->
+  <section>
+    <h2>AI時代への響き</h2>
+    <p>
+      この物語は <strong>遠い過去を描きながら、2026年の我々を映す</strong>。
+      canut が1831年に感じたことは、我々が2026年にAIに対して感じていることと、驚くほど重なる。
+    </p>
+    <table>
+      <thead>
+        <tr><th>1831年の canut</th><th>2026年の我々</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>変化は「崖」じゃなく「長い坂」</td><td>仕事は残るが価値が蒸発する</td></tr>
+        <tr><td>敵は機械じゃなく価格決定権</td><td>問題はAIじゃなくプラットフォーム支配</td></tr>
+        <tr><td>ジャカードが美しくて憎めない</td><td>AIの出力が美しくて憎めない</td></tr>
+        <tr><td>自分が次の時代の種を織っている</td><td>自分の作品がAI訓練データになる</td></tr>
+        <tr><td>語彙がない状態を生きる</td><td>「AI不安」はまだ粗い言葉</td></tr>
+        <tr><td>仕事が消えるより、意味が痩せる</td><td>意味のデフレが人を疲弊させる</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.88rem;color:var(--accent);">
+      観客は遠い時代を観ているようで、実は自分を観ている。<br>
+      <strong>鉄道を初めて見た村人と、ChatGPTを初めて見た我々は、同じ顔をしている</strong>。
+    </p>
+  </section>
+
+  <!-- 迷っている部分 -->
+  <section>
+    <h2>まだ迷っている部分</h2>
+    <p style="color:var(--mute);font-size:0.88rem;">
+      以下は本企画書作成時点で、まだ決まっていない、または複数の選択肢がある事項。
+    </p>
+
+    <div class="undecided">
+      <h4>彼の名前 — バベッジ本人か、架空か</h4>
+      <p style="font-size:0.9rem;">
+        <strong>チャールズ・バベッジ本人</strong>（1791–1871、英、1831年40歳）にすると、歴史的アイロニーが2倍濃くなる。<br>
+        彼は実際にジャカード織機の穿孔カードにインスパイアされ、後年Analytical Engine を構想、24,000枚カードのジャカール肖像画を所有していた。<br>
+        ただし、1831年にリヨンを訪れた史実はまだ確認できていない。<br>
+        架空のバベッジ的人物にする選択肢もある。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>彼女の名前・家族構成</h4>
+      <p style="font-size:0.9rem;">
+        主人公の名前、父・母・兄弟・徒弟の構成、家族内の力学。まだ設計していない。<br>
+        父は Mutualistes（canut の労働組合的組織）の一員、という仮設定のみ。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>彼女の葛藤の芯</h4>
+      <p style="font-size:0.9rem;">
+        彼女が抱えている一番の迷い:
+        父との関係か、自分の将来か、織ることへの矛盾した愛か、外の世界への好奇心か。<br>
+        これが決まると、彼女の行動の origin が固まる。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>ジャカール本人の登場有無</h4>
+      <p style="font-size:0.9rem;">
+        1831年時点、ジョゼフ・マリー・ジャカール本人（79歳、1834年没）は生きている。<br>
+        娘が一度だけ彼に会う、というシーンはあり得る。だが入れると歴史大作的な重力が働いて娘の物語が沈む危険。<br>
+        現時点では <strong>街の噂としてのみ言及</strong>する方針。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>24,000枚カードのジャカール肖像画の扱い</h4>
+      <p style="font-size:0.9rem;">
+        この肖像画は1839年の作品で、1831年にはまだ存在しない。<br>
+        案A: 彼が「そう遠くない将来、これが可能になる」と語る予兆として。<br>
+        案B: ラストの圧縮エピローグで、博物館の展示として現れる。<br>
+        現時点では <strong>両方を薄く入れる</strong>方針。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>ファンタジー要素の導入</h4>
+      <p style="font-size:0.9rem;">
+        歴史リアリズム一本で行くか、薄いファンタジー層を入れるか。<br>
+        検討中で保留された候補: 時間の糸が見える / パターンが抜け出す / 街が呼吸する / 届かない手紙 / 街の上の鳥 / 月光下の traboules で時代を跨ぐ など。<br>
+        <strong>蚕</strong>は家の片隅で生きている素材として、どこかに残す余地。
+      </p>
+    </div>
+
+    <div class="undecided">
+      <h4>ファーストカット</h4>
+      <p style="font-size:0.9rem;">
+        映画を何で始めるか。象徴的な第一フレーム——音、画、触感。<br>
+        候補: bistanclaque の音で始める / 絹の糸のクローズアップ / 2026年の博物館から1831年に溶ける / 彼女の目覚め
+      </p>
+    </div>
+  </section>
+
+  <!-- 資料 -->
+  <section>
+    <h2>参照資料</h2>
+    <p style="font-size:0.88rem;">
+      本企画の基礎資料。プロジェクトフォルダ:
+      <code style="background:var(--light-panel);padding:0.2rem 0.5rem;border-radius:2px;font-size:0.8rem;">
+      2000_Creative/2900_Sandbox/bistanclaque/
+      </code>
+    </p>
+    <ul class="clean">
+      <li><code>research_codex_macro.md</code> — マクロ史・年代記・職種別クロニクル・抵抗運動・一次引用（Codex xhigh、23KB）</li>
+      <li><code>research_claude_atmosphere.md</code> — 光/音/匂い/テンポ・職人肉声・bistanclaque 音響分解・情景フラグメント（36KB）</li>
+      <li><code>proposal.html</code> — 本企画書（このファイル）</li>
+    </ul>
+
+    <h3>一次史料（今後の深掘り用）</h3>
+    <ul class="clean">
+      <li>Louis Reybaud, <em>Études sur le régime des manufactures: condition des ouvriers en soie</em> (1859)</li>
+      <li>Samuel Bamford, <em>Passages in the Life of a Radical</em> (1840–44)</li>
+      <li>Flora Tristan, <em>Promenades dans Londres</em> (1840)</li>
+      <li>Friedrich Engels, <em>Die Lage der arbeitenden Klasse in England</em> (1845)</li>
+      <li>Fernand Rude, <em>Les Révoltes des canuts 1831-1834</em></li>
+      <li>Gallica (BnF) — リヨン絹工関連デジタル文書</li>
+    </ul>
+  </section>
+
+  <!-- 最後 -->
+  <section>
+    <h2>最後に</h2>
+    <div class="tagline">
+      1831年のリヨンに、一人の娘がいた——<br>
+      ちゃんとそれだけを、ちゃんと描く。
+    </div>
+    <p style="text-align:center;font-size:0.92rem;color:var(--mute);">
+      これ以上も、これ以下もない。<br>
+      観客の中で、映画は完成する。
+    </p>
+  </section>
+
+</div>
+
+<div class="footer">
+  BISTANCLAQUE · Animated Feature Project · 2026
+</div>
+
+</body>
+</html>
