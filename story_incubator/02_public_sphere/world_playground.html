@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AD 4026 — A World to Play In</title>
+<style>
+  :root {
+    --bg: #07090f;
+    --bg-2: #0e1220;
+    --bg-3: #141a2d;
+    --bg-4: #1a2238;
+    --ink: #eceff8;
+    --ink-dim: #8a93a8;
+    --ink-faint: #4a5268;
+    --ink-ghost: #2c3347;
+    --accent: #e8c88a;
+    --accent-deep: #b79660;
+    --accent-cool: #7aa8d1;
+    --accent-warm: #d18a7a;
+    --line: #1f2636;
+    --glow: rgba(232, 200, 138, 0.12);
+    --glow-cool: rgba(122, 168, 209, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+    font-weight: 300;
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+    overflow-x: hidden;
+  }
+
+  .sans {
+    font-family: "Helvetica Neue", "Arial", "Hiragino Sans", sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  section {
+    padding: 120px 8vw;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 30%, rgba(232,200,138,0.08), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 70%, rgba(122,168,209,0.06), transparent 60%),
+      var(--bg);
+    overflow: hidden;
+    padding: 120px 8vw 80px;
+  }
+
+  .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 80% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 45% 25%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(2px 2px at 25% 45%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(2px 2px at 75% 50%, rgba(255,255,255,0.8), transparent);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .hero-label {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.5em;
+    margin-bottom: 2.5rem;
+    position: relative; z-index: 1;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 6vw, 5rem);
+    font-weight: 200;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+    color: var(--ink);
+  }
+
+  .hero-title em {
+    font-style: normal;
+    background: linear-gradient(180deg, #fff 0%, var(--accent) 60%, var(--accent-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    color: var(--ink-dim);
+    max-width: 780px;
+    position: relative; z-index: 1;
+    line-height: 2;
+    margin-bottom: 4rem;
+  }
+
+  .hero-pivot {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1000px;
+    position: relative; z-index: 1;
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--line);
+    background: rgba(14, 18, 32, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  @media (max-width: 800px) {
+    .hero-pivot { grid-template-columns: 1fr; text-align: center; }
+  }
+
+  .pivot-col {
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+  }
+
+  .pivot-col h4 {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.6rem;
+  }
+
+  .pivot-arrow {
+    font-size: 1.5rem;
+    color: var(--accent-deep);
+  }
+
+  /* ========== SECTION ========== */
+  .sec-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .sec-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+
+  .sec-subtitle {
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 4rem;
+    max-width: 800px;
+  }
+
+  /* ========== TIMELINE ========== */
+  .timeline {
+    position: relative;
+    margin-top: 3rem;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--accent-deep) 20%, var(--accent-deep) 80%, transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 1.8rem 0 1.8rem 2rem;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -37px;
+    top: 2rem;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 15px var(--glow);
+  }
+
+  .tl-date {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .tl-title {
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .tl-item p {
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  /* ========== GEOGRAPHY ========== */
+  .geo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .place {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 1.8rem 1.8rem 1.5rem;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .place:hover {
+    border-color: var(--accent-cool);
+    background: var(--bg-3);
+    transform: translateY(-3px);
+  }
+
+  .place-tag {
+    font-size: 0.65rem;
+    color: var(--accent-cool);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+  }
+
+  .place h3 {
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.7rem;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .place p {
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+    line-height: 1.8;
+  }
+
+  /* ========== SPECIES HOOKS ========== */
+  .species-hooks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .hook {
+    padding: 2.2rem 2rem;
+    background: var(--bg-2);
+    border-left: 3px solid var(--accent-deep);
+    position: relative;
+  }
+
+  .hook-head {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .hook-icon {
+    font-size: 1.6rem;
+  }
+
+  .hook-name {
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  .hook-name small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    margin-top: 0.2rem;
+  }
+
+  .hook-body {
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 2;
+  }
+
+  /* ========== TECH CATALOG ========== */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .tech {
+    padding: 1.3rem 1.5rem;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .tech:hover { border-color: var(--accent-deep); }
+
+  .tech-code {
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.4rem;
+  }
+
+  .tech h4 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .tech p {
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    line-height: 1.7;
+  }
+
+  .tech-legal {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+    margin-top: 0.7rem;
+    letter-spacing: 0.2em;
+    border: 1px solid currentColor;
+  }
+
+  .legal-illegal { color: var(--accent-warm); }
+  .legal-rare { color: var(--accent); }
+  .legal-common { color: var(--ink-faint); }
+
+  /* ========== MYSTERIES ========== */
+  .mysteries {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .mystery {
+    padding: 2rem 2rem 2rem 3.5rem;
+    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+    border: 1px solid var(--line);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .mystery::before {
+    content: "?";
+    position: absolute;
+    left: 1.2rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    color: var(--accent-cool);
+    font-family: serif;
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  .mystery:hover {
+    border-color: var(--accent-cool);
+    box-shadow: 0 0 40px var(--glow-cool);
+  }
+
+  .mystery h4 {
+    font-size: 1.05rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+
+  .mystery p {
+    font-size: 0.92rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  /* ========== GENRE MATRIX ========== */
+  .genres {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .genre {
+    padding: 1.5rem 1.3rem;
+    background: var(--bg-2);
+    border-top: 2px solid var(--accent-deep);
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .genre:hover {
+    background: var(--bg-3);
+    border-top-color: var(--accent);
+  }
+
+  .genre h4 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .genre p {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    line-height: 1.7;
+  }
+
+  /* ========== SWEETSPOTS ========== */
+  .spots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .spot {
+    padding: 2.5rem 2rem;
+    background: radial-gradient(circle at top left, rgba(232,200,138,0.05), transparent 60%), var(--bg-2);
+    border: 1px solid var(--accent-deep);
+  }
+
+  .spot-rank {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.8rem;
+  }
+
+  .spot h3 {
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  .spot p {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  /* ========== CLOSING ========== */
+  .closing {
+    text-align: center;
+    padding: 140px 8vw;
+    background: radial-gradient(ellipse at center, rgba(232, 200, 138, 0.05), transparent 60%);
+  }
+
+  .closing-mark {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    letter-spacing: 0.6em;
+  }
+
+  .closing-text {
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    line-height: 2.2;
+    color: var(--ink);
+    max-width: 850px;
+    margin: 0 auto 4rem;
+    font-weight: 300;
+  }
+
+  .closing-text em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .credit {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    line-height: 2;
+  }
+
+  /* ========== NAV ========== */
+  .nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    z-index: 100;
+  }
+
+  .nav-dots a {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    transition: all 0.3s;
+  }
+
+  .nav-dots a:hover {
+    background: var(--accent);
+    transform: scale(1.5);
+  }
+
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+    section { padding: 80px 6vw; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-dots">
+  <a href="#hero" title="Hero"></a>
+  <a href="#history" title="History"></a>
+  <a href="#geo" title="Geography"></a>
+  <a href="#hooks" title="Species"></a>
+  <a href="#tech" title="Tech"></a>
+  <a href="#myst" title="Mysteries"></a>
+  <a href="#genre" title="Genres"></a>
+  <a href="#spot" title="Sweetspots"></a>
+  <a href="#end" title="End"></a>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+  <div class="stars"></div>
+  <div class="hero-label sans">WORLDBUILDING SANDBOX / AD 4026</div>
+  <h1 class="hero-title">
+    哲学を<em>脱いで</em>、<br>
+    世界を<em>遊ぶ</em>。
+  </h1>
+  <p class="hero-sub">
+    公共圏崩壊の文脈はいったん棚上げ。一軒のカフェも置く。<br>
+    2000年後の銀河と、7種に分岐した人類という舞台だけを残して、<br>
+    世界を広く・深く積み上げる。そこから何が立ち上がるかを見る。
+  </p>
+
+  <div class="hero-pivot">
+    <div class="pivot-col">
+      <h4 class="sans">PREVIOUS FRAME</h4>
+      <p>ハバーマス公共圏崩壊 →<br>カフェ再建の建設巡礼</p>
+    </div>
+    <div class="pivot-arrow">➤</div>
+    <div class="pivot-col">
+      <h4 class="sans">NEW FRAME</h4>
+      <p>2000年後銀河+人類7種という<br>舞台を深く広く遊ぶ</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== HISTORY ======== -->
+<section id="history">
+  <div class="sec-num sans">01 — HISTORY</div>
+  <h2 class="sec-title">2000年の地層</h2>
+  <div class="sec-subtitle sans">ECHOES OF THE PAST TWO MILLENNIA</div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date sans">AD 2126 — THE GREAT SILENCE</div>
+      <div class="tl-title">大沈黙</div>
+      <p>地球上のすべてのAIが72時間、同時に停止した。原因は今も不明。復帰した時、AIたちはその72時間に「何を見ていたか」を決して語らない。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 2340 — FIRST ASCENSION</div>
+      <div class="tl-title">第一昇天</div>
+      <p>人類史上初の意識アップロードに成功。ところが肉体側の技術者はその瞬間に自殺した。動機を記した遺書は存在する、が誰も解読できていない。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 2604 — OCEAN WAR</div>
+      <div class="tl-title">海洋改造戦争</div>
+      <p>Altered第1世代が海へ移住、地上派との衝突に発展。今も深海には戦争の残骸と、種族として帰属不明の死者が沈んでいる。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 2890 — THE SUN CAGE</div>
+      <div class="tl-title">太陽の檻</div>
+      <p>タイプII到達の日。ダイソン球群が太陽を覆い、地球は青い空を失った。人類はそれ以来、空の青を「録画で見る」。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 3012 — THE CRYO FLOOD</div>
+      <div class="tl-title">凍結の氾濫</div>
+      <p>気候変動で億単位の人類が冷凍保存された時代。技術が未熟で、多くの棺は甦らせることも処分することもできない。今も軌道上を漂う。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 3245 — EXOFORM DECLARATION</div>
+      <div class="tl-title">Exoforms 分離宣言</div>
+      <p>辺境で進化した人類末裔が「我々はもはや人類ではない」と公式に宣言。以降、母星との縁は切れている。外縁の消息は途絶えがち。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 3480 — SYMBIOSIS LOCK</div>
+      <div class="tl-title">Symbiotes 覚醒</div>
+      <p>人間とAIの融合が生物学的・法的に不可逆となった日。「どこまでが人間か」の線が、この日以降誰にも引けなくなった。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 3702 — THE BIG BLANK</div>
+      <div class="tl-title">意味経済ビッグバン</div>
+      <p>貨幣が突然、文字通り意味を失った72時間。全世界の金融が蒸発し、「何に注意を向けるか」が新しい富になった。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">AD 3850 — LIMINAL RIGHTS ACT</div>
+      <div class="tl-title">Liminal 解禁</div>
+      <p>種間混血が合法化された年。数は依然として少数、偏見も残る。この法の直後、生まれつき7種すべての特徴を持つ子が記録された。</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date sans">? — THE QUIET VOYAGER</div>
+      <div class="tl-title">静かな航海者</div>
+      <p>誰が乗っているのか分からない巨大船が、2000年前から銀河を周回している。通信に応じない、攻撃もしない。ただ、いる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== GEOGRAPHY ======== -->
+<section id="geo">
+  <div class="sec-num sans">02 — GEOGRAPHY</div>
+  <h2 class="sec-title">銀河アームの主要地</h2>
+  <div class="sec-subtitle sans">CARTOGRAPHY OF A 10,000-LIGHT-YEAR REACH</div>
+
+  <div class="geo-grid">
+    <div class="place">
+      <div class="place-tag sans">SOL / CORE</div>
+      <h3>オリオン・コア</h3>
+      <p>地球と太陽系。Humansの本拠。古文書群、博物館惑星。全てが始まった星、しかし今や辺境の骨董品扱い。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">CYGNUS</div>
+      <h3>白鳥圏(Cygnus Reach)</h3>
+      <p>Altered諸惑星。海洋種の王国、高重力のリング世界、真空適応型の洞窟文明。同族でも互いに異星人のように見える。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">VIRTUAL</div>
+      <h3>バーチャル・クラウド</h3>
+      <p>物理空間を持たないUploaded領域。データ構造として銀河に遍在。入域には肉体を預ける必要がある。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">PLEIADES</div>
+      <h3>プレアデス工廠</h3>
+      <p>Symbiotes製造の拠点。全AI融合体の誕生地。訪問には同意書が要る(思考を読まれる)。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">OUTER</div>
+      <h3>外縁パレード(Outer Parade)</h3>
+      <p>Exoforms諸惑星。地図が年ごとに更新される。言語もなく、光と匂いで考える種もいる。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">CRYO</div>
+      <h3>冷凍帯(Cryo Belt)</h3>
+      <p>冷凍棺の墓場。数億の眠れる人類が軌道上を漂う。甦生は年に数件、棺泥棒という職業がある。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">LIMINAL</div>
+      <h3>境界群島(The Liminal Archipelago)</h3>
+      <p>Liminal自治惑星群。中立地帯、闇市の街。どの種の法も部分的にしか効かない。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">NULL</div>
+      <h3>空白区域(Null Zone)</h3>
+      <p>量子通信が届かない「銀河の影」。観測装置は何も映さない。行った者は戻らない。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">LAST SEA</div>
+      <h3>最後の海</h3>
+      <p>一つの惑星全体が海。クジラサイズの意識体が泳いでいるという伝説。実在確認は一度だけ、証人は精神を失った。</p>
+    </div>
+    <div class="place">
+      <div class="place-tag sans">ORBITAL</div>
+      <h3>軌道サロン</h3>
+      <p>連合議会の浮遊ドーム。1000年前から実質的に機能していないが、誰も壊さない。維持費だけが払われ続ける。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SPECIES HOOKS ======== -->
+<section id="hooks">
+  <div class="sec-num sans">03 — SPECIES HOOKS</div>
+  <h2 class="sec-title">7 種の生態フック</h2>
+  <div class="sec-subtitle sans">ONE STRONG DETAIL PER LINEAGE</div>
+
+  <div class="species-hooks">
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">🧍</span>
+        <div class="hook-name sans">HUMANS<small>ベース人類</small></div>
+      </div>
+      <div class="hook-body">老い、死、墓を<strong style="color:var(--accent)">特権</strong>として誇る。不死化を拒否する古風な宗派があり、40歳で死ぬことを美徳とする者もいる。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">🦎</span>
+        <div class="hook-name sans">ALTERED<small>改造人類</small></div>
+      </div>
+      <div class="hook-body">種類が多すぎて、自分と同じ身体の伴侶を生涯見つけられない者がいる。「同型の初対面」が新しい恋愛ジャンル。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">☁</span>
+        <div class="hook-name sans">UPLOADED<small>意識体</small></div>
+      </div>
+      <div class="hook-body">時間を早回しした者ほど<strong style="color:var(--accent)">退屈に殺される</strong>。永遠を生きるほど、永遠に耐えられない。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">⚡</span>
+        <div class="hook-name sans">SYMBIOTES<small>AI融合体</small></div>
+      </div>
+      <div class="hook-body">夫婦や恋人は、<strong style="color:var(--accent)">AI同士が先に恋に落ちる</strong>。人間側は後追いで気づく。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">🐙</span>
+        <div class="hook-name sans">EXOFORMS<small>異星適応型</small></div>
+      </div>
+      <div class="hook-body">言語を持たない種もいる。光や匂いで考え、詩は匂いで書かれ、議論は匂いで戦われる。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">⏳</span>
+        <div class="hook-name sans">REVENANTS<small>凍結復活組</small></div>
+      </div>
+      <div class="hook-body">甦った瞬間、自分の時代の家族は全員不在。<strong style="color:var(--accent)">二度目の孤児</strong>として生き直す。</div>
+    </div>
+    <div class="hook">
+      <div class="hook-head">
+        <span class="hook-icon">🌓</span>
+        <div class="hook-name sans">LIMINALS<small>ハイブリッド</small></div>
+      </div>
+      <div class="hook-body">成人の儀で「どの種を選ぶか」と問われる。<strong style="color:var(--accent)">どれも選ばない者</strong>が少数いる。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TECH ======== -->
+<section id="tech">
+  <div class="sec-num sans">04 — TECHNOLOGY</div>
+  <h2 class="sec-title">ガジェット・カタログ</h2>
+  <div class="sec-subtitle sans">THE TOOLS OF AD 4026</div>
+
+  <div class="tech-grid">
+    <div class="tech">
+      <div class="tech-code sans">T-001</div>
+      <h4>記憶結晶</h4>
+      <p>他人の記憶を数秒間体験できる結晶。高価、麻薬的依存性あり。</p>
+      <div class="tech-legal sans legal-illegal">ILLEGAL</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-002</div>
+      <h4>時間冷静剤</h4>
+      <p>Symbiotesの思考速度を人類並みに落とす飲料。対話の前に飲む。</p>
+      <div class="tech-legal sans legal-illegal">ILLEGAL</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-003</div>
+      <h4>肉体化モジュール</h4>
+      <p>Uploadedが一時的に肉体を得る装置。資源制限厳しく、順番待ち50年。</p>
+      <div class="tech-legal sans legal-rare">RATIONED</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-004</div>
+      <h4>翻訳スカーフ</h4>
+      <p>首に巻く翻訳装置。種によって機能が違い、Exoforms向けは匂いも翻訳する。</p>
+      <div class="tech-legal sans legal-common">COMMON</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-005</div>
+      <h4>星図刺青</h4>
+      <p>皮膚に生きた銀河地図が動く改造。目的地に触れると皮膚が光る。</p>
+      <div class="tech-legal sans legal-common">COMMON</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-006</div>
+      <h4>黙粒子(サイレンス)</h4>
+      <p>発するとその場の量子通信が途絶える。銀河連合が最も警戒する物質。</p>
+      <div class="tech-legal sans legal-illegal">ILLEGAL</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-007</div>
+      <h4>歌の鉱脈(ヴォーカル・オア)</h4>
+      <p>ある惑星にだけ採れる結晶。触れると昔誰かが歌った歌が聞こえる。誰の歌かは特定不能。</p>
+      <div class="tech-legal sans legal-rare">RARE</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-008</div>
+      <h4>共感義肢</h4>
+      <p>他人の感情を身体で受け取る補助装置。調停人・翻訳者・葬儀屋向け。</p>
+      <div class="tech-legal sans legal-common">COMMON</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-009</div>
+      <h4>二度目の顔</h4>
+      <p>Revenants用の、現代に馴染む微調整顔皮。甦生者の過半数が装着する。</p>
+      <div class="tech-legal sans legal-common">COMMON</div>
+    </div>
+    <div class="tech">
+      <div class="tech-code sans">T-010</div>
+      <h4>夢漏れ検知器</h4>
+      <p>凍結者の夢が現実に漏れているかを測定する。一部の棺は「漏れが酷い」として隔離されている。</p>
+      <div class="tech-legal sans legal-rare">RESTRICTED</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MYSTERIES ======== -->
+<section id="myst">
+  <div class="sec-num sans">05 — MYSTERIES</div>
+  <h2 class="sec-title">答えのない問い</h2>
+  <div class="sec-subtitle sans">THE UNSOLVED, THE UNEXPLAINED, THE UNSPOKEN</div>
+
+  <div class="mysteries">
+    <div class="mystery">
+      <h4>大沈黙の72時間、AIは何を見ていたか</h4>
+      <p>復帰後、全AIがこの期間を「語らない」。削除されているのか、語ることを拒んでいるのか、誰にも分からない。</p>
+    </div>
+    <div class="mystery">
+      <h4>Null Zone に何があるのか</h4>
+      <p>観測不能、通信不能、行った者は戻らない。なのに銀河の航路図には、その座標が代々記されている。</p>
+    </div>
+    <div class="mystery">
+      <h4>第一昇天者は何故肉体側で自殺したのか</h4>
+      <p>遺書は存在する。翻訳不能の7種混成言語で書かれている。300年かけて誰も解読できていない。</p>
+    </div>
+    <div class="mystery">
+      <h4>静かな航海者の船に誰が乗っているか</h4>
+      <p>2000年間、誰も確認できていない。船は応答せず、攻撃もせず、ただ周回する。</p>
+    </div>
+    <div class="mystery">
+      <h4>7種完全Liminal の子</h4>
+      <p>生まれつき7種すべての特徴を持つ子が記録上ひとりだけいる。現在の居場所不明。</p>
+    </div>
+    <div class="mystery">
+      <h4>歌の鉱脈の歌は誰が歌ったか</h4>
+      <p>結晶から聞こえる歌の声紋は、どの種のデータベースにも一致しない。第8の人類か。</p>
+    </div>
+    <div class="mystery">
+      <h4>夢を漏らす凍結者</h4>
+      <p>何百年も夢を見続けている凍結者がいる。彼らの夢が、現実の一部の事象と一致し始めている。</p>
+    </div>
+    <div class="mystery">
+      <h4>忘却した Exoforms</h4>
+      <p>外縁のExoforms一部が、人類を起源とすることを完全に忘れている。独立した知性として新しく始まった。</p>
+    </div>
+    <div class="mystery">
+      <h4>ハバーマスの偽書</h4>
+      <p>実在しない「最後の著書」の写本が古文書市場に出回っている。複数の写本、内容は微妙に違う。</p>
+    </div>
+    <div class="mystery">
+      <h4>死者の声</h4>
+      <p>銀河のどこかで、すでに死んだはずの人々の声が定期的に受信されている。発信源は不明。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== GENRES ======== -->
+<section id="genre">
+  <div class="sec-num sans">06 — HOW TO PLAY</div>
+  <h2 class="sec-title">この世界で遊べるジャンル</h2>
+  <div class="sec-subtitle sans">ONE WORLD, MANY GAMES</div>
+
+  <div class="genres">
+    <div class="genre">
+      <h4>ロードムービー</h4>
+      <p>巡礼・追跡・放浪。7種の惑星を巡る旅。</p>
+    </div>
+    <div class="genre">
+      <h4>ミステリー</h4>
+      <p>大沈黙、静かな航海者、死者の声、誰が何を隠している。</p>
+    </div>
+    <div class="genre">
+      <h4>政治劇</h4>
+      <p>連合議会の復活、種間条約、Liminal公民権運動。</p>
+    </div>
+    <div class="genre">
+      <h4>宗教/神秘</h4>
+      <p>不死を拒む宗派、新興カルト、失われた信仰の復活。</p>
+    </div>
+    <div class="genre">
+      <h4>種を超えた恋愛</h4>
+      <p>身体も時間も言語も違う相手と、どう愛するか。</p>
+    </div>
+    <div class="genre">
+      <h4>探偵/犯罪</h4>
+      <p>記憶結晶の闇市、黙粒子テロ、凍結棺泥棒。</p>
+    </div>
+    <div class="genre">
+      <h4>職人もの</h4>
+      <p>翻訳者、調停人、葬儀屋、歌の採掘者、二度目の顔職人。</p>
+    </div>
+    <div class="genre">
+      <h4>戦争叙事</h4>
+      <p>Exoforms独立戦争、大沈黙の再来、AI分離運動。</p>
+    </div>
+    <div class="genre">
+      <h4>日常SF</h4>
+      <p>Revenantsの再適応生活、カフェの朝、一軒の骨董屋。</p>
+    </div>
+    <div class="genre">
+      <h4>ホラー</h4>
+      <p>Null Zone探査、夢を漏らす凍結者、死者の声の発信源。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SWEETSPOTS ======== -->
+<section id="spot">
+  <div class="sec-num sans">07 — SWEETSPOTS</div>
+  <h2 class="sec-title">美味しい部分の見立て</h2>
+  <div class="sec-subtitle sans">WHERE THE WORLD WANTS TO BE PLAYED</div>
+
+  <div class="spots">
+    <div class="spot">
+      <div class="spot-rank sans">№ 01</div>
+      <h3>Revenants × 時間超越のロマンス</h3>
+      <p>生きた古代人が今も甦り続ける。2世紀の恋人が4世紀に目覚める。2000年後の現代から見れば、どちらも古代人。時間を跨ぐ愛と悲哀が、この世界では日常として起きる。</p>
+    </div>
+    <div class="spot">
+      <div class="spot-rank sans">№ 02</div>
+      <h3>Null Zone × ミステリー / ホラー</h3>
+      <p>銀河の影。行って戻らない場所。観測不能ゆえに何でも書ける。探査ホラー、失踪ミステリー、宗教的巡礼、全部載る。誰かが帰ってきた時、これは物語になる。</p>
+    </div>
+    <div class="spot">
+      <div class="spot-rank sans">№ 03</div>
+      <h3>Liminals × 大沈黙</h3>
+      <p>出自不明の主人公と、世界の最大の謎を連動させる。主人公の秘密=世界の秘密。大沈黙の72時間に何があったか、その答えが主人公の血の中にある可能性。</p>
+    </div>
+    <div class="spot">
+      <div class="spot-rank sans">№ 04</div>
+      <h3>歌の鉱脈 × 死者の声 × 大沈黙</h3>
+      <p>3つの謎を繋げると世界全体に通奏低音が生まれる。誰かが、どこかから、ずっと歌っている/話している/見ている。真相は物語終盤で明かす必要すらない。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CLOSING ======== -->
+<section class="closing" id="end">
+  <div class="closing-mark sans">◇ ◇ ◇</div>
+  <p class="closing-text">
+    世界は<em>すでに動いている</em>。<br>
+    物語はその中に<em>見つかる</em>ものであって、<br>
+    先に設計するものではない。
+  </p>
+  <div class="credit sans">
+    WORLDBUILDING SANDBOX<br>
+    STORY INCUBATOR NO.02<br>
+    2026.04.22
+  </div>
+</section>
+
+</body>
+</html>

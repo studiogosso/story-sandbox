@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THIRD PLACE — 企画書</title>
+<style>
+  :root {
+    --bg: #07090f;
+    --bg-2: #0e1220;
+    --bg-3: #141a2d;
+    --ink: #eceff8;
+    --ink-dim: #8a93a8;
+    --ink-faint: #4a5268;
+    --accent: #e8c88a;
+    --accent-deep: #b79660;
+    --accent-cool: #7aa8d1;
+    --accent-warm: #d18a7a;
+    --warn: #e8a06a;
+    --line: #1f2636;
+    --glow: rgba(232, 200, 138, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+    font-weight: 300;
+    line-height: 1.85;
+    letter-spacing: 0.04em;
+    overflow-x: hidden;
+  }
+  .sans { font-family: "Helvetica Neue", "Arial", "Hiragino Sans", sans-serif; letter-spacing: 0.08em; }
+
+  section { padding: 120px 8vw; border-bottom: 1px solid var(--line); position: relative; }
+
+  /* ========== COVER ========== */
+  .cover {
+    min-height: 100vh;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.55);
+  }
+  .cover-bg::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(7,9,15,0.3) 0%, rgba(7,9,15,0.1) 50%, rgba(7,9,15,0.95) 100%);
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 8vw 10vh;
+    width: 100%;
+  }
+  .cover-label {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.5em;
+    margin-bottom: 2rem;
+  }
+  .cover-title {
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(180deg, #fff 0%, var(--accent) 55%, var(--accent-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cover-subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    color: var(--ink-dim);
+    letter-spacing: 0.6em;
+    margin-bottom: 2.5rem;
+  }
+  .cover-tagline {
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    max-width: 820px;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .cover-meta {
+    margin-top: 3rem;
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    font-size: 0.7rem; color: var(--ink-faint);
+    letter-spacing: 0.3em;
+  }
+  .cover-meta span::before {
+    content: "◇"; color: var(--accent-deep); margin-right: 0.6em;
+  }
+
+  /* ========== SECTION HEAD ========== */
+  .sec-num {
+    font-size: 0.7rem; letter-spacing: 0.5em;
+    color: var(--accent); margin-bottom: 0.8rem;
+  }
+  .sec-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300; letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+  .sec-subtitle {
+    color: var(--ink-dim);
+    font-size: 0.95rem; letter-spacing: 0.15em;
+    margin-bottom: 3rem; max-width: 800px;
+  }
+
+  /* ========== LOGLINE ========== */
+  .logline-block {
+    background: var(--bg-2);
+    border-left: 3px solid var(--accent);
+    padding: 3rem 3rem;
+    max-width: 1000px;
+  }
+  .logline-block p {
+    font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .logline-block em {
+    color: var(--accent); font-style: normal;
+  }
+
+  /* ========== FACT GRID ========== */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .fact {
+    padding: 1.5rem;
+    background: var(--bg-2);
+    border-top: 2px solid var(--accent-deep);
+  }
+  .fact-label {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+  }
+  .fact-value {
+    font-size: 1.05rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== WARNING / UNDECIDED ========== */
+  .undecided {
+    background: linear-gradient(135deg, rgba(232, 160, 106, 0.08), transparent 60%), var(--bg-2);
+    border: 1px solid var(--warn);
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+  .undecided::before {
+    content: "UNDECIDED";
+    position: absolute;
+    top: -0.7rem; left: 1.5rem;
+    padding: 0.2rem 0.8rem;
+    background: var(--bg);
+    color: var(--warn);
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+  }
+  .undecided h4 {
+    font-size: 1rem;
+    color: var(--warn);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  .undecided p {
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+  .undecided ul {
+    margin: 1rem 0 0 1.5rem;
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+  }
+  .undecided ul li { margin-bottom: 0.4rem; }
+  .undecided .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 800px) {
+    .undecided .pros-cons { grid-template-columns: 1fr; }
+  }
+  .pros-cons h5 {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 0.6rem;
+  }
+  .pros h5 { color: var(--accent); }
+  .cons h5 { color: var(--accent-warm); }
+  .pros-cons p {
+    font-size: 0.88rem;
+    line-height: 1.8;
+  }
+
+  /* ========== IMAGE ========== */
+  .keyimg {
+    margin: 3rem 0;
+    position: relative;
+  }
+  .keyimg img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+  }
+  .keyimg-caption {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  /* ========== GALLERY ========== */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .gal-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    transition: all 0.3s;
+  }
+  .gal-item:hover {
+    border-color: var(--accent-deep);
+    transform: translateY(-4px);
+  }
+  .gal-item img {
+    width: 100%;
+    aspect-ratio: 7/4;
+    object-fit: cover;
+    display: block;
+  }
+  .gal-caption {
+    padding: 1.2rem 1.3rem 1.4rem;
+    background: var(--bg-2);
+  }
+  .gal-caption .tag {
+    font-size: 0.65rem;
+    color: var(--accent-cool);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.4rem;
+  }
+  .gal-caption h4 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+  .gal-caption p {
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    line-height: 1.7;
+  }
+
+  /* ========== SPECIES ========== */
+  .species-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .species {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 1.8rem 1.8rem;
+    transition: all 0.3s;
+  }
+  .species:hover { border-color: var(--accent-deep); }
+  .species-num {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.4rem;
+  }
+  .species h3 {
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+  .species-jp {
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    margin-bottom: 0.9rem;
+  }
+  .species p {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    line-height: 1.8;
+  }
+
+  /* ========== DIRECTION CARDS ========== */
+  .directions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .dir {
+    padding: 2rem 1.8rem;
+    background: var(--bg-2);
+    border-top: 3px solid var(--accent-cool);
+    transition: all 0.3s;
+  }
+  .dir:hover { background: var(--bg-3); }
+  .dir-label {
+    font-size: 0.7rem;
+    color: var(--accent-cool);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.6rem;
+  }
+  .dir h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+  .dir-summary {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .dir-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ========== CHECKLIST ========== */
+  .checklist {
+    margin-top: 2rem;
+  }
+  .checklist li {
+    list-style: none;
+    padding: 0.8rem 0;
+    padding-left: 2rem;
+    border-bottom: 1px dashed var(--line);
+    position: relative;
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+  }
+  .checklist li::before {
+    content: "◯";
+    position: absolute;
+    left: 0;
+    color: var(--warn);
+  }
+  .checklist li.done::before {
+    content: "●";
+    color: var(--accent);
+  }
+  .checklist li.done {
+    color: var(--ink);
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-faint);
+  }
+
+  /* ========== PLACEHOLDER ========== */
+  .img-placeholder {
+    width: 100%;
+    aspect-ratio: 7/4;
+    background:
+      linear-gradient(135deg, var(--bg-3), var(--bg-2)),
+      repeating-linear-gradient(45deg, transparent 0, transparent 10px, rgba(232,200,138,0.03) 10px, rgba(232,200,138,0.03) 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    border: 1px dashed var(--line);
+  }
+
+  /* ========== CLOSING ========== */
+  .closing {
+    text-align: center;
+    padding: 140px 8vw;
+    background: radial-gradient(ellipse at center, rgba(232,200,138,0.05), transparent 60%);
+  }
+  .closing-mark {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    letter-spacing: 0.6em;
+  }
+  .closing-text {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 2.2;
+    max-width: 850px;
+    margin: 0 auto 3rem;
+    color: var(--ink);
+  }
+  .closing-text em { color: var(--accent); font-style: normal; }
+  .credit {
+    color: var(--ink-faint);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    line-height: 2;
+  }
+
+  /* ========== NAV DOTS ========== */
+  .nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    z-index: 100;
+  }
+  .nav-dots a {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    transition: all 0.3s;
+  }
+  .nav-dots a:hover { background: var(--accent); transform: scale(1.5); }
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+    section { padding: 80px 6vw; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-dots">
+  <a href="#cover" title="Cover"></a>
+  <a href="#logline" title="Logline"></a>
+  <a href="#theme" title="Theme"></a>
+  <a href="#world" title="World"></a>
+  <a href="#species" title="Species"></a>
+  <a href="#visual" title="Visual"></a>
+  <a href="#direction" title="Direction"></a>
+  <a href="#protagonist" title="Protagonist"></a>
+  <a href="#undecided" title="Undecided"></a>
+  <a href="#next" title="Next"></a>
+</nav>
+
+<!-- ======== COVER ======== -->
+<section class="cover" id="cover">
+  <div class="cover-bg" style="background-image: url('images/hero.png')"></div>
+  <div class="cover-content">
+    <div class="cover-label sans">CG FEATURE ANIMATION — PROPOSAL DRAFT</div>
+    <h1 class="cover-title sans">THIRD PLACE</h1>
+    <div class="cover-subtitle sans">第 三 の 場</div>
+    <p class="cover-tagline">
+      西暦4026年、銀河に散った7種の人類。<br>
+      翻訳はできる。しかし、共感ができない。<br>
+      そんな世界で、人は再び<em style="color:var(--accent)">同じ場に立てる</em>か。
+    </p>
+    <div class="cover-meta sans">
+      <span>SCI-FI</span>
+      <span>CG FEATURE</span>
+      <span>AD 4026</span>
+      <span>DRAFT v0.2</span>
+      <span>2026.04.22</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======== LOGLINE ======== -->
+<section id="logline">
+  <div class="sec-num sans">01 — LOGLINE</div>
+  <h2 class="sec-title">ログライン</h2>
+  <div class="sec-subtitle sans">ONE SENTENCE / MANY POSSIBILITIES</div>
+
+  <div class="logline-block">
+    <p>
+      2000年ぶりに<em>全7種の人類</em>が同じ場に立つために、<br>
+      一軒の<em>カフェ</em>を建てようとする若者の旅。
+    </p>
+  </div>
+
+  <div class="facts">
+    <div class="fact">
+      <div class="fact-label sans">GENRE</div>
+      <div class="fact-value">SF / Character Drama</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">FORMAT</div>
+      <div class="fact-value">CG Feature Animation</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">LENGTH</div>
+      <div class="fact-value">約100-120分(未決)</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">ERA</div>
+      <div class="fact-value">AD 4026</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">AUDIENCE</div>
+      <div class="fact-value">Global / 18+</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== THEME ======== -->
+<section id="theme">
+  <div class="sec-num sans">02 — THEME</div>
+  <h2 class="sec-title">テーマ — 議論が噛み合わない世界</h2>
+  <div class="sec-subtitle sans">PUBLIC SPHERE COLLAPSE / OR BEYOND IT</div>
+
+  <p style="font-size:1.1rem; color:var(--ink-dim); line-height:2; max-width:900px;">
+    ハバーマスが唱えた公共圏(市民が対等に議論する場)の崩壊。<br>
+    フィルターバブル、アルゴリズム的極化、共感疲労。<br>
+    これを2000年後の銀河スケールに拡張し、技術では解けない問題として描く。
+  </p>
+
+  <div class="keyimg">
+    <img src="images/sun_cage.png" alt="太陽の檻" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+    <div class="img-placeholder sans" style="display:none">IMAGE — SUN CAGE / DYSON SPHERE</div>
+    <div class="keyimg-caption sans">AD 2890 — THE SUN CAGE / タイプII文明到達の日、地球は青い空を失った</div>
+  </div>
+
+  <div class="undecided">
+    <h4>テーマ縛りの強度</h4>
+    <p>現在、哲学(ハバーマス)を先行させるか、舞台と人物から立ち上がるものに委ねるかで迷っている。</p>
+    <div class="pros-cons">
+      <div class="pros">
+        <h5 class="sans">A. 哲学先行</h5>
+        <p>公共圏崩壊を核に据え、カフェ再建の構造で通す。主題が明確、批評的射程が深い。ただし教条化リスク。</p>
+      </div>
+      <div class="cons">
+        <h5 class="sans">B. 世界先行</h5>
+        <p>ハバーマスは背景に退き、2000年後の銀河+7種で自由に遊ぶ。物語のバリエーションが広い。ただし主題が散る。</p>
+      </div>
+    </div>
+    <p style="margin-top:1rem; color:var(--ink);">現状の気分: Bに寄せつつ、結果的にテーマが立ち上がる形を探る。</p>
+  </div>
+</section>
+
+<!-- ======== WORLD ======== -->
+<section id="world">
+  <div class="sec-num sans">03 — WORLD</div>
+  <h2 class="sec-title">西暦 4026 年の銀河</h2>
+  <div class="sec-subtitle sans">TYPE II CIVILIZATION / POST-MORTAL / POST-WORK</div>
+
+  <p style="font-size:1.05rem; color:var(--ink-dim); line-height:2; max-width:900px; margin-bottom: 2rem;">
+    過去2000年で、情報伝達は10億倍、人口は40倍、移動速度は600倍になった。<br>
+    同じ幅で次の2000年を伸ばすとき、人類はどこへ辿り着くか。
+  </p>
+
+  <div class="facts">
+    <div class="fact">
+      <div class="fact-label sans">CIVILIZATION</div>
+      <div class="fact-value">Kardashev Type II</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">REACH</div>
+      <div class="fact-value">銀河アーム1本(約10,000光年)</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">LIFESPAN</div>
+      <div class="fact-value">理論上の不死 / 退屈死が最大死因</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">ECONOMY</div>
+      <div class="fact-value">貨幣消滅 → 意味経済</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">STATE</div>
+      <div class="fact-value">国家消滅 / 銀河文明連合</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">LOST</div>
+      <div class="fact-value">老い・家族・統一言語・肉体・同時刻</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">KEPT</div>
+      <div class="fact-value">名前・歌・涙・約束・カフェ</div>
+    </div>
+    <div class="fact">
+      <div class="fact-label sans">LINEAGES</div>
+      <div class="fact-value">人類は7種に分岐</div>
+    </div>
+  </div>
+
+  <div class="keyimg">
+    <img src="images/revenants.png" alt="冷凍帯" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+    <div class="img-placeholder sans" style="display:none">IMAGE — CRYO BELT</div>
+    <div class="keyimg-caption sans">CRYO BELT — 気候変動で凍結された数億人が軌道上を漂う。棺泥棒という職業が存在する</div>
+  </div>
+</section>
+
+<!-- ======== SPECIES ======== -->
+<section id="species">
+  <div class="sec-num sans">04 — LINEAGES</div>
+  <h2 class="sec-title">人類 7 種</h2>
+  <div class="sec-subtitle sans">HOW ONE BECAME SEVEN</div>
+
+  <div class="species-grid">
+    <div class="species">
+      <div class="species-num sans">01 / HUMANS</div>
+      <h3 class="sans">🧍 HUMANS</h3>
+      <div class="species-jp">ベース人類</div>
+      <p>地球残留、寿命200年、肉体保持。古典の保管者。老いと死を「特権」として誇る宗派あり。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">02 / ALTERED</div>
+      <h3 class="sans">🦎 ALTERED</h3>
+      <div class="species-jp">改造人類</div>
+      <p>海洋型・高重力型・真空適応型など多様化。自分と同じ身体の伴侶を生涯見つけられない者がいる。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">03 / UPLOADED</div>
+      <h3 class="sans">☁ UPLOADED</h3>
+      <div class="species-jp">意識体</div>
+      <p>肉体を放棄、量子空間に存在。時間を早回した者ほど退屈に殺される。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">04 / SYMBIOTES</div>
+      <h3 class="sans">⚡ SYMBIOTES</h3>
+      <div class="species-jp">AI融合体</div>
+      <p>AIと分離不可、思考100倍速。恋人はAI同士が先に恋に落ち、人間側は後追い。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">05 / EXOFORMS</div>
+      <h3 class="sans">🐙 EXOFORMS</h3>
+      <div class="species-jp">異星適応型</div>
+      <p>数百世代で独自進化、人類離れ。光や匂いで考え、詩は匂いで書かれる。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">06 / REVENANTS</div>
+      <h3 class="sans">⏳ REVENANTS</h3>
+      <div class="species-jp">凍結復活組</div>
+      <p>21-23世紀の人類が甦り続ける。生きた古代人。二度目の孤児として生き直す。</p>
+    </div>
+    <div class="species">
+      <div class="species-num sans">07 / LIMINALS</div>
+      <h3 class="sans">🌓 LIMINALS</h3>
+      <div class="species-jp">ハイブリッド</div>
+      <p>2種以上の越境者。どこにも属さず、どこにでも属せる。成人の儀で「どの種を選ぶか」と問われる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== VISUAL ======== -->
+<section id="visual">
+  <div class="sec-num sans">05 — VISUAL</div>
+  <h2 class="sec-title">世界のイメージ</h2>
+  <div class="sec-subtitle sans">KEY VISUALS / AI-ASSISTED PRE-VIS</div>
+
+  <p style="font-size:0.9rem; color:var(--ink-faint); margin-bottom:2rem;">
+    ※ 以下はローカルAI(ComfyUI/SDXL)で生成したプレビジュアル。本番では美術監督と再設計する前提。
+  </p>
+
+  <div class="gallery">
+    <div class="gal-item">
+      <img src="images/altered.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='ALTERED / OCEAN'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">CYGNUS / ALTERED</div>
+        <h4>海洋大聖堂</h4>
+        <p>改造人類の王国。バイオルミネッセンスの珊瑚塔、神々しい光条、鰓を持つ住人。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/uploaded.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='UPLOADED CLOUD'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">VIRTUAL / UPLOADED</div>
+        <h4>量子の大聖堂</h4>
+        <p>物理空間を持たないUploadedの領域。光とデータの流れる幾何学的虚空。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/symbiotes.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='SYMBIOTES FORGE'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">PLEIADES / SYMBIOTES</div>
+        <h4>プレアデス工廠</h4>
+        <p>AIと人の融合体を製造する月面の鍛冶場。青銅と翡翠の工房。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/exoforms.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='EXOFORMS JUNGLE'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">OUTER / EXOFORMS</div>
+        <h4>匂いで考える惑星</h4>
+        <p>言語を持たない異星適応型の世界。光る花粉が議論のように漂う。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/humans.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='HUMANS LIBRARY'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">SOL / HUMANS</div>
+        <h4>古文書の惑星</h4>
+        <p>地球。砂岩の棚に積まれた古文書群。人々がまだ紙を読む最後の場所。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/liminal.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='LIMINAL BAZAAR'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">ARCHIPELAGO / LIMINAL</div>
+        <h4>境界群島の闇市</h4>
+        <p>ハイブリッドたちの自治惑星群。違法技術と中立地帯の交差点。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/null_zone.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='NULL ZONE'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">NULL ZONE</div>
+        <h4>観測不能の虚無</h4>
+        <p>量子通信が届かない銀河の影。行った者は戻らない。地図には代々座標だけが記される。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/voyager.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='QUIET VOYAGER'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">MYSTERY</div>
+        <h4>静かな航海者</h4>
+        <p>2000年間銀河を周回する巨大船。通信に応じず、攻撃もせず、ただ在る。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/crystal.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='SONG CRYSTAL'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">VOCAL ORE</div>
+        <h4>歌の鉱脈</h4>
+        <p>触れると昔誰かが歌った歌が聞こえる結晶洞窟。声紋はどの種にも一致しない。</p>
+      </div>
+    </div>
+    <div class="gal-item">
+      <img src="images/cafe.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.classList.add('img-placeholder','sans'); this.nextElementSibling.textContent='CAFE SCENE'">
+      <div></div>
+      <div class="gal-caption">
+        <div class="tag sans">THIRD PLACE</div>
+        <h4>カフェの情景</h4>
+        <p>主人公の舞台。宇宙を背景にした小さな店内。7種が同時に居られる唯一の場所になり得るか。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== DIRECTION ======== -->
+<section id="direction">
+  <div class="sec-num sans">06 — DIRECTION</div>
+  <h2 class="sec-title">物語の方向 — 候補中</h2>
+  <div class="sec-subtitle sans">FIVE POSSIBLE SHAPES / CURRENTLY UNDECIDED</div>
+
+  <p style="font-size:1rem; color:var(--ink-dim); line-height:2; max-width:900px; margin-bottom: 1rem;">
+    この世界は複数の物語を載せられる。現在は5つの方向性を並べて、どれを(あるいはどう混ぜて)採るかを検討中。
+  </p>
+
+  <div class="directions">
+    <div class="dir">
+      <div class="dir-label sans">DIRECTION A</div>
+      <h4>建設巡礼ロードムービー</h4>
+      <p class="dir-summary">7惑星を巡って「全種が入れる一軒のカフェ」の部品を集める。型1(The Big Short式)の学習痛快構造と相性最良。</p>
+      <div class="dir-meta sans">
+        <span>冒険</span><span>型1◎</span><span>カフェ◎</span>
+      </div>
+    </div>
+    <div class="dir">
+      <div class="dir-label sans">DIRECTION B</div>
+      <h4>ミステリー/追跡劇</h4>
+      <p class="dir-summary">Null Zone / 静かな航海者 / 大沈黙のどれかを軸に、謎を追う探偵/宇宙船の物語。ホラー寄りにも触れる。</p>
+      <div class="dir-meta sans">
+        <span>謎</span><span>ホラー</span><span>追跡</span>
+      </div>
+    </div>
+    <div class="dir">
+      <div class="dir-label sans">DIRECTION C</div>
+      <h4>時間を越えたロマンス</h4>
+      <p class="dir-summary">Revenantsの恋人たちが時代を跨いで再会する話。身体も時代も違う相手をどう愛するか。日常SF寄り。</p>
+      <div class="dir-meta sans">
+        <span>恋愛</span><span>日常</span><span>詩性</span>
+      </div>
+    </div>
+    <div class="dir">
+      <div class="dir-label sans">DIRECTION D</div>
+      <h4>職人もの</h4>
+      <p class="dir-summary">翻訳者/調停人/葬儀屋/歌の採掘者など、2000年後の職人の日常。一人称の静かなドラマの連作。</p>
+      <div class="dir-meta sans">
+        <span>日常</span><span>職人</span><span>連作</span>
+      </div>
+    </div>
+    <div class="dir">
+      <div class="dir-label sans">DIRECTION E</div>
+      <h4>政治/戦争叙事</h4>
+      <p class="dir-summary">Exoforms独立、Liminal公民権、連合議会復活。種を超えた合意形成の政治劇。</p>
+      <div class="dir-meta sans">
+        <span>政治</span><span>群像</span><span>重厚</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="undecided">
+    <h4>現在の傾き</h4>
+    <p>DIRECTION A(建設巡礼)を骨格に、B(ミステリー)を通奏低音として通す混合案が有力。<br>
+    例: 主人公が7惑星を巡る旅のなかで、大沈黙・静かな航海者・死者の声といった謎が徐々に繋がっていく。</p>
+  </div>
+</section>
+
+<!-- ======== PROTAGONIST ======== -->
+<section id="protagonist">
+  <div class="sec-num sans">07 — PROTAGONIST</div>
+  <h2 class="sec-title">主人公</h2>
+  <div class="sec-subtitle sans">THE LIMINAL / TENTATIVE</div>
+
+  <div class="keyimg">
+    <img src="images/protagonist.png" alt="主人公" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+    <div class="img-placeholder sans" style="display:none">PORTRAIT — LIMINAL PROTAGONIST</div>
+    <div class="keyimg-caption sans">PROTAGONIST — Liminalハイブリッドの見習い。名前未定、性別未定、外見は流動的</div>
+  </div>
+
+  <p style="font-size:1.05rem; color:var(--ink-dim); line-height:2; max-width:900px;">
+    現時点の本命は <strong style="color:var(--accent)">Liminal(ハイブリッド)の見習いカフェ建築家</strong>。<br>
+    2種以上の人類の特徴を持つ越境者。故郷がなく、全種族から中立扱いされる。<br>
+    カフェ運営はプロ、建築は未経験、種間翻訳は素養。<br>
+    視聴者と一緒に学んでいく「半分プロ半分素人」型(Aポジション)。
+  </p>
+
+  <div class="undecided">
+    <h4>主人公の詳細は全て未決</h4>
+    <div class="pros-cons">
+      <div class="pros">
+        <h5 class="sans">決まっていること</h5>
+        <p>Liminal(ハイブリッド)であること、見習いの立場、カフェに関わる職業素養。</p>
+      </div>
+      <div class="cons">
+        <h5 class="sans">決まっていないこと</h5>
+        <p>名前、性別、年齢、どの2種のハイブリッドか、肉体的特徴、動機の具体、家族や恋人の有無、名前を持つか持たないか。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="undecided">
+    <h4>Liminal以外の候補も残っている</h4>
+    <ul>
+      <li>Revenant(凍結復活組)の若い甦生者 — 古代人として現代を発見していく窓</li>
+      <li>Human考古学者 — ハバーマス研究者、世界の謎に引き寄せられる</li>
+      <li>Symbiote翻訳者 — AI側と人間側で葛藤する半分-半分の存在</li>
+      <li>Exoforms通訳 — 匂いで考える種の通訳者、最も外側から人類を見る</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======== UNDECIDED ======== -->
+<section id="undecided">
+  <div class="sec-num sans">08 — UNDECIDED</div>
+  <h2 class="sec-title">迷っている部分</h2>
+  <div class="sec-subtitle sans">OPEN QUESTIONS / DECIDED WHEN READY</div>
+
+  <div class="undecided">
+    <h4>1. テーマの重力</h4>
+    <p>ハバーマス公共圏論を前景に置くか、背景に退かせるか。<br>
+    現在は「背景に退かせて、世界と人物から主題が立ち上がる」方向に傾いている。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>2. 物語の型</h4>
+    <p>建設巡礼(A)、ミステリー(B)、ロマンス(C)、職人連作(D)、政治劇(E)のうち、どれを骨格にするか。<br>
+    現在はA+Bの混合が有力。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>3. カフェを中心に置くか</h4>
+    <p>作品名『THIRD PLACE』からも自然だが、強すぎる求心力は物語を狭めるリスクもある。<br>
+    カフェを「ゴール」にするか「経由地」にするかも未決。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>4. 核心の問い</h4>
+    <p>「もし〇〇だったら?」の形で物語全体を貫く問いが未確定。候補は多数ある(技術で全員繋げるのに、なぜ共感は無理か/不死の世界で何を「生きる」と呼ぶか/他)。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>5. 主人公の詳細</h4>
+    <p>名前・性別・外見・動機・家族背景など、全て未決(上記 07 参照)。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>6. 敵役 / 障害の設計</h4>
+    <p>誰が/何が主人公を阻むか未定。「種族間の対立」「連合議会の老害」「カフェ建設を邪魔する勢力」「技術的障害」「主人公自身の内面」など候補多数。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>7. 尺とフォーマット</h4>
+    <p>90-120分の長編映画か、連作シリーズ(7話=7惑星)か。予算とテンポが大きく変わる。</p>
+  </div>
+
+  <div class="undecided">
+    <h4>8. ビジュアルのトーン</h4>
+    <p>現在のプレビジュアルは「ダーク+ゴールド+ペインタリー」方向。他に「クリア+淡彩」「グラフィック寄り」「リアル質感+薄い彩度」等の可能性あり。</p>
+  </div>
+</section>
+
+<!-- ======== NEXT ======== -->
+<section id="next">
+  <div class="sec-num sans">09 — NEXT STEPS</div>
+  <h2 class="sec-title">次の一歩</h2>
+  <div class="sec-subtitle sans">WHAT TO DECIDE / WHAT TO EXPLORE</div>
+
+  <ul class="checklist">
+    <li class="done">作品名『THIRD PLACE』確定(2026-04-21)</li>
+    <li class="done">SF/2000年後銀河という舞台を確定</li>
+    <li class="done">人類7種の設計を確定</li>
+    <li class="done">世界の大事件・地理・謎・技術を10項目ずつ用意</li>
+    <li class="done">物語方向の5候補を並置</li>
+    <li>物語方向を1つ(または2つの混合)に収束</li>
+    <li>主人公の具体(名前/性別/外見/動機)</li>
+    <li>敵役/障害の設計</li>
+    <li>第1幕の冒頭シーンを具体的に書く</li>
+    <li>ビジュアル方針の確定(美術監督と)</li>
+    <li>尺とフォーマット(映画 or シリーズ)</li>
+    <li>核心の問いを1行に収める</li>
+  </ul>
+</section>
+
+<!-- ======== CLOSING ======== -->
+<section class="closing">
+  <div class="closing-mark sans">◇ ◇ ◇</div>
+  <p class="closing-text">
+    世界はもう<em>立ち上がっている</em>。<br>
+    ここから、この中を生きる人物と物語を探す。
+  </p>
+  <div class="credit sans">
+    THIRD PLACE — PROPOSAL DRAFT v0.2<br>
+    STORY INCUBATOR NO.02<br>
+    2026.04.22<br><br>
+    KEY VISUALS GENERATED WITH LOCAL COMFYUI / SDXL
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>The Unmapped — 企画書</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #17130f;
+  color: #d4c8b4;
+  font-family: 'Georgia', 'Cormorant Garamond', 'Yu Mincho', serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 50px;
+  line-height: 1.9;
+  font-size: 16px;
+}
+h1 {
+  font-size: 4rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  color: #e8dcc4;
+}
+h1 .sub {
+  display: block;
+  font-size: 1.3rem;
+  color: #8a7858;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  margin-top: 5px;
+}
+.meta {
+  color: #6e5d42;
+  font-size: 0.9rem;
+  margin-bottom: 60px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #3a2f24;
+  font-style: italic;
+}
+h2 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #c4b089;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  padding-left: 18px;
+  border-left: 3px solid #8a6f4a;
+  letter-spacing: 0.05em;
+}
+h3 {
+  font-size: 1.1rem;
+  color: #b8a27e;
+  margin-top: 30px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+p { margin: 12px 0; }
+.logline {
+  font-size: 1.15rem;
+  padding: 30px 35px;
+  background: #1f1a14;
+  border: 1px solid #3a2f24;
+  border-left: 5px solid #8a6f4a;
+  margin: 30px 0;
+  font-style: italic;
+  color: #d8c9ac;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin: 30px 0;
+}
+.char-card {
+  background: #1d1813;
+  padding: 22px 20px;
+  border: 1px solid #3a2f24;
+}
+.char-card h3 {
+  color: #d4c090;
+  margin-top: 0;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid #3a2f24;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.char-card .label {
+  color: #8a7858;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 10px;
+}
+.char-card .value {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #c4b697;
+}
+.scene {
+  background: #1a1511;
+  padding: 28px 32px;
+  margin: 28px 0;
+  border-left: 2px solid #6a5a3e;
+  font-family: serif;
+  position: relative;
+}
+.scene .scene-label {
+  color: #6e5d42;
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  font-style: normal;
+}
+.scene p {
+  color: #c4b697;
+  margin: 6px 0;
+}
+.scene .dialogue {
+  color: #d8cfc0;
+  margin-left: 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+}
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #3a2f24;
+  text-align: left;
+  font-size: 0.95rem;
+  vertical-align: top;
+}
+th {
+  color: #b8a27e;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+td { color: #c4b697; }
+blockquote {
+  border-left: 3px solid #8a6f4a;
+  padding: 5px 25px;
+  color: #b8a27e;
+  font-style: italic;
+  margin: 20px 0;
+}
+ul { margin: 12px 0 12px 25px; color: #c4b697; }
+ul li { margin: 5px 0; }
+strong { color: #e4d4ae; font-weight: 500; }
+em { color: #b8a27e; }
+.section-divider {
+  margin: 80px 0 30px 0;
+  text-align: center;
+  color: #4a3f2a;
+  letter-spacing: 0.4em;
+  font-size: 0.85rem;
+}
+footer {
+  margin-top: 100px;
+  padding-top: 30px;
+  border-top: 1px solid #3a2f24;
+  color: #6e5d42;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin: 25px 0;
+}
+.highlight-box {
+  background: #1f1a14;
+  border: 1px solid #3a2f24;
+  padding: 22px 25px;
+  margin: 20px 0;
+}
+.highlight-box h3 {
+  margin-top: 0;
+  color: #d4c090;
+}
+</style>
+</head>
+<body>
+
+<h1>The Unmapped<span class="sub">地図にない</span></h1>
+<div class="meta">
+世界向け CGアニメーション企画 &nbsp;/&nbsp; 2026-04-21 現在
+<br>
+哲学テーマ: ポストトゥルース &nbsp;/&nbsp; ジャンル: マジックリアリズム × オルタナティブ近代
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>LOGLINE</h2>
+
+<div class="logline">
+政略結婚の夜、上流妖精の少女は気弱なギーク野獣の夫を連れて逃げ出す。
+道中、小さくて嫌な混血の流れ者と出会い、地図にない場所を目指す旅に巻き込まれる。
+そこには年に一度、何かが見える日がある。<br>
+3人は、それぞれ違う理由でその日を待っている。
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>主題</h2>
+
+<p><strong>真実が武器にならない世界で、「分かり合えないまま、一緒にいる」ことの力。</strong></p>
+
+<p>ポストトゥルース — 客観的事実より感情と物語が世論を動かす時代。声の大きい嘘が、静かな真実を覆う。</p>
+
+<p>この物語の主人公たちは、真実を武器に戦ったりはしない。議論で分かり合おうともしない。代わりに、<strong>違うまま一緒にいる</strong>ことを選ぶ。そして物語の最後、彼らは言葉ではなく、一瞬の視線で繋がる。</p>
+
+<blockquote>
+同意でも理解でもない。<br>
+「あ、この人はこういう人だったんだ」という発見。<br>
+それだけで十分な関係もある。
+</blockquote>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>世界観</h2>
+
+<h3>時代・ジャンル</h3>
+<p>20世紀初頭風の質感(石造り駅、蒸気機関車、ガス灯、タイプライター、飛行船の黎明、新聞、写真)を土台にした、<strong>架空の近代</strong>。現実のどの地理・国家にも対応しない独自の世界。</p>
+
+<h3>2種族の社会</h3>
+<table>
+<tr><th>&nbsp;</th><th>妖精の民</th><th>野獣の民</th></tr>
+<tr><td>社会階層</td><td>上位・支配階級</td><td>下位・労働階級</td></tr>
+<tr><td>文化</td><td>近代化・学問・政治</td><td>素朴・伝統・自然</td></tr>
+<tr><td>身体</td><td>小柄・繊細・美しい</td><td>大柄・毛深い・力強い</td></tr>
+<tr><td>時代の立場</td><td>新興支配層(都市・工場・新聞)</td><td>古くからの労働者・農民</td></tr>
+</table>
+
+<h3>優生学的政略</h3>
+<p>妖精上流階級は世代を経て血が弱っている。野獣の血を計画的に入れる <strong>優生学的政策</strong> が進行。野獣名家の健康な青年と妖精名家の娘を結婚させる制度が成立している。建前は「和解と近代化」、実態は血統強化。</p>
+
+<h3>地図にない場所</h3>
+<p>世界に一箇所だけ存在する、地図に載らない場所。混血者や両種族からはじき出された者たちの避難所。ここには3つの現象が集約されている:</p>
+<ul>
+<li>公式には存在しない(どの地図にも載らない)</li>
+<li>住民と出身者だけが <strong>嘘の微かな匂い</strong> を嗅ぎ分けられる</li>
+<li>年に一度、数時間だけ <strong>嘘が目に見える現象</strong> が起きる(=見える日)</li>
+</ul>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>3人の主人公 — 真逆の軸</h2>
+
+<div class="three-col">
+
+<div class="char-card">
+<h3>妖精の少女</h3>
+<div class="value">上流名家の娘、優生学政略の婚約者。気が強く、元気で、突っかかる。家筋と制度を嫌悪。</div>
+<div class="label">キーワード</div>
+<div class="value">機知 / 論理 / 即断 / 俊敏</div>
+<div class="label">結婚式の心理</div>
+<div class="value">「家筋は嫌い、でもガタイは結構好き」</div>
+<div class="label">口癖</div>
+<div class="value">「無理」「別に」「当たり前でしょう」</div>
+</div>
+
+<div class="char-card">
+<h3>野獣の青年</h3>
+<div class="value">野獣名家の息子。大柄だが気が弱い(社交性のみ)。ギーク(読書・機械・動物)。芯はゆっくりとパワフル。</div>
+<div class="label">キーワード</div>
+<div class="value">不動 / パワー / 機械 / 動物</div>
+<div class="label">結婚式の心理</div>
+<div class="value">「かわいい、でも俺には釣り合わない、怖い」</div>
+<div class="label">口癖</div>
+<div class="value">「......」「......はい」、時々核心を静かに刺す</div>
+</div>
+
+<div class="char-card">
+<h3>流れ者</h3>
+<div class="value">地図にない場所の混血、元言語学者。冷たく、観察者、別軸の時間を生きる。でも饒舌。本を胸に抱えている。</div>
+<div class="label">キーワード</div>
+<div class="value">観察 / 記録 / 引用 / 言葉</div>
+<div class="label">本</div>
+<div class="value">『嘘の発音パターン研究』— 武器であり心臓</div>
+<div class="label">口癖</div>
+<div class="value">「〇〇版では」「現象です」「これは私の心臓です」</div>
+</div>
+
+</div>
+
+<div class="highlight-box">
+<h3>真逆3軸の設計</h3>
+<table>
+<tr><th>軸</th><th>少女</th><th>青年</th><th>流れ者</th></tr>
+<tr><td>感情</td><td>全開、顔に出る</td><td>内に沈む</td><td>ゼロ、本にだけ向く</td></tr>
+<tr><td>時間</td><td>速い(即断)</td><td>ゆっくり(熟考)</td><td>別軸(記録)</td></tr>
+<tr><td>関心</td><td>社会・人・制度</td><td>物・自分・動物</td><td>言葉・痕跡</td></tr>
+<tr><td>真実の扱い</td><td>論理で暴く</td><td>体で判断</td><td>発音で分析</td></tr>
+<tr><td>身体</td><td>小柄・俊敏</td><td>大柄・重い</td><td>痩せ・静か</td></tr>
+<tr><td>愛するもの</td><td>自由</td><td>動物と機械</td><td>本と言葉</td></tr>
+<tr><td>最大の恐怖</td><td>縛られること</td><td>人に触れること</td><td>本を失うこと</td></tr>
+</table>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>流れ者の本</h2>
+
+<p>流れ者が胸に抱える一冊の革表紙の本。<strong>表紙に題名なし</strong>。「書く紙が足りなかった」と彼は言う。</p>
+
+<h3>中身 — 『嘘の発音パターン研究』</h3>
+<ul>
+<li>第一章: 母音の揺れ(緊張時の開き方)</li>
+<li>第二章: 子音の強さ</li>
+<li>第三章: 間の長さ(嘘の微細な遅れ)</li>
+<li>第四章: 声の高さ(標準音からのズレ)</li>
+<li>第五章: 語尾の処理</li>
+<li>第六章: 呼吸のリズム</li>
+<li>第七〜十章: 地方差、世代差、階級差、特殊群</li>
+<li>付録: 用例集(発音記号・波形図)</li>
+</ul>
+
+<p>流れ者は大学でこれを論文にまとめたが、<strong>非科学的と嘲笑された</strong>。大学を去り、以後、独自に編纂を続けてきた。余白には鉛筆で膨大な書き込み。</p>
+
+<h3>本の機能</h3>
+<div class="two-col">
+<div class="highlight-box">
+<h3>武器</h3>
+<p>敵の歩き方・呼吸・発音を即座に照合。行動に必要な情報を本から引き出す。</p>
+</div>
+<div class="highlight-box">
+<h3>心臓</h3>
+<p>流れ者の唯一の感情が向かう先。本を失う危機=物語の転機。</p>
+</div>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>物語構造 — 嘘の3段階と遡及開示</h2>
+
+<table>
+<tr><th>幕</th><th>2人の状態</th><th>嘘の量</th><th>流れ者のメモ</th></tr>
+<tr><td>第1幕</td><td>反発・対立・虚勢</td><td>多い(本音を隠す)</td><td>嘘を中心に記録</td></tr>
+<tr><td>第2幕</td><td>ギスギスの中に信頼の芽</td><td>減る(本音が漏れる)</td><td>真偽が混ざる</td></tr>
+<tr><td>第3幕</td><td>違うまま、繋がる</td><td>無くなる(本音だけ)</td><td>書くことがなくなる</td></tr>
+</table>
+
+<h3>遡及的開示の仕掛け</h3>
+<p>流れ者は <strong>リアルタイムで嘘を告発しない</strong>。ただ本に書き留めるだけ。視聴者にはその瞬間、意味が分からない。</p>
+
+<p>終盤、流れ者が本を読み上げる / 本を閉じる / 見せる瞬間、視聴者は <strong>過去のシーン全てを再解釈する</strong>。「あの時、あの言葉は嘘だったのか」。</p>
+
+<p>1周目: 痛快コメディとして見れる。<br>
+2周目: 最初から嘘が見える、違う意味を持つ。<br>
+<strong>2度楽しめる作品</strong> として設計。</p>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>シーン抜粋</h2>
+
+<div class="scene">
+<div class="scene-label">断片3 — 結婚式・初対面</div>
+<p>扉が開く。</p>
+<p>広間の中央、焚き火。太鼓。喉で唸る歌。木の梁の高い影。</p>
+<p>円を成す人々の顔。</p>
+<p>花の冠が、頭の上に重い。</p>
+<p>&nbsp;</p>
+<p>円の向こう側、反対の扉から、一人が入ってくる。</p>
+<p>背が高い。肩幅が、馬車の女たちよりさらに広い。</p>
+<p>毛皮の外套。手が大きい。</p>
+<p>&nbsp;</p>
+<p>彼女を見る。</p>
+<p>目を伏せる。</p>
+<p>頬を染める。</p>
+<p>&nbsp;</p>
+<p>彼女は視線を外さない。</p>
+<p>唇を、一度、湿らせる。</p>
+</div>
+
+<div class="scene">
+<div class="scene-label">断片10 — 駅ホーム・追手・青年のパワフル</div>
+<p>護衛「奥様」</p>
+<p>護衛は腕を伸ばす、少女の腕を掴もうとする。</p>
+<p>&nbsp;</p>
+<p>青年が、立ち上がる。</p>
+<p>遅い。</p>
+<p>ゆっくり。</p>
+<p>でも大きい。</p>
+<p>&nbsp;</p>
+<p>青年は護衛の腕と少女の間に、自分の腕を置く。</p>
+<p>それだけ。掴ませない。</p>
+<p>&nbsp;</p>
+<p>「......お断りします」</p>
+<p>低い声。短い。動かない。</p>
+<p>&nbsp;</p>
+<p>「......奥様は、私の妻です」</p>
+<p>「......私の、妻です」</p>
+<p>&nbsp;</p>
+<p>繰り返すだけ。</p>
+<p>&nbsp;</p>
+<p>護衛二人、顔を見合わせる。一歩下がる。去る。</p>
+</div>
+
+<div class="scene">
+<div class="scene-label">断片16 — 夜の森・襲撃・3人の戦い</div>
+<p>流れ者「足音、3人。南東から。歩幅60センチ前後。鎧は軽装、刀剣持ち。プロじゃない、雇われの三流」</p>
+<p>&nbsp;</p>
+<p>敵、3人、現れる。</p>
+<p>一人目、剣を振りかざして突っ込んでくる。</p>
+<p>青年は、ゆっくり、腕を上げる。剣が落ちてくる。</p>
+<p>青年が腕で受ける — 剣が、彼の腕に当たって、止まる。</p>
+<p>&nbsp;</p>
+<p>少女は火を回って別の敵の背後へ。腿の外側にナイフ。</p>
+<p>&nbsp;</p>
+<p>三人目が、流れ者に向かう。</p>
+<p>流れ者「あなた、左足を痛めています。右に逃げれば追えません」</p>
+<p>&nbsp;</p>
+<p>3人、全員倒れている。</p>
+<p>&nbsp;</p>
+<p>流れ者「......私の本、無事です」</p>
+<p>少女「当たり前でしょ」</p>
+<p>流れ者「分からないですよ、戦闘中は。これは私の心臓ですので」</p>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>ビジュアル設計の方針</h2>
+
+<ul>
+<li><strong>基調</strong>: 煤、革、蝋、古書、金属、苔、霧</li>
+<li><strong>色</strong>: 暗い茶・黒・金・蝋燭の橙、時折の鮮やかな花色</li>
+<li><strong>光</strong>: ガス灯、焚き火、斜光、曇天、霧</li>
+<li><strong>音</strong>: 太鼓、汽笛、タイプライター、鉛筆、紙をめくる音</li>
+<li><strong>嘘の可視化</strong>: 字幕の微かな揺れ、1フレームの色ズレ、半拍の遅れ、わずかな残響</li>
+</ul>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>参考・原典(作品名ではなく思想)</h2>
+
+<ul>
+<li><strong>ハンナ・アーレント</strong>『全体主義の起源』 — 事実とフィクションの区別を失った人間</li>
+<li><strong>ハリー・フランクファート</strong>『On Bullshit』 — 嘘つきより有害な、真実に無関心な者</li>
+<li><strong>ボードリヤール</strong>『シミュラークル』 — オリジナルなきコピーの世界</li>
+<li><strong>ピーター・ポマランチェフ</strong>『This Is Not Propaganda』 — 真実を溺れさせる手法</li>
+<li><strong>ティモシー・スナイダー</strong>『On Tyranny』 — ポスト真実はプレ・ファシズム</li>
+</ul>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2>現在の進行状況</h2>
+
+<div class="two-col">
+<div class="highlight-box">
+<h3>確定済み</h3>
+<ul>
+<li>世界観(2種族、時代、3要素)</li>
+<li>3人のキャラクター(真逆3軸)</li>
+<li>流れ者の本(嘘の発音パターン)</li>
+<li>物語構造(3幕=嘘3段階)</li>
+<li>遡及開示の仕組み</li>
+<li>結婚式シーン(断片1〜7)</li>
+<li>逃亡/邂逅シーン(8〜9)</li>
+<li>3人活躍シーン(10〜15)</li>
+<li>アクションシーン(16)</li>
+</ul>
+</div>
+<div class="highlight-box">
+<h3>未決定・次のステップ</h3>
+<ul>
+<li>第2→3幕転換(本音の対話)</li>
+<li>本が危機に瀕するシーン</li>
+<li>「見える日」の中身</li>
+<li>ラストカット「目が合う」の具体</li>
+<li>流れ者の動機の明示</li>
+<li>旅の経路、地理、名前</li>
+<li>追手の性質(ユリウス伯父様の護衛以降)</li>
+</ul>
+</div>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="section-divider">— THE UNMAPPED —</div>
+
+<footer>
+Story Incubator #01 — Post-Truth theme<br>
+Location: SynologyDrive/2000_Creative/2900_Sandbox/story_incubator/01_post_truth/<br>
+Resume command: 「The Unmappedのつづき」 / 「01のつづき」
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THIRD PLACE — 企画提案資料</title>
+<style>
+  :root {
+    --bg: #0a0d14;
+    --bg-2: #11151f;
+    --bg-3: #161b28;
+    --ink: #e9edf5;
+    --ink-dim: #8a93a8;
+    --ink-faint: #4a5268;
+    --accent: #e8c88a;
+    --accent-deep: #b79660;
+    --line: #1f2636;
+    --glow: rgba(232, 200, 138, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "YuMincho", serif;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    overflow-x: hidden;
+  }
+
+  .sans {
+    font-family: "Helvetica Neue", "Arial", "Hiragino Sans", sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  section {
+    padding: 120px 8vw;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(232, 200, 138, 0.08), transparent 40%),
+      radial-gradient(ellipse at 80% 70%, rgba(100, 130, 200, 0.06), transparent 45%),
+      var(--bg);
+    overflow: hidden;
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 80% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 45% 25%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 25% 45%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(2px 2px at 75% 50%, rgba(255,255,255,0.7), transparent);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.5em;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-size: clamp(3.5rem, 11vw, 10rem);
+    font-weight: 200;
+    letter-spacing: 0.15em;
+    line-height: 1;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(180deg, #fff 0%, var(--accent) 60%, var(--accent-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-title-jp {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--ink-dim);
+    letter-spacing: 0.8em;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    max-width: 900px;
+    color: var(--ink);
+    line-height: 2;
+    position: relative;
+    z-index: 1;
+    padding: 0 1rem;
+  }
+
+  .hero-meta {
+    margin-top: 4rem;
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-faint);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta span::before {
+    content: "◇";
+    margin-right: 0.8em;
+    color: var(--accent-deep);
+  }
+
+  /* ========== SECTION HEADERS ========== */
+  .sec-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .sec-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .sec-subtitle {
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 4rem;
+  }
+
+  /* ========== THEME ========== */
+  .theme-quote {
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    line-height: 1.9;
+    font-weight: 300;
+    max-width: 980px;
+    margin-bottom: 3rem;
+    color: var(--ink);
+  }
+
+  .theme-quote span {
+    color: var(--accent);
+  }
+
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+  }
+
+  .theme-item {
+    padding: 2rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .theme-item h4 {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .theme-item p {
+    font-size: 1rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  /* ========== WORLD ========== */
+  .world-intro {
+    font-size: 1.15rem;
+    line-height: 2;
+    color: var(--ink-dim);
+    max-width: 900px;
+    margin-bottom: 4rem;
+  }
+
+  .world-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .stat {
+    border-left: 2px solid var(--accent-deep);
+    padding-left: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+    font-weight: 300;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+
+  /* ========== SPECIES ========== */
+  .species-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .species {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 2.2rem 2rem;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .species:hover {
+    border-color: var(--accent-deep);
+    background: var(--bg-3);
+    transform: translateY(-4px);
+  }
+
+  .species-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .species-num {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+  }
+
+  .species h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  .species-jp {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .species p {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  /* ========== STORY STRUCTURE ========== */
+  .acts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+
+  .act {
+    padding: 2rem 0;
+    border-top: 1px solid var(--accent-deep);
+  }
+
+  .act-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .act h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  .act p {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    line-height: 1.9;
+  }
+
+  @media (max-width: 800px) {
+    .acts { grid-template-columns: 1fr; }
+  }
+
+  /* ========== PLANETS TABLE ========== */
+  .planets-intro {
+    font-size: 1.1rem;
+    color: var(--ink-dim);
+    margin-bottom: 3rem;
+    max-width: 900px;
+  }
+
+  .planets {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .planet {
+    display: grid;
+    grid-template-columns: 60px 1fr 1fr 1fr;
+    gap: 2rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+  }
+
+  .planet:hover {
+    background: var(--bg-2);
+  }
+
+  .planet-num {
+    font-size: 2rem;
+    color: var(--accent-deep);
+    font-weight: 200;
+  }
+
+  .planet-species {
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .planet-learn {
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  .planet-part {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .planet {
+      grid-template-columns: 40px 1fr;
+      grid-template-rows: auto auto auto;
+    }
+    .planet-num { grid-row: 1 / 4; }
+    .planet-species, .planet-learn, .planet-part { grid-column: 2; }
+  }
+
+  /* ========== PROTAGONIST ========== */
+  .proto {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .proto { grid-template-columns: 1fr; }
+  }
+
+  .proto-card {
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+    border: 1px solid var(--line);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .proto-card .orb {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    background:
+      radial-gradient(circle at 30% 30%, var(--accent), var(--accent-deep) 40%, #4a3a20 80%, transparent);
+    box-shadow: 0 0 40px var(--glow);
+  }
+
+  .proto-card h3 {
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .proto-card .role {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .proto-body h4 {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin: 2rem 0 0.8rem;
+  }
+
+  .proto-body h4:first-child { margin-top: 0; }
+
+  .proto-body p {
+    font-size: 1rem;
+    color: var(--ink-dim);
+    line-height: 2;
+  }
+
+  .proto-body .skills {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .skill {
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--accent-deep);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+  }
+
+  /* ========== ENGINE ========== */
+  .engine-phases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .phase {
+    padding: 1.8rem 1.5rem;
+    background: var(--bg-2);
+    border-left: 2px solid var(--accent-deep);
+  }
+
+  .phase-num {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+
+  .phase p {
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    line-height: 1.8;
+  }
+
+  /* ========== TONE ========== */
+  .tones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .tone {
+    padding: 2.5rem 2rem;
+    background: var(--bg-2);
+    border-top: 3px solid var(--accent);
+  }
+
+  .tone h4 {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .tone p {
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.9;
+  }
+
+  /* ========== CLOSING ========== */
+  .closing {
+    text-align: center;
+    padding: 160px 8vw 120px;
+    background: radial-gradient(ellipse at center, rgba(232, 200, 138, 0.05), transparent 60%);
+  }
+
+  .closing-mark {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    letter-spacing: 0.5em;
+  }
+
+  .closing-text {
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    line-height: 2.2;
+    color: var(--ink);
+    max-width: 900px;
+    margin: 0 auto 5rem;
+    font-weight: 300;
+  }
+
+  .closing-text em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .credit {
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+  }
+
+  /* ========== NAV DOTS (OPTIONAL) ========== */
+  .nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 100;
+  }
+
+  .nav-dots a {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    transition: all 0.3s;
+  }
+
+  .nav-dots a:hover {
+    background: var(--accent);
+    transform: scale(1.5);
+  }
+
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+    section { padding: 80px 6vw; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-dots">
+  <a href="#hero" title="Hero"></a>
+  <a href="#theme" title="Theme"></a>
+  <a href="#world" title="World"></a>
+  <a href="#species" title="Species"></a>
+  <a href="#story" title="Story"></a>
+  <a href="#planets" title="Planets"></a>
+  <a href="#proto" title="Protagonist"></a>
+  <a href="#engine" title="Engine"></a>
+  <a href="#tone" title="Tone"></a>
+  <a href="#end" title="End"></a>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+  <div class="stars"></div>
+  <div class="hero-label sans">CINEMATIC ANIMATION PROPOSAL / AD 4026</div>
+  <h1 class="hero-title sans">THIRD PLACE</h1>
+  <div class="hero-title-jp sans">第 三 の 場</div>
+  <p class="hero-tagline">
+    2000年ぶりに、全7種の人類が同じ場に立てる<br>
+    一軒のカフェを建てるため、銀河を巡って部品を集める旅。
+  </p>
+  <div class="hero-meta sans">
+    <span>GENRE: SF</span>
+    <span>FORMAT: CG FEATURE</span>
+    <span>ERA: AD 4026</span>
+    <span>CODE: 02</span>
+  </div>
+</section>
+
+<!-- ======== THEME ======== -->
+<section id="theme">
+  <div class="sec-num sans">01 — THEME</div>
+  <h2 class="sec-title">議論が噛み合わない世界</h2>
+  <div class="sec-subtitle sans">PUBLIC SPHERE COLLAPSE / HABERMAS</div>
+
+  <p class="theme-quote">
+    人々は<span>発信している</span>。
+    誰も<span>同じ場に居ない</span>。
+    翻訳はできる。<span>共感ができない</span>。
+  </p>
+
+  <div class="theme-grid">
+    <div class="theme-item">
+      <h4>公共圏とは</h4>
+      <p>18世紀のコーヒーハウス、サロン、新聞が育てた<br>市民が対等に議論する共通の空間。<br>そこから近代民主主義が生まれた。</p>
+    </div>
+    <div class="theme-item">
+      <h4>現代の崩壊</h4>
+      <p>フィルターバブル、エコーチェンバー、<br>アルゴリズム的極化。<br>「議論する共通の土俵」そのものが消えた。</p>
+    </div>
+    <div class="theme-item">
+      <h4>本作の射程</h4>
+      <p>この崩壊を2000年後の銀河規模に拡張し、<br>「場を再び発明する」物語へ転換する。<br>ディストピアではなく、発明と建設の叙事詩。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== WORLD ======== -->
+<section id="world">
+  <div class="sec-num sans">02 — WORLD</div>
+  <h2 class="sec-title">西暦 4026 年の銀河</h2>
+  <div class="sec-subtitle sans">TYPE II CIVILIZATION / POST-MORTAL / POST-WORK</div>
+
+  <p class="world-intro">
+    過去2000年で情報伝達は10億倍、人口は40倍、移動速度は600倍になった。<br>
+    同じ幅で次の2000年を伸ばすとき、人類はどこへ辿り着くか。
+  </p>
+
+  <div class="world-stats">
+    <div class="stat">
+      <div class="stat-value">TYPE II</div>
+      <div class="stat-label sans">CARDASHEV SCALE</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">7 SPECIES</div>
+      <div class="stat-label sans">HUMAN LINEAGES</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">10,000 LY</div>
+      <div class="stat-label sans">INHABITED REACH</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">∞ / BOREDOM</div>
+      <div class="stat-label sans">IMMORTAL / DEATH BY ENNUI</div>
+    </div>
+  </div>
+
+  <div class="theme-grid">
+    <div class="theme-item">
+      <h4>失われたもの</h4>
+      <p>国家・貨幣・労働・老い・家族・統一言語・肉体・同時刻。<br>ほぼすべてが消えた。</p>
+    </div>
+    <div class="theme-item">
+      <h4>奇跡的に残ったもの</h4>
+      <p>名前・歌・涙・約束・<br>そして、カフェ。</p>
+    </div>
+    <div class="theme-item">
+      <h4>経済と政治</h4>
+      <p>貨幣は消え「意味経済」へ。<br>国家は消え銀河文明連合へ。<br>労働は消え、退屈が敵になった。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SPECIES ======== -->
+<section id="species">
+  <div class="sec-num sans">03 — LINEAGES</div>
+  <h2 class="sec-title">人類 7 種</h2>
+  <div class="sec-subtitle sans">HOW ONE BECAME SEVEN</div>
+
+  <div class="species-grid">
+    <div class="species">
+      <span class="species-num sans">01</span>
+      <span class="species-icon">🧍</span>
+      <h3 class="sans">HUMANS</h3>
+      <div class="species-jp">ベース人類</div>
+      <p>地球と初期植民地に残留。寿命200年、肉体保持。古典とハバーマスの保管者。80億は30億に減じた。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">02</span>
+      <span class="species-icon">🦎</span>
+      <h3 class="sans">ALTERED</h3>
+      <div class="species-jp">改造人類</div>
+      <p>遺伝子強化で身体を変えた者たち。海洋型、高重力型、高放射線型。どこでも生きられるが、同じ空気を吸えない。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">03</span>
+      <span class="species-icon">☁</span>
+      <h3 class="sans">UPLOADED</h3>
+      <div class="species-jp">意識体</div>
+      <p>肉体を放棄し量子空間に住む。痛みも眠りも持たない。仮想議場に数百万で集えるが、常に虚しい。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">04</span>
+      <span class="species-icon">⚡</span>
+      <h3 class="sans">SYMBIOTES</h3>
+      <div class="species-jp">AI融合体</div>
+      <p>人の意識とAIが分離不可に融合。思考は100倍速。議論は内部処理で瞬時に終わり、言葉は冗長な儀式になった。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">05</span>
+      <span class="species-icon">🐙</span>
+      <h3 class="sans">EXOFORMS</h3>
+      <div class="species-jp">異星適応型</div>
+      <p>他惑星で数百世代進化した人類の末裔。外見も思考も人類離れ。「公共」の定義そのものが違う。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">06</span>
+      <span class="species-icon">⏳</span>
+      <h3 class="sans">REVENANTS</h3>
+      <div class="species-jp">凍結復活組</div>
+      <p>21〜23世紀の人類が冷凍から甦り続ける。現代から見れば生きた古代人。本物のハバーマスを読んだ最後の世代。</p>
+    </div>
+    <div class="species">
+      <span class="species-num sans">07</span>
+      <span class="species-icon">🌓</span>
+      <h3 class="sans">LIMINALS</h3>
+      <div class="species-jp">ハイブリッド</div>
+      <p>2種以上の特徴を持つ越境者。どこにも属さず、どこにでも属せる。主人公の本命。7種の翻訳者・仲介者・旅人。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== STORY ======== -->
+<section id="story">
+  <div class="sec-num sans">04 — STRUCTURE</div>
+  <h2 class="sec-title">建設巡礼ロードムービー</h2>
+  <div class="sec-subtitle sans">THREE ACTS / SEVEN PLANETS / ONE CAFÉ</div>
+
+  <p class="theme-quote" style="font-size: clamp(1.2rem, 2.2vw, 1.8rem);">
+    軸A <span>銀河巡礼</span> ×
+    軸C <span>建設叙事詩</span> の合体。<br>
+    主人公は、2000年ぶりに全7種が集える場を<span>作り直そうとする</span>。
+  </p>
+
+  <div class="acts">
+    <div class="act">
+      <div class="act-label sans">ACT I</div>
+      <h3>発端 — 地球</h3>
+      <p>Liminalハイブリッドの見習いが、地球の古いカフェで働いている。常連はRevenantsばかり。師匠が死に際に、伝説の設計図と「7惑星を巡れ」という遺言を残す。</p>
+    </div>
+    <div class="act">
+      <div class="act-label sans">ACT II</div>
+      <h3>巡礼 — 七つの星</h3>
+      <p>七つの惑星を旅し、各種族の公共圏の知恵とカフェの部品を集める。各話ごとに一種族の世界観を体験する型1の学習ユニット。</p>
+    </div>
+    <div class="act">
+      <div class="act-label sans">ACT III</div>
+      <h3>建設 — 第三の場</h3>
+      <p>集めた部品でカフェを建てる。7種を招待する。誰が来るか、来てどうなるか。頂点は、同じテーブルに着く数秒間。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== PLANETS ======== -->
+<section id="planets">
+  <div class="sec-num sans">05 — ITINERARY</div>
+  <h2 class="sec-title">7 惑星の巡礼地図</h2>
+  <div class="sec-subtitle sans">ONE PLANET, ONE LESSON, ONE COMPONENT</div>
+
+  <p class="planets-intro">
+    各惑星で、その種族の公共圏理論を学び、カフェに必要な一つの部品を持ち帰る。<br>
+    一つ一つが完結した物語であり、全体で一つの建築になる。
+  </p>
+
+  <div class="planets">
+    <div class="planet">
+      <div class="planet-num sans">I</div>
+      <div class="planet-species sans">ALTERED / 海洋惑星</div>
+      <div class="planet-learn">身体差があっても同じ場にいる方法</div>
+      <div class="planet-part">— 可変重力床</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">II</div>
+      <div class="planet-species sans">UPLOADED / 量子空間</div>
+      <div class="planet-learn">意識が肉体に一時降りる技術</div>
+      <div class="planet-part">— 肉体化モジュール</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">III</div>
+      <div class="planet-species sans">SYMBIOTES / 恒星系</div>
+      <div class="planet-learn">「遅さ」を取り戻す方法</div>
+      <div class="planet-part">— 時間減速フィールド</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">IV</div>
+      <div class="planet-species sans">EXOFORMS / 異星</div>
+      <div class="planet-learn">別進化した「集いの儀式」</div>
+      <div class="planet-part">— 異種交流プロトコル</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">V</div>
+      <div class="planet-species sans">HUMANS / 古文書圏</div>
+      <div class="planet-learn">18世紀カフェの完全記録</div>
+      <div class="planet-part">— 原典テキスト</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">VI</div>
+      <div class="planet-species sans">REVENANTS / 保管施設</div>
+      <div class="planet-learn">生の証言者を起こす</div>
+      <div class="planet-part">— 古代人の語り部</div>
+    </div>
+    <div class="planet">
+      <div class="planet-num sans">VII</div>
+      <div class="planet-species sans">NEUTRAL / 座標秘密</div>
+      <div class="planet-learn">カフェの建設地</div>
+      <div class="planet-part">— 場所そのもの</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== PROTAGONIST ======== -->
+<section id="proto">
+  <div class="sec-num sans">06 — PROTAGONIST</div>
+  <h2 class="sec-title">境界の子</h2>
+  <div class="sec-subtitle sans">THE LIMINAL / HALF PRO, HALF NOVICE</div>
+
+  <div class="proto">
+    <div class="proto-card">
+      <div class="orb"></div>
+      <h3 class="sans">LIMINAL</h3>
+      <div class="role">見習いカフェ建築家</div>
+    </div>
+    <div class="proto-body">
+      <h4>立ち位置</h4>
+      <p>二種以上の人類の特徴を持つ越境者として生まれた。<br>故郷がなく、全種族から中立扱いされる。<br>名前を持たない — あるいは、7種それぞれに別の名で呼ばれる。</p>
+
+      <h4>職業</h4>
+      <p>地球の古いカフェで師匠の見習いをしている。<br>カフェ運営はプロ、建築は未経験。<br>種間翻訳の素養はLiminalゆえに自然習得。</p>
+
+      <h4>半分プロ、半分素人</h4>
+      <p>日常の手仕事は完璧。<br>しかし「2000年前の本物の公共圏」のことは知らない。<br>視聴者と一緒に、巡礼の中で学んでいく。</p>
+
+      <h4>三つの素養</h4>
+      <div class="skills">
+        <span class="skill sans">MEDIATION</span>
+        <span class="skill sans">TRANSLATION</span>
+        <span class="skill sans">CAFÉ CRAFT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== ENGINE ======== -->
+<section id="engine">
+  <div class="sec-num sans">07 — ENGINE</div>
+  <h2 class="sec-title">視聴者に学ばせる痛快</h2>
+  <div class="sec-subtitle sans">THE BIG SHORT ENGINE / TYPE I</div>
+
+  <p class="world-intro">
+    前提知識を視聴者に授けながら、その知識で世界を動かす。<br>
+    主人公は常に質問する側に立ち、「わかった!」の瞬間を定期的に供給する。
+  </p>
+
+  <div class="engine-phases">
+    <div class="phase">
+      <div class="phase-num sans">PHASE 1</div>
+      <h4>浸る</h4>
+      <p>地球の古いカフェ、主人公の日常、Revenantたちの静かな常連会話。</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num sans">PHASE 2</div>
+      <h4>違和感</h4>
+      <p>設計図の断片、師匠の遺言、失われた場の伝説。</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num sans">PHASE 3</div>
+      <h4>学ぶ</h4>
+      <p>7惑星を巡り、各種族の公共圏理論を体感で獲得する。</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num sans">PHASE 4</div>
+      <h4>動く</h4>
+      <p>学んだ知識でカフェを建てる。建築が進むたびに場が「効き始める」。</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num sans">PHASE 5</div>
+      <h4>知る</h4>
+      <p>世界は完全には理解できない。しかし、同じ場には立てる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TONE ======== -->
+<section id="tone">
+  <div class="sec-num sans">08 — TONE</div>
+  <h2 class="sec-title">暗い世界、明るい話</h2>
+  <div class="sec-subtitle sans">GRAVE BACKBONE, BRIGHT SURFACE</div>
+
+  <div class="tones">
+    <div class="tone">
+      <h4>ムード</h4>
+      <p>世界は暗い。複雑な背景を背負う。<br>しかし話は明快で、前向きで、痛快である。<br>陰鬱化させない。</p>
+    </div>
+    <div class="tone">
+      <h4>痛快の源泉</h4>
+      <p>論破ではなく、共有の発見。<br>対話不能な相手に新しいアプローチを発明する快感。<br>「同じ場に立つ」原始的な勝利。</p>
+    </div>
+    <div class="tone">
+      <h4>視覚</h4>
+      <p>タイプII文明の広大なスケールと、<br>一軒の手仕事のカフェの温度感を対比。<br>CGアニメでしか描けない尺度差を狙う。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CLOSING ======== -->
+<section class="closing" id="end">
+  <div class="closing-mark sans">◇ ◇ ◇</div>
+  <p class="closing-text">
+    2000年後の銀河で、<br>
+    人類は技術によって<em>すべて繋がれている</em>。<br>
+    しかし、誰も<em>同じ場に居ない</em>。<br><br>
+    そこに、一軒のカフェが建つ。
+  </p>
+  <div class="credit sans">
+    THIRD PLACE — PITCH DOCUMENT<br>
+    STORY INCUBATOR NO.02 — PUBLIC SPHERE<br>
+    2026.04.21
+  </div>
+</section>
+
+</body>
+</html>
