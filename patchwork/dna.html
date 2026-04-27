@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デザイン血統 — patchwork</title>
+<style>
+:root {
+  --bg: #0a1420;
+  --bg-2: #0f1d2e;
+  --bg-3: #14253a;
+  --ink: #e8e4d4;
+  --ink-dim: #b8b4a4;
+  --ink-faint: #7a7668;
+  --water: #4a7c94;
+  --water-glow: #6fa5c2;
+  --paper: #d4c9a8;
+  --thread: #c89862;
+  --blood: #a04848;
+  --decided: #8fa88c;
+  --undecided: #d4a056;
+  --seam: #3a4858;
+
+  --root-slav:    #8a7abf;
+  --root-jp:      #b8984a;
+  --root-norse:   #6aaba8;
+  --root-meso:    #b87060;
+  --root-cn:      #b06f8c;
+  --root-water:   #5a8fac;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "MS PMincho", serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 15px;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(74,124,148,0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 60%, rgba(200,152,98,0.05), transparent 50%);
+  min-height: 100vh;
+}
+
+/* ───── nav ───── */
+.patchwork-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,20,32,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--seam);
+  padding: 12px 40px;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.patchwork-nav .brand {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--paper);
+  letter-spacing: 0.1em;
+  margin-right: auto;
+}
+.patchwork-nav a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.patchwork-nav a:hover {
+  color: var(--ink);
+  border-color: var(--seam);
+}
+.patchwork-nav a.active {
+  color: var(--water-glow);
+  border-color: var(--seam);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+}
+
+header.page-head {
+  text-align: center;
+  padding: 40px 0 60px;
+  border-bottom: 1px solid var(--seam);
+  margin-bottom: 60px;
+}
+header.page-head h1 {
+  font-size: 56px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  font-family: "Georgia", serif;
+  font-style: italic;
+}
+header.page-head .sub {
+  color: var(--ink-dim);
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  margin-top: 12px;
+}
+header.page-head .lead {
+  max-width: 720px;
+  margin: 30px auto 0;
+  color: var(--paper);
+  font-size: 16px;
+  font-style: italic;
+  border-top: 1px solid var(--seam);
+  border-bottom: 1px solid var(--seam);
+  padding: 18px 0;
+}
+
+/* ───── entity block ───── */
+.entity {
+  margin-bottom: 80px;
+  border-left: 2px solid var(--seam);
+  padding-left: 28px;
+  position: relative;
+}
+.entity::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  background: var(--thread);
+  border-radius: 50%;
+}
+.entity-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.entity-head .role {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.entity-head h2 {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--water-glow);
+  letter-spacing: 0.05em;
+}
+.entity-head .alt {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  color: var(--paper);
+  font-size: 16px;
+}
+.entity-essence {
+  color: var(--ink-dim);
+  margin-bottom: 28px;
+  font-size: 14px;
+}
+
+/* ───── DNA root cards ───── */
+.roots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.root {
+  background: var(--bg-2);
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--root-slav);
+  padding: 16px 18px;
+  position: relative;
+}
+.root.r-jp     { border-left-color: var(--root-jp); }
+.root.r-norse  { border-left-color: var(--root-norse); }
+.root.r-meso   { border-left-color: var(--root-meso); }
+.root.r-cn     { border-left-color: var(--root-cn); }
+.root.r-water  { border-left-color: var(--root-water); }
+
+.root .root-rank {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--thread);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.root h3 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.root .origin {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.root p {
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.65;
+}
+
+/* ───── synthesis ───── */
+.synthesis {
+  background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
+  border: 1px solid var(--seam);
+  padding: 22px 26px;
+  margin-top: 8px;
+  position: relative;
+}
+.synthesis::before {
+  content: "patchwork での結晶";
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  background: var(--bg);
+  padding: 0 10px;
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--thread);
+}
+.synthesis h4 {
+  font-size: 14px;
+  color: var(--ink-faint);
+  letter-spacing: 0.15em;
+  margin: 14px 0 6px;
+  text-transform: uppercase;
+}
+.synthesis h4:first-child { margin-top: 0; }
+.synthesis p {
+  font-size: 14px;
+  color: var(--paper);
+  margin-bottom: 6px;
+}
+.synthesis ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
+.synthesis li {
+  font-size: 13px;
+  color: var(--ink);
+  padding: 3px 0 3px 18px;
+  position: relative;
+}
+.synthesis li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--thread);
+}
+
+/* ───── world block (different) ───── */
+.world-block {
+  background: var(--bg-2);
+  border: 1px solid var(--seam);
+  border-top: 3px solid var(--thread);
+  padding: 32px 36px;
+  margin-bottom: 60px;
+}
+.world-block h2 {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--paper);
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
+}
+.world-block p {
+  color: var(--ink-dim);
+  margin-bottom: 10px;
+}
+.world-block strong {
+  color: var(--paper);
+  font-weight: 500;
+}
+
+/* ───── footer summary ───── */
+.summary-table {
+  margin-top: 60px;
+  background: var(--bg-2);
+  border: 1px solid var(--seam);
+  padding: 24px 28px;
+}
+.summary-table h2 {
+  font-size: 18px;
+  color: var(--water-glow);
+  margin-bottom: 18px;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+.sum-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--seam);
+  font-size: 13px;
+}
+.sum-row:last-child { border-bottom: none; }
+.sum-row .label {
+  color: var(--ink);
+  font-weight: 500;
+}
+.sum-row .value {
+  color: var(--ink-dim);
+}
+
+a.archive-link {
+  color: var(--water-glow);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--water);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+a.archive-link:hover {
+  color: var(--paper);
+  border-color: var(--paper);
+}
+
+@media (max-width: 700px) {
+  .container { padding: 32px 20px 80px; }
+  header.page-head h1 { font-size: 36px; }
+  .entity { padding-left: 20px; }
+  .sum-row { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="patchwork-nav">
+  <span class="brand">patchwork</span>
+  <a href="index.html">企画整理</a>
+  <a href="dna.html" class="active">デザイン血統</a>
+  <a href="archive.html">神話アーカイブ</a>
+</nav>
+
+<div class="container">
+
+<header class="page-head">
+  <h1>Design DNA</h1>
+  <div class="sub">SYNTHESIS — FROM ARCHIVE TO CHARACTER</div>
+  <div class="lead">
+    神話アーカイブで集めた素材を、patchwork の登場人物・勢力に割り当てる。<br>
+    一神教ではなく多神共存の世界。複数の血統を縫い合わせて1キャラを作る。
+  </div>
+</header>
+
+<!-- WORLD RULE -->
+<div class="world-block">
+  <h2>世界の縫い目</h2>
+  <p>この街は <strong>百鬼夜行 (Hyakki Yagyo)</strong> 構造で動く。中心となる神話体系は<strong>持たない</strong>。スラブの家精、北欧の不死、メソポタミアの守護獣、中国の異形戦神、日本の付喪神 — それぞれ無関係に、同時に存在している。</p>
+  <p>住人ひとりにつき身体変形がひとつ。腕3本、下半身なし、毛だらけ、羽 — 由来は語られない。<strong>少女だけが外来者</strong>として既成概念に縛られず、変な身体用の服を縫える。</p>
+  <p>神々一家は「最終関門」だが「絶対的な悪」ではない。<strong>多くの家族のうちの一つ</strong>。たまたま戦艦に住み着いていて、たまたま川の出口を塞いでいる。</p>
+</div>
+
+<!-- 1. GIRL -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">Protagonist</span>
+    <h2>少女</h2>
+    <span class="alt">— the human anchor</span>
+  </div>
+  <div class="entity-essence">外来者。観測者。普通の裁縫しかできない。兄を水で失った側。</div>
+
+  <div class="roots">
+    <div class="root r-norse">
+      <div class="root-rank">faint root I</div>
+      <h3>brave little tailor 系</h3>
+      <div class="origin">EU folktale</div>
+      <p>「弱い／力ない／針一本」だけで世界を渡る職能譚。魔法ではなく、手仕事の技だけが武器。</p>
+    </div>
+    <div class="root r-water">
+      <div class="root-rank">faint root II</div>
+      <h3>水で兄妹を分けられた者</h3>
+      <div class="origin">universal motif</div>
+      <p>北欧サガから日本の昔話まで、水（川・海）で兄弟が引き裂かれる物語は普遍。少女はその「残された側」。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>意図的に血統を持たせない</h4>
+    <p>少女は神話の血を引かない。<strong>観客の代理人</strong>として、神々と化け物だらけの世界に投げ込まれる純粋な人間。能力は針と糸だけ。</p>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>服そのものは継ぎ接ぎだが、左袖だけ綺麗 — 兄が縫ってくれた最後の一部</li>
+      <li>常に首から針入れを下げている（指輪より動きやすい）</li>
+      <li>髪は短い（兄の死後、自分で切った）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2. BROTHER -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">First Customer</span>
+    <h2>死んだ兄</h2>
+    <span class="alt">— Draugr × patchwork body</span>
+  </div>
+  <div class="entity-essence">大柄、狂暴化できる、水で死んだ。少女には正体を明かさない。</div>
+
+  <div class="roots">
+    <div class="root r-norse">
+      <div class="root-rank">primary root</div>
+      <h3>Draugr / ドラウグル</h3>
+      <div class="origin">Old Norse</div>
+      <p>水辺・墓から這い出る不死の戦士。生前より大きく、青黒く膨れ、家族や家を守ろうとする執着で動く。<a href="archive.html#draugr" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root r-norse">
+      <div class="root-rank">secondary root</div>
+      <h3>Berserker / ベルセルク</h3>
+      <div class="origin">Old Norse</div>
+      <p>意識を失うほどの怒りで戦う。普段は穏やかだが、家族の危機で別人格に切り替わる。狂暴化＝守るためのモード。</p>
+    </div>
+    <div class="root r-jp">
+      <div class="root-rank">visual root</div>
+      <h3>パッチワーク人間 [38]</h3>
+      <div class="origin">sketch lineage</div>
+      <p>全身が継ぎ接ぎ。少女が縫ってあげた服が、徐々に兄自身の体と区別がつかなくなる。<strong>異界に滞在するための仮の体</strong>。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>結晶</h4>
+    <p>水で死んだ青年が、異界の素材で「仮の身体」を組み立てて戻ってきた存在。少女が縫う服そのものが、彼を異界に繋ぎ留める縫合糸になる。</p>
+    <h4>狂暴化のトリガー</h4>
+    <ul>
+      <li>少女が物理的な危機に晒されたとき</li>
+      <li>水（川・雨）に触れたとき — 死の記憶が逆流する</li>
+      <li>狂暴化中は声が出ない（喉から水音が漏れる）</li>
+    </ul>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>左胸に古い針穴が一列 — 死因の痕</li>
+      <li>狂暴化すると縫い目が裂け、中から異界の海水が滴る</li>
+      <li>瞳が常に少しだけ濡れている</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3. BABY -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">Cargo / Catalyst</span>
+    <h2>赤ん坊</h2>
+    <span class="alt">— Suiko × inverted Banshee</span>
+  </div>
+  <div class="entity-essence">化け物。泣くと水が応える。山へ届ける = 泣き声を託す行為。</div>
+
+  <div class="roots">
+    <div class="root r-cn">
+      <div class="root-rank">primary root</div>
+      <h3>水虎 / Suiko</h3>
+      <div class="origin">中国 → 日本</div>
+      <p>水辺に棲む虎の子の妖。河童の前身説。<strong>子供の姿で水を統べる</strong>原型。<a href="archive.html#suiko" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root r-norse">
+      <div class="root-rank">secondary root (inverted)</div>
+      <h3>Banshee / バンシー</h3>
+      <div class="origin">Irish</div>
+      <p>泣き声で死を予告する女妖。<strong>patchwork では反転</strong> — 泣き声で死ではなく<strong>水（生命）</strong>を呼ぶ。</p>
+    </div>
+    <div class="root r-jp">
+      <div class="root-rank">tertiary root</div>
+      <h3>雪女の子 / 雪ん子</h3>
+      <div class="origin">日本</div>
+      <p>異界の女性が産む子供のモチーフ。「人ではない母から生まれ、人の世界に置き去りにされる」型。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>結晶</h4>
+    <p>水を司る幼神の片割れ。本来は山で生まれるはずが、何らかの理由で街に流れてきた。山に届けるとは <strong>「本来の場所に戻す」</strong> こと — 100年に1度の逆流の起点でもある。</p>
+    <h4>泣くと水が応える ルール</h4>
+    <ul>
+      <li>小さな泣き → 露／霧／井戸の水位</li>
+      <li>普通の泣き → 雨／水溜まり／川の流れの方向</li>
+      <li>本気の泣き → 川そのものが動く（逆流の引き金）</li>
+      <li><strong>赤ん坊は泣くたびに少し小さくなる</strong>（旅の終わりが近づく）</li>
+    </ul>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>掌が魚のヒレのように水掻きになっている</li>
+      <li>涙が地面に落ちる前に小さな波紋を作る</li>
+      <li>瞳に常に水面の反射が映る</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4. TAILOR COUPLE -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">Guides</span>
+    <h2>仕立て屋夫婦</h2>
+    <span class="alt">— Domovoi × Kikimora</span>
+  </div>
+  <div class="entity-essence">化け物。少女を拾う。家のような店のような巣。</div>
+
+  <div class="roots">
+    <div class="root">
+      <div class="root-rank">primary root (husband)</div>
+      <h3>Domovoi / ドモヴォイ</h3>
+      <div class="origin">Slavic</div>
+      <p>家を守る毛深い精霊。家族を選び、見捨てもする。<strong>馴れ合わない緊張感</strong>を保つガイド役に最適。<a href="archive.html#domovoi" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root">
+      <div class="root-rank">primary root (wife)</div>
+      <h3>Kikimora / キクリモラ</h3>
+      <div class="origin">Slavic</div>
+      <p>夜に紡ぐ・縫う家精。気に入らないと糸を絡ませる。<strong>仕立てを「教える」のではなく「許す」</strong>役。<a href="archive.html#kikimora" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root r-jp">
+      <div class="root-rank">flavor root</div>
+      <h3>付喪神 / Tsukumogami</h3>
+      <div class="origin">日本</div>
+      <p>店の道具一式（ハサミ、ミシン、糸巻、メジャー）が <strong>夜になると勝手に動く</strong>。夫婦と道具の境界が曖昧。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>結晶</h4>
+    <p>人ではない夫婦。少女を「家族にする」のではなく「<strong>客として置く</strong>」。労働で生活させ、最低限を教え、深入りしない。情はあるが、決してハグしない。</p>
+    <h4>関係性のルール</h4>
+    <ul>
+      <li>少女のことを名前ではなく「お前」「うち子」と呼ぶ</li>
+      <li>食事は別の机</li>
+      <li>少女が泣いても黙って針を貸す</li>
+      <li>別れの時、夫婦は見送らない（窓の影だけ動く）</li>
+    </ul>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>夫：背中に縫い目、毛深い、低い椅子で常にキセル</li>
+      <li>妻：6本指（多指症的）、糸巻を首飾りにしている</li>
+      <li>店の天井：吊るされた仕掛けがゆっくり回る（風がないのに）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5. BEAR PLUSHIES -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">Companions</span>
+    <h2>熊のぬいぐるみ ×2</h2>
+    <span class="alt">— Tsukumogami</span>
+  </div>
+  <div class="entity-essence">熊の広間で加入。少女が縫い直したことで動き出す。</div>
+
+  <div class="roots">
+    <div class="root r-jp">
+      <div class="root-rank">primary root</div>
+      <h3>付喪神 / Tsukumogami</h3>
+      <div class="origin">日本</div>
+      <p>99年経った道具に魂が宿る。<strong>少女が縫い直した瞬間に「魂を入れた」</strong>と解釈される。</p>
+    </div>
+    <div class="root">
+      <div class="root-rank">flavor root</div>
+      <h3>Domovoi の眷属</h3>
+      <div class="origin">Slavic echo</div>
+      <p>熊は東欧で家の守護獣。仕立て屋夫婦の家系が、出張用に作って忘れていた人形 — という背景もありうる。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>結晶</h4>
+    <p>熊2匹は対の存在。<strong>大熊＝鈍重で力強い、小熊＝俊敏で臆病</strong>。会話できないが、視線と仕草で意図が伝わる。少女が縫い直した縫い目は他のキャラクターには見えない（少女だけが「血脈」を見ている）。</p>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>大熊：片目がボタン、もう片目が古いコイン</li>
+      <li>小熊：左耳が欠けていて、少女が後で布で繕う</li>
+      <li>お互いに紐で繋がっていて、戦闘時だけ自分でほどく</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. GOD FAMILY -->
+<div class="entity">
+  <div class="entity-head">
+    <span class="role">Final Threshold</span>
+    <h2>神々一家</h2>
+    <span class="alt">— Pazuzu's family × Xingtian × Hyakki Yagyo logic</span>
+  </div>
+  <div class="entity-essence">横転した戦艦に住み着く。父神・母神・子の神々。倒す対象ではなく通過／交渉する相手。</div>
+
+  <div class="roots">
+    <div class="root r-meso">
+      <div class="root-rank">primary root</div>
+      <h3>Pazuzu の家族構成</h3>
+      <div class="origin">Mesopotamian</div>
+      <p>パズズには配偶者ラマシュトゥと子供がいる。<strong>悪魔ではなく「特定の領域の支配者」</strong>。家族単位で領域を持つ古代神の型。<a href="archive.html#pazuzu" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root r-cn">
+      <div class="root-rank">secondary root</div>
+      <h3>刑天 / Xingtian</h3>
+      <div class="origin">中国</div>
+      <p>頭を切られても胸の乳首を目、臍を口にして戦い続ける。<strong>敗れた後も諦めない神</strong>。神々一家が「かつて敗れた者」である理由付け。<a href="archive.html#xingtian" class="archive-link">→ archive</a></p>
+    </div>
+    <div class="root r-jp">
+      <div class="root-rank">structural root</div>
+      <h3>百鬼夜行 / Hyakki Yagyo</h3>
+      <div class="origin">日本</div>
+      <p>多くの異形が同時に存在し、整理されない。神々一家は <strong>「多くの家族のうちの一つ」</strong>。彼らの戦争も内輪揉め。</p>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <h4>結晶</h4>
+    <p>かつて他の神々と戦って敗れた一家。横転した戦艦は彼らの<strong>負け戦の証拠</strong>であり、同時に住居でもある。誰と戦ったかは具体化しない（「もう忘れた」と父神が言う = 案D相当）。多神共存世界の整合性が取れる。</p>
+    <h4>家族構成（試案）</h4>
+    <ul>
+      <li>父神：刑天型 — 巨体、頭を失っているか覆われている。台詞少ない</li>
+      <li>母神：ラマシュトゥ型 — 子供を護るため攻撃的、しかし赤ん坊には情を見せる</li>
+      <li>子の神々（複数）：道化的、好奇心で少女に近づく — 一番危険</li>
+    </ul>
+    <h4>関係性のルール</h4>
+    <ul>
+      <li>戦闘では勝てない（少女は針一本）→ <strong>交渉／供物／祈り</strong>のみ</li>
+      <li>赤ん坊を見せると母神が動揺する（同類だと察する）</li>
+      <li>横転戦艦は逆流時、彼ら自身が立てない＝水が彼らに味方しない</li>
+      <li>少女が差し出す対価は <strong>「兄に縫った服の左袖」</strong>（最も大事な布）</li>
+    </ul>
+    <h4>視覚キー</h4>
+    <ul>
+      <li>戦艦：錆びた鋼、貝殻、藤壺、内部は真菌で発光</li>
+      <li>父神：装甲が付喪神化していて、戦艦と区別がつかない</li>
+      <li>母神：腕が異常に長く、子供を抱える時だけ柔らかく見える</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-table">
+  <h2>血統一覧</h2>
+  <div class="sum-row">
+    <div class="label">少女</div>
+    <div class="value">血統なし（人間の代理人）／ Brave Little Tailor 系の faint echo</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">死んだ兄</div>
+    <div class="value">Draugr (主) × Berserker (副) × パッチワーク人間 (視覚)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">赤ん坊</div>
+    <div class="value">水虎 / Suiko (主) × 反転 Banshee (副) × 雪ん子 (三)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">仕立て屋夫</div>
+    <div class="value">Domovoi (主) × 付喪神 (フレーバー)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">仕立て屋妻</div>
+    <div class="value">Kikimora (主) × 付喪神 (フレーバー)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">熊 ×2</div>
+    <div class="value">付喪神 (主) × Domovoi 眷属 (副)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">神々一家</div>
+    <div class="value">Pazuzu 家族構成 (主) × 刑天 / Xingtian (副) × 百鬼夜行 (構造)</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">街の住人</div>
+    <div class="value">百鬼夜行 (構造) — 一人一身体変形ルール、由来は語らない</div>
+  </div>
+  <div class="sum-row">
+    <div class="label">世界全体</div>
+    <div class="value">中心神話なし。多神・多妖の混在。「神々一家」は many of many。</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

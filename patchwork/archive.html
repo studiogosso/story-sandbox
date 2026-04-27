@@ -159,6 +159,8 @@ h1 {
 }
 
 .card:hover { border-color: var(--dim); }
+.card[id] { scroll-margin-top: 80px; }
+.card[id]:target { border-color: var(--cat-c); box-shadow: 0 0 0 1px var(--cat-c); }
 
 .card-img {
   width: 100%;
@@ -280,9 +282,49 @@ footer {
   header, .filters, .section-label, .grid { padding-left: 16px; padding-right: 16px; }
   h1 { font-size: 24px; }
 }
+
+/* ───── nav ───── */
+.patchwork-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9,14,24,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 40px;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.patchwork-nav .brand {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 18px;
+  color: #d4c9a8;
+  letter-spacing: 0.1em;
+  margin-right: auto;
+}
+.patchwork-nav a {
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.patchwork-nav a:hover { color: var(--ink); border-color: var(--border); }
+.patchwork-nav a.active { color: #6fa5c2; border-color: var(--border); }
 </style>
 </head>
 <body>
+
+<nav class="patchwork-nav">
+  <span class="brand">patchwork</span>
+  <a href="index.html">企画整理</a>
+  <a href="dna.html">デザイン血統</a>
+  <a href="archive.html" class="active">神話アーカイブ</a>
+</nav>
 
 <header>
   <div>
@@ -313,7 +355,7 @@ footer {
 </div>
 <div class="grid">
 
-  <div class="card" data-cat="a">
+  <div class="card" data-cat="a" id="kikimora">
     <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Kikimora.jpg" alt="キキーモラ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div class="card-img-placeholder" style="display:none">IMAGE</div>
     <div class="card-cat-bar"></div>
@@ -358,7 +400,7 @@ footer {
 </div>
 <div class="grid">
 
-  <div class="card" data-cat="b">
+  <div class="card" data-cat="b" id="domovoi">
     <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Domovoi.jpg" alt="ドモヴォイ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div class="card-img-placeholder" style="display:none">IMAGE</div>
     <div class="card-cat-bar"></div>
@@ -435,7 +477,7 @@ footer {
     </div>
   </div>
 
-  <div class="card" data-cat="c">
+  <div class="card" data-cat="c" id="draugr">
     <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Norse_draugr_by_Kim_Diaz_Holm.jpg" alt="ドラウグル" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div class="card-img-placeholder" style="display:none">IMAGE</div>
     <div class="card-cat-bar"></div>
@@ -496,7 +538,7 @@ footer {
 </div>
 <div class="grid">
 
-  <div class="card" data-cat="d">
+  <div class="card" data-cat="d" id="xingtian">
     <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Jiang_Yinghao_-_Xingtian.jpg" alt="形天" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div class="card-img-placeholder" style="display:none">IMAGE</div>
     <div class="card-cat-bar"></div>
@@ -560,7 +602,7 @@ footer {
     </div>
   </div>
 
-  <div class="card" data-cat="d">
+  <div class="card" data-cat="d" id="pazuzu">
     <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Plaque_against_Lamashtu-AO_22205-IMG_9971-gradient.jpg" alt="パズズ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div class="card-img-placeholder" style="display:none">IMAGE</div>
     <div class="card-cat-bar"></div>
@@ -667,7 +709,7 @@ footer {
     </div>
   </div>
 
-  <div class="card" data-cat="f">
+  <div class="card" data-cat="f" id="suiko">
     <div class="card-img-placeholder">水虎（うがら）<br><span style="font-size:10px;margin-top:8px;display:block">九州地方の伝承 / 図像資料なし</span></div>
     <div class="card-cat-bar"></div>
     <div class="card-body">

@@ -399,9 +399,56 @@ ul.clean li::before {
   text-transform: uppercase;
   margin-bottom: 8px;
 }
+
+/* ───── nav ───── */
+.patchwork-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,20,32,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--seam);
+  padding: 12px 40px;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.patchwork-nav .brand {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--paper);
+  letter-spacing: 0.1em;
+  margin-right: auto;
+}
+.patchwork-nav a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.patchwork-nav a:hover {
+  color: var(--ink);
+  border-color: var(--seam);
+}
+.patchwork-nav a.active {
+  color: var(--water-glow);
+  border-color: var(--seam);
+}
 </style>
 </head>
 <body>
+
+<nav class="patchwork-nav">
+  <span class="brand">patchwork</span>
+  <a href="index.html" class="active">企画整理</a>
+  <a href="dna.html">デザイン血統</a>
+  <a href="archive.html">神話アーカイブ</a>
+</nav>
+
 <div class="container">
 
 <header>
@@ -528,7 +575,7 @@ ul.clean li::before {
   <p>川の終わり、横転した巨大な戦艦の残骸に、<strong>神々の家族</strong>が住み着いている。父神・母神・子の神々。かつて世界を荒らした。今は敗れて沈黙している。</p>
   <p>少女たちは彼らを倒すのではなく、<em>祈る／捧げる／通過する</em>。90分で戦闘を入れずに緊張を出す装置。</p>
   <p>帰還の日、少女たちはこの横転した戦艦に乗って、逆流する川を上る。<strong>神々は川を止められない側</strong>。水は神々に味方しない。</p>
-  <p style="color: var(--undecided); font-size: 13px; margin-top: 10px;">◇ 未決：神々がかつて誰と戦ったか（推し＝水神／水そのもの）</p>
+  <p style="color: var(--decided); font-size: 13px; margin-top: 10px;">◇ 多神共存の世界。神々一家は「many of many」。中心神話は持たない（百鬼夜行構造）。</p>
 </div>
 
 <!-- ========= 構造 ========= -->
@@ -629,7 +676,7 @@ ul.clean li::before {
     <h3>未決事項</h3>
     <ul>
       <li><strong>観客に持ち帰らせる一行</strong>（トーンの最終決定）</li>
-      <li><strong>神々がかつて誰と戦ったか</strong>（A内乱／B下の者／<em>C水神・推し</em>／D忘れた）</li>
+      <li><strong>神々が誰と戦ったか</strong>は「もう忘れた」で済ませる方針（多神共存のため敢えて掘らない）— 採否確定要</li>
       <li><strong>熊の広間で起こる事件</strong>の具体</li>
       <li><strong>Stop 2（55-75分）</strong>の中継点</li>
       <li><strong>帰還の代償</strong>（奇跡案採用時、少女が差し出す何か）</li>
@@ -660,15 +707,20 @@ ul.clean li::before {
 
 <div class="highlight-box">
   <div class="label">IMMEDIATE</div>
-  <p><strong>神々がかつて誰と戦ったか</strong>（A／B／C／D）</p>
+  <p><strong>キャラ表 3人並列</strong>（少女／兄／赤ん坊）</p>
   <p style="color: var(--ink-dim); font-size: 13px; margin-top: 6px;">
-    推し＝C（水神）。水のトーテムと完全に連動。神々は水に敗れた側となり、少女たちの帰還が「水に味方されている」意味を持つ。
+    The Unmapped 実証済の型：タイトル + 3面図 + 表情4面 + 持ち物4種 + 観察ノート。<a href="dna.html" style="color: var(--water-glow);">デザイン血統</a> で割り当てた根を視覚化する。
   </p>
 </div>
 
 <div class="highlight-box" style="margin-top: 16px;">
   <div class="label">NEXT</div>
-  <p>観客に持ち帰らせる一行／熊の広間で起こる事件／Stop 2 の中継点</p>
+  <p>身長確定 → 主要シーンの 20秒6パネル コンテ → ムードボード（archive 抜粋から）</p>
+</div>
+
+<div class="highlight-box" style="margin-top: 16px;">
+  <div class="label">PARALLEL</div>
+  <p>観客に持ち帰らせる一行／熊の広間で起こる事件／Stop 2 の中継点 — トーンが固まり次第</p>
 </div>
 
 <footer>
