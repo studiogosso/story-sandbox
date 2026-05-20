@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>EMBERFALL — 生活・服装・人々 リファレンス</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0e0d0b; --bg2:#171511; --card:#1c1915; --border:#2a261f;
+  --text:#e9e4d8; --muted:#928873; --accent:#d4a96a; --ember:#c46a3a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:"Noto Serif JP",serif;line-height:1.6}
+.wrap{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+aside{background:var(--bg2);border-right:1px solid var(--border);padding:24px 18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+aside h1{font-family:"Cinzel",serif;font-size:18px;letter-spacing:2px;color:var(--accent);margin-bottom:4px}
+aside .sub{font-size:11px;color:var(--muted);margin-bottom:18px;letter-spacing:1px}
+aside .filter-group{margin-bottom:14px}
+aside .filter-group .label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+aside button.bucket{display:flex;justify-content:space-between;width:100%;text-align:left;background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 11px;font-size:12px;margin-bottom:5px;cursor:pointer;font-family:inherit;border-radius:2px;align-items:center;gap:8px}
+aside button.bucket:hover{border-color:var(--accent);color:var(--accent)}
+aside button.bucket.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+aside button.bucket .ttl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.3}
+aside button.bucket .ttl b{font-size:12px;font-weight:600}
+aside button.bucket .ttl span{font-size:10px;opacity:0.7;letter-spacing:0.5px}
+aside button.bucket .ct{font-family:"Cinzel",serif;font-size:11px;opacity:0.7}
+aside button.bucket .swatch{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+aside .stats{font-size:10px;color:var(--muted);margin-top:18px;border-top:1px solid var(--border);padding-top:10px;letter-spacing:0.5px}
+main{padding:32px 36px;max-width:1700px}
+header.page{margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:18px}
+header.page h2{font-family:"Cinzel",serif;font-size:30px;color:var(--accent);letter-spacing:3px;margin-bottom:6px}
+header.page p{color:var(--muted);font-size:13px;max-width:920px}
+.search-bar{margin-bottom:18px}
+.search-bar input{width:100%;max-width:500px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:inherit;font-size:13px;border-radius:2px}
+.search-bar input:focus{outline:none;border-color:var(--accent)}
+.bucket-section{margin-bottom:36px}
+.bucket-header{padding:10px 14px;background:var(--card);border-left:4px solid var(--bucket-color,var(--accent));margin-bottom:14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bucket-header h3{font-family:"Cinzel",serif;font-size:14px;letter-spacing:2px;color:var(--accent)}
+.bucket-header .ja{font-size:14px;color:var(--text);font-weight:600}
+.bucket-header .sub{font-size:11px;color:var(--muted);letter-spacing:0.5px}
+.bucket-header .ct{font-size:11px;color:var(--accent);margin-left:auto;font-family:"Cinzel",serif;letter-spacing:1px}
+.bucket-header .desc{font-size:11px;color:var(--muted);width:100%;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.tile{position:relative;background:var(--card);border:1px solid var(--border);border-radius:2px;overflow:hidden;cursor:pointer;aspect-ratio:1;transition:border-color .12s, transform .12s}
+.tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.55) 70%,transparent 100%);color:#dcd6c8;font-size:10px;padding:22px 8px 7px;letter-spacing:0.2px;line-height:1.4}
+.tile .idx{position:absolute;top:5px;left:7px;background:rgba(0,0,0,0.65);color:var(--accent);font-size:9px;font-family:"Cinzel",serif;padding:1px 6px;letter-spacing:1px;border-radius:2px;z-index:2}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;justify-content:center;align-items:center;padding:40px;flex-direction:column;gap:12px}
+.lightbox.on{display:flex}
+.lightbox img{max-width:95vw;max-height:80vh;object-fit:contain}
+.lightbox .lb-cap{color:#dcd6c8;font-size:13px;text-align:center;max-width:900px}
+.lightbox .lb-cap a{color:var(--accent);font-size:11px;display:block;margin-top:4px;text-decoration:none}
+.lightbox .lb-cap a:hover{text-decoration:underline}
+.lightbox .lb-close{position:absolute;top:18px;right:24px;color:#dcd6c8;background:none;border:none;font-size:32px;cursor:pointer}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}aside{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}main{padding:22px 18px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+<aside>
+<h1>LIFE & COSTUME</h1>
+<div class="sub">EMBERFALL world-life references</div>
+
+<div class="filter-group">
+  <div class="label">バケツ</div>
+  <button class="bucket active" data-bucket="all">
+    <div class="ttl"><b>すべて表示</b><span>10 buckets</span></div>
+    <span class="ct">165</span>
+  </button>
+  <button class="bucket" data-bucket="A">
+    <span class="swatch" style="background:#b8884a"></span>
+    <div class="ttl"><b>A. EMBERLYN系</b><span>衰退する旧名家</span></div>
+    <span class="ct">26</span>
+  </button>
+  <button class="bucket" data-bucket="B">
+    <span class="swatch" style="background:#7d6a3f"></span>
+    <div class="ttl"><b>B. 学院・寄宿学校</b><span>学院都市の中等学校</span></div>
+    <span class="ct">14</span>
+  </button>
+  <button class="bucket" data-bucket="C">
+    <span class="swatch" style="background:#6b7a91"></span>
+    <div class="ttl"><b>C. VEXALIA系</b><span>計測・官僚・規制</span></div>
+    <span class="ct">14</span>
+  </button>
+  <button class="bucket" data-bucket="D">
+    <span class="swatch" style="background:#5f7a7e"></span>
+    <div class="ttl"><b>D. 旅・交通・乗り物</b><span>家から学院都市へ向かう旅</span></div>
+    <span class="ct">15</span>
+  </button>
+  <button class="bucket" data-bucket="E">
+    <span class="swatch" style="background:#9a6650"></span>
+    <div class="ttl"><b>E. KROSS系</b><span>鍛冶・鉱山・工房</span></div>
+    <span class="ct">15</span>
+  </button>
+  <button class="bucket" data-bucket="F">
+    <span class="swatch" style="background:#8a7456"></span>
+    <div class="ttl"><b>F. 街・市場・取引所</b><span>学院都市と地方都市の日常</span></div>
+    <span class="ct">21</span>
+  </button>
+  <button class="bucket" data-bucket="G">
+    <span class="swatch" style="background:#7c8c6a"></span>
+    <div class="ttl"><b>G. TAKANI系</b><span>山地・先住民・自治区</span></div>
+    <span class="ct">15</span>
+  </button>
+  <button class="bucket" data-bucket="H">
+    <span class="swatch" style="background:#a85a3a"></span>
+    <div class="ttl"><b>H. 儀礼・祭・夜の篝火</b><span>婚礼・葬儀・収穫祭・行列</span></div>
+    <span class="ct">15</span>
+  </button>
+  <button class="bucket" data-bucket="I">
+    <span class="swatch" style="background:#7e6b48"></span>
+    <div class="ttl"><b>I. 庶民・労働者・農村</b><span>学院に行けない子もいる側</span></div>
+    <span class="ct">15</span>
+  </button>
+  <button class="bucket" data-bucket="J">
+    <span class="swatch" style="background:#566a6e"></span>
+    <div class="ttl"><b>J. 風景・生態・夜霧・廃坑</b><span>人間以外の世界</span></div>
+    <span class="ct">15</span>
+  </button>
+</div>
+
+<div class="stats">
+  10 バケツ / 165 画像<br>
+  全 PD・1850〜1930年中心<br>
+  Wikimedia Commons,<br>
+  Internet Archive, Wellcome
+</div>
+</aside>
+
+<main>
+<header class="page">
+  <h2>LIFE & COSTUME REFERENCE</h2>
+  <p>EMBERFALL の世界に住む人々の服装・日常・働きぶり・儀礼を集めたムードボード。
+  4家(EMBERLYN・VEXALIA・KROSS・TAKANI) × 学院 × 街 × 庶民 × 儀礼 × 旅 × 風景 の10バケツ。
+  19世紀末〜20世紀初頭の絵画・写真・民族誌から構成。タイル click で拡大表示。</p>
+</header>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="検索: 画家名 / 場所 / モチーフ ..." />
+</div>
+
+<div id="content"></div>
+</main>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lb-close">×</button>
+  <img id="lb-img" src="" alt="" />
+  <div class="lb-cap" id="lb-cap"></div>
+</div>
+
+<script>
+const BUCKETS = [{"id": "A", "name": "EMBERLYN系", "sub": "衰退する旧名家", "desc": "古い銘家の薄暗い邸宅・書庫・廃れた庭・残された家族。19世紀末欧の没落貴族肖像、室内画、メランコリック。", "color": "#b8884a", "items": [{"f": "A_09_sargent_madame_x_1884.jpeg", "c": "Sargent『Madame X』(1884) — 黒喪服立像", "s": "https://commons.wikimedia.org/wiki/File:Madame_X_(Madame_Pierre_Gautreau),_John_Singer_Sargent,_1884.jpg"}, {"f": "A_17_holsoe_woman_reading_window.png", "c": "Holsøe — 窓辺で読書する女", "s": "https://commons.wikimedia.org/wiki/Category:Paintings_by_Carl_Hols%C3%B8e"}, {"f": "A_18_holsoe_woman_at_piano.png", "c": "Holsøe — ピアノに向かう女、退色した壁", "s": "https://commons.wikimedia.org/wiki/Category:Paintings_by_Carl_Hols%C3%B8e"}, {"f": "A_20_kaulbach_young_alexandra.JPG", "c": "Kaulbach「若きアレクサンドラ・フョードロヴナ」 19c末ドイツ宮廷少女肖像", "s": "https://commons.wikimedia.org/wiki/File:Friedrich_August_von_Kaulbach_-_Portrait_of_Young_Alexandra_Feodorovna.JPG"}, {"f": "A_21_hammershoi_strandgade_artist_wife.jpg", "c": "Hammershøi — Strandgade 自宅の画家の妻", "s": "https://commons.wikimedia.org/wiki/File:Vilhelm_Hammersh%C3%B8i_-_A_Room_in_the_Artist%27s_Home_in_Strandgade,_Copenhagen,_with_the_Artist%27s_Wife.jpg"}, {"f": "A_22_hammershoi_dust_motes_sunbeams.jpg", "c": "Hammershøi『Dust Motes Dancing in the Sunbeams』— 無人の室内に差す光と埃", "s": "https://commons.wikimedia.org/wiki/File:Hammersh%C3%B8i_Dust_motes_dancing.jpg"}, {"f": "A_23_hammershoi_ida_reading_letter.jpg", "c": "Hammershøi — 妻 Ida が手紙を読む後ろ姿", "s": "https://commons.wikimedia.org/wiki/File:Hammershoi_Ida_Reading_a_Letter.jpg"}, {"f": "A_24_hammershoi_sunshine_drawing_room.jpg", "c": "Hammershøi『Sunshine in the Drawing Room』 — 客間に差す光", "s": "https://commons.wikimedia.org/wiki/File:Sunshine_in_the_Drawing_Room_by_Vilhelm_Hammersh%C3%B8i.jpg"}, {"f": "A_25_hammershoi_sovekammer_1890.jpg", "c": "Hammershøi『Sovekammer (寝室)』(1890)", "s": "https://commons.wikimedia.org/wiki/File:Vilhelm_Hammersh%C3%B8i,_Sovekammer,_1890.jpg"}, {"f": "A_26_hammershoi_interior_strandgade_1900.jpg", "c": "Hammershøi「Interior, Strandgade 30」(1900)", "s": "https://commons.wikimedia.org/wiki/File:Vilhelm_Hammersh%C3%B8i,_Interi%C3%B8r_fra_Strandgade_30,_1900.jpg"}, {"f": "A_27_hammershoi_ida_piano.jpg", "c": "Hammershøi — ピアノのある室内の Ida (1901)", "s": "https://commons.wikimedia.org/wiki/File:Vilhelm_Hammershoi,_Ida_in_an_Interior_with_Piano,_1901.jpg"}, {"f": "A_28_sargent_daughters_boit.jpg", "c": "Sargent『The Daughters of Edward Darley Boit』(1882) — 暗い玄関広間の4姉妹", "s": "https://commons.wikimedia.org/wiki/File:John_Singer_Sargent_001.jpg"}, {"f": "A_29_whistler_mother.jpg", "c": "Whistler『Arrangement in Grey and Black No.1 — 母の肖像』(1871)", "s": "https://commons.wikimedia.org/wiki/File:Whistlers_Mother_high_res.jpg"}, {"f": "A_30_grimshaw_liverpool_quay_moonlight.jpg", "c": "Grimshaw『Liverpool Quay by Moonlight』(1887)", "s": "https://commons.wikimedia.org/wiki/File:John_Atkinson_Grimshaw_-_Liverpool_Quay_by_Moonlight_(1887).jpg"}, {"f": "A_31_grimshaw_liverpool_docks_night.jpg", "c": "Grimshaw『Liverpool Docks by Night』", "s": "https://commons.wikimedia.org/wiki/File:John_Atkinson_Grimshaw_(1836-1893)_-_Liverpool_Docks_by_Night.jpg"}, {"f": "A_32_grimshaw_nightfall_scarborough.jpg", "c": "Grimshaw『Nightfall in Scarborough Harbour』", "s": "https://commons.wikimedia.org/wiki/File:John_Atkinson_Grimshaw_(1836-1893)_-_Nightfall_in_Scarborough_Harbour.jpg"}, {"f": "A_33_menzel_balkonzimmer.jpg", "c": "Menzel『Das Balkonzimmer (バルコニーの部屋)』(1845)", "s": "https://commons.wikimedia.org/wiki/File:Adolph_Menzel_-_Das_Balkonzimmer_-_Google_Art_Project.jpg"}, {"f": "A_34_caillebotte_jeune_homme_fenetre.jpg", "c": "Caillebotte『Jeune homme à sa fenêtre』— 窓辺の青年後ろ姿", "s": "https://commons.wikimedia.org/wiki/Category:Young_Man_at_His_Window_by_Gustave_Caillebotte"}, {"f": "A_35_holsoe_interior_woman_embroidering.jpg", "c": "Carl Holsøe — 刺繍をする女のいる室内", "s": "https://commons.wikimedia.org/wiki/File:Interior_with_a_Woman_Embroidering_by_Carl_Vilhelm_Hols%C3%B8e.jpg"}, {"f": "A_36_holsoe_woman_cello.jpg", "c": "Holsøe — チェロのある室内", "s": "https://commons.wikimedia.org/wiki/File:Interior_with_woman_and_cello_by_Carl_Hols%C3%B8e.jpg"}, {"f": "A_37_ilsted_interior_samovar_evening.jpg", "c": "Peter Ilsted — サモワールのある夜の室内 (1902)", "s": "https://commons.wikimedia.org/wiki/File:Peter_Ilsted,_Interi%C3%B8r_med_en_samovar_Aften,_1902,_KMS1818,_Statens_Museum_for_Kunst.jpg"}, {"f": "A_38_ilsted_mother_child_interior.jpg", "c": "Ilsted — 室内の母子 (1898)", "s": "https://commons.wikimedia.org/wiki/File:Peter-ilsted-mother-and-child-in-an-interior-1898.jpg"}, {"f": "A_39_sargent_lady_agnew_lochnaw.jpg", "c": "Sargent『Lady Agnew of Lochnaw』— 没落貴族令嬢肖像", "s": "https://commons.wikimedia.org/wiki/File:John_Singer_Sargent_-_Lady_Agnew_of_Lochnaw.jpg"}, {"f": "A_40_boldini_marchesa_casati_greyhound.jpg", "c": "Boldini『Marchesa Luisa Casati with a Greyhound』", "s": "https://commons.wikimedia.org/wiki/File:Marchesa_Luisa_Casati,_with_a_greyhound,_by_Giovanni_Boldini.jpg"}, {"f": "A_41_zorn_self_portrait_wife_bust.jpg", "c": "Anders Zorn — 妻の胸像と自画像", "s": "https://commons.wikimedia.org/wiki/File:Anders_Zorn_sj%C3%A4lvportr%C3%A4tt_med_hustruns_byst.jpg"}, {"f": "A_42_whistler_white_girl_symphony.jpg", "c": "Whistler『Symphony in White No.1 — The White Girl』(1862)", "s": "https://commons.wikimedia.org/wiki/File:Whistler_James_Symphony_in_White_no_1_(The_White_Girl)_1862.jpg"}], "count": 26}, {"id": "B", "name": "学院・寄宿学校", "sub": "学院都市の中等学校", "desc": "制服、講堂、寮、図書館、礼拝堂、競技、生徒の集合写真。19世紀末〜1920年代の名門寄宿学校。", "color": "#7d6a3f", "items": [{"f": "B_01_eton_xi_1866.jpg", "c": "Eton XI cricket team (1866) — イートン校クリケットチーム古写真", "s": "https://commons.wikimedia.org/wiki/File:Eton_XI_in_1866.jpg"}, {"f": "B_02_eton_schoolboys_ad_montem.jpg", "c": "Francis Alleyne『Eton Schoolboys in ad Montem dress』", "s": "https://commons.wikimedia.org/wiki/File:Eton_Schoolboys,_in_ad_Montem_dress,_by_Francis_Alleyne.jpg"}, {"f": "B_03_lycee_henri_iv_rhetorique_1890.jpg", "c": "Lycée Henri-IV 修辞学級 (1890-91) — パリ名門リセ集合写真", "s": "https://commons.wikimedia.org/wiki/File:Lyc%C3%A9e_Henri-IV_classe_de_rh%C3%A9torique_1890-91.jpg"}, {"f": "B_04_classe_primaire_vers_1890.jpg", "c": "仏初等学校クラス写真 ca.1890 — 生徒と教師の整列", "s": "https://commons.wikimedia.org/wiki/File:Classe_primaire_inconnue_vers_1890.jpg"}, {"f": "B_05_strand_fourth_form_room.png", "c": "Strand Magazine「Harrow School: The Fourth Form Room」(1892)", "s": "https://commons.wikimedia.org/wiki/File:The_Strand_Magazine_vol._4,_no._22,_pg._424_-_The_Fourth_Form_Room.png"}, {"f": "B_06_strand_harrow_boys.png", "c": "Strand Magazine「A Group of Harrow Boys」(1892) — チョッキ・タイ・ストロー帽", "s": "https://commons.wikimedia.org/wiki/File:The_Strand_Magazine_vol._4,_no._22,_pg._427_-_A_Group_of_Harrow_Boys.png"}, {"f": "B_07_harrow_cricket_1869.jpg", "c": "Harrow cricket team (1869) — Eton 戦校内対抗", "s": "https://commons.wikimedia.org/wiki/File:Harrow_cricket_team_of_1869_for_the_match_against_Eton.jpg"}, {"f": "B_08_anker_dorfschule_1848.jpg", "c": "Albert Anker『Die Dorfschule von 1848』(1896) — 田舎学校のラテン語授業", "s": "https://commons.wikimedia.org/wiki/File:Anker_Die_Dorfschule_von_1848_1896.jpg"}, {"f": "B_09_anker_schulspaziergang_1872.jpg", "c": "Albert Anker『Der Schulspaziergang』(1872) — 教師と生徒の遠足行列", "s": "https://commons.wikimedia.org/wiki/File:Albert_Anker_-_Der_Schulspaziergang_(1872).jpg"}, {"f": "B_10_sargent_carnation_lily.jpg", "c": "Sargent『Carnation, Lily, Lily, Rose』(1885-6) — 庭で提灯灯す少女", "s": "https://commons.wikimedia.org/wiki/File:John_Singer_Sargent_-_Carnation,_Lily,_Lily,_Rose_-_Google_Art_Project.jpg"}, {"f": "B_11_brobergska_geography_lesson.jpg", "c": "Brobergska samskolan 地理の授業(ヘルシンキ) — 19c末北欧学校室内", "s": "https://commons.wikimedia.org/wiki/File:L%C3%A4roverket_f%C3%B6r_gossar_och_flickor_l._Brobergska_samskolan-_Maantiedon_tunti.jpg"}, {"f": "B_12_francs_bourgeois_1890.jpg", "c": "École des Francs-Bourgeois ca.1890 — パリ私立学校集合写真", "s": "https://commons.wikimedia.org/wiki/File:Francs-Bourgeois_vers_1890_PF.jpg"}, {"f": "B_13_henri_iv_1890_class.jpg", "c": "Lycée Henri-IV (1890) — パリ名門リセ別年度クラス写真", "s": "https://commons.wikimedia.org/wiki/File:Henri_IV_1890_PF.jpg"}, {"f": "B_14_polytechnique_grand_uniforme.jpg", "c": "École Polytechnique Grand Uniforme — 仏理工系名門の正装制服", "s": "https://commons.wikimedia.org/wiki/File:Le_grand_uniforme_de_l%27Ecole_polytechnique.jpg"}], "count": 14}, {"id": "C", "name": "VEXALIA系", "sub": "計測・官僚・規制", "desc": "非魔法貴族の規制側。役所・議会・登記簿・天秤・コンパス・測量・フロックコート・シルクハット。", "color": "#6b7a91", "items": [{"f": "C_01_repin_state_council.jpg", "c": "Repin『国家評議会100周年記念儀典』(1903) — フルドレス制服姿の評議員と大臣たち", "s": "https://commons.wikimedia.org/wiki/File:Ilya_Repin_-_Ceremonial_Sitting_of_the_State_Council_on_7_May_1901.jpg"}, {"f": "C_02_daumier_two_lawyers.jpg", "c": "Daumier『二人の弁護士』(c.1860, Art Institute of Chicago)", "s": "https://commons.wikimedia.org/wiki/File:Honor%C3%A9-Victorin_Daumier_-_Two_Lawyers.jpg"}, {"f": "C_03_daumier_avocat_plaidant.jpg", "c": "Daumier『弁論する弁護士』(1853-54)", "s": "https://commons.wikimedia.org/wiki/File:Daumier_-_AVOCAT_PLAIDANT,_1853-54.jpg"}, {"f": "C_04_daumier_criminal_case.jpg", "c": "Daumier『刑事事件』(Getty)", "s": "https://commons.wikimedia.org/wiki/File:A_Criminal_Case,_by_Honor%C3%A9_Daumier_(Getty_103R3Q).jpg"}, {"f": "C_05_daumier_les_deux_avocats.jpg", "c": "Daumier『Les Deux Avocats』(Bührle) — 黒法服に白カラーの19世紀仏法曹", "s": "https://commons.wikimedia.org/wiki/File:Honor%C3%A9_Daumier_-_Les_Deux_Avocats.jpg"}, {"f": "C_06_pukirev_unequal_marriage.jpg", "c": "Pukirev『不平等な結婚』(1862, Tretyakov) — 勲章佩用の老高官と若い花嫁", "s": "https://commons.wikimedia.org/wiki/File:Vasily_Pukirev_-_Unequal_Marriage.jpg"}, {"f": "C_07_frith_railway_station.jpg", "c": "Frith『鉄道駅』(1862) — シルクハットの紳士、警官、群衆", "s": "https://commons.wikimedia.org/wiki/File:William_Powell_Frith_The_Railway_Station.jpg"}, {"f": "C_08_menzel_coronation_wilhelm.jpg", "c": "Menzel『ケーニヒスベルクにおけるヴィルヘルム1世戴冠式』(1861-65)", "s": "https://commons.wikimedia.org/wiki/File:Adolph_Menzel,_Kr%C3%B6nung_von_K%C3%B6nig_Wilhelm_I.jpg"}, {"f": "C_09_repin_protodeacon.jpg", "c": "Repin『首席助祭』(1877, Tretyakov) — 黒衣に杖の正教会聖職者", "s": "https://commons.wikimedia.org/wiki/File:Archdeacon_by_Repin.jpg"}, {"f": "C_10_reymerswaele_tax_collectors.jpg", "c": "Reymerswaele『徴税人』— 帳簿に羽根ペンで記入する徴税官", "s": "https://commons.wikimedia.org/wiki/File:Marinus_van_Reymerswale_-_The_Tax_Collectors.jpg"}, {"f": "C_11_surikov_morozova.jpg", "c": "Surikov『貴婦人モロゾヴァ』(1884-87, Tretyakov) — 国家権力に逮捕される姿", "s": "https://commons.wikimedia.org/wiki/File:Vasily_Surikov_-_Boyarynya_Morozova.jpg"}, {"f": "C_12_daumier_avocat_caricature.jpg", "c": "Daumier『書類を読む書記たち』— 鬘の書記が文書を覗き込む", "s": "https://commons.wikimedia.org/wiki/File:Daumier_-_DR7062.jpg"}, {"f": "C_13_surikov_streltsy.jpg", "c": "Surikov『ストレリツィの処刑の朝』(1881) — ピョートル大帝前の反乱兵処刑", "s": "https://commons.wikimedia.org/wiki/File:Vasily_Surikov_-_Morning_of_the_Streltsy_Execution.jpg"}, {"f": "C_14_repin_religious_procession.jpg", "c": "Repin『クルスク県の宗教行列』(1880-83) — 騎馬警官・司祭・群衆", "s": "https://commons.wikimedia.org/wiki/File:Ilya_Repin_-_Religious_Procession_in_Kursk_Governorate.jpg"}], "count": 14}, {"id": "D", "name": "旅・交通・乗り物", "sub": "家から学院都市へ向かう旅", "desc": "馬車・初期鉄道・蒸気船・駅・橋・巡礼路。印象派の駅と鉄道、駅馬車の中庭。", "color": "#5f7a7e", "items": [{"f": "D_01_monet_gare_saint_lazare.jpg", "c": "Monet『サン=ラザール駅』(1877) — 蒸気機関車と鉄骨ガラス屋根", "s": "https://commons.wikimedia.org/wiki/File:La_Gare_Saint-Lazare_-_Claude_Monet.jpg"}, {"f": "D_02_monet_arrival_normandy_train.jpg", "c": "Monet『ノルマンディー列車の到着、サン=ラザール駅』(1877)", "s": "https://commons.wikimedia.org/wiki/File:Claude_Monet_-_Arrival_of_the_Normandy_Train.jpg"}, {"f": "D_03_daumier_third_class_carriage.jpg", "c": "Daumier『三等車』(c.1862-64) — 木製ベンチの混雑した客車内", "s": "https://commons.wikimedia.org/wiki/File:Honor%C3%A9_Daumier_034.jpg"}, {"f": "D_04_menzel_berlin_potsdam_railway.jpg", "c": "Menzel『ベルリン-ポツダム鉄道』(1847) — ドイツ絵画初の鉄道風景", "s": "https://commons.wikimedia.org/wiki/File:Adolph_Menzel_-_Die_Berlin-Potsdamer_Bahn.jpg"}, {"f": "D_05_turner_rain_steam_speed.jpg", "c": "Turner『雨、蒸気、速度 — グレート・ウェスタン鉄道』(1844)", "s": "https://commons.wikimedia.org/wiki/File:Turner_-_Rain,_Steam_and_Speed_-_National_Gallery_file.jpg"}, {"f": "D_06_frith_derby_day.jpg", "c": "Frith『ダービー競馬の日』(1856-58, Tate) — 駅から流れ込む群衆と馬車", "s": "https://commons.wikimedia.org/wiki/File:William_Powell_Frith_-_The_Derby_Day.jpg"}, {"f": "D_07_boilly_arrival_stagecoach.jpg", "c": "Boilly『郵便馬車舎中庭への駅馬車到着』(1803, Louvre)", "s": "https://commons.wikimedia.org/wiki/File:Louis-L%C3%A9opold_Boilly_-_The_Arrival_of_a_Stage-coach.jpg"}, {"f": "D_08_leprince_arrivee_diligence.jpg", "c": "Leprince『駅馬車の到着』(1819) — 19c初頭仏の大型駅馬車", "s": "https://commons.wikimedia.org/wiki/File:Auguste-Xavier_Leprince,_L%27arriv%C3%A9e_de_la_Diligence,_1819.jpg"}, {"f": "D_09_spitzweg_die_post.jpg", "c": "Spitzweg『郵便馬車』(c.1880) — ドイツ・ロマン派の街角馬車", "s": "https://commons.wikimedia.org/wiki/File:Carl_Spitzweg_-_Die_Post.jpg"}, {"f": "D_10_pissarro_carriage_louveciennes.jpg", "c": "Pissarro『ルーヴシエンヌ郊外の冬の田舎道の馬車』(1872)", "s": "https://commons.wikimedia.org/wiki/File:Pissarro_-_carriage-on-a-country-road-winter-outskirts-of-louveciennes-1872.jpg"}, {"f": "D_11_caillebotte_pont_europe.jpg", "c": "Caillebotte『ヨーロッパ橋』(1876) — サン=ラザール駅上の鉄橋を歩く紳士", "s": "https://commons.wikimedia.org/wiki/File:G._Caillebotte_-_Le_pont_de_l%27Europe.jpg"}, {"f": "D_12_manet_railway.jpg", "c": "Manet『鉄道』(1873) — 駅の柵越しに線路を見下ろす婦人と少女", "s": "https://commons.wikimedia.org/wiki/File:Edouard_Manet_-_Le_Chemin_de_fer.jpg"}, {"f": "D_13_monet_pont_europe.jpg", "c": "Monet『ヨーロッパ橋、サン=ラザール駅』(1877)", "s": "https://commons.wikimedia.org/wiki/File:Claude_Monet-Le_Pont_de_l%27Europe-Gare_Saint-Lazare-1877.jpg"}, {"f": "D_14_monet_train_landscape.jpg", "c": "Monet『雪の中の列車』(1875)", "s": "https://commons.wikimedia.org/wiki/File:Claude_Monet_-_Train_in_the_Snow.jpg"}, {"f": "D_15_caillebotte_paris_rainy.jpg", "c": "Caillebotte『パリの通り、雨の日』(1877) — 傘・コート・帽子のパリ", "s": "https://commons.wikimedia.org/wiki/File:Gustave_Caillebotte_-_Paris_Street;_Rainy_Day.jpg"}], "count": 15}, {"id": "E", "name": "KROSS系", "sub": "鍛冶・鉱山・工房", "desc": "職工・鉱夫の家。革エプロン、ハンマー、坑道、煙、家族鍛冶場、鋳造所、徒弟少年。", "color": "#9a6650", "items": [{"f": "E_01_menzel_eisenwalzwerk.jpg", "c": "Menzel『Eisenwalzwerk (製鉄工場)』(1875) — KROSS の原イメージ", "s": "https://commons.wikimedia.org/wiki/File:Adolph_Menzel_-_Eisenwalzwerk.jpg"}, {"f": "E_02_wright_blacksmiths_shop.jpg", "c": "Joseph Wright of Derby『A Blacksmith's Shop』(1771) — 真夜中の鍛冶場の赤い光", "s": "https://commons.wikimedia.org/wiki/File:Joseph_Wright_of_Derby._A_Blacksmith%27s_Shop.1771.jpg"}, {"f": "E_03_hine_breaker_boys_ewen.jpg", "c": "Lewis Hine『Breaker Boys, Ewen Breaker』(1911) — 少年炭鉱夫の徒弟", "s": "https://commons.wikimedia.org/wiki/File:Breaker_boys_working_in_Ewen_Breaker.jpg"}, {"f": "E_04_hine_breaker_boys_coal_mine.jpg", "c": "Lewis Hine『Breaker Boys in Coal Mine, S. Pittston PA』(1911) — 煤汚れの子供", "s": "https://commons.wikimedia.org/wiki/File:Breaker_Boys_in_Coal_Mine_South_Pittston_Pennsylvania.jpeg"}, {"f": "E_05_hine_angelo_ross.jpg", "c": "Lewis Hine『Breaker Boys (Angelo Ross)』(1911) — 最年少坑夫", "s": "https://commons.wikimedia.org/wiki/File:Breaker_boys._Smallest_is_Angelo_Ross.jpg"}, {"f": "E_06_meunier_descent_miners.jpg", "c": "Meunier『Descent of the Miners into the Shaft』— 坑道入口の労働者群", "s": "https://commons.wikimedia.org/wiki/File:Constantin_Meunier_-_Descent_of_the_miners_into_the_shaft.jpg"}, {"f": "E_07_meunier_return_miners.jpg", "c": "Meunier『Return of the Miners』— 坑道から戻る一日の終わり", "s": "https://commons.wikimedia.org/wiki/File:Constantin_Meunier_-_Return_of_the_Miners.jpg"}, {"f": "E_08_meunier_funeral_coal_mine.jpg", "c": "Meunier『Funeral in a Coal Mine』— 鉱山の葬列、共同体の重み", "s": "https://commons.wikimedia.org/wiki/File:Meunier_-_Funeral_in_a_Coal_Mine_-_Blessing_of_the_Coffins.jpg"}, {"f": "E_09_meunier_foundry_seraing.jpg", "c": "Meunier『De gieterij te Seraing (セレンの鋳造所)』— 溶銑の光", "s": "https://commons.wikimedia.org/wiki/File:Constantin_Meunier_-_De_gieterij_te_Seraing.jpg"}, {"f": "E_10_palmer_wayside_smithy.jpg", "c": "Samuel Palmer『The Wayside Smithy』— 村の鍛冶場、家族工房", "s": "https://commons.wikimedia.org/wiki/File:Samuel_Palmer_-_The_Wayside_Smithy.jpg"}, {"f": "E_11_lundens_two_blacksmiths.jpg", "c": "Gerrit Lundens『Two Blacksmiths at Work in a Forge』(17C)", "s": "https://commons.wikimedia.org/wiki/File:Gerrit_Lundens_-_Two_blacksmiths_at_work_in_a_forge.jpg"}, {"f": "E_12_seiler_beim_schmied.jpg", "c": "Carl Seiler『Beim Schmied』(1907) — ドイツ村落の鍛冶屋", "s": "https://commons.wikimedia.org/wiki/File:Carl_Seiler_Beim_Schmied_1907.jpg"}, {"f": "E_13_braekeleer_schmied.jpg", "c": "Braekeleer『Schmied in der Werkstatt』— 工房内の鍛冶屋、ベルギー", "s": "https://commons.wikimedia.org/wiki/File:Ferdinand_II_de_Braekeleer_Schmied_in_der_Werkstatt.jpg"}, {"f": "E_14_stakhanov_miner.jpg", "c": "Stakhanov 関連 (1935頃) — ヘルメットとランタンの坑夫", "s": "https://commons.wikimedia.org/wiki/File:Stakhanov.JPG"}, {"f": "E_15_hine_carolina_spinner.jpg", "c": "Lewis Hine『Adolescent Girl, a Spinner』(1908) — 工場の少女工", "s": "https://commons.wikimedia.org/wiki/File:Hine,_Lewis,_Adolescent_Girl,_a_Spinner,_in_a_Carolina_Cotton_Mill,_1908.jpg"}], "count": 15}, {"id": "F", "name": "街・市場・取引所", "sub": "学院都市と地方都市の日常", "desc": "商店、屋台、競売、新聞売り、ガス灯下の路地、夜の市場。Atget のパリ街角、Pissarro のブールヴァール。", "color": "#8a7456", "items": [{"f": "F_01_atget_mouffetard_14juillet.jpg", "c": "Atget『14 juillet 1900, Mouffetard』— 朝の市場通り", "s": "https://commons.wikimedia.org/wiki/File:14_juillet_1900,_quartier_Mouffetard.jpg"}, {"f": "F_02_atget_petit_dunkerque.jpg", "c": "Atget『Au Petit Dunkerque, Quai de Conti』— 商店の店先", "s": "https://commons.wikimedia.org/wiki/File:Au_petit_Dunkerque_-_Quai_de_Conti.jpg"}, {"f": "F_03_atget_petit_dunkerque_nga.jpg", "c": "Atget『Au Petit Dunkerque』(1900) — 別アングル、看板と窓", "s": "https://commons.wikimedia.org/wiki/File:Eug%C3%A8ne_Atget,_Au_Petit_Dunkerque,_3_quai_Conti,_1900.jpg"}, {"f": "F_04_atget_chiffonniers.jpg", "c": "Atget『Chiffonniers (屑拾い)』— 街角の貧者", "s": "https://commons.wikimedia.org/wiki/File:18._Atget_Eug%C3%A8ne,_Chiffonniers.jpg"}, {"f": "F_05_atget_clochard_1898.jpg", "c": "Atget『Clochard』(1898) — 街頭歌手・浮浪者", "s": "https://commons.wikimedia.org/wiki/File:Clochard_Atget_1898.jpeg"}, {"f": "F_06_atget_ami_jean.jpg", "c": "Atget『A l'ami Jean』(1908) — ビストロの店先", "s": "https://commons.wikimedia.org/wiki/File:A_l%27ami_Jean,_8_rue_Thouin.jpg"}, {"f": "F_07_atget_bebe_bon_marche.jpg", "c": "Atget『Au Bébé Bon Marché』(1912) — 商店ショーウィンドー", "s": "https://commons.wikimedia.org/wiki/File:Au_B%C3%A9b%C3%A9_Bon_March%C3%A9_63_rue_de_S%C3%A8vres_1912.jpg"}, {"f": "F_08_atget_la_biche.jpg", "c": "Atget『A la Biche』(1905) — キャバレー店先", "s": "https://commons.wikimedia.org/wiki/File:A_la_Biche_Rue_Geoffroy_St-Hilaire.jpg"}, {"f": "F_09_pissarro_montmartre_winter.jpg", "c": "Pissarro『Boulevard Montmartre on a Winter Morning』(1897) — 雪の市場通り", "s": "https://commons.wikimedia.org/wiki/File:The_Boulevard_Montmartre_on_a_Winter_Morning.JPG"}, {"f": "F_10_pissarro_montmartre_night.jpg", "c": "Pissarro『Boulevard Montmartre at Night』(1897) — ガス灯下の夜の通り", "s": "https://commons.wikimedia.org/wiki/File:Camille_Pissarro,_The_Boulevard_Montmartre_at_Night,_1897.jpg"}, {"f": "F_11_caillebotte_paris_rainy.jpg", "c": "Caillebotte『Paris Street, Rainy Day』(1877) — ハウスマン式都市の通行人", "s": "https://commons.wikimedia.org/wiki/File:Gustave_Caillebotte_-_Paris_Street;_Rainy_Day_-_Google_Art_Project.jpg"}, {"f": "F_12_riis_bandits_roost_1888.jpg", "c": "Jacob Riis『Bandits' Roost, Mulberry St』(1888) — 路地、貧民窟", "s": "https://commons.wikimedia.org/wiki/File:Bandits%27_Roost,_59_1-2_Mulberry_Street_by_Jacob_August_Riis,_1888.jpg"}, {"f": "F_13_riis_bandits_roost.jpg", "c": "Jacob Riis『Bandit's Roost (別版)』— 暗い路地の人々", "s": "https://commons.wikimedia.org/wiki/File:Bandit%27s_Roost_by_Jacob_Riis.jpeg"}, {"f": "F_14_riis_lodgers_bayard.jpg", "c": "Jacob Riis『Lodgers in Bayard St Tenement』(1889) — 安宿の労働者", "s": "https://commons.wikimedia.org/wiki/File:Jacob_Riis,_Lodgers_in_a_Crowded_Bayard_Street_Tenement.jpg"}, {"f": "F_15_riis_italian_ragpicker.jpg", "c": "Jacob Riis『Italian Rag-Picker, Jersey St』(1890)", "s": "https://commons.wikimedia.org/wiki/File:In_the_Home_of_an_Italian_Rag-Picker,_Jersey_Street.jpg"}, {"f": "F_16_riis_homeless_children.jpg", "c": "Jacob Riis『Homeless Children』— 街頭の少年たち、新聞配達原型", "s": "https://commons.wikimedia.org/wiki/File:%22Homeless_Children%22_by_Jacob_Riis.jpg"}, {"f": "F_17_riis_sleeping_children.jpg", "c": "Jacob Riis『Sleeping Homeless Children』— 階段下の少年達", "s": "https://commons.wikimedia.org/wiki/File:Sleeping,_homeless_children_-_Jacob_Riis.jpg"}, {"f": "F_18_riis_sweatshop_ludlow.jpg", "c": "Jacob Riis『Sweatshop in Ludlow St』— ピース工場、職工の家族", "s": "https://commons.wikimedia.org/wiki/File:Sweatshop_in_Ludlow_Street_Tenement,_New_York_cph.3a24271.jpg"}, {"f": "F_19_daumier_third_class_carriage.jpg", "c": "Daumier『Le wagon de troisième classe』(1865頃) — 駅・三等車の庶民", "s": "https://commons.wikimedia.org/wiki/File:Honor%C3%A9_Daumier_(1808-1879)_-_Le_wagon_de_troisi%C3%A8me_classe.jpg"}, {"f": "F_20_daumier_laundress.jpg", "c": "Daumier『The Burden (Laundress)』— 洗濯婦、市井の女性", "s": "https://commons.wikimedia.org/wiki/File:Honor%C3%A9_Daumier_-_The_Burden_(Laundress).jpg"}, {"f": "F_21_menzel_william_departs.jpg", "c": "Menzel『William I Departs for the Front』(1871) — ベルリン街頭の群集", "s": "https://commons.wikimedia.org/wiki/File:Adolph_von_Menzel_-_William_I_Departs_for_the_Front,_July_31,_1870.jpg"}], "count": 21}, {"id": "G", "name": "TAKANI系", "sub": "山地・先住民・自治区", "desc": "山地の集落、伝統服、長老の集まり、織物、火、口伝、儀礼の支度。サーミ・アイヌ・ナバホ・ケチュアの民族誌写真。", "color": "#7c8c6a", "items": [{"f": "G_01_sami_girls_telemark_1880.jpg", "c": "テレマルク地方のサーミ女性たち (1880年代)", "s": "https://commons.wikimedia.org/wiki/File:Sami_girls_in_Telemark_Norway_late_1880.jpg"}, {"f": "G_02_lapp_family_norway.jpg", "c": "ノルウェーのサーミ家族 (LOC)", "s": "https://commons.wikimedia.org/wiki/File:A_Lapp_family,_Norway-LCCN2001700768.jpg"}, {"f": "G_03_sami_family_sledge_dog.jpg", "c": "夏住居前のサーミ家族と橇犬・ノルウェー山地", "s": "https://commons.wikimedia.org/wiki/File:682_(82)._A_Laplander_family_and_sledge_dog.jpg"}, {"f": "G_04_lapp_home_tromsdal.jpg", "c": "トロムスダールのサーミ家屋と家族・極北の暮らし", "s": "https://commons.wikimedia.org/wiki/File:696_(96)._People_of_the_frigid_North_-_Lapp_home_and_family.jpg"}, {"f": "G_05_three_sami_women_1890s.jpg", "c": "伝統衣装の3人のサーミ女性 (1890年代)", "s": "https://commons.wikimedia.org/wiki/File:Three_S%C3%A1mi_Lapp_women,_c1890s.jpg"}, {"f": "G_06_skolt_sami_1871.jpg", "c": "ロシア領のスコルト・サーミ (1871)", "s": "https://commons.wikimedia.org/wiki/File:Russian_Skolt_Sami_after_Photo_1871.jpg"}, {"f": "G_07_ainu_family_house.jpg", "c": "家の入口に立つアイヌ家族・北海道", "s": "https://commons.wikimedia.org/wiki/File:Aino_family_in_front_of_the_entrance_to_a_house,_Japan.jpg"}, {"f": "G_08_ainu_woman_shiraoi.jpg", "c": "白老の盛装アイヌ女性 — 刺繍と装身具", "s": "https://commons.wikimedia.org/wiki/File:Aino_woman_from_Shiraoi,_in_full_dress.jpg"}, {"f": "G_09_ainu_salutation_1904.jpg", "c": "アイヌの儀礼挨拶 (1904年セントルイス万博)", "s": "https://commons.wikimedia.org/wiki/File:Ainu_Salutation_(Aborigines_of_Japan_from_the_Island_of_Hokkaido_or_Yezo,_Department_of_Anthropology,_1904_World%27s_Fair).jpg"}, {"f": "G_10_ainu_soup_feast.jpg", "c": "アイヌのスープを囲む宴", "s": "https://commons.wikimedia.org/wiki/File:An_Aino_soup_feast,_Japan.jpg"}, {"f": "G_11_la_perouse_indigenous.jpg", "c": "La Pérouse 世界周航記の先住民エングレーヴィング", "s": "https://commons.wikimedia.org/wiki/File:Voyage_de_La_P%C3%A9rouse_autour_du_monde_(No._54)_BHL15849692.jpg"}, {"f": "G_12_curtis_navajo_canyon.jpg", "c": "Edward S. Curtis — Canyon de Chelly を行くナバホ騎馬", "s": "https://commons.wikimedia.org/wiki/File:Canyon_de_Chelly,_Navajo.jpg"}, {"f": "G_13_curtis_navajo_weaver.jpg", "c": "Curtis — 機織りをするナバホ女性", "s": "https://commons.wikimedia.org/wiki/File:Navajo_weaver2.jpg"}, {"f": "G_14_curtis_hopi_cliff_homes.jpg", "c": "Curtis — 崖に営まれたホピのプエブロ住居", "s": "https://commons.wikimedia.org/wiki/File:Cliff_perched_homes,_Hopi.jpg"}, {"f": "G_15_quechua_weaving_ollantaytambo.jpg", "c": "オリャンタイタンボのケチュア女性が織る", "s": "https://commons.wikimedia.org/wiki/File:Ollantaytambo_Peru-_Quechua_women_weaving.jpg"}], "count": 15}, {"id": "H", "name": "儀礼・祭・夜の篝火", "sub": "婚礼・葬儀・収穫祭・行列", "desc": "婚礼、葬儀、収穫祭、灯火、行列、夜の篝火を囲む人々。ロシア婚礼宴、フィンランド夏至祭、ラ・トゥール蝋燭。", "color": "#a85a3a", "items": [{"f": "H_01_bruegel_peasant_wedding.jpg", "c": "Bruegel『農民の婚礼』", "s": "https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_Peasant_Wedding_-_Google_Art_Project_2.jpg"}, {"f": "H_02_bruegel_peasant_dance.jpg", "c": "Bruegel『農民の踊り』(1567)", "s": "https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_The_Peasant_Dance.jpg"}, {"f": "H_03_bruegel_wedding_dance.jpg", "c": "Bruegel『野外の婚礼の踊り』", "s": "https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_Wedding_Dance_in_the_Open_Air.jpg"}, {"f": "H_04_makovsky_boyar_wedding_feast.jpg", "c": "Makovsky『ボヤール婚礼の宴』(1883)", "s": "https://commons.wikimedia.org/wiki/File:A_Boyar_Wedding_Feast_(Konstantin_Makovsky,_1883).jpg"}, {"f": "H_05_makovsky_campfire_1888.jpg", "c": "Makovsky『カチャノフカ・篝火を囲んで』(1888)", "s": "https://commons.wikimedia.org/wiki/File:Konstantin_Makovsky_%E2%80%94_Kachanovka._Around_the_Campfire_(1888).jpg"}, {"f": "H_06_korzukhin_christmas_eve.jpg", "c": "Korzukhin『クリスマス・イヴ』— ロシアの蝋燭と家族", "s": "https://commons.wikimedia.org/wiki/File:A_Korzukhin_Christmas_Eve_003.jpg"}, {"f": "H_07_gallen_kallela_runonlaulaja.jpg", "c": "Gallen-Kallela『ルーン詠唱者パハコミの家』— フィンランド口伝の場", "s": "https://commons.wikimedia.org/wiki/File:Runonlaulaja_Pahkomin_talo.tif"}, {"f": "H_08_gallen_kallela_sauna_girl.jpg", "c": "Gallen-Kallela『サウナの少女』", "s": "https://commons.wikimedia.org/wiki/File:Saunatytto.tif"}, {"f": "H_09_la_tour_magdalene_candle.jpg", "c": "Georges de La Tour — 蝋燭夜祈の代表作", "s": "https://commons.wikimedia.org/wiki/File:Georges_de_La_Tour_007.jpg"}, {"f": "H_10_la_tour_newborn.jpg", "c": "La Tour『新生児』— 蝋燭に照らされる家庭儀礼", "s": "https://commons.wikimedia.org/wiki/File:Georges_de_La_Tour_-_Newlyborn_infant_-_Mus%C3%A9e_des_Beaux-Arts_de_Rennes.jpg"}, {"f": "H_11_astrup_midsummer_bonfire.jpg", "c": "Astrup『ヨンソク(夏至祭)の篝火』— ヨルストラ湖畔", "s": "https://commons.wikimedia.org/wiki/File:N_Astrup-St._Hansb%C3%A5l_ved_J%C3%B8lstervatnet.jpg"}, {"f": "H_12_ekman_kokkotulia.jpg", "c": "Ekman『コッコ火』— フィンランド夏至祭の炎", "s": "https://commons.wikimedia.org/wiki/File:Robert_Wilhelm_Ekman_-_Kokkotulia.jpg"}, {"f": "H_13_millet_angelus.jpg", "c": "Millet『晩鐘』— 夕暮れの祈り", "s": "https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_-_The_Angelus_-_Google_Art_Project.jpg"}, {"f": "H_14_repin_easter_procession.jpg", "c": "Repin『クルスク県の宗教行列』(1880-83)", "s": "https://commons.wikimedia.org/wiki/File:1880-3_Repin_Religioese_Prozession_in_Kursk_anagoria.JPG"}, {"f": "H_15_surikov_boyarynya_morozova.jpg", "c": "Surikov『貴婦人モロゾヴァ』— 雪上の信仰行列", "s": "https://commons.wikimedia.org/wiki/File:Vasily_Surikov_-_%D0%91%D0%BE%D1%8F%D1%80%D1%8B%D0%BD%D1%8F_%D0%9C%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2%D0%B0.jpg"}], "count": 15}, {"id": "I", "name": "庶民・労働者・農村", "sub": "学院に行けない子もいる側", "desc": "工場労働、農作業、田舎の家、洗濯、台所、子供の遊び。ミレー・クールベ・ラーション・Lewis Hine。", "color": "#7e6b48", "items": [{"f": "I_01_millet_gleaners.jpg", "c": "Millet『落穂拾い』(1857) — 3人の貧農女性が刈り入れ後の畑で穂を拾う", "s": "https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_-_Gleaners.jpg"}, {"f": "I_02_millet_angelus.jpg", "c": "Millet『晩鐘』(1857-59) — 夕暮れの畑で祈る農夫夫婦", "s": "https://commons.wikimedia.org/wiki/File:JEAN-FRAN%C3%87OIS_MILLET_-_El_%C3%81ngelus.jpg"}, {"f": "I_03_bastien_lepage_haymaking.jpg", "c": "Bastien-Lepage『干し草作り』(1877) — 草の上で休む農婦", "s": "https://commons.wikimedia.org/wiki/File:Jules_Bastien-Lepage_-_Hay_making.jpg"}, {"f": "I_04_courbet_stonebreakers.jpg", "c": "Courbet『石割り』(1849) — 石を砕く老人と少年", "s": "https://commons.wikimedia.org/wiki/File:Gustave_Courbet_-_The_Stonebreakers.jpg"}, {"f": "I_05_zorn_midsummer_dance.jpg", "c": "Zorn『真夏のダンス』(1897) — スウェーデン田舎の祭", "s": "https://commons.wikimedia.org/wiki/File:Midsommardans_av_Anders_Zorn_1897.jpg"}, {"f": "I_06_larsson_breakfast.jpg", "c": "Carl Larsson『大樺の下の朝食』(1896) — 家族の戸外朝食", "s": "https://commons.wikimedia.org/wiki/File:Frukost_under_stora_bj%C3%B6rken_av_Carl_Larsson_1896.jpg"}, {"f": "I_07_larsson_kitchen.jpg", "c": "Carl Larsson『台所』(1898) — 北欧田舎の母娘", "s": "https://commons.wikimedia.org/wiki/File:K%C3%B6ket_av_Carl_Larsson_1898.jpg"}, {"f": "I_08_breton_song_lark.jpg", "c": "Jules Breton『ひばりの歌』(1884) — 鎌を持つ農婦が朝のひばりに耳を澄ます", "s": "https://commons.wikimedia.org/wiki/File:The_Song_of_the_Lark_(Jules_Breton,_1884).jpg"}, {"f": "I_09_hine_powerhouse.jpg", "c": "Lewis Hine『パワーハウスの機械工』(1920) — 蒸気ポンプ修理工", "s": "https://commons.wikimedia.org/wiki/File:Lewis_Hine_Power_house_mechanic_working_on_steam_pump.jpg"}, {"f": "I_10_atget_chiffonnier.jpg", "c": "Atget『屑拾い』(1899-1900) — パリの貧民労働者", "s": "https://commons.wikimedia.org/wiki/File:Atget_-_Chiffonnier._1899-1900.jpg"}, {"f": "I_11_millet_man_hoe.jpg", "c": "Millet『鍬を持つ男』(1860-62) — 疲弊した農夫", "s": "https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_(II)_015.jpg"}, {"f": "I_12_courbet_grain_sifters.jpg", "c": "Courbet『穀物を篩う女たち』(1854) — 納屋の3女性", "s": "https://commons.wikimedia.org/wiki/File:Gustave_Courbet_-_The_Grain_Sifters.jpg"}, {"f": "I_13_pissarro_potato_harvest.jpg", "c": "Pissarro『ジャガイモ収穫』(1882) — 田畑の共同作業", "s": "https://commons.wikimedia.org/wiki/File:Pissarro_-_peasants-harvesting-potatoes-1882.jpg"}, {"f": "I_14_hine_cotton_spinner.jpg", "c": "Lewis Hine『紡績工場の少女』(1908) — 児童労働", "s": "https://commons.wikimedia.org/wiki/File:Lewis_Hine,_A_little_spinner_in_the_Mollahan_Mills.jpg"}, {"f": "I_15_larsson_christmas_eve.jpg", "c": "Carl Larsson『クリスマス・イヴ』(1904) — 家族の祝祭夕食", "s": "https://commons.wikimedia.org/wiki/File:Julaftonen_av_Carl_Larsson_1904.jpg"}], "count": 15}, {"id": "J", "name": "風景・生態・夜霧・廃坑", "sub": "人間以外の世界", "desc": "山地、湿地、霧、廃坑、夜の荒野、神聖な岩、古代遺跡。ドイツロマン派、Grimshaw 夜景、ベックリン神秘風景。", "color": "#566a6e", "items": [{"f": "J_01_friedrich_wanderer_fog.jpg", "c": "Caspar David Friedrich『雲海の上の旅人』(1818)", "s": "https://commons.wikimedia.org/wiki/File:Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"}, {"f": "J_02_friedrich_abbey_oakwood.jpg", "c": "Friedrich『樫の森の修道院』(1809-10) — ゴシック廃墟", "s": "https://commons.wikimedia.org/wiki/File:Caspar_David_Friedrich_-_Abtei_im_Eichwald.jpg"}, {"f": "J_03_friedrich_monk_sea.jpg", "c": "Friedrich『海辺の僧侶』(1808-10) — 灰色の海と空", "s": "https://commons.wikimedia.org/wiki/File:Caspar_David_Friedrich_-_Monk_by_the_Sea.jpg"}, {"f": "J_04_grimshaw_liverpool_quay.jpg", "c": "Grimshaw『月光のリヴァプール埠頭』(1887) — ガス灯と濡れた石畳", "s": "https://commons.wikimedia.org/wiki/File:John_Atkinson_Grimshaw_-_Liverpool_Quay_by_Moonlight_(1887).jpg"}, {"f": "J_05_grimshaw_heath_street_night.jpg", "c": "Grimshaw『夜のヒース街』— 街灯と霧", "s": "https://commons.wikimedia.org/wiki/File:John_Atkinson_Grimshaw_-_View_of_Heath_Street_by_Night.jpg"}, {"f": "J_06_bocklin_isle_dead.jpg", "c": "Böcklin『死の島』(1880) — 糸杉の岩島", "s": "https://commons.wikimedia.org/wiki/File:Arnold_B%C3%B6cklin_-_Die_Toteninsel_I_(Basel,_Kunstmuseum).jpg"}, {"f": "J_07_bierstadt_rocky_mountains.jpg", "c": "Bierstadt『シエラネバダの中で』(1868)", "s": "https://commons.wikimedia.org/wiki/File:Albert_Bierstadt_-_Among_the_Sierra_Nevada,_California.jpg"}, {"f": "J_08_church_twilight_wilderness.jpg", "c": "Church『荒野の黄昏』(1860)", "s": "https://commons.wikimedia.org/wiki/File:Twilight_in_the_Wilderness_by_Frederic_Edwin_Church.jpg"}, {"f": "J_09_cole_oxbow.jpg", "c": "Thomas Cole『オックスボウ』(1836) — 嵐後の川と山", "s": "https://commons.wikimedia.org/wiki/File:Cole_Thomas_The_Oxbow_(The_Connecticut_River_near_Northampton_1836).jpg"}, {"f": "J_10_shishkin_morning_pine_forest.jpg", "c": "Shishkin『松林の朝』(1889) — ロシアの深い森", "s": "https://commons.wikimedia.org/wiki/File:Shishkin,_Ivan_-_Morning_in_a_Pine_Forest.jpg"}, {"f": "J_11_levitan_above_eternal_peace.jpg", "c": "Levitan『永遠の平安の上に』(1894)", "s": "https://commons.wikimedia.org/wiki/File:LevitanAboveEternalPeace.jpg"}, {"f": "J_12_gallen_kallela_lake_keitele.jpg", "c": "Gallen-Kallela『ケイテレ湖』(1905) — フィンランド象徴主義", "s": "https://commons.wikimedia.org/wiki/File:Akseli_Gallen-Kallela_-_Lake_Keitele,_1905.JPG"}, {"f": "J_13_constable_stonehenge.jpg", "c": "Constable『ストーンヘンジ』(1835) — 嵐の空と巨石", "s": "https://commons.wikimedia.org/wiki/File:John_Constable_-_Stonehenge_-_Google_Art_Project.jpg"}, {"f": "J_14_friedrich_sea_ice.jpg", "c": "Friedrich『氷海』(1823-24) — 砕けた船と氷塊", "s": "https://commons.wikimedia.org/wiki/File:Caspar_David_Friedrich_-_Das_Eismeer.jpg"}, {"f": "J_15_bocklin_ruin_sea.jpg", "c": "Böcklin『海辺の廃墟』(1881) — 海岸の古遺構", "s": "https://commons.wikimedia.org/wiki/File:Arnold_B%C3%B6cklin_-_Ruine_am_Meer_(1881).jpg"}], "count": 15}];
+
+const content = document.getElementById('content');
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbCap = document.getElementById('lb-cap');
+
+let currentBucket = 'all';
+let searchTerm = '';
+
+function render(){
+  content.innerHTML = '';
+  BUCKETS.forEach(b => {
+    if(currentBucket !== 'all' && currentBucket !== b.id) return;
+    const items = b.items.filter(it => {
+      if(!searchTerm) return true;
+      return (it.c + ' ' + it.f).toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    if(items.length === 0) return;
+    const sec = document.createElement('section');
+    sec.className = 'bucket-section';
+    sec.style.setProperty('--bucket-color', b.color);
+    sec.innerHTML = `
+      <div class="bucket-header" style="border-left-color:${b.color}">
+        <h3>${b.id}</h3>
+        <span class="ja">${b.name}</span>
+        <span class="sub">${b.sub}</span>
+        <span class="ct">${items.length}</span>
+        <div class="desc">${b.desc}</div>
+      </div>
+      <div class="grid"></div>
+    `;
+    const grid = sec.querySelector('.grid');
+    items.forEach((it, i) => {
+      const t = document.createElement('div');
+      t.className = 'tile';
+      t.innerHTML = `
+        <div class="idx">${b.id}${String(i+1).padStart(2,'0')}</div>
+        <img src="life_refs/${it.f}" alt="${it.c}" loading="lazy" />
+        <div class="cap">${it.c}</div>
+      `;
+      t.addEventListener('click', () => openLb(it));
+      grid.appendChild(t);
+    });
+    content.appendChild(sec);
+  });
+}
+
+function openLb(it){
+  lbImg.src = `life_refs/${it.f}`;
+  lbImg.alt = it.c;
+  lbCap.innerHTML = `${it.c}<a href="${it.s}" target="_blank" rel="noopener">出典: ${it.s.replace('https://','')}</a>`;
+  lb.classList.add('on');
+}
+function closeLb(){ lb.classList.remove('on'); lbImg.src = ''; }
+lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+document.getElementById('lb-close').addEventListener('click', closeLb);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLb(); });
+
+document.querySelectorAll('aside button.bucket').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('aside button.bucket').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentBucket = btn.dataset.bucket;
+    render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
