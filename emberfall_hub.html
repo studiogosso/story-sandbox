@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EMBERFALL / 隕の燠火 — プロジェクトハブ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@400;600;700&family=Cormorant+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0d0b; --bg2:#171511; --card:#1c1915; --border:#2a261f;
+  --text:#e9e4d8; --muted:#928873; --soft:#c8c1b2;
+  --accent:#d4a96a; --accent-strong:#f0c37f; --ember:#c46a3a; --ember-soft:#e08a5a;
+  --takani:#7c8c6a; --vexalia:#6b7a91; --kross:#9a6650; --emberlyn:#b8884a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"Noto Serif JP",serif;line-height:1.75;min-height:100vh}
+.wrap{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+aside{background:var(--bg2);border-right:1px solid var(--border);padding:28px 20px;position:sticky;top:0;height:100vh;overflow-y:auto}
+aside .brand{font-family:"Cinzel",serif;font-size:19px;letter-spacing:3px;color:var(--accent-strong);margin-bottom:3px;font-weight:600}
+aside .brand-ja{font-family:"Noto Serif JP",serif;font-size:12px;color:var(--muted);letter-spacing:2px;margin-bottom:22px}
+aside nav a{display:block;color:var(--soft);text-decoration:none;font-size:12.5px;padding:6px 10px;border-left:2px solid transparent;letter-spacing:0.5px;transition:all .15s}
+aside nav a:hover{color:var(--accent-strong);border-left-color:var(--accent);background:rgba(212,169,106,0.05)}
+aside nav a .num{font-family:"Cinzel",serif;font-size:10px;color:var(--muted);margin-right:8px;letter-spacing:1px}
+aside .meta{margin-top:26px;padding-top:14px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);letter-spacing:0.5px;line-height:1.7}
+aside .meta a{color:var(--accent);text-decoration:none;font-size:10px;word-break:break-all}
+aside .meta a:hover{text-decoration:underline}
+
+main{padding:0 40px 80px;max-width:1200px}
+
+/* HERO */
+.hero{padding:70px 0 50px;border-bottom:1px solid var(--border);text-align:center}
+.hero .tag{font-family:"Cinzel",serif;font-size:10px;letter-spacing:6px;color:var(--muted);margin-bottom:14px}
+.hero h1{font-family:"Cinzel",serif;font-size:46px;letter-spacing:6px;background:linear-gradient(180deg,#f4d89a,#d4a96a,#8a5a22);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;font-weight:600}
+.hero .ja{font-family:"Noto Serif JP",serif;font-size:22px;color:var(--soft);letter-spacing:8px;font-weight:400}
+.hero .tagline{margin-top:26px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--muted);letter-spacing:1px}
+.hero .pitch{margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto;font-size:14.5px;color:var(--soft);line-height:1.85}
+
+/* SECTION */
+section{padding:52px 0;border-bottom:1px solid var(--border);scroll-margin-top:20px}
+section:last-of-type{border-bottom:none}
+.section-eyebrow{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:5px;color:var(--accent);margin-bottom:8px}
+.section-title{font-family:"Noto Serif JP",serif;font-size:26px;color:var(--text);font-weight:600;margin-bottom:6px;letter-spacing:1.5px}
+.section-lede{font-size:13px;color:var(--muted);letter-spacing:0.3px;margin-bottom:28px;max-width:720px}
+
+/* PROSE */
+.prose{max-width:820px;font-size:14.5px;color:var(--soft);line-height:2}
+.prose p{margin-bottom:16px}
+.prose b, .prose strong{color:var(--text);font-weight:600}
+.prose em{font-style:normal;color:var(--ember-soft)}
+.prose .highlight{background:linear-gradient(180deg,transparent 60%,rgba(196,106,58,0.2) 60%)}
+
+/* GRID / CARDS */
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:20px}
+.mini-card{background:var(--card);border:1px solid var(--border);padding:16px 18px;border-radius:3px;border-left:3px solid var(--accent)}
+.mini-card .k{font-family:"Cinzel",serif;font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px}
+.mini-card .t{font-size:15px;color:var(--text);font-weight:600;margin-bottom:4px}
+.mini-card .d{font-size:11.5px;color:var(--muted);line-height:1.6}
+
+/* FAMILY TABLE */
+.family-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:22px}
+.family-card{background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.family-card .hdr{padding:12px 16px;color:#111;font-family:"Cinzel",serif;letter-spacing:2px;font-weight:600;font-size:14px;display:flex;justify-content:space-between;align-items:baseline}
+.family-card .hdr .ja{font-family:"Noto Serif JP",serif;font-size:11px;letter-spacing:1px;color:rgba(0,0,0,0.65);font-weight:400}
+.family-card.takani .hdr{background:var(--takani)}
+.family-card.vexalia .hdr{background:var(--vexalia)}
+.family-card.kross .hdr{background:var(--kross)}
+.family-card.emberlyn .hdr{background:var(--emberlyn)}
+.family-card .body{padding:14px 16px;font-size:12.5px;color:var(--soft);line-height:1.85}
+.family-card .body .row{display:flex;gap:10px;margin-bottom:4px}
+.family-card .body .row .lbl{font-family:"Cinzel",serif;font-size:9.5px;letter-spacing:1.5px;color:var(--muted);min-width:60px;padding-top:3px}
+.family-card .body .row .val{flex:1;color:var(--soft);font-size:12.5px}
+
+/* AXIS TABLE */
+.axis-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px}
+.axis-table th, .axis-table td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.axis-table th{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:2px;color:var(--accent);font-weight:600;background:var(--card)}
+.axis-table td:first-child{font-family:"Cinzel",serif;color:var(--accent);width:60px;letter-spacing:1px}
+.axis-table td:nth-child(2){font-weight:600;color:var(--text);width:120px}
+.axis-table td:nth-child(3){color:var(--soft)}
+
+/* CHARACTER TABLE */
+.char-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px}
+.char-table th, .char-table td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.char-table th{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:2px;color:var(--accent);font-weight:600;background:var(--card)}
+.char-table td.name{font-weight:600;color:var(--text)}
+.char-table td .en{color:var(--muted);font-size:11px;display:block;font-family:"Cinzel",serif;letter-spacing:0.5px}
+.char-table .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.char-table .dot.emberlyn{background:var(--emberlyn)}
+.char-table .dot.vexalia{background:var(--vexalia)}
+.char-table .dot.kross{background:var(--kross)}
+.char-table .dot.takani{background:var(--takani)}
+.char-table .dot.merchant{background:#a5824a}
+.char-table .dot.commoner{background:#7a6d5a}
+
+/* SEASON TABLE */
+.season-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13.5px}
+.season-table th, .season-table td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left}
+.season-table th{font-family:"Cinzel",serif;font-size:10.5px;letter-spacing:2px;color:var(--accent);background:var(--card)}
+.season-table td:first-child{font-family:"Cinzel",serif;color:var(--accent-strong);font-weight:600;width:80px;letter-spacing:1px}
+.season-table .temp{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.season-table tr[data-t="warm"] td:first-child{color:#f0c37f}
+.season-table tr[data-t="mid"] td:first-child{color:#d4a96a}
+.season-table tr[data-t="cool"] td:first-child{color:#a08a68}
+.season-table tr[data-t="cold"] td:first-child{color:#6b7a91}
+
+/* VIEWER CARDS */
+.viewer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:20px}
+.viewer{display:block;background:var(--card);border:1px solid var(--border);border-radius:3px;padding:16px 18px;text-decoration:none;color:inherit;position:relative;transition:all .15s;border-left:3px solid var(--ember)}
+.viewer:hover{background:rgba(212,169,106,0.06);border-color:var(--accent);transform:translateY(-2px)}
+.viewer .kind{font-family:"Cinzel",serif;font-size:9.5px;letter-spacing:2.5px;color:var(--ember-soft);margin-bottom:6px}
+.viewer .title{font-family:"Noto Serif JP",serif;font-size:14.5px;color:var(--text);font-weight:600;margin-bottom:4px;letter-spacing:0.5px}
+.viewer .en{font-family:"Cinzel",serif;font-size:10.5px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px}
+.viewer .desc{font-size:11.5px;color:var(--muted);line-height:1.65;margin-bottom:8px}
+.viewer .count{font-family:"Cinzel",serif;font-size:10px;color:var(--accent);letter-spacing:1px;padding:2px 8px;border:1px solid var(--accent);border-radius:10px;display:inline-block}
+
+/* LIBRARY */
+.lib-block{margin-bottom:22px}
+.lib-block h4{font-family:"Cinzel",serif;font-size:11.5px;letter-spacing:3px;color:var(--accent);margin-bottom:10px}
+.lib-block ul{list-style:none;padding-left:0}
+.lib-block ul li{font-size:12.5px;color:var(--soft);padding:5px 0;border-bottom:1px dotted var(--border);display:flex;justify-content:space-between;gap:10px}
+.lib-block ul li .name{color:var(--text)}
+.lib-block ul li .link{font-family:"Cinzel",serif;font-size:10px;color:var(--accent);letter-spacing:1px;text-decoration:none;white-space:nowrap}
+.lib-block ul li .link:hover{color:var(--accent-strong);text-decoration:underline}
+
+/* STATE (progress) */
+.state-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px}
+@media(max-width:900px){.state-grid{grid-template-columns:1fr}}
+.state-col{background:var(--card);border:1px solid var(--border);padding:16px 18px;border-radius:3px}
+.state-col.done{border-top:3px solid #5a8a5a}
+.state-col.wip{border-top:3px solid var(--accent)}
+.state-col.open{border-top:3px solid #8a5a5a}
+.state-col h4{font-family:"Cinzel",serif;font-size:11px;letter-spacing:2.5px;margin-bottom:10px;color:var(--text)}
+.state-col.done h4::before{content:"● ";color:#5a8a5a}
+.state-col.wip h4::before{content:"● ";color:var(--accent)}
+.state-col.open h4::before{content:"● ";color:#8a5a5a}
+.state-col ul{list-style:none;padding-left:0}
+.state-col ul li{font-size:12px;color:var(--soft);padding:5px 0;padding-left:12px;position:relative;line-height:1.6}
+.state-col ul li::before{content:"—";position:absolute;left:0;color:var(--muted)}
+
+/* Mobile */
+@media(max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  main{padding:0 22px 60px}
+  .hero{padding:44px 0 32px}
+  .hero h1{font-size:32px;letter-spacing:4px}
+  .hero .ja{font-size:16px;letter-spacing:5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<aside>
+  <div class="brand">EMBERFALL</div>
+  <div class="brand-ja">隕の燠火 (いんのおきび)</div>
+  <nav>
+    <a href="#story"><span class="num">01</span>物語のコア</a>
+    <a href="#world"><span class="num">02</span>世界</a>
+    <a href="#families"><span class="num">03</span>四つの銘家</a>
+    <a href="#magic"><span class="num">04</span>魔法6軸モデル</a>
+    <a href="#politics"><span class="num">05</span>政治体制</a>
+    <a href="#characters"><span class="num">06</span>学院クラス6人</a>
+    <a href="#seasons"><span class="num">07</span>シーズン構成</a>
+    <a href="#viewers"><span class="num">08</span>探索ツール</a>
+    <a href="#library"><span class="num">09</span>資料庫</a>
+    <a href="#state"><span class="num">10</span>現在地</a>
+  </nav>
+  <div class="meta">
+    アニメ企画・2026-04-21 発足<br>
+    最終更新: 2026-06-16<br><br>
+    公開URL:<br>
+    <a href="https://studiogosso.github.io/story-sandbox/" target="_blank">studiogosso.github.io/story-sandbox/</a><br><br>
+    Repo: `studiogosso/story-sandbox`<br>
+    Deploy: `bash deploy.sh sandbox`
+  </div>
+</aside>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">ANIME PROJECT</div>
+  <h1>EMBERFALL</h1>
+  <div class="ja">隕の燠火</div>
+  <div class="tagline">A brighter successor to Harry Potter — mystery, irony, and a slow-burning world.</div>
+  <p class="pitch">
+    326年前、空から落ちてきた一つの石が世界の血を変えた。<br>
+    隕石に触れた者の子孫だけが「魔法」を扱える時代になって、もう七世代。<br>
+    衰退した銘家の末娘 <b>Ambre</b> は、家の期待を背負って学院都市 RACINE に入る。<br>
+    彼女に発現するのは <em>「復元の魔法」</em> — と、街も家もそう信じる。<br>
+    <b class="highlight">観客だけが、それが本当は別のものだと知っている。</b>
+  </p>
+</div>
+
+<!-- 01 STORY CORE -->
+<section id="story">
+  <div class="section-eyebrow">01 · STORY CORE</div>
+  <h2 class="section-title">物語のコア</h2>
+  <div class="section-lede">主人公・二重構造・物語骨格の3点セット。この背骨は S1 から S5+ まで一貫。</div>
+
+  <div class="prose">
+    <p><b>主人公</b>: Ambre(アンブル)、12歳、女の子。古い銘家 <b>EMBERLYN(残り火)</b> の末っ子で、兄1・姉1の下の三兄妹の末子。性格は<em>諦観まじりの朗らか</em>。家全体が七代続く沈滞を抱え、父はその復活に熱を入れ、母は距離を取っている。</p>
+
+    <p><b>表向きの発現</b>: 学院入学の翌週、寮の食堂で割れた古い陶器を、ほとんど無意識に元へ戻す。学院は驚き、家系を確認し、診断結果を <em>「復元の魔法」</em> と記録する。EMBERLYN 家にふさわしい古典系の力 — と、家も学院も政治家も信じる。</p>
+
+    <p><b>実体</b>: 彼女の力は復元ではない。四代前の曽祖母が山地の <b>TAKANI</b> の血を一度だけ家に入れた。そのことは家の記録から消されている。Ambre の体には <em>八分の一の TAKANI 血統</em> が残っていて、彼女が「復元している」と思っているものは、実は壊れたモノの中に残る声を聴き、過去の残響と話している — TAKANI に伝わる「<b>残響読み</b>」の、忘れられた一形。</p>
+
+    <p class="highlight"><b>本作の背骨</b>: <em>主人公は最後まで自分の正体を知らない。</em> 家族も、学院も、友人たちも知らない。観客だけが真実を知る<b>ドラマティック・アイロニー</b>。血の真相(残響読み・1/8 TAKANI・曽祖母の不義)は S4 終盤〜S5 まで温存。それまで観客にだけ滲ませ続ける。</p>
+  </div>
+
+  <div class="mini-grid" style="margin-top:24px">
+    <div class="mini-card"><div class="k">物語骨格 ①</div><div class="t">ミステリー・アイロニー</div><div class="d">観客だけが真実を知る。主人公の毎話の行動原理を貫く軸。</div></div>
+    <div class="mini-card"><div class="k">物語骨格 ②</div><div class="t">政治成長譚</div><div class="d">EMBERLYN 復活の期待 → 政治の渦。家と世界の舞台装置。</div></div>
+    <div class="mini-card"><div class="k">物語骨格 ③</div><div class="t">世界の謎</div><div class="d">シーズン跨ぎの大筋。隕石再活性化 = 世界規模の変動。</div></div>
+    <div class="mini-card"><div class="k">物語骨格 ④</div><div class="t">群像性</div><div class="d">名家外の200集団の社会を使い倒す。脇キャラ配置の豊かさ。</div></div>
+    <div class="mini-card"><div class="k">物語骨格 ⑤</div><div class="t">内省</div><div class="d">「自分は何者か」を問う、でも答えに辿り着かない。</div></div>
+  </div>
+</section>
+
+<!-- 02 WORLD -->
+<section id="world">
+  <div class="section-eyebrow">02 · WORLD</div>
+  <h2 class="section-title">世界</h2>
+  <div class="section-lede">1700年隕石落下から326年、七世代。魔法は血で継ぐ、計測可能・遺伝的な現象。</div>
+
+  <div class="prose">
+    <p><b>1700年</b>、隕石が落下した。接触した生物の血にのみ魔法が宿るようになった。現在は隕石落下から <em>326年経過</em>(現在 = 2026年相当)、発現する血筋で <em>約七世代</em>。魔法は<b>計測可能・定量的・遺伝的</b>。接触血統の中でも<em>確率発現</em>(遺伝子くじ)し、発現しない者もいる。魔力の「量」は連続遺伝、「種類・技能」は個人依存。</p>
+
+    <p>世界そのものは<b>立憲連邦</b>のかたちで、王はもう象徴、議会と六つの極がゆるく釣り合いを取りながら回している。かつての名家は<em>旧華族化</em> — 上院席・学院理事・社交界で影響は残るが、日常の実権は薄い。学院都市 <b>RACINE</b> は、その均衡の真ん中に置かれた、子供たちが魔法を学ぶ街だ。</p>
+  </div>
+</section>
+
+<!-- 03 FAMILIES -->
+<section id="families">
+  <div class="section-eyebrow">03 · FOUR BLOODLINES</div>
+  <h2 class="section-title">四つの銘家</h2>
+  <div class="section-lede">4家は社会の頂点ではない。立憲革命後に旧華族化した、爵位だけの旧貴族。</div>
+
+  <div class="family-grid">
+    <div class="family-card takani">
+      <div class="hdr"><span>TAKANI</span><span class="ja">南山地・自治区</span></div>
+      <div class="body">
+        <div class="row"><div class="lbl">動詞</div><div class="val">聴く・覚える・保つ</div></div>
+        <div class="row"><div class="lbl">魔法</div><div class="val">対話型(石の記憶を読む・残響読み)</div></div>
+        <div class="row"><div class="lbl">出自</div><div class="val">先住民系。連邦形成前からの土地の民。</div></div>
+        <div class="row"><div class="lbl">位置</div><div class="val">南部 TAKANI 自治区。中央から遠く、独立運動の水脈。</div></div>
+      </div>
+    </div>
+    <div class="family-card vexalia">
+      <div class="hdr"><span>VEXALIA</span><span class="ja">西部・都市</span></div>
+      <div class="body">
+        <div class="row"><div class="lbl">動詞</div><div class="val">測る・記録する・許可する</div></div>
+        <div class="row"><div class="lbl">魔法</div><div class="val">なし(非魔法貴族、規制推進側)</div></div>
+        <div class="row"><div class="lbl">出自</div><div class="val">非魔法系。血統審査・登記・官僚機構の背骨。</div></div>
+        <div class="row"><div class="lbl">位置</div><div class="val">西 VEXALIA 州。首都近郊で官僚多数を擁する。</div></div>
+      </div>
+    </div>
+    <div class="family-card kross">
+      <div class="hdr"><span>KROSS</span><span class="ja">北部・鉱山</span></div>
+      <div class="body">
+        <div class="row"><div class="lbl">動詞</div><div class="val">作る・刻む・守る</div></div>
+        <div class="row"><div class="lbl">魔法</div><div class="val">変成型(鍛造・加工・鍛冶歌術)、副系統は封印術</div></div>
+        <div class="row"><div class="lbl">出自</div><div class="val">職工・鉱夫の血筋。ギルドと結びつき強い。</div></div>
+        <div class="row"><div class="lbl">位置</div><div class="val">北 KROSS 州。鉱山と工房の連鎖。</div></div>
+      </div>
+    </div>
+    <div class="family-card emberlyn">
+      <div class="hdr"><span>EMBERLYN</span><span class="ja">中央・首都圏</span></div>
+      <div class="body">
+        <div class="row"><div class="lbl">動詞</div><div class="val">読む・復元する・繋ぐ</div></div>
+        <div class="row"><div class="lbl">魔法</div><div class="val">復元術(表向き。実体は対話術の変形)</div></div>
+        <div class="row"><div class="lbl">出自</div><div class="val">元魔法名門。<em>7世代衰退</em>、大きな発現が出ていない。</div></div>
+        <div class="row"><div class="lbl">位置</div><div class="val">中央エンバーリン圏(首都+学院都市 RACINE)。主人公の家。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MAGIC -->
+<section id="magic">
+  <div class="section-eyebrow">04 · MAGIC SYSTEM</div>
+  <h2 class="section-title">魔法6軸モデル</h2>
+  <div class="section-lede">魔法とは、世界に満ちる力に干渉する行為。6軸で語れる。</div>
+
+  <table class="axis-table">
+    <thead><tr><th>軸</th><th>名前</th><th>意味・値の例</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>方向</td><td>ベクトル(対象・向き)。値で分類しない、対象記述のみ。</td></tr>
+      <tr><td>②</td><td>量</td><td>どれだけの力に干渉できるか。感受性(遺伝) × 訓練。</td></tr>
+      <tr><td>③</td><td>質</td><td>どれだけ巧く干渉できるか。精度・効率・副作用・可逆性・安定性。</td></tr>
+      <tr><td>④</td><td>属性</td><td>何に干渉するか。物質 / エネルギー / 情報 / 魂 / 命 / 非物質。</td></tr>
+      <tr><td>⑤</td><td>時間</td><td>いつ・どれだけ効くか。瞬間 / 持続 / 永続 / 過去介入 / 未来予測。</td></tr>
+      <tr><td>⑥</td><td>変換</td><td>結果なにがどう変わるか。なし / 形状 / 状態 / 領域跨ぎ / 因果 / 再帰。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="mini-grid" style="margin-top:24px">
+    <div class="mini-card" style="border-left-color:var(--takani)"><div class="k">A · 対話術</div><div class="t">TAKANI 系</div><div class="d">石と話す受動型。残響読みも含む。</div></div>
+    <div class="mini-card" style="border-left-color:var(--kross)"><div class="k">B · 変成術</div><div class="t">KROSS 系</div><div class="d">鍛造・加工の能動型。物質変換。</div></div>
+    <div class="mini-card" style="border-left-color:var(--vexalia)"><div class="k">C · 測量術</div><div class="t">VEXALIA 系</div><div class="d">計測・管理・規制。非魔法側の技術。</div></div>
+    <div class="mini-card" style="border-left-color:var(--kross)"><div class="k">D · 封印術</div><div class="t">KROSS 副系統</div><div class="d">危険な力を閉じ込める。</div></div>
+    <div class="mini-card" style="border-left-color:var(--emberlyn)"><div class="k">E · 復元術</div><div class="t">EMBERLYN 系(表)</div><div class="d">失われたものを元に戻す。実体は A の変形。</div></div>
+  </div>
+
+  <div class="prose" style="margin-top:24px">
+    <p><b>Ambre の異常性</b>: 属性 = <em>魂</em>、変換 = <em>領域跨ぎ + 因果</em>、時間 = <em>過去</em>、質 = <em>異様に高い精度</em>。発現初日から魂位相に触れる(TAKANI 長老クラスの領域)。彼女が「復元している」と思っているものは、この6軸で見ると復元とはまったく別の方向を指している。</p>
+  </div>
+</section>
+
+<!-- 05 POLITICS -->
+<section id="politics">
+  <div class="section-eyebrow">05 · POLITICS</div>
+  <h2 class="section-title">政治体制</h2>
+  <div class="section-lede">立憲連邦・象徴君主・多極均衡。50年前の革命の余波が水面下で動く。</div>
+
+  <div class="prose">
+    <p><b>連邦国家</b>: 西 VEXALIA 州 / 北 KROSS 州 / 南 TAKANI 自治区 / 中央エンバーリン圏(首都 + 学院都市 RACINE)。州自治はあるが中央が強い。</p>
+    <p><b>立憲君主制</b>: 王は象徴のみ、実権ゼロ、儀礼と国民統合の顔。</p>
+  </div>
+
+  <div class="mini-grid" style="margin-top:20px">
+    <div class="mini-card"><div class="k">極 1</div><div class="t">議会</div><div class="d">下院(公選) + 上院(旧貴族)</div></div>
+    <div class="mini-card"><div class="k">極 2</div><div class="t">首相官邸・内閣</div><div class="d">政党政治の中心</div></div>
+    <div class="mini-card"><div class="k">極 3</div><div class="t">官僚機構</div><div class="d">VEXALIA 系多数、実務を握る</div></div>
+    <div class="mini-card"><div class="k">極 4</div><div class="t">魔石取引所</div><div class="d">経済権力。Lyssa の家業もここ</div></div>
+    <div class="mini-card"><div class="k">極 5</div><div class="t">学院評議会</div><div class="d">知的権威、Ambre 発現の舞台</div></div>
+    <div class="mini-card"><div class="k">極 6</div><div class="t">周縁の声</div><div class="d">宗教評議会・労働組合・TAKANI 自治体</div></div>
+  </div>
+
+  <div class="prose" style="margin-top:22px">
+    <p><b>革命の傷</b>: 50年前の市民革命の余波 — <em>王党派残存 / 共和派分裂 / TAKANI 独立運動 / 反魔法原理主義</em> — が水面下で動く。Ambre の発現は<b>6極すべてを揺らしうる</b>。</p>
+    <p><b>4名家は旧華族化</b>: 上院席・社交界・学院理事で影響、爵位だけ残るが実権薄い。</p>
+  </div>
+</section>
+
+<!-- 06 CHARACTERS -->
+<section id="characters">
+  <div class="section-eyebrow">06 · MAIN CAST</div>
+  <h2 class="section-title">学院クラス6人</h2>
+  <div class="section-lede">主人公と同世代の同級生5人。それぞれ違う家・違う立場・違う発現の速さを抱える。</div>
+
+  <table class="char-table">
+    <thead><tr><th>名前</th><th>出自</th><th>魔法</th><th>関係</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="name"><span class="dot emberlyn"></span>Ambre<span class="en">アンブル / 女12歳</span></td>
+        <td>EMBERLYN 末っ子</td>
+        <td>復元 <em>(実は対話型)</em></td>
+        <td>主人公</td>
+      </tr>
+      <tr>
+        <td class="name"><span class="dot vexalia"></span>Valerian<span class="en">ヴァレリアン / 男13歳</span></td>
+        <td>VEXALIA 嫡子</td>
+        <td>なし(測量学英才)</td>
+        <td>観察・計測、灰色の位置</td>
+      </tr>
+      <tr>
+        <td class="name"><span class="dot kross"></span>Emrik<span class="en">エムリク / 男12歳</span></td>
+        <td>KROSS 工房見習い</td>
+        <td>変成(鍛冶歌)</td>
+        <td>親友、明るさの源</td>
+      </tr>
+      <tr>
+        <td class="name"><span class="dot takani"></span>Ilo<span class="en">イロ / 12歳</span></td>
+        <td>TAKANI 留学生</td>
+        <td>対話(主人公と同型)</td>
+        <td>違和感の鏡、論理的真実に最も近い</td>
+      </tr>
+      <tr>
+        <td class="name"><span class="dot merchant"></span>Lyssa<span class="en">リサ / 女12歳</span></td>
+        <td>魔石取引所の娘</td>
+        <td>中程度</td>
+        <td>情報源、政治への窓</td>
+      </tr>
+      <tr>
+        <td class="name"><span class="dot commoner"></span>Clai<span class="en">クレ / 12歳</span></td>
+        <td>外周非接触民</td>
+        <td>なし</td>
+        <td>地上の錨、発現前からの親友</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="prose" style="margin-top:26px">
+    <p><b>EMBERLYN 家族</b>: <em>父 178cm</em> = 家の復活に熱心 / <em>母 165cm</em> = 距離を取って見ている / <em>兄 19歳 175cm</em> = 発現せず焦り、S1 で手紙が途絶える / <em>姉 17歳 162cm</em> = 詩と絵に逃避。<em>曽祖母 102歳 138cm</em> は超高齢で TAKANI 側にいる。Ambre だけを「Iya(イヤ)」と TAKANI 名で呼ぶ、二重名前構造の唯一の証人。</p>
+    <p><b>大人キャラ(未詰め)</b>: 学院長 / 担任教師 / 後見人 / VEXALIA 系政治家(血統審査強化派) / TAKANI 長老 / 異端科学者(隕石再活性化を察知) / 地下新聞書き。</p>
+  </div>
+</section>
+
+<!-- 07 SEASONS -->
+<section id="seasons">
+  <div class="section-eyebrow">07 · ARC</div>
+  <h2 class="section-title">シーズン構成</h2>
+  <div class="section-lede">子供視点は最後まで明るめに保つ。シリーズが進むにつれ、観客だけが抱える「Ambre が知らない事実」の重みが画面に滲む。</div>
+
+  <table class="season-table">
+    <thead><tr><th>SEASON</th><th>内容</th><th>温度</th></tr></thead>
+    <tbody>
+      <tr data-t="warm"><td>S1</td><td>学院ドラマ + 発現の謎。Ambre が「復元の魔法使い」として社会に受け入れられる一年。事件ではなく<em>誤認</em>が重心。</td><td class="temp">明るい</td></tr>
+      <tr data-t="mid"><td>S2</td><td>政治・経済の綻び、派閥争い。血統審査強化 / 異端科学者 / 兄の沈黙 / 姉の絵。血の真相はまだ温存。</td><td class="temp">中程度</td></tr>
+      <tr data-t="cool"><td>S3</td><td>連邦自体のほころび、革命の続きの予兆。隕石再活性化が公式に観測される。</td><td class="temp">やや暗い</td></tr>
+      <tr data-t="cold"><td>S4+</td><td>再革命 or 反動、世界規模の危機。<em>血の真相(残響読み・1/8 TAKANI・曽祖母の不義)は S4 終盤〜S5 まで温存。</em></td><td class="temp">哲学的</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 08 VIEWERS -->
+<section id="viewers">
+  <div class="section-eyebrow">08 · INTERACTIVE TOOLS</div>
+  <h2 class="section-title">探索ツール</h2>
+  <div class="section-lede">世界観の各断面をブラウズできる HTML ビューア。すべて GH Pages で公開中。</div>
+
+  <div class="viewer-grid">
+    <a href="anime_meteorite_world.html" class="viewer">
+      <div class="kind">◆ World</div>
+      <div class="title">世界設定書</div>
+      <div class="en">Meteorite World</div>
+      <div class="desc">全体像 / 隕石 / 326年 / 4家 / 6軸モデル / 政治の入口</div>
+    </a>
+    <a href="anime_meteorite_families.html" class="viewer">
+      <div class="kind">◆ Bloodlines</div>
+      <div class="title">三つの血脈 × 家系図</div>
+      <div class="en">Bloodline + Family Trees</div>
+      <div class="desc">左に家ごとの物語、右に家系図。TAKANI / VEXALIA / KROSS 切替</div>
+    </a>
+    <a href="magic_systems_viewer.html" class="viewer">
+      <div class="kind">◆ Research Browser</div>
+      <div class="title">魔術体系リサーチ</div>
+      <div class="en">50 Origins × 8 Axes</div>
+      <div class="desc">古典〜近世の魔術・神秘学50原典。軸別フィルター・お気に入り・メモ</div>
+      <span class="count">50 sources</span>
+    </a>
+    <a href="magic_references.html" class="viewer">
+      <div class="kind">◆ Visual Reference</div>
+      <div class="title">魔法世界 図版リファレンス</div>
+      <div class="en">Magic Worlds Moodboard</div>
+      <div class="desc">49伝統の歴史的PD図版集成 — ヘルメス銅版画・カバラ・錬金術エンブレム</div>
+      <span class="count">65 images</span>
+    </a>
+    <a href="life_references.html" class="viewer">
+      <div class="kind">◆ Life & Costume</div>
+      <div class="title">生活・服装 リファレンス</div>
+      <div class="en">Life & Costume Moodboard</div>
+      <div class="desc">4家×学院×街×庶民×儀礼×旅×風景の10バケツ。Hammershøi・Sargent・Menzel・Atget・Curtis 他</div>
+      <span class="count">165 images</span>
+    </a>
+    <a href="academic_viewer.html" class="viewer">
+      <div class="kind">◆ Academic</div>
+      <div class="title">学問体系</div>
+      <div class="en">Disciplines & Institutions</div>
+      <div class="desc">30分野を6系統で整理 + 大学6校・学会5団体・禁書8件・対立マップ12ペア</div>
+      <span class="count">30 disciplines</span>
+    </a>
+    <a href="social_viewer.html" class="viewer">
+      <div class="kind">◆ Social Fabric</div>
+      <div class="title">名家外社会の織物</div>
+      <div class="en">Social Fabric + Verbs</div>
+      <div class="desc">4名家の外にいる人々の地図。庶民 / ギルド / 宗教 / メディア / 若者文化…10カテゴリ</div>
+      <span class="count">200 groups</span>
+    </a>
+    <a href="characters_peers.html" class="viewer">
+      <div class="kind">◆ Main Cast</div>
+      <div class="title">学院クラス6人</div>
+      <div class="en">Peer Circle</div>
+      <div class="desc">Ambre + 同世代5人。関係図 SVG + 家族プレースホルダ</div>
+      <span class="count">6 peers</span>
+    </a>
+    <a href="culture_viewer.html" class="viewer">
+      <div class="kind">◆ Culture</div>
+      <div class="title">文化総覧</div>
+      <div class="en">Culture — 5 Tabs</div>
+      <div class="desc">建築32 / 服装33 / 民族17 / 人文28 / 生活48。横断検索・お気に入り・メモ</div>
+      <span class="count">158 items</span>
+    </a>
+    <a href="world_map.html" class="viewer">
+      <div class="kind">◆ Abstract Map</div>
+      <div class="title">世界地図(抽象)</div>
+      <div class="en">Society / Education / Government</div>
+      <div class="desc">3タブSVG抽象地図 — 社会階層 / 大学配置 / 政府6極の関係</div>
+    </a>
+  </div>
+</section>
+
+<!-- 09 LIBRARY -->
+<section id="library">
+  <div class="section-eyebrow">09 · RESEARCH LIBRARY</div>
+  <h2 class="section-title">資料庫</h2>
+  <div class="section-lede">世界観の下地となる調査・設計・原典抜粋の一覧。</div>
+
+  <div class="lib-block">
+    <h4>▪ 原典リーディングノート(古典32本、独自要約 + 代表的な一節 + 全文URL + 邦訳)</h4>
+    <ul>
+      <li><span class="name">西洋ヘルメス系 8本 — ヘルメス文書 / セフェル・イェツィラー / ゾーハル / フィチーノ / フラッド / アタランタ・フギエンス / トリテミウス / ヘプタメロン</span><a class="link" href="magic_reading_notes_western_hermetic.md">MD →</a></li>
+      <li><span class="name">召喚術・護符 8本 — ピカトリクス / ホノリウス誓いの書 / Sefer Raziel / John Dee / ミュンヘン手稿 / al-Buni / パラケルスス / アブラメリン</span><a class="link" href="magic_reading_notes_summoning_amulets.md">MD →</a></li>
+      <li><span class="name">魔女狩り・民族学 8本 — マレウス・マレフィカルム / ヴァイヤー / ピトケアン / Evans-Pritchard / Mooney / Codrington / Howitt / Bascom</span><a class="link" href="magic_reading_notes_witchhunt_ethno.md">MD →</a></li>
+      <li><span class="name">東洋・二次文献 8本 — 抱朴子 / 黄帝内経 / 元朝秘史 / 続日本紀 / Popol Vuh / フィレンツェ写本 / Frazer 金枝篇 / Eliade シャーマニズム</span><a class="link" href="magic_reading_notes_eastern_secondary.md">MD →</a></li>
+    </ul>
+  </div>
+
+  <div class="lib-block">
+    <h4>▪ 世界観設計データ(下地)</h4>
+    <ul>
+      <li><span class="name">魔術体系リサーチ 50原典 × 8軸(Codex xhigh 生成)</span><a class="link" href="magic_systems_research.md">MD →</a></li>
+      <li><span class="name">魔術5系統 デザインスケッチ</span><a class="link" href="magic_systems_design_sketch.md">MD →</a></li>
+      <li><span class="name">学問体系 30分野 × 10要素</span><a class="link" href="academic_disciplines.md">MD →</a></li>
+      <li><span class="name">学問制度 — 大学6校 / 学会5団体 / 禁書8件 / 対立マップ12ペア</span><a class="link" href="academic_institutions.md">MD →</a></li>
+      <li><span class="name">名家外社会 200集団 × 10カテゴリ</span><a class="link" href="social_fabric.md">MD →</a></li>
+      <li><span class="name">社会動詞地図 66動詞 × 6セクション</span><a class="link" href="social_verbs.md">MD →</a></li>
+    </ul>
+  </div>
+
+  <div class="lib-block">
+    <h4>▪ 文化設計 5冊 · 158項目</h4>
+    <ul>
+      <li><span class="name">culture_architecture.md — 建築と都市空間 32項目</span><a class="link" href="culture_architecture.md">MD →</a></li>
+      <li><span class="name">culture_clothing.md — 服装と身装 33項目</span><a class="link" href="culture_clothing.md">MD →</a></li>
+      <li><span class="name">culture_peoples.md — 人種・民族・亜人 17項目</span><a class="link" href="culture_peoples.md">MD →</a></li>
+      <li><span class="name">culture_humanities.md — 人文・思想・言語 28項目</span><a class="link" href="culture_humanities.md">MD →</a></li>
+      <li><span class="name">culture_daily.md — スポーツ・行事・食・娯楽 48項目</span><a class="link" href="culture_daily.md">MD →</a></li>
+    </ul>
+  </div>
+
+  <div class="lib-block">
+    <h4>▪ キャラクター詳細</h4>
+    <ul>
+      <li><span class="name">身長確定リスト — 学院6人 + EMBERLYN 家族 + TAKANI 長老</span><a class="link" href="heights.md">MD →</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 10 STATE -->
+<section id="state">
+  <div class="section-eyebrow">10 · PROJECT STATE</div>
+  <h2 class="section-title">現在地</h2>
+  <div class="section-lede">確定した骨格 / いま話し合っていること / まだ決めていないこと。</div>
+
+  <div class="state-grid">
+    <div class="state-col done">
+      <h4>確定 · 骨格</h4>
+      <ul>
+        <li>世界基本(1700年隕石、326年、7世代、血で継ぐ魔法)</li>
+        <li>4家(TAKANI / VEXALIA / KROSS / EMBERLYN)、旧華族化</li>
+        <li>魔法6軸モデル + 5系統</li>
+        <li>学問6大分類 · 32分野</li>
+        <li>政治体制(立憲連邦・象徴君主・6極均衡)</li>
+        <li>主人公二重構造(復元 / 残響読み・1/8 TAKANI)</li>
+        <li>学院クラス6人</li>
+        <li>物語骨格 ①+②+③ ミックス</li>
+        <li>シーズン構成 S1〜S4+</li>
+        <li>血の真相は S4 終盤まで温存の方針</li>
+      </ul>
+    </div>
+    <div class="state-col wip">
+      <h4>検討中</h4>
+      <ul>
+        <li>隕石と学院都市 RACINE の位置(案1 隕石が核 / 案2 隕石は遠い聖域)</li>
+        <li>移動手段(魔法駆動 / 蒸気・水運・獣)</li>
+        <li>隕石まわりの生態系(同心円ゾーン制の可否)</li>
+        <li>S2 の主旋律(政治×群像で組む案)</li>
+      </ul>
+    </div>
+    <div class="state-col open">
+      <h4>未決</h4>
+      <ul>
+        <li>兄姉の名前・性格</li>
+        <li>両親の名前</li>
+        <li>曽祖母の名前・住む場所(TAKANI 名との二重構造)</li>
+        <li>大人キャラ全員(学院長・担任・後見人・議員・長老・科学者・地下新聞書き)</li>
+        <li>EMBERLYN 家系図(未描画)</li>
+        <li>第1話の発現シーン(冒頭6パネル)</li>
+        <li>Ambre の TAKANI 名『Iya』の意味</li>
+        <li>Ilo と Clai の性別</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+</body>
+</html>
